@@ -83,17 +83,17 @@ async def _(event):
         plugin_syntax = "Enter valid **Plugin** name.\nDo `.exec ls stdplugins` to get list of valid plugin names."
     await event.edit(plugin_syntax)
 
-    
+
 def check_data_base_heal_th():
     # https://stackoverflow.com/a/41961968
     is_database_working = False
     output = "❌"
- 
+
     if not Config.DB_URI:
         return is_database_working, output
- 
+
     from sql_helpers import SESSION
- 
+
     try:
         # to check database we will execute raw query
         SESSION.execute("SELECT 1")
@@ -103,5 +103,5 @@ def check_data_base_heal_th():
     else:
         output = "✅"
         is_database_working = True
- 
-    return is_database_working, output    
+
+    return is_database_working, output
