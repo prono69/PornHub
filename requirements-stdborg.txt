@@ -69,3 +69,4 @@ nekos.py
 html_telegraph_poster
 pendulum
 spamwatch
+TgCrypto>=1.2.0
