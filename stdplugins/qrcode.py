@@ -13,6 +13,7 @@ from uniborg.util import admin_cmd
 import qrcode
 from bs4 import BeautifulSoup
 
+
 def progress(current, total):
     logger.info(
         "Downloaded {} of {}\nCompleted {}".format(
@@ -117,6 +118,7 @@ async def _(event):
     await event.edit("Created QRCode in {} seconds".format(ms))
     await asyncio.sleep(3)
     await event.delete()
+
 
 @borg.on(admin_cmd(pattern="bar ?(.*)"))
 async def _(event):

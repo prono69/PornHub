@@ -52,7 +52,8 @@ async def delete(event):
             await borg.edit_message(chat, target, text)
         else:
             await borg.delete_messages(chat, target, revoke=True)
-            
+
+
 @borg.on(util.admin_cmd(pattern="del$"))
 async def delete_it(delme):
     """ For .del command, delete the replied message. """

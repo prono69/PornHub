@@ -108,9 +108,9 @@ async def fetch_info(replied_user, event):
         dc_id = "Need a Pic for DC ID!"
         location = str(e)
     if user_id != (await event.client.get_me()).id:
-    	common_chat = replied_user.common_chats_count
+        common_chat = replied_user.common_chats_count
     else:
-    	common_chat = "It's me U gey boi"
+        common_chat = "It's me U gey boi"
     username = replied_user.user.username
     user_bio = replied_user.about
     is_bot = replied_user.user.bot
@@ -145,6 +145,7 @@ async def fetch_info(replied_user, event):
 
     return photo, caption
 
+
 @borg.on(admin_cmd(pattern="members"))
 async def _(event):
     members = []
@@ -172,23 +173,29 @@ async def _(event):
             await asyncio.sleep(2)
             await event.reply(f"{m}", parse_mode="html")
     del members
- 
+
 
 def split_message(text, length=4096, offset=200):
-    return [text[text.find('\n', i - offset, i + 1) if text.find('\n', i - offset, i + 1) != -1 else i:
-                 text.find('\n', i + length - offset, i + length) if text.find('\n', i + length - offset,
-                                                                               i + length) != -1 else i + length] for
-            i
-            in
-            range(0, len(text), length)]
- 
- 
+    return [text[text.find('\n',
+                           i - offset,
+                           i + 1) if text.find('\n',
+                                               i - offset,
+                                               i + 1) != -1 else i: text.find('\n',
+                                                                              i + length - offset,
+                                                                              i + length) if text.find('\n',
+                                                                                                       i + length - offset,
+                                                                                                       i + length) != -1 else i + length] for i in range(0,
+                                                                                                                                                         len(text),
+                                                                                                                                                         length)]
+
+
 def get_who_string(who):
     who_string = html.escape(get_display_name(who))
     if isinstance(who, (User, Channel)) and who.username:
         who_string += f" <i>(@{who.username})</i>"
     who_string += f", <a href='tg://user?id={who.id}'>#{who.id}</a>"
     return who_string
+
 
 SYNTAX.update({
     "whois":

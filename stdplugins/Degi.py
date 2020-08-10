@@ -5,6 +5,7 @@ type `.degi` and `.nehi` to see the fun.
 from uniborg.util import admin_cmd
 import asyncio
 
+
 @borg.on(admin_cmd(pattern="degi ?(.*)"))
 async def _(event):
     if not event.text[0].isalpha() and event.text[0] not in (

@@ -214,37 +214,41 @@ async def voicy(event):
             await event.edit("`Ses bozuk, ne dediğini anlamadım.`")
         else:
             await event.edit(f"`{response.text}`")
-            
+
+
 @borg.on(admin_cmd(pattern="mashup ?(.*)"))
 async def _(event):
     if event.fwd_from:
-        return 
+        return
     input_str = event.pattern_match.group(1)
     if not input_str and not event.reply_to_msg_id:
-    	await event.edit("`Seriously Bruh... 😑`")
-    	await asyncio.sleep(4)
-    	await event.delete()
-    	return
+        await event.edit("`Seriously Bruh... 😑`")
+        await asyncio.sleep(4)
+        await event.delete()
+        return
     if not input_str:
         reply_to_id = await event.get_reply_message()
         input_str = reply_to_id.text
     chat = "@vixtbot"
     await event.edit("`Checking...`")
     async with event.client.conversation(chat) as conv:
-          try:     
-              response = conv.wait_event(events.NewMessage(incoming=True,from_users=285336877))
-              await event.client.send_message(chat, "{}".format(input_str))
-              response = await response 
-          except YouBlockedUserError: 
-              await event.reply("Unblock @vixtbot")
-              return
-          if response.text.startswith("I can't find that"):
-             await event.edit("`Sorry i can't find it`")
-          else: 
-             await event.delete()
-             await borg.send_file(event.chat_id, response.message, reply_to=event.reply_to_msg_id)
+        try:
+            response = conv.wait_event(
+                events.NewMessage(
+                    incoming=True,
+                    from_users=285336877))
+            await event.client.send_message(chat, "{}".format(input_str))
+            response = await response
+        except YouBlockedUserError:
+            await event.reply("Unblock @vixtbot")
+            return
+        if response.text.startswith("I can't find that"):
+            await event.edit("`Sorry i can't find it`")
+        else:
+            await event.delete()
+            await borg.send_file(event.chat_id, response.message, reply_to=event.reply_to_msg_id)
 
 
 SYNTAX.update({"mashup": "`.mashup` <text> :\
       \n**USAGE:** Send you the related video message of given text . "
-})
+               })

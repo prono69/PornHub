@@ -24,15 +24,15 @@ async def waifu(animu):
     sticcers = await animu.client.inline_query(
         "stickerizerbot", f"#{random.choice(animus)}{(deEmojify(text))}")
     try:
-      await sticcers[0].click(animu.chat_id,
-                            reply_to=animu.reply_to_msg_id,
-                            silent=True if animu.is_reply else False,
-                            hide_via=True)
+        await sticcers[0].click(animu.chat_id,
+                                reply_to=animu.reply_to_msg_id,
+                                silent=True if animu.is_reply else False,
+                                hide_via=True)
     except Exception:
-      return await animu.edit(
+        return await animu.edit(
             "`You cannot send inline results in this chat (caused by SendInlineBotResultRequest)`"
         )
-    await asyncio.sleep(3)     
+    await asyncio.sleep(3)
     await animu.delete()
 
 
@@ -118,12 +118,12 @@ async def _(animu):
     sticcers = await animu.client.inline_query(
         "stickerizerbot", f"#{random.choice(senpais)}{(deEmojify(text))}")
     try:
-      await sticcers[0].click(animu.chat_id,
-                            reply_to=animu.reply_to_msg_id,
-                            silent=True if animu.is_reply else False,
-                            hide_via=True)
+        await sticcers[0].click(animu.chat_id,
+                                reply_to=animu.reply_to_msg_id,
+                                silent=True if animu.is_reply else False,
+                                hide_via=True)
     except Exception:
-      return await animu.edit(
+        return await animu.edit(
             "`You cannot send inline results in this chat (caused by SendInlineBotResultRequest)`"
         )
     await asyncio.sleep(3)

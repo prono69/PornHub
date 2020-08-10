@@ -21,13 +21,13 @@ MODULE.append("tweet")
 async def trumptweet(event):
     args = event.pattern_match.group(1)
     if not args and not event.reply_to_msg_id:
-      await event.edit("`Give some text to Doland Trump`")
-      await sleep(3)
-      await event.delete()
-      return
+        await event.edit("`Give some text to Doland Trump`")
+        await sleep(3)
+        await event.delete()
+        return
     if not args:
-      rep = await event.get_reply_message()
-      args = rep.text
+        rep = await event.get_reply_message()
+        args = rep.text
     await event.edit("`Trump Tweeting...`")
     args = deEmojify(args)
     r = requests.get(
@@ -44,13 +44,13 @@ async def trumptweet(event):
 async def changemymind(e):
     args = e.pattern_match.group(1)
     if not args and not e.reply_to_msg_id:
-      await e.edit("`Give some text to change_your_min`")
-      await sleep(3)
-      await e.delete()
-      return
+        await e.edit("`Give some text to change_your_min`")
+        await sleep(3)
+        await e.delete()
+        return
     if not args:
-      rep = await e.get_reply_message()
-      args = rep.text
+        rep = await e.get_reply_message()
+        args = rep.text
     await e.edit("`Creating Banner...`")
     args = deEmojify(args)
     r = requests.get(
@@ -67,13 +67,13 @@ async def changemymind(e):
 async def kannagen(e):
     args = e.pattern_match.group(1)
     if not args and not e.reply_to_msg_id:
-      await e.edit("`Give some text to Kanna`")
-      await sleep(5)
-      await e.delete()
-      return
+        await e.edit("`Give some text to Kanna`")
+        await sleep(5)
+        await e.delete()
+        return
     if not args:
-      rep = await e.get_reply_message()
-      args = rep.text
+        rep = await e.get_reply_message()
+        args = rep.text
     args = deEmojify(args)
     r = requests.get(
         f"https://nekobot.xyz/api/imagegen?type=kannagen&text={args}").json()
@@ -90,13 +90,13 @@ async def kannagen(e):
 async def trumptweet(event):
     args = event.pattern_match.group(1)
     if not args and not event.reply_to_msg_id:
-      await event.edit("`Give some text to Modi Bish!`")
-      await sleep(5)
-      await event.delete()
-      return
+        await event.edit("`Give some text to Modi Bish!`")
+        await sleep(5)
+        await event.delete()
+        return
     if not args:
-      replied = await event.get_reply_message()
-      args = replied.text
+        replied = await event.get_reply_message()
+        args = replied.text
     args = deEmojify(args)
     k = f"https://nekobot.xyz/api/imagegen?type=tweet&text={args}&username=narendramodi"
     r = requests.get(k).json()
@@ -152,13 +152,13 @@ async def tweets(text1, text2):
 async def trumptweet(event):
     args = event.pattern_match.group(1)
     it not args and not event.reply_to_msg_id:
-      await event.edit("`Give some text to Carry Bish` 😒")
-      await sleep(5)
-      await event.delete()
-      return
+        await event.edit("`Give some text to Carry Bish` 😒")
+        await sleep(5)
+        await event.delete()
+        return
     if not args:
-      replied = await event.get_reply_message()
-      args = replied.text
+        replied = await event.get_reply_message()
+        args = replied.text
     args = deEmojify(args)
     k = f"https://nekobot.xyz/api/imagegen?type=tweet&text={args}&username=CarryMinati"
     r = requests.get(k).json()

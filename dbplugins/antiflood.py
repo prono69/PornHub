@@ -1,15 +1,16 @@
 import asyncio
 import logging
- 
+
 from telethon.tl.functions.channels import EditBannedRequest
 from telethon.tl.types import ChatBannedRights
 import sql_helpers.antiflood_sql as sql
 from uniborg.util import admin_cmd
- 
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
+
+logging.basicConfig(
+    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
+    level=logging.WARNING)
 logger = logging.getLogger(__name__)
- 
+
 CHAT_FLOOD = sql.__load_flood_settings()
 # warn mode for anti flood
 ANTI_FLOOD_WARN_MODE = ChatBannedRights(
@@ -17,8 +18,8 @@ ANTI_FLOOD_WARN_MODE = ChatBannedRights(
     view_messages=None,
     send_messages=True
 )
- 
- 
+
+
 @borg.on(admin_cmd(incoming=True))
 async def _(event):
     # logger.info(CHAT_FLOOD)
@@ -41,7 +42,7 @@ async def _(event):
             entity=event.chat_id,
             message="""**Automatic AntiFlooder**
 @admin [User](tg://user?id={}) is flooding this chat.
- 
+
 `{}`""".format(event.message.from_id, str(e)),
             reply_to=event.message.id
         )
@@ -58,8 +59,8 @@ async def _(event):
 because he reached the defined flood limit.""".format(event.message.from_id),
             reply_to=event.message.id
         )
- 
- 
+
+
 @borg.on(admin_cmd(pattern="setflood (.*)"))
 async def _(event):
     if event.fwd_from:
@@ -67,8 +68,7 @@ async def _(event):
     input_str = event.pattern_match.group(1)
     try:
         sql.set_flood(event.chat_id, input_str)
-        CHAT_FLOOD = sql.__load_flood_settings()
+        sql.__load_flood_settings()
         await event.edit("Antiflood updated to {} in the current chat".format(input_str))
     except Exception as e:  # pylint:disable=C0103,W0703
         await event.edit(str(e))
- 
