@@ -106,7 +106,7 @@ async def fetch_info(replied_user, event):
         dc_id, location = get_input_location(replied_user.profile_photo)
     except Exception as e:
         dc_id = "Need a Pic for DC ID!"
-        location = str(e)
+        str(e)
     if user_id != (await event.client.get_me()).id:
         common_chat = replied_user.common_chats_count
     else:
