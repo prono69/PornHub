@@ -74,6 +74,7 @@ def deEmojify(inputString: str) -> str:
     """Remove emojis and other non-safe characters from string"""
     return re.sub(EMOJI_PATTERN, '', inputString)
 
+
 if not os.path.exists('bin'):
     os.mkdir('bin')
 binaries = {
@@ -84,8 +85,8 @@ binaries = {
     "https://raw.githubusercontent.com/adekmaulana/python-scripts/master/shell/megadirect":
     "bin/megadirect"
 }
- 
+
 for binary, path in binaries.items():
     downloader = SmartDL(binary, path, progress_bar=False)
     downloader.start()
-    os.chmod(path, 0o755)    
+    os.chmod(path, 0o755)
