@@ -10,7 +10,12 @@ RUN sed -i.bak 's/us-west-2\.ec2\.//' /etc/apt/sources.list
 # to resynchronize the package index files from their sources.
 RUN apt -qq update
 # base required pre-requisites before proceeding ...
-RUN apt -qq install -y --no-install-recommends curl git gnupg2 wget
+RUN apt -qq install -y --no-install-recommends \
+    curl \
+    git \
+    gnupg2 \
+    unzip \
+    wget
 # add required files to sources.list
 RUN wget -q -O - https://mkvtoolnix.download/gpg-pub-moritzbunkus.txt | apt-key add - && \
     wget -qO - https://ftp-master.debian.org/keys/archive-key-10.asc | apt-key add -
@@ -26,18 +31,24 @@ ENV LANG C.UTF-8
 ENV DEBIAN_FRONTEND noninteractive
  
 # install google chrome
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
-    dpkg -i ./google-chrome-stable_current_amd64.deb && \
+RUN mkdir -p /tmp/ && \
+    cd /tmp/ && \
+    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+    # -f ==> is required to --fix-missing-dependancies
+    dpkg -i ./google-chrome-stable_current_amd64.deb; apt -fqqy install && \
+    # clean up the container "layer", after we are done
     rm ./google-chrome-stable_current_amd64.deb
+ 
 # install chromedriver
-RUN mkdir /tmp/ && \
+RUN mkdir -p /tmp/ && \
+    cd /tmp/ && \
     wget -O /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip  && \
     unzip /tmp/chromedriver.zip chromedriver -d /usr/bin/ && \
+    # clean up the container "layer", after we are done
     rm /tmp/chromedriver.zip
+ 
 # install required packages
 RUN apt -qq install -y --no-install-recommends \
-    # we need Python, since it is a Python application
-    python3 python3-pip \
     # this package is required to fetch "contents" via "TLS"
     apt-transport-https \
     # install coreutils
@@ -46,19 +57,20 @@ RUN apt -qq install -y --no-install-recommends \
     ffmpeg mediainfo rclone \
     # install extraction tools
     mkvtoolnix \
-    p7zip rar unrar zip unzip \
+    p7zip rar unrar zip \
     # miscellaneous helpers
     megatools mediainfo rclone && \
+    # clean up the container "layer", after we are done
     rm -rf /var/lib/apt/lists /var/cache/apt/archives /tmp
  
 # each instruction creates one layer
 # Only the instructions RUN, COPY, ADD create layers.
 # copies 'requirements', to inside the container
+# ..., there are multiple '' dependancies,
+# requiring the use of the entire repo, hence
+# adds files from your Docker client’s current directory.
 COPY . .
 # install requirements, inside the container
 RUN pip3 install --no-cache-dir -r requirements.txt
-# adds files from your Docker client’s current directory.
-# COPY . .
- 
 # specifies what command to run within the container.
 CMD ["python3", "-m", "stdborg"]
