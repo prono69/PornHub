@@ -1,62 +1,93 @@
-FROM kalilinux/kali-rolling
-RUN apt-get update && apt upgrade -y
-
-RUN apt-get install -y\
+# We're using Alpine Edge
+FROM alpine:edge
+ 
+#
+# We have to uncomment Community repo for some packages
+#
+RUN sed -e 's;^#http\(.*\)/edge/community;http\1/edge/community;g' -i /etc/apk/repositories
+ 
+#
+# Installing Packages
+#
+RUN apk add --no-cache=true --update \
     coreutils \
     bash \
-    nodejs \
-    bzip2 \
+    build-base \
+    bzip2-dev \
     curl \
     figlet \
     gcc \
     g++ \
     git \
+    sudo \
     aria2 \
     util-linux \
-    libevent-dev \
-    libjpeg-dev \
+    libevent \
+    jpeg-dev \
     libffi-dev \
-    libpq-dev \
+    libpq \
     libwebp-dev \
     libxml2 \
     libxml2-dev \
     libxslt-dev \
+    linux-headers \
     musl \
     neofetch \
-    libcurl4-openssl-dev \
+    openssl-dev \
     postgresql \
     postgresql-client \
-    postgresql-server-dev-all \
+    postgresql-dev \
     openssl \
     pv \
     jq \
     wget \
+    #python \
+    #python-dev \
     python3 \
     python3-dev \
-    python3-pip \
-    libreadline-dev \
-    zipalign \
+    readline-dev \
     sqlite \
     ffmpeg \
-    libsqlite3-dev \
+    libjpeg-turbo-dev \
+    sqlite-dev \
+    libc-dev \
     sudo \
-    zlib1g-dev \
-    recoverjpeg \
-    zip \
-    megatools \
-    libfreetype6-dev \
-    procps \
-    policykit-1
-
-RUN pip3 install --upgrade pip setuptools 
-RUN pip3 install --upgrade pip install wheel 
-RUN if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi 
-RUN if [ ! -e /usr/bin/python ]; then ln -sf /usr/bin/python3 /usr/bin/python; fi 
-RUN rm -r /root/.cache
-RUN aria2c https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && apt install -y ./google-chrome-stable_current_amd64.deb && rm -rf google-chrome-stable_current_amd64.deb
-RUN git clone https://github.com/prono69/PepeBot /root/userbot
-RUN mkdir /root/userbot/bin/
+    chromium \
+    chromium-chromedriver \
+    zlib-dev \
+    jpeg 
+    #
+ 
+ 
+RUN curl https://cli-assets.heroku.com/install.sh
+ 
+RUN python3 -m ensurepip \
+    && pip3 install --upgrade pip setuptools \
+    && rm -r /usr/lib/python*/ensurepip && \
+    if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi && \
+    if [[ ! -e /usr/bin/python ]]; then ln -sf /usr/bin/python3 /usr/bin/python; fi && \
+    rm -r /root/.cache
+ 
+ 
+ 
+ 
+#
+# Clone repo and prepare working directory
+#
+RUN git clone -b master https://github.com/prono69/PepeBot /root/userbot
+RUN mkdir /root/userbot/.bin
 WORKDIR /root/userbot/
-RUN chmod +x /usr/local/bin/*
+ 
+#
+# Copies session and config (if it exists)
+#
+COPY ./sample_config.py ./borg.session* ./config.env* /root/
+ 
+#
+# Install requirements
+#
 RUN pip3 install -r requirements.txt
 CMD ["python3","-m","stdborg"]
+ 
+ 
+ 
