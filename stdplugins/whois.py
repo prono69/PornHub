@@ -200,7 +200,7 @@ def get_who_string(who):
 SYNTAX.update({
     "whois":
     ">`.whois <username> or reply to someone's message with .whois`"
-    "\nUsage: Gets info of an user.
+    "\nUsage: Gets info of an user."
     ">`.members`"
     "\nUsage: Show list of members in a group"
 })

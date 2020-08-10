@@ -151,7 +151,7 @@ async def tweets(text1, text2):
 @borg.on(admin_cmd(pattern="carry ?(.*)"))
 async def trumptweet(event):
     args = event.pattern_match.group(1)
-    it not args and not event.reply_to_msg_id:
+    if not args and not event.reply_to_msg_id:
         await event.edit("`Give some text to Carry Bish` 😒")
         await sleep(5)
         await event.delete()
