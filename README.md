@@ -7,7 +7,7 @@
 [![Deploy](https://telegra.ph/file/aab0b657924e806b0c6c8.jpg)](https://heroku.com/deploy?template=https://github.com/prono69/PepeBot/tree/master)
 
 
-DIS DEPLOY BUTTON...........
+DIS DEPLOY BUTTON.........
 
 
 
