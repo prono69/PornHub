@@ -67,7 +67,7 @@ WORKDIR /root/userbot/
 # Copies session and config (if it exists)
 COPY ./sample_config.py ./borg.session* ./config.env* /root/
 # Install requirements
-RUN pip3 install -r requirements.txt && pip3 install tgcrypto
+RUN pip3 install -r requirements.txt
 CMD ["python3","-m","stdborg"]
 
 
