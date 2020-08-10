@@ -1,14 +1,17 @@
 """Quick Response Codes
 Available Commands
 .getqr
-.makeqr <long text to include>"""
+.makeqr <long text to include>
+.bar <long text to include>"""
+
 import asyncio
 from datetime import datetime
 import os
+import barcode
+from barcode.writer import ImageWriter
 from uniborg.util import admin_cmd
 import qrcode
 from bs4 import BeautifulSoup
-
 
 def progress(current, total):
     logger.info(
@@ -51,14 +54,14 @@ async def _(event):
     if not t_response:
         logger.info(e_response)
         logger.info(t_response)
-        await event.edit("@oo0pps .. something wrongings. Failed to decode QRCode")
+        await event.edit("oo0pps .. something wrongings. Failed to decode QRCode")
         return
     soup = BeautifulSoup(t_response, "html.parser")
     qr_contents = soup.find_all("pre")[0].text
     end = datetime.now()
     ms = (end - start).seconds
     await event.edit("Obtained QRCode contents in {} seconds.\n`{}`".format(ms, qr_contents))
-    await asyncio.sleep(5)
+    await asyncio.sleep(4)
     await event.edit(qr_contents)
 
 
@@ -105,7 +108,6 @@ async def _(event):
     await borg.send_file(
         event.chat_id,
         "img_file.webp",
-        caption=message,
         reply_to=reply_msg_id,
         progress_callback=progress
     )
@@ -113,5 +115,55 @@ async def _(event):
     end = datetime.now()
     ms = (end - start).seconds
     await event.edit("Created QRCode in {} seconds".format(ms))
+    await asyncio.sleep(3)
+    await event.delete()
+
+@borg.on(admin_cmd(pattern="bar ?(.*)"))
+async def _(event):
+    if event.fwd_from:
+        return
+    await event.edit("`Processing...`")
+    start = datetime.now()
+    input_str = event.pattern_match.group(1)
+    message = "SYNTAX: `.barcode <long text to include>`"
+    reply_msg_id = event.message.id
+    if input_str:
+        message = input_str
+    elif event.reply_to_msg_id:
+        previous_message = await event.get_reply_message()
+        reply_msg_id = previous_message.id
+        if previous_message.media:
+            downloaded_file_name = await borg.download_media(
+                previous_message,
+                Config.TMP_DOWNLOAD_DIRECTORY,
+            )
+            m_list = None
+            with open(downloaded_file_name, "rb") as fd:
+                m_list = fd.readlines()
+            message = ""
+            for m in m_list:
+                message += m.decode("UTF-8") + "\r\n"
+            os.remove(downloaded_file_name)
+        else:
+            message = previous_message.message
+    else:
+        message = "SYNTAX: `.barcode <long text to include>`"
+    bar_code_type = "code128"
+    try:
+        bar_code_mode_f = barcode.get(
+            bar_code_type, message, writer=ImageWriter())
+        filename = bar_code_mode_f.save(bar_code_type)
+        await borg.send_file(
+            event.chat_id,
+            filename,
+            reply_to=reply_msg_id,
+        )
+        os.remove(filename)
+    except Exception as e:
+        await event.edit(str(e))
+        return
+    end = datetime.now()
+    ms = (end - start).seconds
+    await event.edit("Created BarCode in {} seconds".format(ms))
     await asyncio.sleep(5)
     await event.delete()

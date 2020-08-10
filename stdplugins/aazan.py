@@ -1,6 +1,5 @@
 import json
 import requests
-
 from uniborg.util import admin_cmd
 
 TEMPAT = ''
@@ -10,7 +9,7 @@ TEMPAT = ''
  """
 
 
-@borg.on(admin_cmd(pattern="aazan(?: |$)(.*)"))
+@borg.on(admin_cmd(pattern="aazan (.*)"))
 async def get_adzan(adzan):
     if not adzan.text.startswith("."):
         return ""

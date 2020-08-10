@@ -15,7 +15,7 @@ async def _(event):
     if Config.USER is not None:
         user = f"\n```User: {Config.USER}```"
     else:
-        user = "NIKITA #CatGang"
+        user = "NIKITA #CatGang #LazyAF_Geng"
     uname = platform.uname()
     memory = psutil.virtual_memory()
     specs = f"```System: {uname.system}```\n```Release: {uname.release}```\n```Version: {uname.version}```\n```Processor: {uname.processor}```\n```Memory [RAM]: {get_size(memory.total)}```"

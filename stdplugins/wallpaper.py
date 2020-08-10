@@ -2,11 +2,9 @@ import asyncio
 import logging
 import os
 from random import choice, randint
-
 import requests
 from bs4 import BeautifulSoup as soup
 from PIL import Image
-
 from sample_config import Config
 from uniborg.util import admin_cmd
 
@@ -26,7 +24,7 @@ async def wallp(event):
     input_str = event.pattern_match.group(1)
     if input_str:
         qu = input_str
-        await event.edit(f'**Processing...**\n**Searching for **`{qu}`')
+        await event.edit(f'`Processing...`\n**Searching for **`{qu}`')
         try:
             link = await walld(str(qu))
         except Exception as e:
@@ -40,7 +38,7 @@ async def wallp(event):
                 idl = idl.replace('png', 'jpeg')
                 im = im.convert('RGB')
                 im.save(idl, 'jpeg')
-            await event.edit('**Uploading...**')
+            await event.edit('`Uploading...`')
             if not len(link[1].split()) < 11:
                 capo = '**' + ' '.join(link[1].split()[:11]) + '**'
             else:
@@ -61,7 +59,7 @@ async def wallp(event):
 
 async def dlimg(link):
     e = requests.get(link).content
-    paea = 'donno.{}'.format(link.split('.')[-1])
+    paea = 'pepe.{}'.format(link.split('.')[-1])
     path_i = os.path.join(down_p, paea)
     with open(path_i, 'wb') as k:
         k.write(e)

@@ -1,5 +1,5 @@
 """Get Telegram User Information
-Syntax: .wh @username/userid"""
+Syntax: .ww @username/userid"""
 import os
 import html
 from telethon.tl.functions.photos import GetUserPhotosRequest
@@ -11,7 +11,7 @@ from uniborg.util import admin_cmd
 TMP_DOWNLOAD_DIRECTORY = "./"
 
 
-@borg.on(admin_cmd(pattern="wh ?(.*)", allow_sudo=True))
+@borg.on(admin_cmd(pattern="ww ?(.*)", allow_sudo=True))
 async def _(event):
     if event.fwd_from:
         return
@@ -73,7 +73,7 @@ async def fetch_info(replied_user, event):
                              offset=42,
                              max_id=0,
                              limit=80))
-    replied_user_profile_photos_count = "NaN."
+    replied_user_profile_photos_count = "None"
     try:
         replied_user_profile_photos_count = replied_user_profile_photos.count
     except AttributeError:
@@ -99,26 +99,25 @@ async def fetch_info(replied_user, event):
     first_name = html.escape(replied_user.user.first_name)
     first_name = first_name.replace("\u2060", "")
     last_name = last_name.replace(
-        "\u2060", "") if last_name else ("NaN")
+        "\u2060", "") if last_name else ("None")
     last_name = html.escape(last_name)
     username = "@{}".format(username) if username else (
-        "NaN")
-    user_bio = "NaN" if not user_bio else user_bio
+        "None")
+    user_bio = "None" if not user_bio else user_bio
     if user_id != (await event.client.get_me()).id:
         common_chat = replied_user.common_chats_count
     else:
-        common_chat = "I've seen them in... Wow. Are they stalking me? "
-        common_chat += "They're in all the same places I am... oh. It's me."
+        common_chat = "They're in all the same places I am... oh. It's me."
 
     caption = "<b>General Info OF:</b> \n"
     caption += f"<a href=\"tg://user?id={user_id}\">{first_name}</a> \n"
-    caption += f"<b>First Name</b>: {first_name} \n"
-    caption += f"<b>ID</b>: <code>{user_id}</code> \n"
+    caption += f"<b>First Name</b>: <code>{first_name}</code> \n"
     caption += f"<b>Last Name</b>: {last_name} \n"
     caption += f"<b>Username</b>: {username} \n"
-    caption += f"DC ID: {dc_id}\n"
-    caption += f"<b>Number of PPs</b>: {replied_user_profile_photos_count}\n"
-    caption += f"Common Groups: {common_chat} \n \n"
+    caption += f"<b>ID</b>: <code>{user_id}</code> \n"
+    caption += f"<b>DC ID</b>: <code>{dc_id}</code>\n"
+    caption += f"<b>Number of PPs</b>: <code>{replied_user_profile_photos_count}</code>\n"
+    caption += f"Common Groups: <code>{common_chat}</code> \n \n"
     caption += f"<b>Bio</b>: \n<code>{user_bio}</code> \n"
 
     return caption

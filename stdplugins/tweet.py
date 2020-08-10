@@ -20,13 +20,15 @@ MODULE.append("tweet")
 @borg.on(admin_cmd(pattern="dtrump ?(.*)"))
 async def trumptweet(event):
     args = event.pattern_match.group(1)
-    rep = await e.get_reply_message()
+    if not args and not event.reply_to_msg_id:
+      await event.edit("`Give some text to Doland Trump`")
+      await sleep(3)
+      await event.delete()
+      return
+    if not args:
+      rep = await event.get_reply_message()
+      args = rep.text
     await event.edit("`Trump Tweeting...`")
-    if rep:
-        args = rep.message
-    if not rep and not args:
-        await e.edit("`Give some text to Doland Trump`")
-        return
     args = deEmojify(args)
     r = requests.get(
         f"https://nekobot.xyz/api/imagegen?type=trumptweet&text={args}").json()
@@ -41,13 +43,15 @@ async def trumptweet(event):
 @borg.on(admin_cmd(pattern="mind ?(.*)"))
 async def changemymind(e):
     args = e.pattern_match.group(1)
-    rep = await e.get_reply_message()
+    if not args and not e.reply_to_msg_id:
+      await e.edit("`Give some text to change_your_min`")
+      await sleep(3)
+      await e.delete()
+      return
+    if not args:
+      rep = await e.get_reply_message()
+      args = rep.text
     await e.edit("`Creating Banner...`")
-    if rep:
-        args = rep.message
-    if not rep and not args:
-        await e.edit("`Give some text to change_your_mind`")
-        return
     args = deEmojify(args)
     r = requests.get(
         f"https://nekobot.xyz/api/imagegen?type=changemymind&text={args}").json()
@@ -62,12 +66,14 @@ async def changemymind(e):
 @borg.on(admin_cmd(pattern="kanna ?(.*)"))
 async def kannagen(e):
     args = e.pattern_match.group(1)
-    rep = await e.get_reply_message()
-    if rep:
-        args = rep.message
-    if not rep and not args:
-        await e.edit("`Give some text to kanna`")
-        return
+    if not args and not e.reply_to_msg_id:
+      await e.edit("`Give some text to Kanna`")
+      await sleep(5)
+      await e.delete()
+      return
+    if not args:
+      rep = await e.get_reply_message()
+      args = rep.text
     args = deEmojify(args)
     r = requests.get(
         f"https://nekobot.xyz/api/imagegen?type=kannagen&text={args}").json()
@@ -83,12 +89,14 @@ async def kannagen(e):
 @borg.on(admin_cmd(pattern="modi ?(.*)"))
 async def trumptweet(event):
     args = event.pattern_match.group(1)
-    replied = await event.get_reply_message()
-    if replied:
-        args = replied.message
-    if not replied and not args:
-        await event.edit("`Give something to Modi Bish`")
-        return
+    if not args and not event.reply_to_msg_id:
+      await event.edit("`Give some text to Modi Bish!`")
+      await sleep(5)
+      await event.delete()
+      return
+    if not args:
+      replied = await event.get_reply_message()
+      args = replied.text
     args = deEmojify(args)
     k = f"https://nekobot.xyz/api/imagegen?type=tweet&text={args}&username=narendramodi"
     r = requests.get(k).json()
@@ -106,7 +114,7 @@ async def nekobot(cat):
     kk = cat.pattern_match.group(1)
     replied = await cat.get_reply_message()
     query = kk
-    if replied:
+    if not replied:
         text = replied.message
         username = query
     elif "|" in query:
@@ -143,12 +151,14 @@ async def tweets(text1, text2):
 @borg.on(admin_cmd(pattern="carry ?(.*)"))
 async def trumptweet(event):
     args = event.pattern_match.group(1)
-    replied = await event.get_reply_message()
-    if replied:
-        args = replied.message
-    if not replied and not args:
-        await event.edit("`Give some text to Carry Bish` 😒")
-        return
+    it not args and not event.reply_to_msg_id:
+      await event.edit("`Give some text to Carry Bish` 😒")
+      await sleep(5)
+      await event.delete()
+      return
+    if not args:
+      replied = await event.get_reply_message()
+      args = replied.text
     args = deEmojify(args)
     k = f"https://nekobot.xyz/api/imagegen?type=tweet&text={args}&username=CarryMinati"
     r = requests.get(k).json()

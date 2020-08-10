@@ -446,7 +446,7 @@ async def vapor(vpr):
         await vpr.edit("".join(reply_text))
 
 
-@borg.on(admin_cmd(pattern="str(?: |$)(.*)", outgoing=True))
+@borg.on(admin_cmd(pattern="str ?(.*)", outgoing=True))
 async def stretch(stret):
     """ Stretch it."""
     if not stret.text[0].isalpha() and stret.text[0] not in (

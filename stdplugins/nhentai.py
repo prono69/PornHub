@@ -17,7 +17,7 @@ async def _(event):
         return
     link = event.pattern_match.group(1)
     if not link:
-        await event.edit("`Bish! put a Nhentai code or link`")
+        await event.edit("`Bish! Put a nHentai code or link`")
         return
     chat = "@nHentaiBot"
     await event.edit("```Processing```")

@@ -1,7 +1,7 @@
 # BY @Deonnn // Thanks from cHAuHaN
 """
 Game of Thrones Thoughts plugin
-Command .jon
+Command .gott
 """
 from telethon import events
 import asyncio
@@ -12,7 +12,7 @@ import random
 async def _(event):
     if event.fwd_from:
         return
-    await event.edit("Typing...")
+    await event.edit("`Typing...`")
     await asyncio.sleep(2)
     x = (random.randrange(1, 40))
     if x == 1:

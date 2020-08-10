@@ -2,6 +2,7 @@
 
 import os
 import random
+import asyncio
 from uniborg.util import admin_cmd
 from userbot import deEmojify
 from uniborg import MODULE, SYNTAX
@@ -22,10 +23,16 @@ async def waifu(animu):
     animus = [20, 32, 33, 40, 41, 42, 58]
     sticcers = await animu.client.inline_query(
         "stickerizerbot", f"#{random.choice(animus)}{(deEmojify(text))}")
-    await sticcers[0].click(animu.chat_id,
+    try:
+      await sticcers[0].click(animu.chat_id,
                             reply_to=animu.reply_to_msg_id,
                             silent=True if animu.is_reply else False,
                             hide_via=True)
+    except Exception:
+      return await animu.edit(
+            "`You cannot send inline results in this chat (caused by SendInlineBotResultRequest)`"
+        )
+    await asyncio.sleep(3)     
     await animu.delete()
 
 
@@ -110,10 +117,16 @@ async def _(animu):
             return
     sticcers = await animu.client.inline_query(
         "stickerizerbot", f"#{random.choice(senpais)}{(deEmojify(text))}")
-    await sticcers[0].click(animu.chat_id,
+    try:
+      await sticcers[0].click(animu.chat_id,
                             reply_to=animu.reply_to_msg_id,
                             silent=True if animu.is_reply else False,
                             hide_via=True)
+    except Exception:
+      return await animu.edit(
+            "`You cannot send inline results in this chat (caused by SendInlineBotResultRequest)`"
+        )
+    await asyncio.sleep(3)
     await animu.delete()
 
 SYNTAX.update({

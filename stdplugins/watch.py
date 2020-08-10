@@ -6,7 +6,6 @@
 from uniborg.util import admin_cmd
 from justwatch import JustWatch
 
-
 def get_stream_data(query):
     stream_data = {}
 

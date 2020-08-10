@@ -20,15 +20,18 @@
     },
     "APP_ID": {
       "description": "Get this value from my.telegram.org! Please do not steal",
-      "value": ""
+      "value": "",
+      "required": true
     },
     "API_HASH": {
       "description": "Get this value from my.telegram.org! Please do not steal",
-      "value": ""
+      "value": "",
+      "required": true
     },
     "HU_STRING_SESSION": {
       "description": "Get this value by running python3 GenerateStringSession.py locally",
-      "value": ""
+      "value": "",
+      "required": true
     },
     "OPEN_WEATHER_MAP_APPID": {
       "description": "Get your own APPID from https://api.openweathermap.org/data/2.5/weather",
@@ -51,7 +54,7 @@
     "TMP_DOWNLOAD_DIRECTORY": {
       "description": "This is required for the plugins involving the file system.",
       "value": "./ravana/",
-      "required": false
+      "required": true
     },
     "IBM_WATSON_CRED_URL": {
       "description": "This is required for the speech to text module. Get your USERNAME from https://console.bluemix.net/docs/services/speech-to-text/getting-started.html",
@@ -219,7 +222,7 @@
   "addons": [{
     "plan": "heroku-postgresql",
     "options": {
-      "version": "9.6"
+      "version": "12"
     }
   }],
   "buildpacks": [{

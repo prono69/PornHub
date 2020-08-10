@@ -79,5 +79,5 @@ async def _(event):
         else:
             plugin_syntax = f"No DOCSTRING has been setup for {plugin_name} plugin."
     else:
-        plugin_syntax = "Enter valid **Plugin** name.\nDo `.exec ls stdplugins` or `.info` to get list of valid plugin names."
+        plugin_syntax = "Enter valid **Plugin** name.\nDo `.exec ls stdplugins` to get list of valid plugin names."
     await event.edit(plugin_syntax)

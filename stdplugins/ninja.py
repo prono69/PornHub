@@ -6,6 +6,8 @@ import asyncio
 from telethon import events
 import telethon.utils
 from uniborg import util
+from telethon.errors import rpcbaseerrors
+BOTLOG = Config.BOTLOG
 
 
 async def get_target_message(event):
@@ -32,7 +34,7 @@ async def await_read(chat, message):
     await fut
 
 
-@borg.on(util.admin_cmd(pattern="(del)(?:ete)?$"))
+@borg.on(util.admin_cmd(pattern="(idel)(?:ete)?$"))
 @borg.on(util.admin_cmd(pattern=r"(edit)(?:\s+(.*))?$"))
 async def delete(event):
     await event.delete()
@@ -50,3 +52,16 @@ async def delete(event):
             await borg.edit_message(chat, target, text)
         else:
             await borg.delete_messages(chat, target, revoke=True)
+            
+@borg.on(util.admin_cmd(pattern="del$"))
+async def delete_it(delme):
+    """ For .del command, delete the replied message. """
+    msg_src = await delme.get_reply_message()
+    if delme.reply_to_msg_id:
+        try:
+            await msg_src.delete()
+            await delme.delete()
+        except rpcbaseerrors.BadRequestError:
+            if BOTLOG:
+                await delme.client.send_message(
+                    BOTLOG, "Well, I can't delete a message")

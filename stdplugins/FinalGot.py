@@ -8,7 +8,7 @@ import random
 async def _(event):
     if event.fwd_from:
         return
-    await event.edit("Hmm...")
+    await event.edit("`Hmm...`")
     await asyncio.sleep(1)
     x = (random.randrange(1, 11))
     if x == 1:
