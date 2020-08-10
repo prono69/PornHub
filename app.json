@@ -13,6 +13,7 @@
   "repository": "https://github.com/prono69/PepeBot",
   "website": "https://telegram.dog/UniBorg",
   "success_url": "https://telegram.dog/NeoMatrix90",
+  "stack": "container",
   "env": {
     "ENV": {
       "description": "Setting this to ANYTHING will enable environment variables.",
@@ -224,18 +225,5 @@
     "options": {
       "version": "12"
     }
-  }],
-  "buildpacks": [{
-    "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest"
-  }, {
-    "url": "https://github.com/opendoor-labs/heroku-buildpack-p7zip"
-  }, {
-    "url": "https://github.com/amivin/aria2-heroku"
-  }, {
-    "url": "https://github.com/heroku/heroku-buildpack-google-chrome"
-  }, {
-    "url": "https://github.com/heroku/heroku-buildpack-chromedriver"
-  }, {
-    "url": "heroku/python"
   }]
 }
