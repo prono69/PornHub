@@ -53,6 +53,7 @@ RUN apt -qq install -y --no-install-recommends \
     apt-transport-https \
     # install coreutils
     coreutils aria2 jq pv \
+    gcc python3-dev \
     # install encoding tools
     ffmpeg mediainfo rclone \
     # install extraction tools
