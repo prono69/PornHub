@@ -16,9 +16,10 @@ HEROKU_API_KEY = Config.HEROKU_API_KEY
 
 # Here lies the Magic
 useragent = ('Mozilla/5.0 (Linux; Android 10; SM-G975F) '
-                 'AppleWebKit/537.36 (KHTML, like Gecko) '
-                 'Chrome/80.0.3987.149 Mobile Safari/537.36'
-                 )
+             'AppleWebKit/537.36 (KHTML, like Gecko) '
+             'Chrome/80.0.3987.149 Mobile Safari/537.36'
+             )
+
 
 @borg.on(admin_cmd(pattern=r"(set|get|del) var ?(.*)", allow_sudo=True))
 async def variable(var):
