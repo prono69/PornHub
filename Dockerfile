@@ -46,6 +46,10 @@ RUN apt-get install -y\
     megatools \
     libfreetype6-dev \
     procps \
+    p7zip \
+    unrar \
+    mediainfo \
+    rclone \
     policykit-1
 
 RUN pip3 install --upgrade pip setuptools 
@@ -54,6 +58,14 @@ RUN if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi
 RUN if [ ! -e /usr/bin/python ]; then ln -sf /usr/bin/python3 /usr/bin/python; fi 
 RUN rm -r /root/.cache
 RUN aria2c https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && apt install -y ./google-chrome-stable_current_amd64.deb && rm -rf google-chrome-stable_current_amd64.deb
+# install chromedriver
+RUN mkdir -p /tmp/ && \
+    cd /tmp/ && \
+    wget -O /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip  && \
+    unzip /tmp/chromedriver.zip chromedriver -d /usr/bin/ && \
+    # clean up the container "layer", after we are done
+    rm /tmp/chromedriver.zip
+    
 RUN git clone https://github.com/prono69/PepeBot /root/userbot
 RUN mkdir /root/userbot/bin/
 WORKDIR /root/userbot/
