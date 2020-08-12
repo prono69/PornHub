@@ -1,7 +1,6 @@
 """CoronaVirus LookUp
 Syntax: .covid <country>"""
 
-from datetime import datetime
 from covid import Covid
 from uniborg.util import admin_cmd
 
