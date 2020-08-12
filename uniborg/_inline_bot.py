@@ -78,7 +78,7 @@ if Config.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
         elif query.startswith("tb_btn"):
             result = builder.article(
                 "Button Parser © @UniBorg",
-                text="powered by @PepeB0t",
+                text="powered by @LazyAF_Pepe",
                 buttons=[],
                 link_preview=True,
                 parse_mode="html"
@@ -116,7 +116,7 @@ if Config.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
                     # throw error
                     result = builder.article(
                         "YTDL Errors © @UniBorg",
-                        text=f"{error_message} Powered by @PepeBot",
+                        text=f"{error_message} Powered by @LazyAF_Pepe",
                         link_preview=False
                     )
                 elif t_response:
@@ -197,7 +197,7 @@ if Config.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
                         ])
                     result = builder.article(
                         "YouTube © @kirito6969",
-                        text=f"{ytdl_url} powered by @PepeB0t",
+                        text=f"{ytdl_url} powered by @LazyAF_Pepe",
                         buttons=inline_keyboard,
                         link_preview=True
                     )
@@ -208,9 +208,9 @@ if Config.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
 **Verified Account:** ✅
 **Official Website:** https://prono69.github.io/PepeBot/
 
-**Pithun 3.8.2 (default, Apr 29 2020, 09:19:52)**
+**Pithun 3.8.5 (default, Apr 29 2020, 09:19:52)**
 **[GCC 7.4.0]**
-**Talethrun 1.13.2**
+**Talethrun 1.15.0**
 
 **Custom Built Fork:** https://github.com/prono69/PepeBot""",
                 buttons=[
@@ -238,7 +238,7 @@ if Config.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
                         custom.Button.url(
                             "♻️Refresh Heroku♻️",
                             "tg://chutiya")]],
-                link_preview=True, parse_mode="html")
+                link_preview=True)
         await event.answer([result] if result else None)
 
     @tgbot.on(events.callbackquery.CallbackQuery(
@@ -271,7 +271,7 @@ if Config.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
             # https://t.me/TelethonChat/115200
             await event.edit(buttons=buttons)
         else:
-            reply_pop_up_alert = "Please get your own @PepeBot, and don't edit my messages!"
+            reply_pop_up_alert = "Please get your own @PepeBot. Don't edit my messages plox!"
             await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
 
     @tgbot.on(events.callbackquery.CallbackQuery(
@@ -283,8 +283,8 @@ if Config.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
             0:125]  # pylint:disable=E0602
         reply_pop_up_alert = help_string if help_string is not None else \
             "No DOCSTRING has been setup for {} plugin".format(plugin_name)
-        reply_pop_up_alert += "\n\n Use .unload {} to remove this plugin\n\
-            © @PepeB0t".format(plugin_name)
+        reply_pop_up_alert += "\n\n Use .unload {} to remove this plugin\n\n\
+            © @LazyAF_Pepe".format(plugin_name)
         await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
 
 

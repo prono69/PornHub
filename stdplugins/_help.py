@@ -36,7 +36,7 @@ async def _(event):
     used = humanbytes(used)
     free = humanbytes(free)
 
-    help_string = """@UniBorg ( **Custom Built By** @NeoMatrix90 )\n**Verified**: ✅\n**SITE**: https://alamtd.wordpress.com\n
+    help_string = """@LazyAF_Pepe
 ✅ <b>UpTime</b> <code>{}</code>
 ✅ <b>Python</b> <code>{}</code>
 ✅ <b>Telethon</b> <code>{}</code>
@@ -45,7 +45,7 @@ async def _(event):
 <b>Used Disk Space</b>: <code>{}</code>
 <b>Free Disk Space</b>: <code>{}</code>
 
-**Custom Repo**: https://github.com/prono69/PepeBot """.format(current_run_time,
+<b>Custom Repo</b>: https://github.com/prono69/PepeBot """.format(current_run_time,
                                                                sys.version,
                                                                __version__,
                                                                check_sgnirts,

@@ -17,12 +17,12 @@ async def corona(event):
     case = country_data['confirmed'] + country_data['new_cases']
     death = country_data['deaths'] + country_data['new_deaths']
     if country_data:
-        output_text = f"😷Confirmed   : `{case}`\n"
-        output_text += f"🤒Active      : `{country_data['active']}`\n"
-        output_text += f"🤕Critical    : `{country_data['critical']}`\n"
-        output_text += f"⚰️Deaths      : `{death}`\n"
-        output_text += f"😇Recovered   : `{country_data['recovered']}`\n"
-        output_text += f"🧪Total tests : `{country_data['total_tests']}`\n\n"
+        output_text = f"😷 **Confirmed**    : `{country_data['confirmed']}`\n"
+        output_text += f"🤒 **Active**      : `{country_data['active']}`\n"
+        output_text += f"🤕 **Critical**    : `{country_data['critical']}`\n"
+        output_text += f"⚰️ **Deaths**      : `{country_data['deaths']}`\n"
+        output_text += f"😇 **Recovered**   : `{country_data['recovered']}`\n"
+        output_text += f"🧪 **Total tests** : `{country_data['total_tests']}`\n\n"
 
         output_text += "Data provided by [Johns Hopkins University](https://j.mp/2xf6oxF)"
     else:
