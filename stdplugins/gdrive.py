@@ -92,9 +92,9 @@ async def _(event):
     # logger.info(required_file_name)
     if required_file_name:
         #
-        if Config.AUTH_TOKEN_DATA is not None:
+        if Config.G_DRIVE_AUTH_TOKEN_DATA is not None:
             with open(G_DRIVE_TOKEN_FILE, "w") as t_file:
-                t_file.write(Config.AUTH_TOKEN_DATA)
+                t_file.write(Config.G_DRIVE_AUTH_TOKEN_DATA)
         # Check if token file exists, if not create it by requesting
         # authorization code
         storage = None
@@ -156,9 +156,9 @@ async def _(event):
     if os.path.isdir(input_str):
         # TODO: remove redundant code
         #
-        if Config.AUTH_TOKEN_DATA is not None:
+        if Config.G_DRIVE_AUTH_TOKEN_DATA is not None:
             with open(G_DRIVE_TOKEN_FILE, "w") as t_file:
-                t_file.write(Config.AUTH_TOKEN_DATA)
+                t_file.write(Config.G_DRIVE_AUTH_TOKEN_DATA)
         # Check if token file exists, if not create it by requesting
         # authorization code
         storage = None
@@ -190,9 +190,9 @@ async def _(event):
     input_str = event.pattern_match.group(2).strip()
     # TODO: remove redundant code
     #
-    if Config.AUTH_TOKEN_DATA is not None:
+    if Config.G_DRIVE_AUTH_TOKEN_DATA is not None:
         with open(G_DRIVE_TOKEN_FILE, "w") as t_file:
-            t_file.write(Config.AUTH_TOKEN_DATA)
+            t_file.write(Config.G_DRIVE_AUTH_TOKEN_DATA)
     # Check if token file exists, if not create it by requesting authorization
     # code
     storage = None
@@ -223,9 +223,9 @@ async def _(event):
     input_str = event.pattern_match.group(1).strip()
     # TODO: remove redundant code
     #
-    if Config.AUTH_TOKEN_DATA is not None:
+    if Config.G_DRIVE_AUTH_TOKEN_DATA is not None:
         with open(G_DRIVE_TOKEN_FILE, "w") as t_file:
-            t_file.write(Config.AUTH_TOKEN_DATA)
+            t_file.write(Config.G_DRIVE_AUTH_TOKEN_DATA)
     # Check if token file exists, if not create it by requesting authorization
     # code
     storage = None
@@ -504,9 +504,9 @@ async def _(event):
     # logger.info(required_file_name)
     if required_file_name:
         #
-        if Config.AUTH_TOKEN_DATA is not None:
+        if Config.G_DRIVE_AUTH_TOKEN_DATA is not None:
             with open(G_DRIVE_TOKEN_FILE, "w") as t_file:
-                t_file.write(Config.AUTH_TOKEN_DATA)
+                t_file.write(Config.G_DRIVE_AUTH_TOKEN_DATA)
         # Check if token file exists, if not create it by requesting
         # authorization code
         storage = None

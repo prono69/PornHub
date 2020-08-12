@@ -113,9 +113,9 @@ async def download(dryb):
                 )
     if required_file_name:
         #
-        if Config.AUTH_TOKEN_DATA is not None:
+        if Config.G_DRIVE_AUTH_TOKEN_DATA is not None:
             with open(G_DRIVE_TOKEN_FILE, "w") as t_file:
-                t_file.write(Config.AUTH_TOKEN_DATA)
+                t_file.write(Config.G_DRIVE_AUTH_TOKEN_DATA)
         # Check if token file exists, if not create it by requesting
         # authorization code
         if not os.path.isfile(G_DRIVE_TOKEN_FILE):

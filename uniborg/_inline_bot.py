@@ -72,14 +72,16 @@ if Config.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
                 text="{}\nCurrently Loaded Plugins: {}".format(
                     query, len(borg._plugins)),
                 buttons=buttons,
-                link_preview=True
+                link_preview=True,
+                parse_mode="html"
             )
         elif query.startswith("tb_btn"):
             result = builder.article(
                 "Button Parser © @UniBorg",
                 text="powered by @PepeB0t",
                 buttons=[],
-                link_preview=True
+                link_preview=True,
+                parse_mode="html"
             )
         elif query.startswith("ytdl"):
             # input format should be ytdl URL
@@ -236,7 +238,7 @@ if Config.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
                         custom.Button.url(
                             "♻️Refresh Heroku♻️",
                             "tg://chutiya")]],
-                link_preview=True)
+                link_preview=True, parse_mode="html")
         await event.answer([result] if result else None)
 
     @tgbot.on(events.callbackquery.CallbackQuery(
@@ -282,7 +284,7 @@ if Config.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
         reply_pop_up_alert = help_string if help_string is not None else \
             "No DOCSTRING has been setup for {} plugin".format(plugin_name)
         reply_pop_up_alert += "\n\n Use .unload {} to remove this plugin\n\
-            © @UniBorg".format(plugin_name)
+            © @PepeB0t".format(plugin_name)
         await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
 
 
@@ -295,7 +297,7 @@ def paginate_help(page_number, loaded_plugins, prefix):
             helpable_plugins.append(p)
     helpable_plugins = sorted(helpable_plugins)
     modules = [custom.Button.inline(
-        "{} {}".format("✅", x),
+        "{} {}".format("🐈", x),
         data="ub_plugin_{}".format(x))
         for x in helpable_plugins]
     pairs = list(zip(modules[::number_of_cols], modules[1::number_of_cols]))
@@ -306,7 +308,7 @@ def paginate_help(page_number, loaded_plugins, prefix):
     if len(pairs) > number_of_rows:
         pairs = pairs[modulo_page * number_of_rows:number_of_rows * (modulo_page + 1)] + \
             [
-            (custom.Button.inline("Previous", data="{}_prev({})".format(prefix, modulo_page)),
-             custom.Button.inline("Next", data="{}_next({})".format(prefix, modulo_page)))
+            (custom.Button.inline("⏮️ Previous", data="{}_prev({})".format(prefix, modulo_page)),
+             custom.Button.inline("⏭️ Next", data="{}_next({})".format(prefix, modulo_page)))
         ]
     return pairs

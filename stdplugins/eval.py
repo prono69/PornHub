@@ -15,7 +15,7 @@ logging.basicConfig(
 async def _(event):
     if event.fwd_from or event.via_bot_id:
         return
-    await event.edit("Processing ...")
+    await event.edit("`Processing...`")
     cmd = event.text.split(" ", maxsplit=1)[1]
     reply_to_id = event.message.id
     if event.reply_to_msg_id:
@@ -47,7 +47,7 @@ async def _(event):
     else:
         evaluation = "Success"
 
-    final_output = "⬤ **EVAL**: `{}` \n\n⬤ **Result**: \n `{}` \n".format(
+    final_output = "⬤ **EVAL**: `{}` \n\n⬤ **Result**: \n`{}` \n".format(
         cmd, evaluation)
 
     if len(final_output) > Config.MAX_MESSAGE_SIZE_LIMIT:

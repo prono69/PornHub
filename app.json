@@ -53,7 +53,7 @@
     },
     "TMP_DOWNLOAD_DIRECTORY": {
       "description": "This is required for the plugins involving the file system.",
-      "value": "./ravana/",
+      "value": "./pepe/",
       "required": true
     },
     "IBM_WATSON_CRED_URL": {
@@ -158,11 +158,6 @@
       "description": "Get your gdrive folder link in which you want to save file.",
       "required": false
     },
-    "AUTH_TOKEN_DATA": {
-      "description": "This is required for gdrive to work. This might help: https://da.gd/authtoken ",
-      "value": "lololol",
-      "required": false
-    },
     "DATA_DIRECTORY": {
       "description": "I dunno y is it for but it is necessary for my repo.",
       "value": "data",
@@ -175,12 +170,12 @@
     },
     "CHROME_BIN": {
       "description": "For Carbon.py",
-      "value": "/app/.apt/usr/bin/google-chrome",
+      "value": "/usr/bin/google-chrome",
       "required": false
     },
     "CHROME_DRIVER": {
       "description": "For Carbon.py",
-      "value": "/app/.chromedriver/bin/chromedriver",
+      "value": "/usr/bin/chromedriver",
       "required": false
     },
     "GITHUB_ACCESS_TOKEN": {

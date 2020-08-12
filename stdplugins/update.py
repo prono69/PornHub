@@ -1,68 +1,24 @@
-# Copyright (C) 2019 The Raphielscape Company LLC.
-#
-# Licensed under the Raphielscape Public License, Version 1.c (the "License");
-# you may not use this file except in compliance with the License.
-# Credits goes to @AvinashReddy3108 for creating this plugin
-# edited to work on Uniborg by @Mayur_Karaniya
-#
-"""
-   This module updates the userbot based on Upstream revision
-   cmd is .update
-   Usage: Checks if the main userbot repository has any updates and shows a changelog if so.
-   .
-   cmd .update now
-   Usage: Updates your userbot, if there are any updates in the main userbot repository.
-   .
-   Credits goes to @AvinashReddy3108 for creating this plugin
-   edited to work on Uniborg by @Mayur_Karaniya
-   this is a Hugh fix thanks to @SpEcHiDe and @devpatel_73
-"""
+"""Update UserBot
+Syntax: .update
+\nAll Credits goes to © @Three_Cube_TeKnoways
+\nFor this awasome plugin.\nPorted from PpaperPlane Extended"""
 
-from os import environ, execle, path, remove
+from os import remove, execle, path, makedirs, getenv, environ,execl
+from shutil import rmtree
 import asyncio
 import sys
-
 from git import Repo
 from git.exc import GitCommandError, InvalidGitRepositoryError, NoSuchPathError
-from os import remove
-import sys
-
-from git import Repo
-from git.exc import GitCommandError
-from git.exc import InvalidGitRepositoryError
-from git.exc import NoSuchPathError
-
-import asyncio
-
-
+from uniborg import SYNTAX, MODULE
 from uniborg.util import admin_cmd
+MODULE.append("update")
 
-
-import sys
-import asyncio
-
-from sample_config import Config
-
-#
-# ===============================Basic Constants=============================
-# UPSTREAM_REPO_URL is as same as below.
-# "https://github.com/prono69/PepeBot.git"
-UPSTREAM_REPO_URL = Config.UPSTREAM_REPO_URL
-# REPO_LINK is as same as below. "https://github.com/prono69/PepeBot.git"
-REPO_LINK = Config.REPO_LINK
-# provide your HEROKU_API_KEY in place of this value.
+UPSTREAM_REPO_URL = "https://github.com/prono69/PepeBot.git"
 HEROKU_API_KEY = Config.HEROKU_API_KEY
-# provide your HEROKU_APP_NAME in place of this value.
 HEROKU_APP_NAME = Config.HEROKU_APP_NAME
-# heroku memes
-HEROKU_MEMEZ = Config.HEROKU_MEMEZ
-# getting you git repo name is also needed
-GIT_REPO_NAME = Config.GIT_REPO_NAME
-# ===============================Basic Constants=============================
 
 requirements_path = path.join(
     path.dirname(path.dirname(path.dirname(__file__))), 'requirements.txt')
-
 
 async def gen_chlog(repo, diff):
     ch_log = ''
@@ -71,8 +27,7 @@ async def gen_chlog(repo, diff):
         ch_log += f'•[{c.committed_datetime.strftime(d_form)}]: {c.summary} by <{c.author}>\n'
     return ch_log
 
-
-async def updateme_requirements():
+async def update_requirements():
     reqs = str(requirements_path)
     try:
         process = await asyncio.create_subprocess_shell(
@@ -84,43 +39,37 @@ async def updateme_requirements():
     except Exception as e:
         return repr(e)
 
-
-@borg.on(admin_cmd(pattern="update ?(.*)", outgoing=True, allow_sudo=True))
+@borg.on(admin_cmd(pattern="update ?(.*)", outgoing=True))
 async def upstream(ups):
     "For .update command, check if the bot is up to date, update if specified"
-    await ups.edit("`Checking for updates, please wait....`")
     conf = ups.pattern_match.group(1)
+    await ups.edit("`Checking for updates, please wait....`")
     off_repo = UPSTREAM_REPO_URL
-    force_updateme = False
-
+    force_update = False
     try:
         txt = "`Oops.. Updater cannot continue due to "
         txt += "some problems occured`\n\n**LOGTRACE:**\n"
         repo = Repo()
     except NoSuchPathError as error:
-        await ups.edit(f'{txt}\n`directory {error} is not found`')
+        await ups.edit(f'{txt}\ndirectory {error} is not found')
         repo.__del__()
         return
     except GitCommandError as error:
-        await ups.edit(f'{txt}\n`Early failure! {error}`')
+        await ups.edit(f'{txt}\nEarly failure! {error}')
         repo.__del__()
         return
     except InvalidGitRepositoryError as error:
         if conf != "now":
-            await ups.edit(
-                f"**Unfortunately, the directory {error} does not seem to be a git repository.\
-                \nOr Maybe it just needs a sync verification with {GIT_REPO_NAME}\
-            \nBut we can fix that by force updating the userbot using** `.update now.`"
-            )
+            await ups.edit(f"Unfortunately, the directory {error} does not seem to be a git repository.\
+            \nBut we can fix that by force updating the userbot using `.update now`.")
             return
         repo = Repo.init()
         origin = repo.create_remote('upstream', off_repo)
         origin.fetch()
-        force_updateme = True
+        force_update = True
         repo.create_head('master', origin.refs.master)
         repo.heads.master.set_tracking_branch(origin.refs.master)
         repo.heads.master.checkout(True)
-
     ac_br = repo.active_branch.name
     if ac_br != 'master':
         await ups.edit(
@@ -130,24 +79,19 @@ async def upstream(ups):
             'please checkout to any official branch`')
         repo.__del__()
         return
-
     try:
         repo.create_remote('upstream', off_repo)
     except BaseException:
         pass
-
     ups_rem = repo.remote('upstream')
     ups_rem.fetch(ac_br)
-
     changelog = await gen_chlog(repo, f'HEAD..upstream/{ac_br}')
-
-    if not changelog and not force_updateme:
+    if not changelog and not force_update:
         await ups.edit(
             f'\n`Your BOT is`  **up-to-date**  `with`  **{ac_br}**\n')
         repo.__del__()
         return
-
-    if conf != "now" and not force_updateme:
+    if conf != "now" and not force_update:
         changelog_str = f'**New UPDATE available for [{ac_br}]:\n\nCHANGELOG:**\n`{changelog}`'
         if len(changelog_str) > 4096:
             await ups.edit("`Changelog is too big, view the file to see it.`")
@@ -162,24 +106,19 @@ async def upstream(ups):
             remove("output.txt")
         else:
             await ups.edit(changelog_str)
-        await ups.respond('do \"`.update now`\" to update')
+        await ups.respond("Do `.update now` to update")
         return
-
-    if force_updateme:
-        await ups.edit(
-            '`Force-Syncing to latest stable userbot code, please wait...`')
+    if force_update:
+        await ups.edit('Force-Syncing to latest stable userbot code, please wait...')
     else:
         await ups.edit('`Updating userbot, please wait....`')
-    # We're in a Heroku Dyno, handle it's memez.
     if HEROKU_API_KEY is not None:
         import heroku3
         heroku = heroku3.from_key(HEROKU_API_KEY)
         heroku_app = None
         heroku_applications = heroku.apps()
         if not HEROKU_APP_NAME:
-            await ups.edit(
-                '`[HEROKU MEMEZ] Please set up the HEROKU_APP_NAME variable to be able to update userbot.`'
-            )
+            await ups.edit('Please set up the `HEROKU_APP_NAME` variable to be able to update userbot.')
             repo.__del__()
             return
         for app in heroku_applications:
@@ -192,9 +131,6 @@ async def upstream(ups):
             )
             repo.__del__()
             return
-        await ups.edit('`[HEROKU MEMEZ]\
-                        \nUserbot dyno build in progress, please wait for it to complete.`'
-                       )
         ups_rem.fetch(ac_br)
         repo.git.reset("--hard", "FETCH_HEAD")
         heroku_git_url = heroku_app.git_url.replace(
@@ -204,24 +140,26 @@ async def upstream(ups):
             remote.set_url(heroku_git_url)
         else:
             remote = repo.create_remote("heroku", heroku_git_url)
-        try:
-            remote.push(refspec="HEAD:refs/heads/master", force=True)
-        except GitCommandError as error:
-            await ups.edit(f'{txt}\n`Here is the error log:\n{error}`')
-            repo.__del__()
-            return
-        await ups.edit('`Successfully Updated!\n'
-                       'Restarting, please wait...`')
+        await ups.edit("`Updating and Deploying New Update.` **Please wait for 5 minutes then** use `.alive` to check if i'm working or not.")
+        remote.push(refspec="HEAD:refs/heads/master", force=True)
     else:
-        # Classic Updater, pretty straightforward.
         try:
             ups_rem.pull(ac_br)
         except GitCommandError:
             repo.git.reset("--hard", "FETCH_HEAD")
-        await updateme_requirements()
+        reqs_upgrade = await update_requirements()
         await ups.edit('`Successfully Updated!\n'
                        'Bot is restarting... Wait for a second!`')
         # Spin a new instance of bot
         args = [sys.executable, "-m", "stdborg"]
         execle(sys.executable, *args, environ)
         return
+    
+
+SYNTAX.update({
+    'update':
+    ".update\
+\nUsage: Checks if the main userbot repository has any updates and shows a changelog if so.\
+\n\n.update now\
+\nUsage: Updates your userbot, if there are any updates in the main userbot repository."
+})

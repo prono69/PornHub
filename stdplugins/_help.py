@@ -8,12 +8,15 @@
 ◇ to know syntax
 ◆ `.nigga` <plugin name>
 """
-
-
 import sys
+import shutil
+import time
 from telethon import functions, __version__
-from uniborg.util import admin_cmd
-
+from uniborg.util import (
+    admin_cmd,
+    humanbytes,
+    time_formatter
+)
 
 @borg.on(admin_cmd(pattern="info ?(.*)", allow_sudo=True))
 async def _(event):
@@ -25,11 +28,22 @@ async def _(event):
     else:
         s_help_string = ""
         _, check_sgnirts = check_data_base_heal_th()
-    help_string = """@UniBorg ( **Custom Built By** @NeoMatrix90 ) \n**Verified Account**: ✅\n**DESCRIPTION**: https://alamtd.wordpress.com\n
-✅ Python {}
-✅ Telethon {}
-{} Database
-**Custom Built Fork**: https://github.com/prono69/PepeBot """.format(sys.version, __version__, check_sgnirts)
+        current_run_time = time_formatter((time.time() - BOT_START_TIME))
+    total, used, free = shutil.disk_usage("/")
+    total = humanbytes(total)
+    used = humanbytes(used)
+    free = humanbytes(free)
+    
+    help_string = """@UniBorg ( **Custom Built By** @NeoMatrix90 )\n**Verified**: ✅\n**SITE**: https://alamtd.wordpress.com\n
+✅ <b>UpTime</b> <code>{}</code>
+✅ <b>Python</b> <code>{}</code>
+✅ <b>Telethon</b> <code>{}</code>
+{} <b>Database</b>
+<b>Total Disk Space</b>: <code>{}</code>
+<b>Used Disk Space</b>: <code>{}</code>
+<b>Free Disk Space</b>: <code>{}</code>
+
+**Custom Repo**: https://github.com/prono69/PepeBot """.format(sys.version, __version__, check_sgnirts, total, used, free)
     tgbotusername = Config.TG_BOT_USER_NAME_BF_HER
     if tgbotusername is not None:
         results = await borg.inline_query(
@@ -43,7 +57,7 @@ async def _(event):
         )
         await event.delete()
     else:
-        await event.reply(help_string + "\n\n" + s_help_string)
+        await event.reply(help_string + "\n\n" + s_help_string, parse_mode="html")
         await event.delete()
 
 

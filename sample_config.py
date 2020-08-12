@@ -49,7 +49,7 @@ class Config(object):
     # This is required for the @telegraph functionality.
     TELEGRAPH_SHORT_NAME = os.environ.get(
         "TELEGRAPH_SHORT_NAME",
-        "UniBorg"
+        "Kirito"
     )
     # Get a Free API Key from OCR.Space
     OCR_SPACE_API_KEY = os.environ.get("OCR_SPACE_API_KEY", None)
@@ -116,12 +116,6 @@ class Config(object):
     G_DRIVE_CLIENT_ID = os.environ.get("G_DRIVE_CLIENT_ID", None)
     G_DRIVE_CLIENT_SECRET = os.environ.get("G_DRIVE_CLIENT_SECRET", None)
     GDRIVE_FOLDER_ID = os.environ.get("GDRIVE_FOLDER_ID", None)
-    AUTH_TOKEN_DATA = os.environ.get("AUTH_TOKEN_DATA", None)
-    if AUTH_TOKEN_DATA is not None:
-        os.makedirs(TMP_DOWNLOAD_DIRECTORY)
-        t_file = open(TMP_DOWNLOAD_DIRECTORY + "auth_token.txt", "w")
-        t_file.write(AUTH_TOKEN_DATA)
-        t_file.close()
     G_DRIVE_AUTH_TOKEN_DATA = os.environ.get("G_DRIVE_AUTH_TOKEN_DATA", None)
     # Google Photos ()
     G_PHOTOS_CLIENT_ID = os.environ.get("G_PHOTOS_CLIENT_ID", None)
@@ -139,12 +133,11 @@ class Config(object):
     # Google Chrome Selenium Stuff
     # taken from
     # https://github.com/jaskaranSM/UniBorg/blob/9072e3580cc6c98d46f30e41edbe73ffc9d850d3/sample_config.py#L104-L106
-    GOOGLE_CHROME_DRIVER = os.environ.get("GOOGLE_CHROME_DRIVER", None)
-    GOOGLE_CHROME_BIN = os.environ.get("GOOGLE_CHROME_BIN", None)
+    GOOGLE_CHROME_DRIVER = os.environ.get("GOOGLE_CHROME_DRIVER", "/usr/bin/google-chrome")
+    GOOGLE_CHROME_BIN = os.environ.get("GOOGLE_CHROME_BIN", "/usr/bin/chromedriver")
     #
     LYDIA_API = os.environ.get("LYDIA_API", None)
     # Heroku Miscellaneous
-    HEROKU_MEMEZ = bool(os.environ.get("HEROKU_MEMEZ", "False"))
     HEROKU_API_KEY = os.environ.get("HEROKU_API_KEY", None)
     HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME", None)
     UPSTREAM_REPO_URL = os.environ.get(

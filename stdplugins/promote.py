@@ -84,4 +84,4 @@ async def _(event):
     except (Exception) as exc:
         await event.edit(str(exc))
     else:
-        await event.edit("Admins has Successfully premoted Madanyu{}")
+        await event.edit("`Successfully Promoted`")

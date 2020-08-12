@@ -3,6 +3,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 import asyncio
 import os
+import time
 import importlib.util
 import logging
 from pathlib import Path
@@ -114,6 +115,7 @@ class Uniborg(TelegramClient):
         mod.Config = self.config
         if self.config.TG_BOT_USER_NAME_BF_HER is not None:
             mod.tgbot = self.tgbot
+        mod.BOT_START_TIME = time.time()    
 
         spec.loader.exec_module(mod)
         self._plugins[shortname] = mod

@@ -1,44 +1,35 @@
-# For UniBorg
-# Syntax .alive
-import sys
-import platform
-import psutil
-from telethon import __version__
+"""Check if userbot alive or not . """
+
+import asyncio , time
+from userbot import StartTime, pepe, get_readable_time
 from uniborg.util import admin_cmd
-from sql_helpers.global_variables_sql import SYNTAX, BUILD
+from telethon import version
+from platform import python_version, uname
+from uniborg import MODULE
+MODULE.append("alive")
 
+@borg.on(admin_cmd(pattern="alive", allow_sudo=True))
+async def amireallyalive(alive):
+    reply_to_id = alive.message
+    uptime = await get_readable_time((time.time() - StartTime))
+    if alive.reply_to_msg_id:
+        reply_to_id = await alive.get_reply_message()
+    output = f"""
+**PEPEBOT is Up and Running Bsdk**
 
-@borg.on(admin_cmd(pattern="alive ?(.*)", allow_sudo=True))
-async def _(event):
-    if event.fwd_from:
-        return
-    if Config.USER is not None:
-        user = f"\n```User: {Config.USER}```"
-    else:
-        user = "NIKITA #CatGang #LazyAF_Geng"
-    uname = platform.uname()
-    memory = psutil.virtual_memory()
-    specs = f"```System: {uname.system}```\n```Release: {uname.release}```\n```Version: {uname.version}```\n```Processor: {uname.processor}```\n```Memory [RAM]: {get_size(memory.total)}```"
-    help_string = f"`Chal raha hu Bsdk...Don't Distirb Meh\nAb Hoga Tera Account Ban`\n\n**General Info:**\n```Build: {BUILD}\n```USER: {str(user)}\n```By: @kirito6969```\n\n**System Specifications:**\n{specs}\n```Python {sys.version}```\n```Telethon {__version__}```"
-    # await event.client.send_file(event.chat_id,
-    # file="CAADBQADgAEAAiriyVcBvpocd4kH1QI")
-    await event.edit(help_string + "\n\n")
-    # await event.delete()
+       😴 __Lazy as a Sloth__ 😴
 
+☞ **System** : `Linux`
+☞ **Uptime** : `{uptime}`
+☞ **Telethon version** : `{version.__version__}`
+☞ **Python Version** : `{python_version()}`
+☞ **PepeBot Version** : `{pepe}`
+☞ **My Master** : [NIKITA](https://t.me/kirito6969)
 
-def get_size(bytes, suffix="B"):
-    factor = 1024
-    for unit in ["", "K", "M", "G", "T", "P"]:
-        if bytes < factor:
-            return f"{bytes:.2f}{unit}{suffix}"
-        bytes /= factor
+**Pepe is always with you, my master!**
 
+☞ **Repo** : [PEPEBOT](https://github.com/prono69/PepeBot)"""
 
-SYNTAX.update({
-    "alive": "\
-**Requested Module --> alive**\
-\n\n**Detailed usage of fuction(s):**\
-\n\n```.alive```\
-\nUsage: Returns userbot's system stats, user's name (only if set).\
-"
-})
+    sticker = (await borg.get_messages('LazyAF_Pepe', 25))
+    await borg.send_file(alive.chat_id, file=sticker)
+    await borg.send_message(alive.chat_id, output, reply_to=reply_to_id, link_preview=False)

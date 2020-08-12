@@ -93,8 +93,8 @@ UNMUTE_RIGHTS = ChatBannedRights(
 )
 
 
-@borg.on(admin_cmd(pattern=f"{borg.me.id}isetgpic$", allow_sudo=True))
-@borg.on(events.NewMessage(outgoing=True, pattern="^.isetgpic$"))
+@borg.on(admin_cmd(pattern=f"{borg.me.id}setgpic$", allow_sudo=True))
+@borg.on(events.NewMessage(outgoing=True, pattern="^.setgpic$"))
 async def setgrouppic(eventPic):
     if not eventPic.text[0].isalpha(
     ) and eventPic.text[0] not in ("/", "#", "@", "!"):
@@ -130,8 +130,8 @@ async def setgrouppic(eventPic):
             await eventPic.edit("`Reply .setgrouppic to an Image to set it as group's icon.`")
 
 
-@borg.on(admin_cmd(pattern=f"{borg.me.id}ipromote(?: |$)(.*)", allow_sudo=True))
-@borg.on(events.NewMessage(outgoing=True, pattern="^.ipromote(?: |$)(.*)"))
+@borg.on(admin_cmd(pattern=f"{borg.me.id}promote(?: |$)(.*)", allow_sudo=True))
+@borg.on(events.NewMessage(outgoing=True, pattern="^.promote(?: |$)(.*)"))
 async def promote(eventPromote):
     if not eventPromote.text[0].isalpha() \
             and eventPromote.text[0] not in ("/", "#", "@", "!"):
@@ -141,7 +141,7 @@ async def promote(eventPromote):
         if not admin and not creator:
             await eventPromote.edit("`I am not an admin!`")
             return
-        await eventPromote.edit("`Promoting this guy...`")
+        await eventPromote.edit("`Promoting this Gei...`")
         user = await get_user_from_event(eventPromote)
         if user:
             pass
@@ -659,7 +659,7 @@ async def listbots(eventListBots):
         remove("botlist.txt")
 
 
-@borg.on(admin_cmd(pattern=f"{borg.me.id}ipin(?: |$)(.*)", allow_sudo=True))
+@borg.on(admin_cmd(pattern=f"{borg.me.id}pin(?: |$)(.*)", allow_sudo=True))
 @borg.on(events.NewMessage(outgoing=True, pattern="^.pin(?: |$)(.*)"))
 async def pinmessage(eventPinMessage):
     if not eventPinMessage.text[0].isalpha(

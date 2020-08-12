@@ -2,7 +2,7 @@
 # Don't edit credits Madafaka
 """Commands:\n
 `.dtrump`
-`.modi`
+`.imodi`
 `.kanna`
 `.mind`
 `.tweet`
@@ -86,7 +86,7 @@ async def kannagen(e):
     await e.delete()
 
 
-@borg.on(admin_cmd(pattern="modi ?(.*)"))
+@borg.on(admin_cmd(pattern="imodi ?(.*)"))
 async def trumptweet(event):
     args = event.pattern_match.group(1)
     if not args and not event.reply_to_msg_id:
@@ -114,7 +114,7 @@ async def nekobot(cat):
     kk = cat.pattern_match.group(1)
     replied = await cat.get_reply_message()
     query = kk
-    if not replied:
+    if replied:
         text = replied.message
         username = query
     elif "|" in query:
