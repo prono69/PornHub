@@ -46,12 +46,12 @@ async def _(event):
 <b>Free Disk Space</b>: <code>{}</code>
 
 <b>Custom Repo</b>: https://github.com/prono69/PepeBot """.format(current_run_time,
-                                                               sys.version,
-                                                               __version__,
-                                                               check_sgnirts,
-                                                               total,
-                                                               used,
-                                                               free)
+                                                                  sys.version,
+                                                                  __version__,
+                                                                  check_sgnirts,
+                                                                  total,
+                                                                  used,
+                                                                  free)
     tgbotusername = Config.TG_BOT_USER_NAME_BF_HER
     if tgbotusername is not None:
         results = await borg.inline_query(
