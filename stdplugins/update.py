@@ -10,49 +10,39 @@
    edited to work on Uniborg by @Mayur_Karaniya
    this is a Hugh fix thanks to @SpEcHiDe and @devpatel_73
 """
- 
-from os import remove, execle, path, makedirs, getenv, environ
-from shutil import rmtree
+
+from os import environ, execle, path, remove
 import asyncio
-import sys 
+import sys
 from git import Repo
 from git.exc import GitCommandError, InvalidGitRepositoryError, NoSuchPathError
-import heroku3
-import git 
-import random
-import re
-import time 
-from collections import deque 
-import requests 
-from telethon.tl.types import MessageEntityMentionName
-from telethon import events 
-from uniborg.util import admin_cmd 
-from contextlib import suppress
+from uniborg.util import admin_cmd
 from uniborg import MODULE
 MODULE.append("update")
- 
+
 
 # ===============================Basic Constants=============================
-# UPSTREAM_REPO_URL is as same as below. "https://github.com/prono69/PepeBot.git"
+# UPSTREAM_REPO_URL is as same as below.
+# "https://github.com/prono69/PepeBot.git"
 UPSTREAM_REPO_URL = Config.UPSTREAM_REPO_URL
 # provide your HEROKU_API_KEY in place of this value.
 HEROKU_API_KEY = Config.HEROKU_API_KEY
 # provide your HEROKU_APP_NAME in place of this value.
 HEROKU_APP_NAME = Config.HEROKU_APP_NAME
 # ===============================Basic Constants=============================
- 
+
 requirements_path = path.join(
     path.dirname(path.dirname(path.dirname(__file__))), 'requirements.txt')
- 
- 
+
+
 async def gen_chlog(repo, diff):
     ch_log = ''
     d_form = "%d/%m/%y"
     for c in repo.iter_commits(diff):
         ch_log += f'•[{c.committed_datetime.strftime(d_form)}]: {c.summary} by <{c.author}>\n'
     return ch_log
- 
- 
+
+
 async def updateme_requirements():
     reqs = str(requirements_path)
     try:
@@ -64,8 +54,8 @@ async def updateme_requirements():
         return process.returncode
     except Exception as e:
         return repr(e)
- 
- 
+
+
 @borg.on(admin_cmd(pattern="update ?(.*)", outgoing=True, allow_sudo=True))
 async def upstream(ups):
     "For .update command, check if the bot is up to date, update if specified"
@@ -73,7 +63,7 @@ async def upstream(ups):
     conf = ups.pattern_match.group(1)
     off_repo = UPSTREAM_REPO_URL
     force_updateme = False
- 
+
     try:
         txt = "`Oops.. Updater cannot continue due to "
         txt += "some problems occured`\n\n**LOGTRACE:**\n"
@@ -101,7 +91,7 @@ async def upstream(ups):
         repo.create_head('master', origin.refs.master)
         repo.heads.master.set_tracking_branch(origin.refs.master)
         repo.heads.master.checkout(True)
- 
+
     ac_br = repo.active_branch.name
     if ac_br != 'master':
         await ups.edit(
@@ -111,23 +101,23 @@ async def upstream(ups):
             'please checkout to any official branch`')
         repo.__del__()
         return
- 
+
     try:
         repo.create_remote('upstream', off_repo)
     except BaseException:
         pass
- 
+
     ups_rem = repo.remote('upstream')
     ups_rem.fetch(ac_br)
- 
+
     changelog = await gen_chlog(repo, f'HEAD..upstream/{ac_br}')
- 
+
     if not changelog and not force_updateme:
         await ups.edit(
             f'\n**Your BOT is up-to-date with {ac_br}**\n')
         repo.__del__()
         return
- 
+
     if conf != "now" and not force_updateme:
         changelog_str = f'**New UPDATE available for [{ac_br}]:\n\nCHANGELOG:**\n`{changelog}`'
         if len(changelog_str) > 4096:
@@ -145,7 +135,7 @@ async def upstream(ups):
             await ups.edit(changelog_str)
         await ups.respond('do \"`.update now`\" to update')
         return
- 
+
     if force_updateme:
         await ups.edit(
             '`Force-Syncing to latest stable userbot code, please wait...`')
@@ -199,14 +189,10 @@ async def upstream(ups):
             ups_rem.pull(ac_br)
         except GitCommandError:
             repo.git.reset("--hard", "FETCH_HEAD")
-        reqs_upgrade = await updateme_requirements()
+        await updateme_requirements()
         await ups.edit('`Successfully Updated!\n'
                        'Bot is restarting... Wait for a second!`')
         # Spin a new instance of bot
         args = [sys.executable, "-m", "stdborg"]
         execle(sys.executable, *args, environ)
         return
- 
- 
-     
- 
