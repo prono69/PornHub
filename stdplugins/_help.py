@@ -36,7 +36,7 @@ async def _(event):
     used = humanbytes(used)
     free = humanbytes(free)
 
-    help_string = """@LazyAF_Pepe
+    help_string = """@UniBorg
 ✅ <b>UpTime</b> <code>{}</code>
 ✅ <b>Python</b> <code>{}</code>
 ✅ <b>Telethon</b> <code>{}</code>
