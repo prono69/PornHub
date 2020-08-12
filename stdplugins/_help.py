@@ -29,8 +29,8 @@ async def _(event):
     else:
         s_help_string = ""
         _, check_sgnirts = check_data_base_heal_th()
-        
-    current_run_time = time_formatter((time.time() - BOT_START_TIME))    
+
+    current_run_time = time_formatter((time.time() - BOT_START_TIME))
     total, used, free = shutil.disk_usage("/")
     total = humanbytes(total)
     used = humanbytes(used)
@@ -45,7 +45,13 @@ async def _(event):
 <b>Used Disk Space</b>: <code>{}</code>
 <b>Free Disk Space</b>: <code>{}</code>
 
-**Custom Repo**: https://github.com/prono69/PepeBot """.format(current_run_time, sys.version, __version__, check_sgnirts, total, used, free)
+**Custom Repo**: https://github.com/prono69/PepeBot """.format(current_run_time,
+                                                               sys.version,
+                                                               __version__,
+                                                               check_sgnirts,
+                                                               total,
+                                                               used,
+                                                               free)
     tgbotusername = Config.TG_BOT_USER_NAME_BF_HER
     if tgbotusername is not None:
         results = await borg.inline_query(
