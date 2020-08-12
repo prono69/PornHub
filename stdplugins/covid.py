@@ -15,8 +15,8 @@ async def corona(event):
         country = "World"
     covid = Covid(source="worldometers")
     country_data = covid.get_status_by_country_name(country)
-    case = country_data['confirmed']+country_data['new_cases']
-    death = country_data['deaths']+country_data['new_deaths']
+    case = country_data['confirmed'] + country_data['new_cases']
+    death = country_data['deaths'] + country_data['new_deaths']
     if country_data:
         output_text = f"😷Confirmed   : `{case}`\n"
         output_text += f"🤒Active      : `{country_data['active']}`\n"

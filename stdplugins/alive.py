@@ -1,12 +1,13 @@
 """Check if userbot alive or not . """
 
-import asyncio , time
+import time
 from userbot import StartTime, pepe, get_readable_time
 from uniborg.util import admin_cmd
 from telethon import version
-from platform import python_version, uname
+from platform import python_version
 from uniborg import MODULE
 MODULE.append("alive")
+
 
 @borg.on(admin_cmd(pattern="alive", allow_sudo=True))
 async def amireallyalive(alive):

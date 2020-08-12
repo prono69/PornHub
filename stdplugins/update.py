@@ -3,8 +3,7 @@ Syntax: .update
 \nAll Credits goes to © @Three_Cube_TeKnoways
 \nFor this awasome plugin.\nPorted from PpaperPlane Extended"""
 
-from os import remove, execle, path, makedirs, getenv, environ,execl
-from shutil import rmtree
+from os import environ, execle, path, remove
 import asyncio
 import sys
 from git import Repo
@@ -20,12 +19,14 @@ HEROKU_APP_NAME = Config.HEROKU_APP_NAME
 requirements_path = path.join(
     path.dirname(path.dirname(path.dirname(__file__))), 'requirements.txt')
 
+
 async def gen_chlog(repo, diff):
     ch_log = ''
     d_form = "%d/%m/%y"
     for c in repo.iter_commits(diff):
         ch_log += f'•[{c.committed_datetime.strftime(d_form)}]: {c.summary} by <{c.author}>\n'
     return ch_log
+
 
 async def update_requirements():
     reqs = str(requirements_path)
@@ -38,6 +39,7 @@ async def update_requirements():
         return process.returncode
     except Exception as e:
         return repr(e)
+
 
 @borg.on(admin_cmd(pattern="update ?(.*)", outgoing=True))
 async def upstream(ups):
@@ -147,14 +149,14 @@ async def upstream(ups):
             ups_rem.pull(ac_br)
         except GitCommandError:
             repo.git.reset("--hard", "FETCH_HEAD")
-        reqs_upgrade = await update_requirements()
+        await update_requirements()
         await ups.edit('`Successfully Updated!\n'
                        'Bot is restarting... Wait for a second!`')
         # Spin a new instance of bot
         args = [sys.executable, "-m", "stdborg"]
         execle(sys.executable, *args, environ)
         return
-    
+
 
 SYNTAX.update({
     'update':

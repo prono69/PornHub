@@ -95,6 +95,7 @@ for binary, path in binaries.items():
     downloader.start()
     os.chmod(path, 0o755)
 
+
 async def get_readable_time(seconds: int) -> str:
     count = 0
     up_time = ""
@@ -118,4 +119,3 @@ async def get_readable_time(seconds: int) -> str:
     time_list.reverse()
     up_time += ":".join(time_list)
     return up_time
-    

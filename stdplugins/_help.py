@@ -18,6 +18,7 @@ from uniborg.util import (
     time_formatter
 )
 
+
 @borg.on(admin_cmd(pattern="info ?(.*)", allow_sudo=True))
 async def _(event):
     if event.fwd_from:
@@ -28,12 +29,12 @@ async def _(event):
     else:
         s_help_string = ""
         _, check_sgnirts = check_data_base_heal_th()
-        current_run_time = time_formatter((time.time() - BOT_START_TIME))
+        time_formatter((time.time() - BOT_START_TIME))
     total, used, free = shutil.disk_usage("/")
     total = humanbytes(total)
     used = humanbytes(used)
     free = humanbytes(free)
-    
+
     help_string = """@UniBorg ( **Custom Built By** @NeoMatrix90 )\n**Verified**: ✅\n**SITE**: https://alamtd.wordpress.com\n
 ✅ <b>UpTime</b> <code>{}</code>
 ✅ <b>Python</b> <code>{}</code>
