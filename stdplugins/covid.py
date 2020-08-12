@@ -21,13 +21,10 @@ async def corona(event):
         output_text = f"😷Confirmed   : `{case}`\n"
         output_text += f"🤒Active      : `{country_data['active']}`\n"
         output_text += f"🤕Critical    : `{country_data['critical']}`\n"
-        output_text += f"⚰Deaths      : `{death}`\n"
+        output_text += f"⚰️Deaths      : `{death}`\n"
         output_text += f"😇Recovered   : `{country_data['recovered']}`\n"
-        output_text += f"🧪Total tests : `{country_data['total_tests']}`\n"
-        output_text += (
-            "`Last update : "
-            f"{datetime.utcfromtimestamp(country_data['last_update'] // 1000).strftime('%Y-%m-%d %H:%M:%S')}`\n"
-        )
+        output_text += f"🧪Total tests : `{country_data['total_tests']}`\n\n"
+
         output_text += "Data provided by [Johns Hopkins University](https://j.mp/2xf6oxF)"
     else:
         output_text = "No information yet about this country!"
