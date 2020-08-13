@@ -118,7 +118,7 @@ async def upstream(ups):
         repo.__del__()
         return
 
-    if conf != "now" and not force_updateme:	
+    if conf != "now" and not force_updateme:
         changelog_str = f'**New UPDATE available for [{ac_br}]:**\n\n📄 **CHANGELOG** 📄\n\n{changelog}'
         if len(changelog_str) > 4096:
             await ups.edit("`Changelog is too big, view the file to see it.`")
