@@ -34,3 +34,4 @@ async def amireallyalive(alive):
     sticker = (await borg.get_messages('LazyAF_Pepe', 25))
     await borg.send_file(alive.chat_id, file=sticker)
     await borg.send_message(alive.chat_id, output, reply_to=reply_to_id, link_preview=False)
+    await alive.delete()
