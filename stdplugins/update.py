@@ -39,7 +39,7 @@ async def gen_chlog(repo, diff):
     ch_log = ''
     d_form = "%d/%m/%y"
     for c in repo.iter_commits(diff):
-        ch_log += f'•[{c.committed_datetime.strftime(d_form)}]: {c.summary} by <{c.author}>\n'
+        ch_log += f'🔨 #**{c.count()}** `[{c.committed_datetime.strftime(d_form)}]`: `{c.summary} by` 👷 __{c.author}__\n'
     return ch_log
 
 
@@ -118,8 +118,8 @@ async def upstream(ups):
         repo.__del__()
         return
 
-    if conf != "now" and not force_updateme:
-        changelog_str = f'**New UPDATE available for [{ac_br}]:\n\nCHANGELOG:**\n`{changelog}`'
+    if conf != "now" and not force_updateme:	
+        changelog_str = f'**New UPDATE available for [{ac_br}]:**\n\n📄 **CHANGELOG** 📄\n\n{changelog}'
         if len(changelog_str) > 4096:
             await ups.edit("`Changelog is too big, view the file to see it.`")
             file = open("output.txt", "w+")
