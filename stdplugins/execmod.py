@@ -298,21 +298,20 @@ async def _(event):
 async def _(event):
     if event.fwd_from:
         return
-    DELAY_BETWEEN_EDITS = 0.3
     PROCESS_RUN_TIME = 100
 
     cmd = "git clone https://github.com/dylanaraps/neofetch.git"
-	
+
     reply_to_id = event.message.id
     if event.reply_to_msg_id:
         reply_to_id = event.reply_to_msg_id
-    start_time = time.time() + PROCESS_RUN_TIME
+    time.time() + PROCESS_RUN_TIME
     process = await asyncio.create_subprocess_shell(
         cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
     )
-	
+
     stdout, stderr = await process.communicate()
-    o = stdout.decode()
+    stdout.decode()
     OUTPUT = f"Neofetch Installed, Use `.sysd`"
     if len(OUTPUT) > Config.MAX_MESSAGE_SIZE_LIMIT:
         with io.BytesIO(str.encode(OUTPUT)) as out_file:
@@ -327,6 +326,7 @@ async def _(event):
             await event.delete()
     else:
         await event.edit(OUTPUT)
+
 
 @borg.on(events.NewMessage(pattern=r"\.telethon", outgoing=True))
 async def _(event):

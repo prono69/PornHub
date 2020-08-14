@@ -21,7 +21,7 @@ async def _(event):
     await event.edit("`Me Back! Try .on`")
     await borg.disconnect()
     os.execl(sys.executable, sys.executable, *sys.argv)
-    ###asyncio.get_event_loop().create_task(restart())
+    # asyncio.get_event_loop().create_task(restart())
     quit()
 
 
@@ -38,6 +38,6 @@ async def _(event):
     await borg.disconnect()
 
 
-#async def restart():
+# async def restart():
 #    await borg.disconnect()
 #########    os.execl(sys.executable, sys.executable, *sys.argv)

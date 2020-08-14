@@ -73,15 +73,15 @@ async def _(event):
     try:
         photo = await borg.download_media(
             reply_message,
-            Config.TMP_DOWNLOAD_DIRECTORY  
+            Config.TMP_DOWNLOAD_DIRECTORY
         )
-    except Exception as e:  
+    except Exception as e:
         await event.edit(str(e))
     else:
         if photo:
             await event.edit("`Making a profile pic/vdo for you Nibba...`")
-            if photo.endswith((".mp4",".MP4",".gif")):
-                #https://t.me/tgbetachat/324694
+            if photo.endswith((".mp4", ".MP4", ".gif")):
+                # https://t.me/tgbetachat/324694
                 size = os.stat(photo).st_size
                 if size > 2097152:
                     await event.edit("`Size must be less than 2mb")
@@ -94,17 +94,17 @@ async def _(event):
                 catvideo = None
             try:
                 await borg(functions.photos.UploadProfilePhotoRequest(
-                    file = catpic,
-                    video = catvideo,
-                    video_start_ts =  0.01               ))
+                    file=catpic,
+                    video=catvideo,
+                    video_start_ts=0.01))
             except Exception as e:  # pylint:disable=C0103,W0703
                 await event.edit(str(e))
             else:
                 await event.edit("`My profile picture was succesfully changed...KEK`")
     try:
         os.remove(photo)
-    except Exception as e:  
-        logger.warn(str(e))  
+    except Exception as e:
+        logger.warn(str(e))
 
 
 @borg.on(admin_cmd(pattern="delpfp ?(.*)"))

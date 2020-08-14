@@ -11,7 +11,8 @@ logging.basicConfig(
 
 level = logging.INFO
 print(level)
-_YEETPURGES = {0: dict(), 1: dict()} # Dont even try to kang this
+_YEETPURGES = {0: dict(), 1: dict()}  # Dont even try to kang this
+
 
 @borg.on(admin_cmd(pattern="purge ?(.*)"))
 async def _(event):
@@ -113,7 +114,7 @@ async def fastpurger(purg):
     await sleep(1)
     await done.delete()
 
-    
+
 @borg.on(events.NewMessage(pattern=r'\.(s(?:elf)?)?y(?:eet)?p(?:urge)?', outgoing=True))
 async def yeetpurge(e):
     global _YEETPURGES
@@ -129,10 +130,9 @@ async def yeetpurge(e):
         await e.edit('`Yeetpurge from destination set! Reply to end destination`')
         return
     ype = _YEETPURGES[selfonly][e.from_id].pop(e.chat_id)
-    minmax = [ype.reply_to_msg_id, e.reply_to_msg_id]
-    minmax.sort()
+    minmax = sorted([ype.reply_to_msg_id, e.reply_to_msg_id])
     messages = [e.message, ype.message]
-    kw = {'min_id': minmax[0]-1, 'max_id': minmax[1]+1}
+    kw = {'min_id': minmax[0] - 1, 'max_id': minmax[1] + 1}
     if selfonly:
         kw['from_user'] = 'me'
     async for m in e.client.iter_messages(e.chat_id, **kw):
