@@ -53,7 +53,8 @@ RUN apt-get install -y\
     policykit-1
 
 RUN pip3 install --upgrade pip setuptools 
-RUN pip3 install --upgrade pip install wheel
+RUN if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi 
+RUN if [ ! -e /usr/bin/python ]; then ln -sf /usr/bin/python3 /usr/bin/python; fi 
 RUN rm -r /root/.cache
 RUN aria2c https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && apt install -y ./google-chrome-stable_current_amd64.deb && rm -rf google-chrome-stable_current_amd64.deb
 # install chromedriver
@@ -69,5 +70,4 @@ RUN mkdir /root/userbot/bin/
 WORKDIR /root/userbot/
 RUN chmod +x /usr/local/bin/*
 RUN python3 -m pip install --no-warn-script-location --no-cache-dir --upgrade -r requirements.txt
-RUN sudo chmod o+r /usr/lib/python3/dist-packages/*
 CMD ["python3","-m","stdborg"]
