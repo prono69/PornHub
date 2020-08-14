@@ -20,7 +20,7 @@ async def amireallyalive(alive):
 
        😴 __Lazy as a Sloth__ 😴
 
-       
+
 ☞ **System** : `Linux`
 ☞ **Uptime** : `{uptime}`
 ☞ **Telethon version** : `{version.__version__}`

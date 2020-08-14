@@ -61,22 +61,22 @@ async def send_plug_in(event):
     if os.path.exists(thumb_image_path):
         thumb = thumb_image_path
     if os.path.exists(the_plugin_file):
-    	start = datetime.now()
-    	await event.client.send_file(
-    	event.chat_id,
-        the_plugin_file,
-        force_document=True,
-        allow_cache=False,
-        caption="©️ @LazyAF_Pepe",
-        reply_to=message_id,
-        thumb=thumb)
+        start = datetime.now()
+        await event.client.send_file(
+            event.chat_id,
+            the_plugin_file,
+            force_document=True,
+            allow_cache=False,
+            caption="©️ @LazyAF_Pepe",
+            reply_to=message_id,
+            thumb=thumb)
         end = datetime.now()
         time_taken_in_ms = (end - start).seconds
         await event.edit("Ok, BTC Uploaded {} in {} seconds".format(input_str, time_taken_in_ms))
         await asyncio.sleep(DELETE_TIMEOUT)
         await event.delete()
     else:
-        await event.edit("**404:** `File Not Found`")    
+        await event.edit("**404:** `File Not Found`")
 
 
 @borg.on(util.admin_cmd(pattern="install"))
