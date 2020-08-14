@@ -69,5 +69,5 @@ RUN git clone https://github.com/prono69/PepeBot /root/userbot
 RUN mkdir /root/userbot/bin/
 WORKDIR /root/userbot/
 RUN chmod +x /usr/local/bin/*
-RUN python3 -m pip install --no-warn-script-location --no-cache-dir --upgrade -r requirements.txt
+RUN pip3 install -r requirements.txt
 CMD ["python3","-m","stdborg"]
