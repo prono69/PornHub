@@ -233,8 +233,8 @@ async def demote(eventDemote):
             )
 
 
-@borg.on(admin_cmd(pattern=f"{borg.me.id}iban(?: |$)(.*)", allow_sudo=True))
-@borg.on(events.NewMessage(outgoing=True, pattern="^.iban(?: |$)(.*)"))
+@borg.on(admin_cmd(pattern=f"{borg.me.id}ban(?: |$)(.*)", allow_sudo=True))
+@borg.on(events.NewMessage(outgoing=True, pattern="^.ban(?: |$)(.*)"))
 async def ban(eventBan):
     if not eventBan.text[0].isalpha(
     ) and eventBan.text[0] not in ("/", "#", "@", "!"):
@@ -271,7 +271,7 @@ async def ban(eventBan):
         except BadRequestError:
             await eventBan.edit("`I don't have message nuking rights! But still he was banned!`")
             return
-        await eventBan.edit("`{}` was banned!".format(str(user.id)))
+        await eventBan.edit("`{}` was Banned! Now gu away!".format(str(user.id)))
         if ENABLE_LOG:
             await eventBan.client.send_message(
                 LOGGING_CHATID,
@@ -281,8 +281,8 @@ async def ban(eventBan):
             )
 
 
-@borg.on(admin_cmd(pattern=f"{borg.me.id}iunban(?: |$)(.*)", allow_sudo=True))
-@borg.on(events.NewMessage(outgoing=True, pattern="^.iunban(?: |$)(.*)"))
+@borg.on(admin_cmd(pattern=f"{borg.me.id}unban(?: |$)(.*)", allow_sudo=True))
+@borg.on(events.NewMessage(outgoing=True, pattern="^.unban(?: |$)(.*)"))
 async def unban(eventUnban):
     if not eventUnban.text[0].isalpha() and eventUnban.text[0] \
             not in ("/", "#", "@", "!"):
@@ -292,7 +292,7 @@ async def unban(eventUnban):
         if not admin and not creator:
             await eventUnban.edit("`I am not an admin!`")
             return
-        await eventUnban.edit("[cHAuHaN](http://t.me/amnd33p) `forgives everyone. Unbanning!`")
+        await eventUnban.edit("[NIKITA](http://t.me/kirito6969) `forgives everyone. Unbanning!`")
         user = await get_user_from_event(eventUnban)
         if user:
             pass
@@ -316,8 +316,8 @@ async def unban(eventUnban):
             await eventUnban.edit("`Uh oh my unban logic broke!`")
 
 
-@borg.on(admin_cmd(pattern=f"{borg.me.id}imute(?: |$)(.*)", allow_sudo=True))
-@borg.on(events.NewMessage(outgoing=True, pattern="^.imute(?: |$)(.*)"))
+@borg.on(admin_cmd(pattern=f"{borg.me.id}mute(?: |$)(.*)", allow_sudo=True))
+@borg.on(events.NewMessage(outgoing=True, pattern="^.mute(?: |$)(.*)"))
 async def mute(eventMute):
     if not eventMute.text[0].isalpha(
     ) and eventMute.text[0] not in ("/", "#", "@", "!"):
@@ -345,7 +345,7 @@ async def mute(eventMute):
         if user.id == allocRAM():
             await eventDemote.edit("Sorry! You cannot mute an [Official Telegram employee](tg://user?id={}).".format(user.id))
             return
-        await eventMute.edit("`Gets a tape!`")
+        await eventMute.edit("`Getting a duck tape!`")
         if mute(eventMute.chat_id, user.id) is False:
             return await eventMute.edit('`Error! User probably already muted.`')
         else:
@@ -369,8 +369,8 @@ async def mute(eventMute):
                 return await eventMute.edit("`Uh oh my mute logic broke!`")
 
 
-@borg.on(admin_cmd(pattern=f"{borg.me.id}iunmute(?: |$)(.*)", allow_sudo=True))
-@borg.on(events.NewMessage(outgoing=True, pattern="^.iunmute(?: |$)(.*)"))
+@borg.on(admin_cmd(pattern=f"{borg.me.id}unmute(?: |$)(.*)", allow_sudo=True))
+@borg.on(events.NewMessage(outgoing=True, pattern="^.unmute(?: |$)(.*)"))
 async def unmute(eventUnMute):
     if not eventUnMute.text[0].isalpha() and eventUnMute.text[0] \
             not in ("/", "#", "@", "!"):

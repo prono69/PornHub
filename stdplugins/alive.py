@@ -16,15 +16,17 @@ async def amireallyalive(alive):
     if alive.reply_to_msg_id:
         reply_to_id = await alive.get_reply_message()
     output = f"""
-**PEPEBOT is Up and Running Bsdk**
+**✮PEPEBOT is Up and Running BSDK✮**
 
        😴 __Lazy as a Sloth__ 😴
 
+       
 ☞ **System** : `Linux`
 ☞ **Uptime** : `{uptime}`
 ☞ **Telethon version** : `{version.__version__}`
 ☞ **Python Version** : `{python_version()}`
 ☞ **PepeBot Version** : `{pepe}`
+☞ **Database** : `Functioning Normally`
 ☞ **My Master** : [NIKITA](https://t.me/kirito6969)
 
 **Pepe is always with you, my master!**

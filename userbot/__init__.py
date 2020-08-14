@@ -10,7 +10,7 @@ from distutils.util import strtobool as sb
 from pySmartDL import SmartDL
 
 StartTime = time.time()
-pepe = "2.6.7 - Stable"
+pepe = "2.6.9 - Stable"
 
 CONSOLE_LOGGER_VERBOSE = sb(os.environ.get("CONSOLE_LOGGER_VERBOSE", "False"))
 

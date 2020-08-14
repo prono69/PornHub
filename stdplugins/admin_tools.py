@@ -1,5 +1,5 @@
 """Restrict Users\n
-Available Commands: `.ban`, `.unban`, `.mute`, `.unmute`, `.tmute`, `.tban`"""
+Available Commands: `.ban`, `.unban`, `.imute`, `.iunmute`, `.tmute`, `.tban`"""
 
 from datetime import datetime
 from telethon.tl.functions.channels import EditBannedRequest
@@ -109,7 +109,7 @@ unmuted_rights = ChatBannedRights(
 )
 
 
-@borg.on(admin_cmd(pattern="(ban|unban) ?(.*)"))
+@borg.on(admin_cmd(pattern="(iban|iunban) ?(.*)"))
 async def _(event):
     # Space weirdness in regex required because argument is optional and other
     # commands start with ".unban"
@@ -119,9 +119,9 @@ async def _(event):
     to_ban_id = None
     rights = None
     input_cmd = event.pattern_match.group(1)
-    if input_cmd == "ban":
+    if input_cmd == "iban":
         rights = banned_rights
-    elif input_cmd == "unban":
+    elif input_cmd == "iunban":
         rights = unbanned_rights
 
     input_str = event.pattern_match.group(2)
@@ -138,22 +138,22 @@ async def _(event):
     except (Exception) as exc:
         await event.edit(str(exc))
     else:
-        await event.edit(f"`{input_cmd}ed Successfully`")
+        await event.edit(f"`{input_cmd}ed Successfully this gei`")
 
 
-@borg.on(admin_cmd(pattern="mute ?(.*)"))
+@borg.on(admin_cmd(pattern="imute ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return
     datetime.now()
     to_ban_id = None
     rights = None
-    input_cmd = "mute"
-    if input_cmd == "ban":
+    input_cmd = "imute"
+    if input_cmd == "iban":
         rights = 1
-    elif input_cmd == "unban":
+    elif input_cmd == "iunban":
         rights = 2
-    elif input_cmd == "mute":
+    elif input_cmd == "imute":
         rights = muted_rights
     input_str = event.pattern_match.group(1)
     reply_msg_id = event.reply_to_msg_id
@@ -161,7 +161,7 @@ async def _(event):
         r_mesg = await event.get_reply_message()
         to_ban_id = r_mesg.from_id
     elif input_str and "all" not in input_str:
-        to_ban_id = input_str
+        to_ban_id = int(input_str)
     else:
         return False
     try:
@@ -172,19 +172,19 @@ async def _(event):
         await event.edit("**Muted**")
 
 
-@borg.on(admin_cmd(pattern="unmute ?(.*)"))
+@borg.on(admin_cmd(pattern="iunmute ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return
     datetime.now()
     to_ban_id = None
     rights = None
-    input_cmd = "unmute"
-    if input_cmd == "ban":
+    input_cmd = "iunmute"
+    if input_cmd == "iban":
         rights = 1
-    elif input_cmd == "unban":
+    elif input_cmd == "iunban":
         rights = 2
-    elif input_cmd == "unmute":
+    elif input_cmd == "iunmute":
         rights = unmuted_rights
     input_str = event.pattern_match.group(1)
     reply_msg_id = event.reply_to_msg_id
@@ -192,7 +192,7 @@ async def _(event):
         r_mesg = await event.get_reply_message()
         to_ban_id = r_mesg.from_id
     elif input_str and "all" not in input_str:
-        to_ban_id = input_str
+        to_ban_id = int(input_str)
     else:
         return False
     try:
@@ -212,9 +212,9 @@ async def _(event):
     x = 1
     to_ban_id = None
     input_cmd = "tmute"
-    if input_cmd == "ban":
+    if input_cmd == "iban":
         pass
-    elif input_cmd == "unban":
+    elif input_cmd == "iunban":
         pass
     elif input_cmd == "tmute":
         pass
@@ -253,9 +253,9 @@ async def _(event):
     x = 1
     to_ban_id = None
     input_cmd = "tban"
-    if input_cmd == "ban":
+    if input_cmd == "iban":
         pass
-    elif input_cmd == "unban":
+    elif input_cmd == "iunban":
         pass
     elif input_cmd == "tban":
         pass
