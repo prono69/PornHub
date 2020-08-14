@@ -23,6 +23,7 @@ if 1 == 1:
         id = "".join(event.raw_text.split(maxsplit=2)[1:])
         user = await event.get_reply_message()
         chat = event.input_chat
+        await event.edit(f"`Getting No.{id} profile pic of this User`")
         if user:
             photos = await event.client.get_profile_photos(user.sender)
             u = True
@@ -54,6 +55,7 @@ if 1 == 1:
             if int(id) <= (len(photos)):
                 send_photos = await event.client.download_media(photos[id - 1])
                 await event.client.send_file(event.chat_id, send_photos)
+                await event.delete()
             else:
                 await event.edit("```No photo found of this NIBBA / NIBBI. Now u Die!```")
                 await asyncio.sleep(8)

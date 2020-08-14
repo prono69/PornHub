@@ -24,7 +24,7 @@ MODULE.append("update")
 # ===============================Basic Constants=============================
 # UPSTREAM_REPO_URL is as same as below.
 # "https://github.com/prono69/PepeBot.git"
-UPSTREAM_REPO_URL = Config.UPSTREAM_REPO_URL
+UPSTREAM_REPO_URL = "https://github.com/prono69/PepeBot"
 # provide your HEROKU_API_KEY in place of this value.
 HEROKU_API_KEY = Config.HEROKU_API_KEY
 # provide your HEROKU_APP_NAME in place of this value.
@@ -39,7 +39,7 @@ async def gen_chlog(repo, diff):
     ch_log = ''
     d_form = "%d/%m/%y"
     for c in repo.iter_commits(diff):
-        ch_log += f'🔨 #**{c.count()}** `[{c.committed_datetime.strftime(d_form)}]`: `{c.summary} by` 👷 __{c.author}__\n'
+        ch_log += f"🔨 #**{c.count()} :** `{c.committed_datetime.strftime(d_form)}` : [{c.summary}]({UPSTREAM_REPO_URL.rstrip('/')}/commit/{c}) by 👷 __{c.author}__\n"
     return ch_log
 
 
@@ -119,7 +119,7 @@ async def upstream(ups):
         return
 
     if conf != "now" and not force_updateme:
-        changelog_str = f'**New UPDATE available for [{ac_br}]:**\n\n📄 **CHANGELOG** 📄\n\n{changelog}'
+        changelog_str = f'**New UPDATE available for [[{ac_br}]](https://github.com/prono69/PepeBot/tree/master) :**\n\n' + '📄 **CHANGELOG** 📄\n\n' + f'{changelog}'
         if len(changelog_str) > 4096:
             await ups.edit("`Changelog is too big, view the file to see it.`")
             file = open("output.txt", "w+")
@@ -133,7 +133,7 @@ async def upstream(ups):
             remove("output.txt")
         else:
             await ups.edit(changelog_str)
-        await ups.respond('do \"`.update now`\" to update')
+        await ups.respond('Do [`.update now`] to update')
         return
 
     if force_updateme:

@@ -3,6 +3,7 @@
 import asyncio
 from asyncio import sleep
 from uniborg.util import admin_cmd
+from telethon import events
 import logging
 logging.basicConfig(
     format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
@@ -10,7 +11,7 @@ logging.basicConfig(
 
 level = logging.INFO
 print(level)
-
+_YEETPURGES = {0: dict(), 1: dict()} # Dont even try to kang this
 
 @borg.on(admin_cmd(pattern="purge ?(.*)"))
 async def _(event):
@@ -111,3 +112,30 @@ async def fastpurger(purg):
 
     await sleep(1)
     await done.delete()
+
+    
+@borg.on(events.NewMessage(pattern=r'\.(s(?:elf)?)?y(?:eet)?p(?:urge)?', outgoing=True))
+async def yeetpurge(e):
+    global _YEETPURGES
+    selfonly = 1 if e.pattern_match.group(1) else 0
+    if not e.is_reply:
+        await e.edit('err \\\nNo reply')
+        return
+    if e.from_id not in _YEETPURGES[selfonly]:
+        _YEETPURGES[selfonly][e.from_id] = dict()
+    cond = e.chat_id not in _YEETPURGES[selfonly][e.from_id]
+    if cond:
+        _YEETPURGES[selfonly][e.from_id][e.chat_id] = e
+        await e.edit('`Yeetpurge from destination set! Reply to end destination`')
+        return
+    ype = _YEETPURGES[selfonly][e.from_id].pop(e.chat_id)
+    minmax = [ype.reply_to_msg_id, e.reply_to_msg_id]
+    minmax.sort()
+    messages = [e.message, ype.message]
+    kw = {'min_id': minmax[0]-1, 'max_id': minmax[1]+1}
+    if selfonly:
+        kw['from_user'] = 'me'
+    async for m in e.client.iter_messages(e.chat_id, **kw):
+        messages.append(m)
+    await e.client.delete_messages(e.chat_id, messages)
+    # Maa ki chut kang mat karna

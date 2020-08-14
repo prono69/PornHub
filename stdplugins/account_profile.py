@@ -66,33 +66,45 @@ async def _(event):
     if reply_message.text:
         await event.edit("Hey Pro! Are You sure it's a Photo ?")
         return
-    await event.edit("Downloading Profile Picture to my local ...")
+    await event.edit("`Downloading Profile Picture to my local...`")
     if not os.path.isdir(Config.TMP_DOWNLOAD_DIRECTORY):
         os.makedirs(Config.TMP_DOWNLOAD_DIRECTORY)
     photo = None
     try:
         photo = await borg.download_media(
             reply_message,
-            Config.TMP_DOWNLOAD_DIRECTORY
+            Config.TMP_DOWNLOAD_DIRECTORY  
         )
-    except Exception as e:  # pylint:disable=C0103,W0703
+    except Exception as e:  
         await event.edit(str(e))
     else:
         if photo:
-            await event.edit("Making Profile pic for U, Nibba.")
-            file = await borg.upload_file(photo)
+            await event.edit("`Making a profile pic/vdo for you Nibba...`")
+            if photo.endswith((".mp4",".MP4",".gif")):
+                #https://t.me/tgbetachat/324694
+                size = os.stat(photo).st_size
+                if size > 2097152:
+                    await event.edit("`Size must be less than 2mb")
+                    os.remove(photo)
+                    return
+                catpic = None
+                catvideo = await borg.upload_file(photo)
+            else:
+                catpic = await borg.upload_file(photo)  # pylint:disable=E0602
+                catvideo = None
             try:
                 await borg(functions.photos.UploadProfilePhotoRequest(
-                    file
-                ))
+                    file = catpic,
+                    video = catvideo,
+                    video_start_ts =  0.01               ))
             except Exception as e:  # pylint:disable=C0103,W0703
                 await event.edit(str(e))
             else:
-                await event.edit("`My Profile Picture was Succesfully Changed...KEK`")
+                await event.edit("`My profile picture was succesfully changed...KEK`")
     try:
         os.remove(photo)
-    except Exception as e:  # pylint:disable=C0103,W0703
-        logger.warn(str(e))
+    except Exception as e:  
+        logger.warn(str(e))  
 
 
 @borg.on(admin_cmd(pattern="delpfp ?(.*)"))
