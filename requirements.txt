@@ -1,2 +1,2 @@
-telethon==1.15.0
+git+https://github.com/LonamiWebs/Telethon
 -r ./requirements-stdborg.txt

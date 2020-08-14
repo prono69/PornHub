@@ -12,7 +12,7 @@ RUN apt-get install -y\
     g++ \
     git \
     aria2 \
-    #util-linux \
+    util-linux \
     libevent-dev \
     libjpeg-dev \
     libffi-dev \
@@ -35,7 +35,7 @@ RUN apt-get install -y\
     python3-dev \
     python3-pip \
     libreadline-dev \
-    #zipalign \
+    zipalign \
     sqlite \
     ffmpeg \
     libsqlite3-dev \
