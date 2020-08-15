@@ -51,11 +51,11 @@ RUN apt -qq install -y --no-install-recommends \
     # this package is required to fetch "contents" via "TLS"
     apt-transport-https \
     # install coreutils
-    coreutils aria2 jq pv gcc \
+    coreutils aria2 jq pv gcc g++ \
     # install encoding tools
     ffmpeg mediainfo rclone \
     # miscellaneous
-    neofetch \
+    neofetch python3-dev \
     # install extraction tools
     mkvtoolnix \
     p7zip rar unrar zip \
@@ -69,12 +69,13 @@ RUN apt -qq install -y --no-install-recommends \
 # copies 'requirements', to inside the container
 # ..., there are multiple '' dependancies,
 # requiring the use of the entire repo, hence
+RUN pip3 install --upgrade pip setuptools
 # adds files from your Docker client’s current directory.
 RUN git clone https://github.com/prono69/PepeBot /root/userbot
 RUN mkdir /root/userbot/bin/
 WORKDIR /root/userbot/
 RUN chmod +x /usr/local/bin/*
 # install requirements, inside the container
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip3 install -r requirements.txt
 # specifies what command to run within the container.
 CMD ["python3", "-m", "stdborg"]
