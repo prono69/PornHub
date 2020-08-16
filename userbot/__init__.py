@@ -10,6 +10,7 @@ from logging import basicConfig, getLogger, INFO, DEBUG
 from distutils.util import strtobool as sb
 from pySmartDL import SmartDL
 from userbot.functions import *
+from sample_config import Config
 
 StartTime = time.time()
 pepe = "2.7.0 - Stable"
