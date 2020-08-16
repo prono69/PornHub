@@ -177,7 +177,9 @@ class Config(object):
     YOUTUBE_API_KEY = os.environ.get("YOUTUBE_API_KEY", None)
     # For Lol
     API_TOKEN = os.environ.get("API_TOKEN", None)
-    THUMB_IMG = os.environ.get("THUMB_IMG", "https://telegra.ph/file/c9377de879b53bc72b4ed.jpg")
+    THUMB_IMG = os.environ.get(
+        "THUMB_IMG",
+        "https://telegra.ph/file/c9377de879b53bc72b4ed.jpg")
     # BOTLOG
     BOTLOG = os.environ.get("BOTLOG", None)
     if BOTLOG:

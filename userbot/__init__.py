@@ -28,6 +28,7 @@ LOGS = getLogger(__name__)
 
 PEPE_ID = ["790841356", "986755683", "880678601"]
 
+
 class AioHttp:
     @staticmethod
     async def get_json(link):
@@ -124,9 +125,8 @@ async def get_readable_time(seconds: int) -> str:
     return up_time
 
 if not os.path.isdir(Config.TMP_DOWNLOAD_DIRECTORY):
-     os.makedirs(Config.TMP_DOWNLOAD_DIRECTORY)
+    os.makedirs(Config.TMP_DOWNLOAD_DIRECTORY)
 thumb_image_path = Config.TMP_DOWNLOAD_DIRECTORY + "thumb_image.jpg"
-#thumb image
+# thumb image
 with open(thumb_image_path, "wb") as f:
     f.write(requests.get(Config.THUMB_IMG).content)
-    

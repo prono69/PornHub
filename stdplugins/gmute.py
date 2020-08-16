@@ -34,7 +34,7 @@ async def gmute_user(event):
     elif:
         user_id = input_str
     else:
-      user_id = int(input_str)
+        user_id = int(input_str)
 
     await event.edit("`Getting a duct tape..`")
     try:

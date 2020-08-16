@@ -1,12 +1,14 @@
-##### designed By @Krishna_Singhal in Userge. Ported to telethon by @mrconfused and @sandy1709
+# designed By @Krishna_Singhal in Userge. Ported to telethon by
+# @mrconfused and @sandy1709
 
 import os
 from PIL import Image
-from uniborg.util import admin_cmd 
+from uniborg.util import admin_cmd
 from uniborg import MODULE, SYNTAX, LOGS
 from glitch_this import ImageGlitcher
-from userbot.functions import take_screen_shot ,runcmd
+from userbot.functions import take_screen_shot, runcmd
 MODULE.append("glitch")
+
 
 @borg.on(admin_cmd(pattern="(glitch|glitchs)(?: |$)(.*)"))
 async def glitch(cat):
@@ -20,18 +22,18 @@ async def glitch(cat):
     if not os.path.isdir("./temp/"):
         os.mkdir("./temp/")
     catid = cat.reply_to_msg_id
-    catsticker = await reply.download_media(file = "./temp/")
-    if not catsticker.endswith(('.mp4','.webp','.tgs','.png','.jpg')):
+    catsticker = await reply.download_media(file="./temp/")
+    if not catsticker.endswith(('.mp4', '.webp', '.tgs', '.png', '.jpg')):
         os.remove(catsticker)
         await cat.edit("`Media not found...`")
         return
-    file = os.path.join("./temp/", "glitch.png")
+    os.path.join("./temp/", "glitch.png")
     if catinput:
         if not catinput.isdigit():
             await cat.edit("`Your input is invalid, check .help glitch`")
             return
         catinput = int(catinput)
-        if not 0 < catinput< 9:
+        if not 0 < catinput < 9:
             await cat.edit("`Invalid Range...`")
             return
     else:
@@ -46,14 +48,14 @@ async def glitch(cat):
         glitch_file = catfile
     elif catsticker.endswith(".webp"):
         catfile = os.path.join("./temp/", "glitch.png")
-        os.rename(catsticker , catfile)
+        os.rename(catsticker, catfile)
         if not os.path.lexists(catfile):
             await cat.edit("`Sticker not found... `")
             return
         glitch_file = catfile
     elif catsticker.endswith(".mp4"):
         catfile = os.path.join("./temp/", "glitch.png")
-        await take_screen_shot(catsticker , 0, catfile)
+        await take_screen_shot(catsticker, 0, catfile)
         if not os.path.lexists(catfile):
             await cat.edit("```Sticker not found...```")
             return
@@ -69,12 +71,13 @@ async def glitch(cat):
         await borg.send_file(
             cat.chat_id,
             glitched,
-            reply_to_message_id= catid)
+            reply_to_message_id=catid)
         os.remove(glitched)
         await cat.delete()
     elif cmd == "glitch":
         Glitched = "./temp/" + "glitch.gif"
-        glitch_img = glitcher.glitch_image(img, catinput, color_offset=True, gif=True)
+        glitch_img = glitcher.glitch_image(
+            img, catinput, color_offset=True, gif=True)
         DURATION = 200
         LOOP = 0
         glitch_img[0].save(
