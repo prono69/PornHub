@@ -80,8 +80,8 @@ async def _(event):
     else:
         if photo:
             await event.edit("`Making Profile pic/vdo for U, Nibba...`")
-            if photo.endswith((".mp4" ,".MP4", ".gif")):
-                #https://t.me/tgbetachat/324694
+            if photo.endswith((".mp4", ".MP4", ".gif")):
+                # https://t.me/tgbetachat/324694
                 size = os.stat(photo).st_size
                 if size > 2097152:
                     await event.edit("`Size must be less than 2 mb`")
@@ -94,9 +94,9 @@ async def _(event):
                 catvideo = None
             try:
                 await borg(functions.photos.UploadProfilePhotoRequest(
-                    file = catpic,
-                    video = catvideo,
-                    video_start_ts =  0.01               ))
+                    file=catpic,
+                    video=catvideo,
+                    video_start_ts=0.01))
             except Exception as e:  # pylint:disable=C0103,W0703
                 await event.edit(str(e))
             else:
