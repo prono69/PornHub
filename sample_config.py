@@ -144,7 +144,7 @@ class Config(object):
     HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME", None)
     UPSTREAM_REPO_URL = os.environ.get(
         "UPSTREAM_REPO_URL",
-        "https://github.com/prono69/PepeBot.git")
+        "https://github.com/prono69/PepeBot")
     #
     CHROME_DRIVER = os.environ.get("CHROME_DRIVER", None)
     CHROME_BIN = os.environ.get("CHROME_BIN", None)
@@ -177,6 +177,7 @@ class Config(object):
     YOUTUBE_API_KEY = os.environ.get("YOUTUBE_API_KEY", None)
     # For Lol
     API_TOKEN = os.environ.get("API_TOKEN", None)
+    THUMB_IMG = os.environ.get("THUMB_IMG", "https://telegra.ph/file/c9377de879b53bc72b4ed.jpg")
     # BOTLOG
     BOTLOG = os.environ.get("BOTLOG", None)
     if BOTLOG:

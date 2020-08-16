@@ -5,12 +5,14 @@ import re
 import json
 import time
 import aiohttp
+import requests
 from logging import basicConfig, getLogger, INFO, DEBUG
 from distutils.util import strtobool as sb
 from pySmartDL import SmartDL
+from userbot.functions import *
 
 StartTime = time.time()
-pepe = "2.6.9 - Stable"
+pepe = "2.7.0 - Stable"
 
 CONSOLE_LOGGER_VERBOSE = sb(os.environ.get("CONSOLE_LOGGER_VERBOSE", "False"))
 
@@ -24,6 +26,7 @@ else:
                 level=INFO)
 LOGS = getLogger(__name__)
 
+PEPE_ID = ["790841356", "986755683", "880678601"]
 
 class AioHttp:
     @staticmethod
@@ -119,3 +122,11 @@ async def get_readable_time(seconds: int) -> str:
     time_list.reverse()
     up_time += ":".join(time_list)
     return up_time
+
+if not os.path.isdir(Config.TMP_DOWNLOAD_DIRECTORY):
+     os.makedirs(Config.TMP_DOWNLOAD_DIRECTORY)
+thumb_image_path = Config.TMP_DOWNLOAD_DIRECTORY + "thumb_image.jpg"
+#thumb image
+with open(thumb_image_path, "wb") as f:
+    f.write(requests.get(Config.THUMB_IMG).content)
+    

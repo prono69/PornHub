@@ -1,8 +1,5 @@
 # Copyright (C) 2020 Adek Maulana.
-#
-# Licensed under the Raphielscape Public License, Version 1.d (the "License");
-# you may not use this file except in compliance with the License.
-#
+
 """Mega Plugin For PepeBot
 \n`.mega` <Reply to any mega.nz link or put link>
 Ported for PepeBot
@@ -11,7 +8,6 @@ Ported for PepeBot
 
 from asyncio import create_subprocess_shell as asyncSubprocess
 from asyncio.subprocess import PIPE as asyncPIPE
-
 import asyncio
 import re
 import json
@@ -20,15 +16,13 @@ import multiprocessing
 import errno
 import math
 import time
-
 from pySmartDL import SmartDL
 from urllib.error import HTTPError
-from uniborg import MODULE, SYNTAX
+from uniborg import MODULE, SYNTAX, LOGS
 from uniborg.util import humanbytes, time_formatter, admin_cmd
 
 TEMP_DOWNLOAD_DIRECTORY = Config.TMP_DOWNLOAD_DIRECTORY
 MODULE.append("mega_down")
-LOGS = logger
 
 
 async def subprocess_run(megadl, cmd):
@@ -64,7 +58,7 @@ async def mega_downloader(megadl):
         if "file" in link:
             link = link.replace("#", "!").replace("file/", "#!")
         elif "folder" in link or "#F" in link or "#N" in link:
-            await megadl.edit("`folder download support are removed...`")
+            await megadl.edit("`Folder download support are Removed...`")
             return
     except IndexError:
         return await megadl.edit("`MEGA.nz link not found...`")
@@ -106,22 +100,21 @@ async def mega_downloader(megadl):
         estimated_total_time = round(downloader.get_eta())
         progress_str = "`{0}` | [{1}{2}] `{3}%`".format(
             status,
-            ''.join(["■" for i in range(
+            ''.join(["▰" for i in range(
                     math.floor(percentage / 10))]),
-            ''.join(["▨" for i in range(
+            ''.join(["▱" for i in range(
                     10 - math.floor(percentage / 10))]),
             round(percentage, 2))
         diff = time.time() - start
         try:
             current_message = (
-                f"`{file_name}`\n\n"
-                "Status\n"
+                f"**➥file name : **`{file_name}`\n\n"
+                "**➥Status**\n"
                 f"{progress_str}\n"
-                f"`{humanbytes(downloaded)} of {humanbytes(total_length)}"
-                f" @ {speed}`\n"
-                f"`ETA` -> {time_formatter(estimated_total_time)}\n"
-                f"`Duration` -> {time_formatter(round(diff))}"
-            )
+                f"`{humanbytes(downloaded)}` of `{humanbytes(total_length)}`"
+                f" @ `{speed}`\n"
+                f"**➥ETA -> **`{time_formatter(estimated_total_time)}`\n"
+                f"**➥ Duration -> **`{time_formatter(round(diff))}`")
             if round(
                     diff %
                     10.00) == 0 and (
