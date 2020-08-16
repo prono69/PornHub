@@ -2,6 +2,7 @@ aiofiles
 aiohttp
 aria2p
 beautifulsoup4
+cairosvg
 cfscrape
 coffeehouse
 covid
