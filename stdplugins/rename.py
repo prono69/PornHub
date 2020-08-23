@@ -124,11 +124,14 @@ async def _(event):
         end = datetime.now()
         ms_one = (end - start).seconds
         if os.path.exists(downloaded_file_name):
+            force_document = True
+            if input_str.upper().endswith(Config.TL_FF_NOAQ_TYPES):
+                force_document = False
             c_time = time.time()
             await borg.send_file(
                 event.chat_id,
                 downloaded_file_name,
-                force_document=True,
+                force_document=force_document,
                 supports_streaming=False,
                 allow_cache=False,
                 reply_to=event.message.id,

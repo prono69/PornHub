@@ -4,9 +4,8 @@
 import os
 from PIL import Image
 from uniborg.util import admin_cmd
-from uniborg import MODULE, SYNTAX, LOGS
+from uniborg import MODULE, SYNTAX, LOGS, take_screen_shot, runcmd
 from glitch_this import ImageGlitcher
-from userbot.functions import take_screen_shot, runcmd
 MODULE.append("glitch")
 
 
@@ -23,9 +22,9 @@ async def glitch(cat):
         os.mkdir("./temp/")
     catid = cat.reply_to_msg_id
     catsticker = await reply.download_media(file="./temp/")
-    if not catsticker.endswith(('.mp4', '.webp', '.tgs', '.png', '.jpg')):
+    if not catsticker.endswith(('.mp4', '.webp', '.tgs', '.png', '.jpg', '.jpeg')):
         os.remove(catsticker)
-        await cat.edit("`Media not found...`")
+        await cat.edit("`Media not found`")
         return
     os.path.join("./temp/", "glitch.png")
     if catinput:

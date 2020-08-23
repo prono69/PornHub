@@ -150,12 +150,15 @@ async def _(event):
     if os.path.exists(thumb_image_path):
         thumb = thumb_image_path
     if os.path.exists(input_str):
+        force_document = True
+        if input_str.upper().endswith(Config.TL_FF_NOAQ_TYPES):
+            force_document = False
         start = datetime.now()
         c_time = time.time()
         await borg.send_file(
             event.chat_id,
             input_str,
-            force_document=False,
+            force_document=force_document,
             supports_streaming=True,
             allow_cache=False,
             reply_to=event.message.id,

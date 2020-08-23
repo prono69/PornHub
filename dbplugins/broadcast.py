@@ -170,7 +170,7 @@ async def add_ch(event):
     if event.fwd_from:
         return
     if event.reply_to_msg_id:
-        await event.edit("Adding...")
+        await event.edit("`Adding...`")
         previous_message = await event.get_reply_message()
         raw_text = previous_message.text
         lines = raw_text.split("\n")
@@ -259,6 +259,9 @@ async def search(event):
     except ValueError:
         await event.edit("`Invalid id.`")
         return
+    except:
+        await event.edit("`Something went wrong.`")
+        return  
     name = channel.title
     username = channel.username
     if username:

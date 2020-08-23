@@ -1,10 +1,10 @@
 """Enable Seen Counter in any message,
 to know how many users have seen your message
-Syntax: .hmm as reply to any message"""
+Syntax: .see as reply to any message"""
 from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd(pattern="hmm"))
+@borg.on(admin_cmd(pattern="see"))
 async def _(event):
     if event.fwd_from:
         return
@@ -27,5 +27,4 @@ async def _(event):
             event.chat_id,
             fwd_message
         )
-        await fwd_message.delete()
         await event.delete()
