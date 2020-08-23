@@ -3,12 +3,10 @@
 import asyncio
 from uniborg.util import admin_cmd
 from telethon.tl.types import (
-    ChatAdminRights,
     ChatBannedRights,
     MessageEntityMentionName)
 from telethon.errors import (
-    BadRequestError,
-    UserAdminInvalidError)
+    BadRequestError)
 from telethon.tl.functions.channels import EditBannedRequest
 from userbot import PEPE_ID
 from userbot.functions import admin_groups

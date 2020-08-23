@@ -10,14 +10,7 @@
 import asyncio
 from uniborg.util import admin_cmd
 from telethon.tl.types import (
-    DocumentAttributeFilename,
-    DocumentAttributeSticker,
-    InputMediaUploadedDocument,
-    InputMediaUploadedPhoto,
-    InputPeerNotifySettings,
-    InputStickerSetID,
-    InputStickerSetShortName,
-    MessageMediaPhoto
+    InputMediaUploadedPhoto
 )
 from sql_helpers.ghdb_sql import in_channels, add_channel, rm_channel, get_all_channels
 from uniborg import MODULE
@@ -259,9 +252,9 @@ async def search(event):
     except ValueError:
         await event.edit("`Invalid id.`")
         return
-    except:
+    except BaseException:
         await event.edit("`Something went wrong.`")
-        return  
+        return
     name = channel.title
     username = channel.username
     if username:

@@ -22,7 +22,8 @@ async def glitch(cat):
         os.mkdir("./temp/")
     catid = cat.reply_to_msg_id
     catsticker = await reply.download_media(file="./temp/")
-    if not catsticker.endswith(('.mp4', '.webp', '.tgs', '.png', '.jpg', '.jpeg')):
+    if not catsticker.endswith(
+            ('.mp4', '.webp', '.tgs', '.png', '.jpg', '.jpeg')):
         os.remove(catsticker)
         await cat.edit("`Media not found`")
         return

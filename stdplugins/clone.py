@@ -10,13 +10,6 @@ from telethon.tl.functions.users import GetFullUserRequest
 from telethon.tl.types import MessageEntityMentionName
 from telethon.tl import functions
 from uniborg.util import admin_cmd
-from telethon.errors.rpcerrorlist import (PhotoExtInvalidError,
-                                          UsernameOccupiedError)
-from telethon.tl.functions.account import (UpdateProfileRequest,
-                                           UpdateUsernameRequest)
-from telethon.tl.functions.photos import (DeletePhotosRequest,
-                                          GetUserPhotosRequest,
-                                          UploadProfilePhotoRequest)
 
 DEFAULTUSER = "꧁🐉 пιĸιтa 🐉"
 LAST = " #F_Society #CatGang #LazyAF_Geng"
