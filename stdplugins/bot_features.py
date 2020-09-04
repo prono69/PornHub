@@ -1,5 +1,5 @@
 """Cmds:
-`.sg`\n`.fakemail`\n`.mailid`\n`.ub`\n`.gid`\n`.urban`\n`.voicy`\n`.mashup`"""
+`.sg`\n`.fakemail`\n`.mailid`\n`.ub`\n`.gid`\n`.urban`\n`.voicy`\n`.mashup`\n`.ascii`"""
 import asyncio
 from telethon import events
 from telethon.errors.rpcerrorlist import YouBlockedUserError
@@ -249,6 +249,42 @@ async def _(event):
             await borg.send_file(event.chat_id, response.message, reply_to=event.reply_to_msg_id)
 
 
+@borg.on(admin_cmd(pattern="ascii"))
+async def _(event):
+	if event.fwd_from:
+		return
+	if not event.reply_to_msg_id:
+		await event.edit("`Reply to any user message` **Bruh**")
+		return
+	reply_message = await event.get_reply_message() 
+	if not reply_message.media:
+		await event.edit("`Reply to an image` **Bruh**")
+		return
+	start = datetime.now()
+	chat = "@asciiart_bot"
+	sender = reply_message.sender
+	if reply_message.sender.bot:
+		await event.edit(
+		"Reply to actual users message."
+		)
+		return
+	downloaded_file_name = await borg.download_media(reply_message, Var.TEMP_DOWNLOAD_DIRECTORY)
+	end = datetime.now()
+	ms = (end - start).seconds
+	await event.edit("Downloaded to `{}` in **{}** seconds.".format(downloaded_file_name, ms))
+	async with borg.conversation(chat) as conv:
+		try:
+			await conv.send_message("/start")
+			response = await conv.get_response()
+			await conv.send_file(downloaded_file_name)
+			ascii = await conv.get_response()
+			await borg.send_file(event.chat_id, ascii, caption="💠**Here's the requested ascii image!**💠")
+			await event.delete()
+		except YouBlockedUserError:
+			await event.edit("**Error:** `unblock` @asciiart_bot `and retry!`")
+			await event.delete()
+			
+			
 SYNTAX.update({"mashup": "`.mashup` <text> :\
       \n**USAGE:** Send you the related video message of given text . "
                })
