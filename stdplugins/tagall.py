@@ -2,6 +2,7 @@
 You can use it in reply to a message or directly in a new message."""
 from uniborg.util import admin_cmd
 
+
 @borg.on(admin_cmd(pattern="tagall ?(.*)"))
 async def _(event):
     if event.fwd_from:

@@ -93,13 +93,13 @@ async def glitch(cat):
             Glitched,
             reply_to=catid)
         await borg(functions.messages.SaveGifRequest(
-        id=types.InputDocument(
-            id=pepe.media.document.id,
-            access_hash=pepe.media.document.access_hash,
-            file_reference=pepe.media.document.file_reference
-        ),
-        unsave=True
-    )) 
+            id=types.InputDocument(
+                id=pepe.media.document.id,
+                access_hash=pepe.media.document.access_hash,
+                file_reference=pepe.media.document.file_reference
+            ),
+            unsave=True
+        ))
         os.remove(Glitched)
         await cat.delete()
     for files in (catsticker, glitch_file):

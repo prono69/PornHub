@@ -6,20 +6,22 @@ from telethon.tl.types import (
 )
 from uniborg.util import admin_cmd
 
+
 @borg.on(admin_cmd(pattern="res ?(.*)"))
 async def _(event):
     if event.fwd_from:
-        return 
+        return
     if not event.reply_to_msg_id:
-       await event.edit("```Reply to a Link.```")
-       return
-    reply_message = await event.get_reply_message() 
+        await event.edit("```Reply to a Link.```")
+        return
+    reply_message = await event.get_reply_message()
     if not reply_message.entities:
-       await event.edit("```Reply to a Link```")
-       return
+        await event.edit("```Reply to a Link```")
+        return
     # chat = "@CheckRestrictionsBot"
     reply_entity = reply_message.entities[0]
-    reply_res = reply_message.text[reply_entity.offset:reply_entity.offset+reply_entity.length]
+    reply_res = reply_message.text[reply_entity.offset:
+                                   reply_entity.offset + reply_entity.length]
     rr = await event.client.get_entity(reply_res)
     await event.edit(get_restriction_string(rr))
 
@@ -38,7 +40,8 @@ def get_restriction_string(a) -> str:
     else:
         c = "__UN-KNOWN__"
     if a.restriction_reason is None or len(a.restriction_reason) == 0:
-        b = "{}: Good News! No Limitations are currently applied to this @CheckRestrictionsBot".format(c)
+        b = "{}: Good News! No Limitations are currently applied to this @CheckRestrictionsBot".format(
+            c)
         # plox: do not remove -_- this credit. thx.!
     else:
         tmp_string = f"{c} has the following restriction_reason(s): \n"

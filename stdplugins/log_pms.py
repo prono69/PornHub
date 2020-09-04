@@ -2,23 +2,17 @@
 Check https://t.me/tgbeta/3505"""
 from asyncio import sleep
 from uniborg import SYNTAX
-from telethon.tl.types import MessageEntityMentionName
-from telethon.utils import get_input_location
 from uniborg.util import admin_cmd
-from os import remove
 from telethon import events
 import asyncio
-from datetime import datetime
-import time
 import asyncio
 import logging
 import os
 import sys
-from telethon.tl import functions, types
-from telethon.tl.types import Channel, Chat, User
 
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    level=logging.WARN)
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.WARN)
 
 NO_PM_LOG_USERS = []
 
@@ -44,7 +38,7 @@ async def log(log_text):
     else:
         await log_text.edit("`This feature requires Logging to be enabled!`")
     await sleep(2)
-    await log_text.delete()    
+    await log_text.delete()
 
 
 @borg.on(events.NewMessage(incoming=True, func=lambda e: e.is_private))
@@ -55,47 +49,48 @@ async def monito_p_m_s(event):
         if chat.id not in NO_PM_LOG_USERS and chat.id != borg.uid:
             try:
                 if Config.PM_LOGGR_BOT_API_ID:
-                  if event.message:
-                    e = await borg.get_entity(int(Config.PM_LOGGR_BOT_API_ID))
-                    fwd_message = await borg.forward_messages(
-                                     e,
-                                     event.message,
-                                     silent=True
-                                     )
-                  else:
-                    return
+                    if event.message:
+                        e = await borg.get_entity(int(Config.PM_LOGGR_BOT_API_ID))
+                        fwd_message = await borg.forward_messages(
+                            e,
+                            event.message,
+                            silent=True
+                        )
+                    else:
+                        return
                 else:
-                  return
+                    return
             except Exception as e:
                 # logger.warn(str(e))
                 exc_type, exc_obj, exc_tb = sys.exc_info()
                 fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
                 print(exc_type, fname, exc_tb.tb_lineno)
-                print(e) 
+                print(e)
+
 
 @borg.on(admin_cmd(pattern="log(?: |$)(.*)"))
 async def set_no_log_p_m(event):
     if Config.PM_LOGGR_BOT_API_ID is not None:
-        reason = event.pattern_match.group(1)
+        event.pattern_match.group(1)
         chat = await event.get_chat()
         if event.is_private:
             if chat.id in NO_PM_LOG_USERS:
                 NO_PM_LOG_USERS.remove(chat.id)
                 await event.edit("`Will Log Messages from this Chat`")
                 await asyncio.sleep(2)
-                
+
 
 @borg.on(admin_cmd(pattern="nolog(?: |$)(.*)"))
 async def set_no_log_p_m(event):
     if Config.PM_LOGGR_BOT_API_ID is not None:
-        reason = event.pattern_match.group(1)
+        event.pattern_match.group(1)
         chat = await event.get_chat()
         if event.is_private:
             if chat.id not in NO_PM_LOG_USERS:
                 NO_PM_LOG_USERS.append(chat.id)
                 await event.edit("`Won't Log Messages from this chat`")
                 await asyncio.sleep(3)
-                
+
 SYNTAX.update({"log_pms": "`.save` :\
       \nUSAGE: saves taged message in private group .\
       \n\n `.kickme`:\
@@ -104,4 +99,4 @@ SYNTAX.update({"log_pms": "`.save` :\
       \nUSAGE:By default will log all private chat messages if you use .nolog and want to log again then you need to use this\
       \n\n`.nolog`:\
       \nUSAGE:to stops logging from a private chat "
-})                 
+               })
