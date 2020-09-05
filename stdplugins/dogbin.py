@@ -4,7 +4,6 @@ Syntax: .paste
 from datetime import datetime
 import os
 import requests
-from requests import get, exceptions
 from uniborg.util import admin_cmd
 import logging
 from userbot import AioHttp
@@ -79,7 +78,7 @@ async def get_dogbin_content(dog_url):
     if textx:
         link = str(textx.message)
 
-    format_normal = f'{DOGBIN_URL}'
+    f'{DOGBIN_URL}'
     format_view = f'{DOGBIN_URL}v/'
 
     if link.startswith(format_view):
@@ -107,8 +106,8 @@ async def get_dogbin_content(dog_url):
             await event.client.send_file(event.chat_id, out_file)
             await event.delete()
     else:
-       await event.edit(
-        f"**URL content** :\n\n`{resp}`")
+        await event.edit(
+            f"**URL content** :\n\n`{resp}`")
     if BOTLOG:
         await dog_url.client.send_message(
             BOTLOG,
