@@ -32,11 +32,11 @@ async def set_not_afk(event):
         total_afk_time = str((afk_end - afk_start))
     current_message = event.message.message
     if ".afk" not in current_message and "yes" in USER_AFK:
-        shite = await borg.send_message(event.chat_id, "__Back alive!__\n**No Longer afk.**\n `Was afk for:``" + total_afk_time + "`")
+        shite = await borg.send_message(event.chat_id, "__Back alive!__\n**No Longer afk.**\n `Was afk for ``" + total_afk_time + "`")
         try:
             await borg.send_message(
                 Config.PRIVATE_GROUP_BOT_API_ID,
-                "#AFKFALSE \nSet AFK mode to False\n" + "__Back alive!__\n**No Longer afk.**\n `Was afk for:``" + total_afk_time + "`"
+                "#AFKFALSE \nSet AFK mode to False\n" + "__Back alive!__\n**No Longer afk.**\n `Was afk for ``" + total_afk_time + "`"
             )
         except Exception as e:
             await borg.send_message(
@@ -47,7 +47,7 @@ async def set_not_afk(event):
                 reply_to=event.message.id,
                 silent=True
             )
-        await asyncio.sleep(5)
+        await asyncio.sleep(3)
         await shite.delete()
         USER_AFK = {}
         afk_time = None
@@ -146,12 +146,12 @@ async def _(event):
             await borg.send_message(event.chat_id, f"**I shall be Going afk!** __because ~ {reason}__")
         else:
             await borg.send_message(event.chat_id, f"**I am Going afk!**")
-        await asyncio.sleep(5)
+        await asyncio.sleep(2)
         await event.delete()
         try:
             await borg.send_message(
                 Config.PRIVATE_GROUP_BOT_API_ID,
-                f"#AFKTRUE \nSet AFK mode to True, and Reason is {reason}"
+                f"#AFKTRUE \nYou Went AFK, and Reason is {reason}"
             )
         except Exception as e:
             logger.warn(str(e))

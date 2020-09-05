@@ -111,7 +111,7 @@
       "description": "Define the number of consecutive messages a new user can send to your P.M. This should be a valid Integer.",
       "required": false
     },
-    "NC_LOG_P_M_S": {
+    "NO_LOG_P_M_S": {
       "description": "set to True if you want to log PMs to your PM_LOGGR_BOT_API_ID",
       "required": false
     },
