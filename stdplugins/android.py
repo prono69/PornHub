@@ -238,7 +238,7 @@ async def ofox_(message):
     await borg.send_file(
         message.chat_id,
         file=photo,
-        caption=msg
+        caption=msg,
         parse_mode='HTML'
     )
 
