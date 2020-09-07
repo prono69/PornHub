@@ -65,7 +65,8 @@ async def _(event):
             json={
                 "content": data}).json().get('result').get('key')
         url = f'https://nekobin.com/{key}{py_file}'
-        reply_text = f'Nekofied to **Nekobin** : {url}'
+        raw = f'https://nekobin.com/raw/{key}{py_file}'
+        reply_text = f'**Nekofied:**\n - **Link**: [URL]({url})\n - **Raw**: [URL]({raw})'
         await event.edit(reply_text)
     else:
         data = message
@@ -74,5 +75,6 @@ async def _(event):
             json={
                 "content": data}).json().get('result').get('key')
         url = f'https://nekobin.com/{key}'
-        reply_text = f'Nekofied to **Nekobin** : {url}'
+        raw = f'https://nekobin.com/raw/{key}'
+        reply_text = f'**Nekofied:**\n - **Link**: [URL]({url})\n - **Raw**: [URL]({raw})'
         await event.edit(reply_text)

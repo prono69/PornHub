@@ -78,6 +78,7 @@ async def set_no_log_p_m(event):
                 NO_PM_LOG_USERS.remove(chat.id)
                 await event.edit("`Will Log Messages from this Chat`")
                 await asyncio.sleep(2)
+                await event.delete()
 
 
 @borg.on(admin_cmd(pattern="nolog(?: |$)(.*)"))
@@ -89,7 +90,8 @@ async def set_no_log_p_m(event):
             if chat.id not in NO_PM_LOG_USERS:
                 NO_PM_LOG_USERS.append(chat.id)
                 await event.edit("`Won't Log Messages from this chat`")
-                await asyncio.sleep(3)
+                await asyncio.sleep(2)
+                await event.delete()
 
 SYNTAX.update({"log_pms": "`.save` :\
       \nUSAGE: saves taged message in private group .\

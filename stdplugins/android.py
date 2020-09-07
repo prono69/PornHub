@@ -6,10 +6,13 @@
 """ Userbot module containing commands related to android"""
 
 import re
+import asyncio
+import json
 from requests import get
 from bs4 import BeautifulSoup
 from uniborg import MODULE, SYNTAX
-from uniborg.util import admin_cmd
+from uniborg.util import admin_cmd, edit_or_reply
+from html_telegraph_poster import TelegraphPoster
 MODULE.append("android")
 
 GITHUB = 'https://github.com'
@@ -25,15 +28,13 @@ async def magisk(request):
         "https://raw.githubusercontent.com/topjohnwu/magisk_files/master/stable.json",
         "Beta":
         "https://raw.githubusercontent.com/topjohnwu/magisk_files/master/beta.json",
-        "Canary (Release)":
-        "https://raw.githubusercontent.com/topjohnwu/magisk_files/canary/release.json",
-        "Canary (Debug)":
+        "Canary":
         "https://raw.githubusercontent.com/topjohnwu/magisk_files/canary/debug.json"
     }
-    releases = 'Latest Magisk Releases:\n'
+    releases = '__**Latest Magisk Releases:**__\n\n'
     for name, release_url in magisk_dict.items():
         data = get(release_url).json()
-        releases += f'{name}: [ZIP v{data["magisk"]["version"]}]({data["magisk"]["link"]}) | ' \
+        releases += f'**{name} :** [ZIP v{data["magisk"]["version"]}]({data["magisk"]["link"]}) | ' \
                     f'[APK v{data["app"]["version"]}]({data["app"]["link"]}) | ' \
                     f'[Uninstaller]({data["uninstaller"]["link"]})\n'
     await request.edit(releases)
@@ -43,31 +44,27 @@ async def magisk(request):
 async def device_info(request):
     """ get android device basic info from its codename """
     textx = await request.get_reply_message()
-    device = request.pattern_match.group(1)
-    if device:
+    codename = request.pattern_match.group(1)
+    if codename:
         pass
     elif textx:
-        device = textx.text
+        codename = textx.text
     else:
-        await request.edit("`Usage: .device <codename> / <model>`")
+        await edit_or_reply(request, "`Usage: .device <codename> / <model>`")
         return
-    found = [
-        i for i in get(DEVICES_DATA).json()
-        if i["device"] == device or i["model"] == device
-    ]
-    if found:
-        reply = f'Search results for {device}:\n\n'
-        for item in found:
-            brand = item['brand']
-            name = item['name']
-            codename = item['device']
-            model = item['model']
-            reply += f'{brand} {name}\n' \
-                f'**Codename**: `{codename}`\n' \
-                f'**Model**: {model}\n\n'
+    data = json.loads(
+        get("https://raw.githubusercontent.com/androidtrackers/"
+            "certified-android-devices/master/by_device.json").text)
+    results = data.get(codename)
+    if results:
+        reply = f"**Search results for {codename}**:\n\n"
+        for item in results:
+            reply += f"**Brand**: `{item['brand']}`\n" \
+                     f"**Name**: `{item['name']}`\n" \
+                     f"**Model**: `{item['model']}`\n\n"
     else:
-        reply = f"`Couldn't find info about {device}!`\n"
-    await request.edit(reply)
+        reply = f"`Couldn't find info about {codename}!`\n"
+    await edit_or_reply(request, reply)
 
 
 @borg.on(admin_cmd(pattern=r"codename(?: |)([\S]*)(?: |)([\s\S]*)"))
@@ -76,33 +73,37 @@ async def codename_info(request):
     textx = await request.get_reply_message()
     brand = request.pattern_match.group(1).lower()
     device = request.pattern_match.group(2).lower()
+
     if brand and device:
         pass
     elif textx:
         brand = textx.text.split(' ')[0]
         device = ' '.join(textx.text.split(' ')[1:])
     else:
-        await request.edit("`Usage: .codename <brand> <device>`")
+        await edit_or_reply(request, "`Usage: .codename <brand> <device>`")
         return
-    found = [
-        i for i in get(DEVICES_DATA).json()
-        if i["brand"].lower() == brand and device in i["name"].lower()
+
+    data = json.loads(
+        get("https://raw.githubusercontent.com/androidtrackers/"
+            "certified-android-devices/master/by_brand.json").text)
+    devices_lower = {k.lower(): v
+                     for k, v in data.items()}  # Lower brand names in JSON
+    devices = devices_lower.get(brand)
+    results = [
+        i for i in devices if i["name"].lower() == device.lower()
+        or i["model"].lower() == device.lower()
     ]
-    if len(found) > 8:
-        found = found[:8]
-    if found:
-        reply = f'Search results for {brand.capitalize()} {device.capitalize()}:\n\n'
-        for item in found:
-            brand = item['brand']
-            name = item['name']
-            codename = item['device']
-            model = item['model']
-            reply += f'{brand} {name}\n' \
-                f'**Codename**: `{codename}`\n' \
-                f'**Model**: {model}\n\n'
+    if results:
+        reply = f"**Search results for {brand} {device}**:\n\n"
+        if len(results) > 8:
+            results = results[:8]
+        for item in results:
+            reply += f"**Device**: `{item['device']}`\n" \
+                     f"**Name**: `{item['name']}`\n" \
+                     f"**Model**: `{item['model']}`\n\n"
     else:
-        reply = f"`Couldn't find {device} codename!`\n"
-    await request.edit(reply)
+        reply = f"`Can't find {device} codename!`\n"
+    await edit_or_reply(request, reply)
 
 
 @borg.on(admin_cmd(pattern=r"specs(?: |)([\S]*)(?: |)([\s\S]*)"))
@@ -186,17 +187,75 @@ async def twrp(request):
         f'**Updated:** __{date}__\n'
     await request.edit(reply)
 
+# By @deleteduser420
+# Ported for PepeBot by @kirito6969
+
+@borg.on(admin_cmd(pattern="ofox ?(.*)"))
+async def ofox_(message):
+  if not message.pattern_match.group(1):
+    await edit_or_reply(message, "`Provide a device codename to search recovery`")
+    await asyncio.sleep(3)
+    await message.delete()
+    return
+  t = TelegraphPoster(use_api=True)
+  t.create_api_token('PepeBot')
+  await edit_or_reply(message, "🔍 `Searching for recovery...`")
+  await asyncio.sleep(2)
+  await message.delete()
+  photo = "https://i.imgur.com/582uaSk.png" 
+  API_HOST = 'https://api.orangefox.download/v2/device/'
+  codename = message.pattern_match.group(1)
+  try:
+    cn = get(f"{API_HOST}{codename}")
+    r = cn.json()
+  except ValueError:
+    await edit_or_reply(message, f"`Recovery not found for {codename}!`")
+    await asyncio.sleep(3)
+    await message.delete()
+    return
+  s = get(f"{API_HOST}{codename}/releases/stable/last").json()
+  info = f"📱 <b>Device:</b> {r['fullname']}\n"
+  info += f"👤 <b>Maintainer:</b> {r['maintainer']['name']}\n\n"
+  recovery = f"🦊 <code>{s['file_name']}</code>\n"
+  recovery+= f"📅 {s['date']}\n"
+  recovery += f"ℹ️ <b>Version:</b> {s['version']}\n"
+  recovery+= f"📌 <b>Build Type:</b> {s['build_type']}\n"
+  recovery+= f"🔰 <b>Size:</b> {s['size_human']}\n\n"
+  recovery+= "📍 <b>Changelog:</b>\n"
+  recovery+= f"<code>{s['changelog']}</code>\n\n" 
+  msg = info
+  msg += recovery
+  notes_ = s.get('notes')
+  if notes_: 
+    notes = t.post(
+      title='READ Notes', 
+      author="", 
+      text=notes_
+    )
+    msg += f"🗒️ <a href={notes['url']}>NOTES</a>\n"
+  msg +=f"⬇️ <a href={s['url']}>DOWNLOAD</a>"
+  await borg.send_file(
+      message.chat_id,
+      file=photo,
+      caption=msg
+      parse_mode='HTML'
+  )    
+    
 
 SYNTAX.update({
     "android":
-    ".magisk\
-\nGet latest Magisk releases\
-\n\n.device <codename>\
-\nUsage: Get info about android device codename or model.\
-\n\n.codename <brand> <device>\
-\nUsage: Search for android device codename.\
-\n\n.specs <brand> <device>\
-\nUsage: Get device specifications info.\
-\n\n.twrp <codename>\
-\nUsage: Get latest twrp download for android device."
+    "**android**\
+\n\n**Syntax : **`.magisk`\
+\n**Usage :** Get latest Magisk releases\
+\n\n**Syntax : **`.device <codename>`\
+\n**Usage :** Get info about android device codename or model.\
+\n\n**Syntax : **`.codename <brand> <device>`\
+\n**Usage :** Search for android device codename.\
+\n\n**Syntax : **`.specs <brand> <device>`\
+\n**Usage :** Get device specifications info.\
+\n\n**Syntax :** `.ofox <codename>`\
+\n**Usage :** Get latest Orange Fox recovery for your device.\
+\n\n**Syntax : **`.twrp <codename>`\
+\n**Usage :** Get latest twrp download for android device."
 })
+ 

@@ -64,7 +64,7 @@ async def _(event):
         nurl = f"https://del.dog/v/{r['key']}"
         await event.edit("Dogged to {} in {} seconds. GoTo Original URL: {}".format(url, ms, nurl))
     else:
-        await event.edit("`Pasted Successfully!..` \n[Here you Go BSDK]({})\n**RAW**: {}\n__Link Generated In__ **{}** __seconds__".format(url, raw_url, ms))
+        await event.edit("`Pasted Successfully!` \n[Here you Go BSDK]({}) | **RAW**: [URL]({})\n__Link Generated In__ **{}** __seconds__".format(url, raw_url, ms))
 
 
 @borg.on(admin_cmd(pattern="getp ?(.*)"))
@@ -77,8 +77,7 @@ async def get_dogbin_content(dog_url):
 
     if textx:
         link = str(textx.message)
-
-    f'{DOGBIN_URL}'
+        
     format_view = f'{DOGBIN_URL}v/'
 
     if link.startswith(format_view):
@@ -97,16 +96,16 @@ async def get_dogbin_content(dog_url):
         link = link[len("nekobin.com/"):]
         raw_link = f'https://nekobin.com/raw/{link}'
     else:
-        await event.edit("Is that even a paste url?")
+        await dog_url.edit("`Is that even a paste url?`")
         return
     resp = await AioHttp().get_text(raw_link)
     if len(str(resp)) > 4096:
         with io.BytesIO(str.encode(resp)) as out_file:
             out_file.name = "getp.txt"
-            await event.client.send_file(event.chat_id, out_file)
-            await event.delete()
+            await dog_url.client.send_file(dog_url.chat_id, out_file)
+            await dog_url.delete()
     else:
-        await event.edit(
+        await dog_url.edit(
             f"**URL content** :\n\n`{resp}`")
     if BOTLOG:
         await dog_url.client.send_message(

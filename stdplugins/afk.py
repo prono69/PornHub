@@ -32,11 +32,11 @@ async def set_not_afk(event):
         total_afk_time = str((afk_end - afk_start))
     current_message = event.message.message
     if ".afk" not in current_message and "yes" in USER_AFK:
-        shite = await borg.send_message(event.chat_id, "__Back alive!__\n**No Longer afk.**\n `Was afk for ``" + total_afk_time + "`")
+        shite = await borg.send_message(event.chat_id, "__Back alive!__\n**No Longer afk.**\n`Was afk for ``" + total_afk_time + "`")
         try:
             await borg.send_message(
                 Config.PRIVATE_GROUP_BOT_API_ID,
-                "#AFKFALSE \nSet AFK mode to False\n" + "__Back alive!__\n**No Longer afk.**\n `Was afk for ``" + total_afk_time + "`"
+                "#AFKFALSE \nSet AFK mode to False\n" + "__Back alive!__\n**No Longer afk.**\n`Was afk for ``" + total_afk_time + "`"
             )
         except Exception as e:
             await borg.send_message(
@@ -106,7 +106,7 @@ async def on_afk(event):
                 f"`{int(seconds)}seconds` **ago**"
         msg = None
         message_to_reply = f"__My Master is Currently OFFLINE Since__ `{total_afk_time}`\nWhere She Is: ONLY GOD KNOWS " + \
-            f"\n\n__I promise She'll back in a few light years__\n**REASON**: {reason}" \
+            f"\n\n__I promise She'll back in a few light years__\n**REASON**: `{reason}`" \
             if reason \
             else f"**RIP Important Notice**\n\n[Sorry! My Master Ded Forever Very Sed...](https://telegra.ph/file/69e845923f62d916daa03.jpg)"
         msg = await event.reply(message_to_reply)

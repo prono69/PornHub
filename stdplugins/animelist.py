@@ -286,7 +286,7 @@ async def character(event):
     character = jikan.character(first_mal_id)
     caption = f"[{character['name']}]({character['url']})"
     if character['name_kanji'] != "Japanese":
-        caption += f" (<code>{character['name_kanji']}</code>)\n"
+        caption += f" (`{character['name_kanji']}`)\n"
     else:
         caption += "\n"
 
@@ -303,8 +303,8 @@ async def character(event):
     for entity in character:
         if character[entity] is None:
             character[entity] = "Unknown"
-    caption += f"\n🔰**Extracted Character Data**🔰\n\n{about_string}"
-    caption += f" [Read More]({mal_url})..."
+    caption += f"\n🔰**Extracted Character Data**🔰\n\n__{about_string}__"
+    caption += f"\n[READ MORE]({mal_url})"
     await event.client.send_file(event.chat_id,
                                  file=character['image_url'],
                                  caption=replace_text(caption),

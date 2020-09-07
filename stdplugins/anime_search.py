@@ -10,7 +10,7 @@ from userbot.anime import (
 )
 
 
-@borg.on(admin_cmd(pattern="sanime ?(.*)"))
+@borg.on(admin_cmd(pattern="sanime ?(.*)", allow_sudo=True))
 async def get_anime(message):
     try:
         query = message.pattern_match.group(1)
@@ -116,6 +116,7 @@ async def get_anime(message):
                                    file=main_poster,
                                    caption=captions
                                    )
+    await message.delete()                               
 
 
 @borg.on(admin_cmd(pattern="imanga ?(.*)"))
@@ -131,6 +132,7 @@ async def manga(message):
     await message.client.send_file(message.chat_id, file=image,
                                    caption=caption, parse_mode='HTML'
                                    )
+    await message.delete()                               
 
 
 @borg.on(admin_cmd(pattern="ianime ?(.*)"))
@@ -150,6 +152,7 @@ async def anime(message):
         await message.client.send_file(message.chat_id, file=image,
                                        caption=caption, parse_mode='HTML'
                                        )
+    await message.delete()                                   
 
 
 def replace_text(text):
