@@ -116,7 +116,7 @@ async def get_anime(message):
                                    file=main_poster,
                                    caption=captions
                                    )
-    await message.delete()                               
+    await message.delete()
 
 
 @borg.on(admin_cmd(pattern="imanga ?(.*)"))
@@ -132,7 +132,7 @@ async def manga(message):
     await message.client.send_file(message.chat_id, file=image,
                                    caption=caption, parse_mode='HTML'
                                    )
-    await message.delete()                               
+    await message.delete()
 
 
 @borg.on(admin_cmd(pattern="ianime ?(.*)"))
@@ -152,7 +152,7 @@ async def anime(message):
         await message.client.send_file(message.chat_id, file=image,
                                        caption=caption, parse_mode='HTML'
                                        )
-    await message.delete()                                   
+    await message.delete()
 
 
 def replace_text(text):

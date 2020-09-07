@@ -77,7 +77,7 @@ async def get_dogbin_content(dog_url):
 
     if textx:
         link = str(textx.message)
-        
+
     format_view = f'{DOGBIN_URL}v/'
 
     if link.startswith(format_view):

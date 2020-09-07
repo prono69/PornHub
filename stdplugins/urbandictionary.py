@@ -3,7 +3,6 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 """Urban Dictionary
 Syntax: .ud Query"""
-from telethon import events
 import urbandict
 from uniborg.util import admin_cmd, edit_or_reply
 
@@ -25,12 +24,11 @@ async def _(event):
     try:
         mean = urbandict.define(query)
 
-    except:
+    except BaseException:
         await hmm.edit(text=f"Sorry, couldn't find any results fer: `{query}``\nSed vary sed \n**TIP**: \n`Now head towerd Googal u nibba`")
         return
 
     output = ''
-    count = 0
     for i, mean_ in enumerate(mean, start=1):
         output += f"{i}- **{mean_['def']}**\n" + \
             f" Examples:\n » `{mean_['example'] or 'not found'}`\n\n"

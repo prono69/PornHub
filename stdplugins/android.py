@@ -190,57 +190,58 @@ async def twrp(request):
 # By @deleteduser420
 # Ported for PepeBot by @kirito6969
 
+
 @borg.on(admin_cmd(pattern="ofox ?(.*)"))
 async def ofox_(message):
-  if not message.pattern_match.group(1):
-    await edit_or_reply(message, "`Provide a device codename to search recovery`")
-    await asyncio.sleep(3)
+    if not message.pattern_match.group(1):
+        await edit_or_reply(message, "`Provide a device codename to search recovery`")
+        await asyncio.sleep(3)
+        await message.delete()
+        return
+    t = TelegraphPoster(use_api=True)
+    t.create_api_token('PepeBot')
+    await edit_or_reply(message, "🔍 `Searching for recovery...`")
+    await asyncio.sleep(2)
     await message.delete()
-    return
-  t = TelegraphPoster(use_api=True)
-  t.create_api_token('PepeBot')
-  await edit_or_reply(message, "🔍 `Searching for recovery...`")
-  await asyncio.sleep(2)
-  await message.delete()
-  photo = "https://i.imgur.com/582uaSk.png" 
-  API_HOST = 'https://api.orangefox.download/v2/device/'
-  codename = message.pattern_match.group(1)
-  try:
-    cn = get(f"{API_HOST}{codename}")
-    r = cn.json()
-  except ValueError:
-    await edit_or_reply(message, f"`Recovery not found for {codename}!`")
-    await asyncio.sleep(3)
-    await message.delete()
-    return
-  s = get(f"{API_HOST}{codename}/releases/stable/last").json()
-  info = f"📱 <b>Device:</b> {r['fullname']}\n"
-  info += f"👤 <b>Maintainer:</b> {r['maintainer']['name']}\n\n"
-  recovery = f"🦊 <code>{s['file_name']}</code>\n"
-  recovery+= f"📅 {s['date']}\n"
-  recovery += f"ℹ️ <b>Version:</b> {s['version']}\n"
-  recovery+= f"📌 <b>Build Type:</b> {s['build_type']}\n"
-  recovery+= f"🔰 <b>Size:</b> {s['size_human']}\n\n"
-  recovery+= "📍 <b>Changelog:</b>\n"
-  recovery+= f"<code>{s['changelog']}</code>\n\n" 
-  msg = info
-  msg += recovery
-  notes_ = s.get('notes')
-  if notes_: 
-    notes = t.post(
-      title='READ Notes', 
-      author="", 
-      text=notes_
+    photo = "https://i.imgur.com/582uaSk.png"
+    API_HOST = 'https://api.orangefox.download/v2/device/'
+    codename = message.pattern_match.group(1)
+    try:
+        cn = get(f"{API_HOST}{codename}")
+        r = cn.json()
+    except ValueError:
+        await edit_or_reply(message, f"`Recovery not found for {codename}!`")
+        await asyncio.sleep(3)
+        await message.delete()
+        return
+    s = get(f"{API_HOST}{codename}/releases/stable/last").json()
+    info = f"📱 <b>Device:</b> {r['fullname']}\n"
+    info += f"👤 <b>Maintainer:</b> {r['maintainer']['name']}\n\n"
+    recovery = f"🦊 <code>{s['file_name']}</code>\n"
+    recovery += f"📅 {s['date']}\n"
+    recovery += f"ℹ️ <b>Version:</b> {s['version']}\n"
+    recovery += f"📌 <b>Build Type:</b> {s['build_type']}\n"
+    recovery += f"🔰 <b>Size:</b> {s['size_human']}\n\n"
+    recovery += "📍 <b>Changelog:</b>\n"
+    recovery += f"<code>{s['changelog']}</code>\n\n"
+    msg = info
+    msg += recovery
+    notes_ = s.get('notes')
+    if notes_:
+        notes = t.post(
+            title='READ Notes',
+            author="",
+            text=notes_
+        )
+        msg += f"🗒️ <a href={notes['url']}>NOTES</a>\n"
+    msg += f"⬇️ <a href={s['url']}>DOWNLOAD</a>"
+    await borg.send_file(
+        message.chat_id,
+        file=photo,
+        caption=msg
+        parse_mode='HTML'
     )
-    msg += f"🗒️ <a href={notes['url']}>NOTES</a>\n"
-  msg +=f"⬇️ <a href={s['url']}>DOWNLOAD</a>"
-  await borg.send_file(
-      message.chat_id,
-      file=photo,
-      caption=msg
-      parse_mode='HTML'
-  )    
-    
+
 
 SYNTAX.update({
     "android":
@@ -258,4 +259,3 @@ SYNTAX.update({
 \n\n**Syntax : **`.twrp <codename>`\
 \n**Usage :** Get latest twrp download for android device."
 })
- 
