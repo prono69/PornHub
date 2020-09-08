@@ -42,6 +42,7 @@ async def get_anime(message):
 
     # Get All Info of anime
     anime_title = results_['title']
+    id = results_['mal_id']
     jap_title = results_['title_japanese']
     eng_title = results_['title_english']
     type_ = results_['type']
@@ -91,22 +92,25 @@ async def get_anime(message):
     # Build synopsis telegraph post
     html_enc = ''
     html_enc += f"<img src = '{telegraph_poster}' title = {anime_title}/>"
+    html_enc += f"<br><b>» Studios:</b> {studio_md}</br>"
+    html_enc += f"<br><b>» Producers:</b> {producer_md}</br>"
     html_enc += "<br><b>» Synopsis: </b></br>"
     html_enc += f"<br><em>{synopsis}</em></br>"
     synopsis_link = post_to_telegraph(anime_title, html_enc)
 
     # Build captions:
-    captions = f'''📺  `{anime_title}` - `{eng_title}` - `{jap_title}`
+    captions = f'''📺 `{anime_title}` - `{eng_title}` - `{jap_title}`
 
-**🎭 Genre:** `{genress_md}`
 **🆎 Type:** `{type_}`
+**🆔 ID:** `{id}`
+**🎭 Genre:** `{genress_md}`
 **🔢 Episodes:** `{episodes}`
 **📡 Status:** `{status}`
+**💯 Score:** `{score}/10`
 **🔞 Rating:** `{rating}`
-**💯 Score:** `{score}`
 
-[📖 Synopsis]({synopsis_link})
 [🎬 Trailer]({trailer_link})
+[📖 Synopsis]({synopsis_link})
 [📚 More Info]({mal_dir_link})
 
 ©️ @LazyAF_Pepe'''

@@ -265,7 +265,7 @@ async def site_search(event):
             await event.edit(result, parse_mode='HTML')
 
 
-@borg.on(admin_cmd(pattern="character ?(.*)"))
+@borg.on(admin_cmd(pattern="char ?(.*)"))
 async def character(event):
     message = await event.get_reply_message()
     search_query = event.pattern_match.group(1)
@@ -303,7 +303,7 @@ async def character(event):
     for entity in character:
         if character[entity] is None:
             character[entity] = "Unknown"
-    caption += f"\n🔰**Extracted Character Data**🔰\n\n__{about_string}__"
+    caption += f"\n🔰**Extracted Character Data**🔰\n\n__{about_string}...__"
     caption += f"\n[READ MORE]({mal_url})"
     await event.client.send_file(event.chat_id,
                                  file=character['image_url'],

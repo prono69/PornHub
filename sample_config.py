@@ -200,6 +200,8 @@ class Config(object):
     # SpamWatch Api
     SPAM_WATCH_API = os.environ.get("SPAM_WATCH_API", None)
     SPAM_WATCHAPI = os.environ.get("SPAM_WATCHAPI", None)
+    # Uptobox
+    USR_TOKEN = os.environ.get("USR_TOKEN_UPTOBOX", None)
 
 
 class Production(Config):

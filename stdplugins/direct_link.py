@@ -4,12 +4,16 @@
 # you may not use this file except in compliance with the License.
 #
 """ Userbot module containing various sites direct links generators"""
+from asyncio import create_subprocess_shell as asyncSubprocess
+from asyncio.subprocess import PIPE as asyncPIPE
+import asyncio
 import json
 import re
 import urllib.parse
 from os import popen
 from random import choice
-
+from uniborg.util import time_formatter
+import aiohttp
 import requests
 from bs4 import BeautifulSoup
 from telethon import events
@@ -20,6 +24,7 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.WARN)
 
+USR_TOKEN = Config.USR_TOKEN    
 
 @borg.on(events.NewMessage(pattern=r"^.direct(?: |$)([\s\S]*)", outgoing=True))
 async def direct_link_generator(request):
@@ -60,6 +65,8 @@ async def direct_link_generator(request):
             reply += github(link)
         elif 'androidfilehost.com' in link:
             reply += androidfilehost(link)
+        elif 'uptobox.com' in link:
+            reply += await uptobox(request, link)    
         else:
             reply += '`' + re.findall(r"\bhttps?://(.*?[^/]+)",
                                       link)[0] + 'is not supported`\n'
@@ -168,7 +175,7 @@ def mega_dl(url: str) -> str:
     except IndexError:
         reply = "`No MEGA.nz links found`\n"
         return reply
-    command = f'./bin/megadown.sh -q -m {link}'
+    command = f'bin/megadown -q -m {link}'
     result = popen(command).read()
     try:
         data = json.loads(result)
@@ -191,7 +198,7 @@ def cm_ru(url: str) -> str:
     except IndexError:
         reply = "`No cloud.mail.ru links found`\n"
         return reply
-    command = f'./bin/cmrudl.py -s {link}'
+    command = f'bin/cmrudl -s {link}'
     result = popen(command).read()
     result = result.splitlines()[-1]
     try:
@@ -231,7 +238,7 @@ def sourceforge(url: str) -> str:
         reply = "`No SourceForge links found`\n"
         return reply
     file_path = re.findall(r'files(.*)/download', link)[0]
-    reply = f"Mirrors for __{file_path.split('/')[-1]}__\n"
+    reply = f"Mirrors for __{file_path.split('/')[-1]}__\n\n"
     project = re.findall(r'projects?/(.*?)/files', link)[0]
     mirrors = f'https://sourceforge.net/settings/mirror_choices?' \
         f'projectname={project}&filename={file_path}'
@@ -256,7 +263,7 @@ def osdn(url: str) -> str:
         requests.get(link, allow_redirects=True).content, 'lxml')
     info = page.find('a', {'class': 'mirror_link'})
     link = urllib.parse.unquote(osdn_link + info['href'])
-    reply = f"Mirrors for __{link.split('/')[-1]}__\n"
+    reply = f"Mirrors for __{link.split('/')[-1]}__\n\n"
     mirrors = page.find('form', {'id': 'mirror-select-form'}).findAll('tr')
     for data in mirrors[1:]:
         mirror = data.find('input')['value']
@@ -335,6 +342,86 @@ def androidfilehost(url: str) -> str:
         reply += f'[{name}]({dl_url}) '
     return reply
 
+async def uptobox(request, url: str) -> str:
+    """ Uptobox direct links generator """
+    try:
+        link = re.findall(r'\bhttps?://.*uptobox\.com\S+', url)[0]
+    except IndexError:
+        await request.edit('`No uptobox links found.`')
+        return
+    if USR_TOKEN is None:
+        await request.edit('`Set USR_TOKEN_UPTOBOX first!`')
+        return
+    if link.endswith('/'):
+        index = -2
+    else:
+        index = -1
+    FILE_CODE = link.split('/')[index]
+    origin = 'https://uptobox.com/api/link'
+    """ Retrieve file informations """
+    uri = f'{origin}/info?fileCodes={FILE_CODE}'
+    await request.edit('`Retrieving file informations...`')
+    async with aiohttp.ClientSession() as session:
+        async with session.get(uri) as response:
+            result = json.loads(await response.text())
+            data = result.get('data').get('list')[0]
+            if 'error' in data:
+                await request.edit(
+                    "`[ERROR]`\n"
+                    f"`statusCode`: **{data.get('error').get('code')}**\n"
+                    f"`reason`: **{data.get('error').get('message')}**"
+                )
+                return
+            file_name = data.get('file_name')
+            file_size = naturalsize(data.get('file_size'))
+    """ Get waiting token and direct download link """
+    uri = f'{origin}?token={USR_TOKEN}&file_code={FILE_CODE}'
+    async with aiohttp.ClientSession() as session:
+        async with session.get(uri) as response:
+            result = json.loads(await response.text())
+            status = result.get('message')
+            if status == "Waiting needed":
+                wait = result.get('data').get('waiting')
+                waitingToken = result.get('data').get('waitingToken')
+                await request.edit(
+                    f'`Waiting for about {time_formatter(wait)}.`')
+                # for some reason it doesn't go as i planned
+                # so make it 1 minute just to be save enough
+                await asyncio.sleep(wait + 60)
+                uri += f"&waitingToken={waitingToken}"
+                async with session.get(uri) as response:
+                    await request.edit('`Generating direct download link...`')
+                    result = json.loads(await response.text())
+                    status = result.get('message')
+                    if status == "Success":
+                        webLink = result.get('data').get('dlLink')
+                        await request.edit(
+                            f"[{file_name} ({file_size})]({webLink})"
+                        )
+                        return
+                    else:
+                        await request.edit(
+                            "`[ERROR]`\n"
+                            f"`statusCode`: **{result.get('statusCode')}**\n"
+                            f"`reason`: **{result.get('data')}**\n"
+                            f"`status`: **{status}**"
+                        )
+                        return
+            elif status == "Success":
+                webLink = result.get('data').get('dlLink')
+                await request.edit(
+                    f"[{file_name} ({file_size})]({webLink})"
+                )
+                return
+            else:
+                await request.edit(
+                    "`[ERROR]`\n"
+                    f"`statusCode`: **{result.get('statusCode')}**\n"
+                    f"`reason`: **{result.get('data')}**\n"
+                    f"`status`: **{status}**"
+                )
+                return
+                
 
 def useragent():
     """

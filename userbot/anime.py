@@ -92,10 +92,12 @@ def get_anime_manga(mal_id, search_type, _user_id):
     if search_type == "anime_anime":
         caption += textwrap.dedent(f"""
         🆎 <b>Type</b>: <code>{result['type']}</code>
+        🆔 <b>MAL ID</b>: <code>{result['mal_id']}</code>
         📡 <b>Status</b>: <code>{result['status']}</code>
         🎙️ <b>Aired</b>: <code>{result['aired']['string']}</code>
         🔢 <b>Episodes</b>: <code>{result['episodes']}</code>
-        💯 <b>Score</b>: <code>{result['score']}</code>
+        💯 <b>Score</b>: <code>{result['score']}/10</code>
+        🔞 <b>Rating</b>: <code>{result['rating']}</code>
         🌐 <b>Premiered</b>: <code>{result['premiered']}</code>
         ⌛ <b>Duration</b>: <code>{result['duration']}</code>
         🎭 <b>Genres</b>: <code>{genre_string}</code>

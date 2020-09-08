@@ -98,7 +98,7 @@ async def codename_info(request):
         if len(results) > 8:
             results = results[:8]
         for item in results:
-            reply += f"**Device**: `{item['device']}`\n" \
+            reply += f"**Codename**: `{item['device']}`\n" \
                      f"**Name**: `{item['name']}`\n" \
                      f"**Model**: `{item['model']}`\n\n"
     else:

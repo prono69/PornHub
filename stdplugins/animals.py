@@ -90,7 +90,7 @@ async def fact(message):
 
 SYNTAX.update({
     'animals':
-    ">`.animals` <dog|cat|panda|redpanda|koala|bird|fox>"
+    ">`.animal` <dog|cat|panda|redpanda|koala|bird|fox>"
     "\nUsage: Send you a animal picture.\n"
     ">`.afact <animal name>`"
     "\nUsage: A fact about that animal."

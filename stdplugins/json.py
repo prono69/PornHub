@@ -19,7 +19,7 @@ async def _(event):
         reply_to_id = event.message.id
     if len(the_real_message) > Config.MAX_MESSAGE_SIZE_LIMIT:
         with io.BytesIO(str.encode(the_real_message)) as out_file:
-            out_file.name = "json.text"
+            out_file.name = "json.txt"
             await borg.send_file(
                 event.chat_id,
                 out_file,

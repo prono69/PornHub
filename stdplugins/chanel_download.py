@@ -1,81 +1,174 @@
 """
 Telegram Channel Media Downloader Plugin for userbot.
 usage: .geta channel_username [will  get all media from channel, tho there is limit of 3000 there to prevent API limits.]
-       .getc number_of_messsages channel_username
 By: @Zero_cool7870
 """
-from telethon import events
+from telethon import errors
+from telethon.errors.rpcerrorlist import MessageNotModifiedError
 import asyncio
 import os
-import subprocess
-import logging
-from telethon.errors import FloodWaitError
-logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
-
-
-@borg.on(events.NewMessage(pattern=r"\.getc", outgoing=True))
+from uniborg.util import admin_cmd, humanbytes, time_formatter
+import math
+import time
+ 
+SLEEP_TIME = 5
+ 
+def getProgressBarString(percentage):
+    progress_bar_str = "[{0}{1}]\n".format(
+            ''.join(["▰" for i in range(math.floor(percentage / 5))]),
+            ''.join(["▱" for i in range(18 - math.floor(percentage / 5))]))
+    return progress_bar_str
+ 
+def getProgressString(tg_obj):
+    progressStr = f"**Name:** `{tg_obj.name()}`\n" 
+    progressStr += f"**CurrentFile:** `{tg_obj.currentFileName()}`\n" 
+    progressStr += f"**Transferred:** `{humanbytes(tg_obj.transferredBytes())}`\n"
+    progressStr += f"`{getProgressBarString(tg_obj.percent())}`"
+    progressStr += f"**Percent:** `{tg_obj.percent()}%\n`"
+    progressStr += f"**Speed:** `{humanbytes(tg_obj.speed())}ps`\n"
+    progressStr += f"**ETA:** `{time_formatter(tg_obj.eta())}`\n"
+    progressStr += f"**Total:** `{humanbytes(tg_obj.totalBytes())}`\n"
+    return progressStr
+ 
+async def progressSpinner(tg_obj,banner,event):
+    while not tg_obj.isComplete():
+        text = f"__{banner}__\n"     
+        try:
+            text += getProgressString(tg_obj)
+        except Exception as e:
+            text += str(e)
+        try:
+            if text != tg_obj.previous_msg_text:
+                await event.edit(text)
+                tg_obj.previous_msg_text = text
+        except MessageNotModifiedError:
+            pass
+        await asyncio.sleep(SLEEP_TIME)
+ 
+class TelegramDownloader:
+    def __init__(self,peer_id,event):
+        self.peer_id = peer_id
+        self.event = event
+        self._name = None
+        self.current_file_name = None
+        self.transferred_bytes = 0
+        self.start_time = None
+        self.previous_msg_text = ""
+        self.file_count = 0
+        self.is_complete = False
+        self.last_downloaded = 0
+        self.total_bytes = 0
+        self.transfer_speed = 0
+        self._eta = 0
+        self.base_dir = None
+        self.count = 0
+ 
+    def speed(self):
+        return self.transfer_speed
+ 
+    def percent(self):
+        try:
+            return round(self.transferredBytes() * 100 / self.totalBytes(),2)
+        except ZeroDivisionError:
+            return 0.0
+ 
+    def eta(self):
+        return self._eta
+ 
+    def totalBytes(self):
+        return self.total_bytes
+ 
+    def transferredBytes(self):
+        return self.transferred_bytes
+ 
+    def name(self):
+        return self._name
+ 
+    def currentFileName(self):
+        return self.current_file_name
+ 
+    def isComplete(self):
+        return self.is_complete
+ 
+    def fileCount(self):
+        return self.count
+ 
+    async def getMessages(self,peer_id):
+        messages = []
+        async for m in borg.iter_messages(peer_id,limit=None,wait_time=2):
+            if m.media:
+                messages.append(m)
+        return messages
+ 
+ 
+    def getSizeByMessages(self,messages):
+        size = 0
+        for m in messages:
+            if m.media:
+                size += m.file.size
+                self.count += 1
+        return size 
+ 
+    def onTransferProgress(self,current,total):
+        chunksize = current - self.last_downloaded
+        self.transferred_bytes += chunksize
+        self.last_downloaded = current
+        diff = time.time() - self.start_time
+        self.transfer_speed = self.transferredBytes() / diff
+        try:
+            self._eta = round((self.totalBytes() - self.transferredBytes()) / self.speed()) * 1000
+        except ZeroDivisionError:
+            self._eta = 0
+ 
+    async def onTransferComplete(self):
+        self.is_complete = True
+        await self.event.edit(f"Downloaded {self.fileCount()} files in `{self.name()}`")
+ 
+    def onTransferStart(self,chat):
+        self.start_time = time.time()
+        self._name = chat.title
+        self.base_dir = chat.title + "/"
+        os.makedirs(self.base_dir,exist_ok=True)
+ 
+    async def downloadMessage(self,message):
+        if message.file.name:
+            self.current_file_name = message.file.name
+        elif message.file.title:
+            self.current_file_name = message.file.title
+        else:
+            self.current_file_name = "file"
+        try:
+            await borg.download_media(message,self.base_dir,progress_callback=self.onTransferProgress)
+        except errors.FloodWaitError as e:
+            await asyncio.sleep(e.seconds)
+        self.last_downloaded = 0
+ 
+    async def startDownload(self):
+        chat = await borg.get_entity(self.peer_id)
+        self.onTransferStart(chat)
+        messages = await self.getMessages(self.peer_id)
+        self.total_bytes = self.getSizeByMessages(messages)
+        for message in messages:
+            await self.downloadMessage(message)
+        await self.onTransferComplete()
+ 
+ 
+             
+@borg.on(admin_cmd(pattern="geta ?(.*)", allow_sudo=True))
 async def get_media(event):
     if event.fwd_from:
         return
-    dir = "./temp/"
+    channel = event.pattern_match.group(1)
     try:
-        os.makedirs("./temp/")
-    except BaseException:
+        channel = int(channel)
+    except ValueError:
         pass
-    channel_username = event.text
-    limit = channel_username[6:9]
-    print(limit)
-    channel_username = channel_username[11:]
-    print(channel_username)
-    await event.edit("Downloading Media From this Channel.")
-    msgs = await borg.get_messages(channel_username, limit=int(limit))
-    with open('log.txt', 'w') as f:
-        f.write(str(msgs))
-    for msg in msgs:
-        if msg.media is not None:
-            await borg.download_media(
-                msg, dir)
-    ps = subprocess.Popen(('ls', 'temp'), stdout=subprocess.PIPE)
-    output = subprocess.check_output(('wc', '-l'), stdin=ps.stdout)
-    ps.wait()
-    output = str(output)
-    output = output.replace("b'", "")
-    output = output.replace("\n'", "")
-    await event.edit("Downloaded " + output + " files.")
-
-
-@borg.on(events.NewMessage(pattern=r"\.geta", outgoing=True))
-async def get_media(event):
-    if event.fwd_from:
-        return
-    dir = "./temp/"
-    try:
-        os.makedirs("./temp/")
-    except BaseException:
-        pass
-    channel_username = event.text
-    channel_username = channel_username[7:]
-
-    print(channel_username)
-    await event.edit("Downloading All Media From this Channel.")
-    msgs = await borg.get_messages(channel_username, limit=3000)
-    with open('log.txt', 'w') as f:
-        f.write(str(msgs))
-    for msg in msgs:
-        if msg.media is not None:
-            try:
-                await borg.download_media(
-                    msg, dir)
-            except FloodWaitError:
-                await asyncio.sleep(20)
-                # await borg.download_media(
-            #     msg,dir)
-    ps = subprocess.Popen(('ls', 'temp'), stdout=subprocess.PIPE)
-    output = subprocess.check_output(('wc', '-l'), stdin=ps.stdout)
-    ps.wait()
-    output = str(output)
-    output = output.replace("b'", "")
-    output = output.replace("\n'", "")
-    await event.edit("Downloaded " + output + " files.")
+    mone = await event.reply("Downloading All Media From this Channel.")
+    tgDownloader = TelegramDownloader(channel,mone)
+    task1 = tgDownloader.startDownload()
+    task2 = progressSpinner(tgDownloader,"DOWNLOAD PROGRESS",mone)
+    await asyncio.gather(*[task1,task2])
+             
+             
+             
+ 

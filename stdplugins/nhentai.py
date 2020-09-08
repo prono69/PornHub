@@ -20,7 +20,7 @@ async def _(event):
         await event.edit("`Bish! Put a nHentai code or link`")
         return
     chat = "@nHentaiBot"
-    await event.edit("```Processing```")
+    await event.edit("```Processing...```")
     async with event.client.conversation(chat) as conv:
         try:
             response = conv.wait_event(
