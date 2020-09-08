@@ -74,7 +74,7 @@ async def aexec(code, event):
     )
     return await locals()['__aexec'](event)
 
-    
+
 @borg.on(admin_cmd(pattern="exec ?(.*)"))
 async def _(event):
     if event.fwd_from or event.via_bot_id:
@@ -113,4 +113,3 @@ async def _(event):
             )
             await event.delete()
     await event.edit(OUTPUT)
-    

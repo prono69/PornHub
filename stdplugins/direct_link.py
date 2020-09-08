@@ -4,8 +4,6 @@
 # you may not use this file except in compliance with the License.
 #
 """ Userbot module containing various sites direct links generators"""
-from asyncio import create_subprocess_shell as asyncSubprocess
-from asyncio.subprocess import PIPE as asyncPIPE
 import asyncio
 import json
 import re
@@ -24,7 +22,8 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.WARN)
 
-USR_TOKEN = Config.USR_TOKEN    
+USR_TOKEN = Config.USR_TOKEN
+
 
 @borg.on(events.NewMessage(pattern=r"^.direct(?: |$)([\s\S]*)", outgoing=True))
 async def direct_link_generator(request):
@@ -66,7 +65,7 @@ async def direct_link_generator(request):
         elif 'androidfilehost.com' in link:
             reply += androidfilehost(link)
         elif 'uptobox.com' in link:
-            reply += await uptobox(request, link)    
+            reply += await uptobox(request, link)
         else:
             reply += '`' + re.findall(r"\bhttps?://(.*?[^/]+)",
                                       link)[0] + 'is not supported`\n'
@@ -342,6 +341,7 @@ def androidfilehost(url: str) -> str:
         reply += f'[{name}]({dl_url}) '
     return reply
 
+
 async def uptobox(request, url: str) -> str:
     """ Uptobox direct links generator """
     try:
@@ -421,7 +421,7 @@ async def uptobox(request, url: str) -> str:
                     f"`status`: **{status}**"
                 )
                 return
-                
+
 
 def useragent():
     """
