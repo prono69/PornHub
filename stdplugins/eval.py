@@ -5,6 +5,7 @@ Syntax: `.eval {PythonCode}`
 import traceback
 import sys
 import io
+import time
 from uniborg.util import admin_cmd
 import logging
 logging.basicConfig(
@@ -68,11 +69,12 @@ async def _(event):
 
 
 async def aexec(code, event):
+	reply = await event.get_reply_message()
     exec(
-        f'async def __aexec(event): ' +
+        f'async def __aexec(message, reply): ' +
         ''.join(f'\n {l}' for l in code.split('\n'))
     )
-    return await locals()['__aexec'](event)
+    return await locals()['__aexec'](event, reply)
 
 
 @borg.on(admin_cmd(pattern="exec ?(.*)"))

@@ -24,8 +24,7 @@ class Config(object):
     PRIVATE_GROUP_BOT_API_ID = os.environ.get("PRIVATE_GROUP_BOT_API_ID", None)
     if PRIVATE_GROUP_BOT_API_ID:
         PRIVATE_GROUP_BOT_API_ID = int(PRIVATE_GROUP_BOT_API_ID)
-    # Send .g_id in any channel to fill this value. ReQuired for @Manuel15
-    # inspiration to work!
+    # Send .g_id in any channel to fill this value.
     PRIVATE_CHANNEL_BOT_API_ID = os.environ.get(
         "PRIVATE_CHANNEL_BOT_API_ID",
         None
@@ -107,9 +106,7 @@ class Config(object):
     # WARNING: be careful who you grant access to your bot.
     # malicious users could do ".exec rm -rf /*"
     SUDO_USERS = set(int(x) for x in os.environ.get("SUDO_USERS", "").split())
-    # VeryStream only supports video formats
-    VERY_STREAM_LOGIN = os.environ.get("VERY_STREAM_LOGIN", None)
-    VERY_STREAM_KEY = os.environ.get("VERY_STREAM_KEY", None)
+    #Temp
     TEMP_DIR = os.environ.get("TEMP_DIR", None)
     CHANNEL_ID = os.environ.get("CHANNEL_ID", None)
     # Google Drive ()
@@ -202,6 +199,15 @@ class Config(object):
     SPAM_WATCHAPI = os.environ.get("SPAM_WATCHAPI", None)
     # Uptobox
     USR_TOKEN = os.environ.get("USR_TOKEN_UPTOBOX", None)
+    # for video trimming and screenshot plugins
+    LT_QOAN_NOE_FF_MPEG_CTD = os.environ.get(
+        "LT_QOAN_NOE_FF_MPEG_CTD",
+        None
+    )
+    LT_QOAN_NOE_FF_MPEG_URL = os.environ.get(
+        "LT_QOAN_NOE_FF_MPEG_URL",
+        None
+    )
 
 
 class Production(Config):

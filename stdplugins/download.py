@@ -16,6 +16,7 @@ async def _(event):
     if event.fwd_from:
         return
     mone = await event.reply("`Processing...`")
+    await event.delete()
     input_str = event.pattern_match.group(1)
     if not os.path.isdir(Config.TMP_DOWNLOAD_DIRECTORY):
         os.makedirs(Config.TMP_DOWNLOAD_DIRECTORY)
@@ -60,18 +61,18 @@ async def _(event):
             speed = downloader.get_speed()
             round(diff) * 1000
             progress_str = "[{0}{1}]\nProgress: {2}%".format(
-                ''.join("█" for _ in range(math.floor(percentage / 5))),
-                ''.join("░" for _ in range(20 - math.floor(percentage / 5))),
+                ''.join("■" for _ in range(math.floor(percentage / 5))),
+                ''.join("□" for _ in range(20 - math.floor(percentage / 5))),
                 round(percentage, 2))
             estimated_total_time = downloader.get_eta(human=True)
             try:
                 current_message = f"trying to download\n"\
-                                  f"URL: {url}\n"\
-                                  f"File Name: {file_name}\n" \
-                                  f"Speed: {speed}"\
+                                  f"**URL**: {url}\n"\
+                                  f"**File Name:** {file_name}\n" \
+                                  f"**Speed:** {speed}"\
                                   f"{progress_str}\n"\
                                   f"{humanbytes(downloaded)} of {humanbytes(total_length)}\n"\
-                                  f"ETA: {estimated_total_time}"
+                                  f"**ETA:** {estimated_total_time}"
                 if round(
                         diff %
                         10.00) == 0 and current_message != display_message:

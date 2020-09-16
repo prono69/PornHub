@@ -1,14 +1,15 @@
 """Get Administrators of any Chat*
 Syntax: .g_admin"""
+from telethon import events
 from telethon.tl.types import ChannelParticipantsAdmins, ChannelParticipantAdmin, ChannelParticipantCreator
 from uniborg.util import admin_cmd
-
-
+ 
+ 
 @borg.on(admin_cmd(pattern="g_ad?(m)in ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return
-    mentions = "**Admins in this Useless Group**: \n\n"
+    mentions = "**Admins in this Group**: \n"
     should_mention_admins = False
     reply_message = None
     pattern_match_str = event.pattern_match.group(1)
@@ -22,7 +23,7 @@ async def _(event):
     if not input_str:
         chat = to_write_chat
     else:
-        mentions_heading = "Admins Of {} Group: \n\n".format(input_str)
+        mentions_heading = "**Admins in {} Group:** \n".format(input_str)
         mentions = mentions_heading
         try:
             chat = await borg.get_entity(input_str)
@@ -33,17 +34,14 @@ async def _(event):
         async for x in borg.iter_participants(chat, filter=ChannelParticipantsAdmins):
             if not x.deleted:
                 if isinstance(x.participant, ChannelParticipantCreator):
-                    mentions += "\n 🔱 [{}](tg://user?id={}) `{}`".format(
-                        x.first_name, x.id, x.id)
+                    mentions += "\n 👑 [{}](tg://user?id={}) `{}`".format(x.first_name, x.id, x.id)
         mentions += "\n"
         async for x in borg.iter_participants(chat, filter=ChannelParticipantsAdmins):
             if not x.deleted:
                 if isinstance(x.participant, ChannelParticipantAdmin):
-                    mentions += "\n 🔰 [{}](tg://user?id={}) `{}`".format(
-                        x.first_name, x.id, x.id)
-
-        mentions += "\n 💘 [Deleted Account](tg://user?id=689811472) `689811472`"
-
+                    mentions += "\n ⚜️ [{}](tg://user?id={}) `{}`".format(x.first_name, x.id, x.id)
+            else:
+                mentions += "\n ☠️ `{}`".format(x.id)
     except Exception as e:
         mentions += " " + str(e) + "\n"
     if should_mention_admins:
@@ -54,3 +52,4 @@ async def _(event):
         await event.delete()
     else:
         await event.edit(mentions)
+ 

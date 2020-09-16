@@ -11,8 +11,9 @@ import time
 import os
 import os.path
 from os.path import exists, isdir
-from uniborg.util import admin_cmd, humanbytes
+from uniborg.util import admin_cmd, humanbytes, edit_or_reply
 from uniborg import SYNTAX
+from userbot import runcmd
 import io
 
 
@@ -119,6 +120,28 @@ async def lst(event):
     else:
         await event.edit(msg)
 
+@borg.on(admin_cmd(pattern="rem (.*)", allow_sudo=True))
+async def lst(event):
+    cat = event.pattern_match.group(1)
+    if cat:
+        path = cat
+    else:
+        await edit_or_reply(event, "what should i delete")
+        return
+    if not exists(path):
+        await edit_or_reply(
+            event,
+            f"there is no such directory or file with the name `{cat}` check again",
+        )
+        return
+    catcmd = f"rm -rf {path}"
+    if isdir(path):
+        await runcmd(catcmd)
+        await edit_or_reply(event, f"Succesfully removed `{path}` directory")
+    else:
+        await runcmd(catcmd)
+        await edit_or_reply(event, f"Succesfully removed `{path}` file")        
+        
 
 SYNTAX.update({
     "filemanager": "List Files plugin for userbot \

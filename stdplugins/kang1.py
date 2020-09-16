@@ -23,7 +23,8 @@ KANGING_STR = [
     "Roses are red violets are blue, kanging this sticker so my pacc looks cool",
     "Imprisoning this sticker...",
     "Mr.Steal Your Sticker is stealing this sticker... ",
-    "Aaja Bsdk aa Sala Kurkure..."]
+    "Aaja Bsdk aa Sala Kurkure...",
+    "Dekh bsdk main tera sticker kang kar raha hu"]
 
 
 @borg.on(admin_cmd(pattern="kung ?(.*)"))
@@ -123,7 +124,7 @@ async def kang(args):
                     else:
                         pack = 1
                     packname = f"mommys_girl_{pack}"
-                    packnick = f"@{user.username}'s Layer {pack}"
+                    packnick = f"@{user.username}'s Layer Vol.{pack}"
                     await args.edit("`Switching to Pack " + str(pack) +
                                     " due to insufficient space`")
                     await conv.send_message(packname)
@@ -235,7 +236,7 @@ async def kang(args):
                 await conv.get_response()
                 # Ensure user doesn't get spamming notifications
                 await borg.send_read_acknowledge(conv.chat_id)
-        await args.edit(f"`This Sticker is Ripped & added to Moi Collection! Ploxx Save This Sticker` [HERE](t.me/addstickers/{packname})",
+        await args.edit(f"**Kanged in moi [Collection](t.me/addstickers/{packname})!**",
                         parse_mode='md')
 
 
