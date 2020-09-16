@@ -7,8 +7,8 @@ from telethon import events
 MODULE.append("quotly")
 
 
-@borg.on(admin_cmd(pattern="qbot ?(.*)"))
-async def _(event):
+@client.on(events(pattern="quotly ?(.*)"))
+async def handler(event):
     if event.fwd_from:
         return
     input_str = event.pattern_match.group(1)
@@ -19,26 +19,25 @@ async def _(event):
         quote = reply
     else:
         return
-    bot = "@QuotLyBot"
-    await event.edit("```Making a quote....```")
-
-    async with borg.conversation(bot) as bot_conv:
-        if True:  # lazy indentation workaround xD
+    username = "@QuotLyBot"
+    await event.edit(f"```Quoting this message...```")
+    async with client.conversation(username, timeout=10) as bot_conv:
+        try:
             if input_str:
                 response = await silently_send_message(bot_conv, quote)
             elif reply:
-                response = bot_conv.wait_event(
-                    events.NewMessage(
-                        incoming=True,
-                        from_users=1031952739))
-                await borg.forward_messages(bot, quote)
+                response = bot_conv.wait_event(telethon.events.NewMessage(
+                    incoming=True, from_users=1031952739))
+                await client.forward_messages(username, quote)
                 response = await response
                 response = response.message
             if response.text.startswith("Command"):
-                await event.edit("Invalid message type.")
+                await event.edit(f"Invalid message type.")
                 return
             await event.reply(response)
             await event.delete()
+        except:
+            return await event.edit("`@QuotLyBot doesn't want to talk to me, try again later.`")
 
 
 async def silently_send_message(conv, text):
@@ -48,11 +47,9 @@ async def silently_send_message(conv, text):
     return response
 
 
-SYNTAX.update({
+ENV.HELPER.update({
     "quotly": "\
-**Requested Module --> quotly**\
-\n\n**Detailed usage of fuction(s):**\
-\n\n```.qbot <text_to_quote> [or as a reply to a message to quote]```\
+```.quotly <text_to_quote> [or as a reply to a message to quote]```\
 \nUsage: Quotes the target message.\nUses @QuotLyBot.\
 "
 })
