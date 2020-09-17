@@ -3,8 +3,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from telethon import events
 import random
+
+from telethon import events
 
 
 @borg.on(events.NewMessage(pattern=r"\.su(.*)", outgoing=True))

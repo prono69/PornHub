@@ -10,9 +10,9 @@ usage = .🖕
 
 """
 
-from telethon import events
-
 import asyncio
+
+from telethon import events
 
 
 @borg.on(events.NewMessage(pattern=r"\.meme", outgoing=True))
@@ -115,13 +115,39 @@ async def meme(event):
 
     await event.edit(flower + flower + flower + flower + flower + "    ")
 
-    await event.edit(flower + flower + flower + flower + flower + flower + flower + "   ")
+    await event.edit(
+        flower + flower + flower + flower + flower + flower + flower + "   "
+    )
 
-    await event.edit(flower + flower + flower + flower + flower + flower + flower + flower + "  ")
+    await event.edit(
+        flower + flower + flower + flower + flower + flower + flower + flower + "  "
+    )
 
-    await event.edit(flower + flower + flower + flower + flower + flower + flower + flower + flower + " ")
+    await event.edit(
+        flower
+        + flower
+        + flower
+        + flower
+        + flower
+        + flower
+        + flower
+        + flower
+        + flower
+        + " "
+    )
 
-    await event.edit(flower + flower + flower + flower + flower + flower + flower + flower + flower + flower)
+    await event.edit(
+        flower
+        + flower
+        + flower
+        + flower
+        + flower
+        + flower
+        + flower
+        + flower
+        + flower
+        + flower
+    )
 
     await asyncio.sleep(sleepValue)
 
@@ -138,5 +164,6 @@ async def meme(event):
         paytext * 4,
         paytext * 1,
         paytext * 1,
-        paytext * 1)
+        paytext * 1,
+    )
     await event.edit(pay)

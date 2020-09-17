@@ -3,8 +3,9 @@
 \n\nPorted by @NeoMatrix90
 \nImproved by @amnd33p"""
 
-from uniborg.util import admin_cmd
 import random
+
+from uniborg.util import admin_cmd
 
 
 @borg.on(admin_cmd(pattern="x(.*)"))
@@ -210,7 +211,7 @@ async def _(event):
             "May the odds be ever in your favour.",
             "Famous last words.",
             "And they disappeared forever, never to be seen again.",
-            "\"Oh, look at me! I'm so cool, I can run from a bot!\" - this person",
+            '"Oh, look at me! I\'m so cool, I can run from a bot!" - this person',
             "Yeah yeah, just tap /kickme already.",
             "Here, take this ring and head to Mordor while you're at it.",
             "Legend has it, they're still running...",

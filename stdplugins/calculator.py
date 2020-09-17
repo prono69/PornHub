@@ -22,24 +22,36 @@ async def _(event):
     term1part1 = final_input[0]
     term1part2 = final_input[1]
     term1 = str(term1part1) + str(term1part2)
-    final_term1 = (int(term1))
+    final_term1 = int(term1)
     operator = str(final_input[2])
     term2part1 = final_input[3]
     term2part2 = final_input[4]
     term2 = str(term2part1) + str(term2part2)
-    final_term2 = (int(term2))
+    final_term2 = int(term2)
     # actual calculations go here
     if input == "help":
-        await event.edit("Syntax .calc <term1><operator><term2>\nFor eg .calc 02*02 or 99*99 (the zeros are important) (two terms and two digits max)")
+        await event.edit(
+            "Syntax .calc <term1><operator><term2>\nFor eg .calc 02*02 or 99*99 (the zeros are important) (two terms and two digits max)"
+        )
     elif operator == "*":
-        await event.edit("**Solution** -->\n" + exp + "\n" + str(final_term1 * final_term2))
+        await event.edit(
+            "**Solution** -->\n" + exp + "\n" + str(final_term1 * final_term2)
+        )
     elif operator == "-":
-        await event.edit("**Solution** -->\n" + exp + "\n" + str(final_term1 - final_term2))
+        await event.edit(
+            "**Solution** -->\n" + exp + "\n" + str(final_term1 - final_term2)
+        )
     elif operator == "+":
-        await event.edit("**Solution** -->\n" + exp + "\n" + str(final_term1 + final_term2))
+        await event.edit(
+            "**Solution** -->\n" + exp + "\n" + str(final_term1 + final_term2)
+        )
     elif operator == "/":
-        await event.edit("**Solution** -->\n" + exp + "\n" + str(final_term1 / final_term2))
+        await event.edit(
+            "**Solution** -->\n" + exp + "\n" + str(final_term1 / final_term2)
+        )
     elif operator == "%":
-        await event.edit("**Solution** -->\n" + exp + "\n" + str(final_term1 % final_term2))
+        await event.edit(
+            "**Solution** -->\n" + exp + "\n" + str(final_term1 % final_term2)
+        )
     else:
         await event.edit("use .calc help")

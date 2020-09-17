@@ -13,12 +13,13 @@ from telethon.tl.functions.channels import GetFullChannelRequest
 from telethon.tl.functions.messages import GetFullChatRequest
 from telethon.tl.functions.users import GetFullUserRequest
 from telethon.tl.types import (
-    MessageEntityMentionName,
     ChannelParticipantsAdmins,
     ChannelParticipantsBots,
-    MessageEntityMention,
     InputPeerChannel,
-    InputPeerChat)
+    InputPeerChat,
+    MessageEntityMention,
+    MessageEntityMentionName,
+)
 
 
 def freeze(d):
@@ -30,7 +31,7 @@ def freeze(d):
 
 
 def extract_urls(message):
-    matches = findall(r'(https?://\S+)', str(message))
+    matches = findall(r"(https?://\S+)", str(message))
     return list(matches)
 
 
@@ -50,7 +51,7 @@ async def get_user_from_id(user, event):
 async def get_user_from_event(event: NewMessage.Event, **kwargs):
     """ Get the user from argument or replied message. """
     reply_msg: Message = await event.get_reply_message()
-    user = kwargs.get('user', None)
+    user = kwargs.get("user", None)
 
     if user:
         # First check for a user id
@@ -61,24 +62,24 @@ async def get_user_from_event(event: NewMessage.Event, **kwargs):
         elif event.message.entities is not None:
             probable_user_mention_entity = event.message.entities[0]
 
-            if isinstance(probable_user_mention_entity,
-                          MessageEntityMentionName):
+            if isinstance(probable_user_mention_entity, MessageEntityMentionName):
                 user_id = probable_user_mention_entity.user_id
                 replied_user = await event.client(GetFullUserRequest(user_id))
                 return replied_user
 
         try:
             user_object = await event.client.get_entity(user)
-            replied_user = await event.client(
-                GetFullUserRequest(user_object.id))
+            replied_user = await event.client(GetFullUserRequest(user_object.id))
         except (TypeError, ValueError):
             return None
 
     # Check for a forwarded message
-    elif (reply_msg and
-          reply_msg.forward and
-          reply_msg.forward.sender_id and
-          kwargs['forward']):
+    elif (
+        reply_msg
+        and reply_msg.forward
+        and reply_msg.forward.sender_id
+        and kwargs["forward"]
+    ):
         forward = reply_msg.forward
         replied_user = await event.client(GetFullUserRequest(forward.sender_id))
 
@@ -97,18 +98,20 @@ async def get_user_from_event(event: NewMessage.Event, **kwargs):
 
 async def get_chat_from_event(event: NewMessage.Event, **kwargs):
     reply_msg: Message = await event.get_reply_message()
-    chat = kwargs.get('chat', None)
+    chat = kwargs.get("chat", None)
 
     if chat:
         try:
             input_entity = await event.client.get_input_entity(chat)
             if isinstance(input_entity, InputPeerChannel):
-                return await event.client(GetFullChannelRequest(input_entity.channel_id))
+                return await event.client(
+                    GetFullChannelRequest(input_entity.channel_id)
+                )
             elif isinstance(input_entity, InputPeerChat):
                 return await event.client(GetFullChatRequest(input_entity.chat_id))
             else:
                 return None
-        except(TypeError, ValueError):
+        except (TypeError, ValueError):
             return None
     # elif reply_msg and reply_msg.forward:
     #     return None
@@ -118,14 +121,18 @@ async def get_chat_from_event(event: NewMessage.Event, **kwargs):
 
 
 async def list_admins(event):
-    adms = await event.client.get_participants(event.chat, filter=ChannelParticipantsAdmins)
+    adms = await event.client.get_participants(
+        event.chat, filter=ChannelParticipantsAdmins
+    )
     adms = map(lambda x: x if not x.bot else None, adms)
     adms = [i for i in list(adms) if i]
     return adms
 
 
 async def list_bots(event):
-    bots = await event.client.get_participants(event.chat, filter=ChannelParticipantsBots)
+    bots = await event.client.get_participants(
+        event.chat, filter=ChannelParticipantsBots
+    )
     return bots
 
 
@@ -144,5 +151,5 @@ def inline_mention(user):
 def user_full_name(user):
     names = [user.first_name, user.last_name]
     names = [i for i in list(names) if i]
-    full_name = ' '.join(names)
+    full_name = " ".join(names)
     return full_name

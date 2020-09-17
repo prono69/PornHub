@@ -5,16 +5,17 @@ Syntax:
 .rndlup """
 
 import asyncio
-import time
-from datetime import datetime
-from hachoir.metadata import extractMetadata
-from hachoir.parser import createParser
 import math
 import os
+import time
+from datetime import datetime
+
+from hachoir.metadata import extractMetadata
+from hachoir.parser import createParser
 from pySmartDL import SmartDL
 from telethon.tl.types import DocumentAttributeVideo
-from uniborg.util import progress, humanbytes, admin_cmd
 
+from uniborg.util import admin_cmd, humanbytes, progress
 
 thumb_image_path = Config.TMP_DOWNLOAD_DIRECTORY + "/thumb_image.jpg"
 
@@ -51,16 +52,19 @@ async def _(event):
         downloader.get_speed()
         round(diff) * 1000
         progress_str = "[{0}{1}]\nProgress: {2}%".format(
-            ''.join(["█" for i in range(math.floor(percentage / 5))]),
-            ''.join(["░" for i in range(20 - math.floor(percentage / 5))]),
-            round(percentage, 2))
+            "".join(["█" for i in range(math.floor(percentage / 5))]),
+            "".join(["░" for i in range(20 - math.floor(percentage / 5))]),
+            round(percentage, 2),
+        )
         estimated_total_time = downloader.get_eta(human=True)
         try:
             current_message = "trying to download\n"
             current_message += f"URL: {url}\n"
             current_message += f"File Name: {file_name}\n"
             current_message += f"{progress_str}\n"
-            current_message += f"{humanbytes(downloaded)} of {humanbytes(total_length)}\n"
+            current_message += (
+                f"{humanbytes(downloaded)} of {humanbytes(total_length)}\n"
+            )
             current_message += f"ETA: {estimated_total_time}"
             if round(diff % 10.00) == 0 and current_message != display_message:
                 await event.edit(current_message)
@@ -70,7 +74,9 @@ async def _(event):
     end = datetime.now()
     ms_dl = (end - start).seconds
     if downloader.isSuccessful():
-        await event.edit("Downloaded to `{}` in {} seconds.".format(downloaded_file_name, ms_dl))
+        await event.edit(
+            "Downloaded to `{}` in {} seconds.".format(downloaded_file_name, ms_dl)
+        )
         if os.path.exists(downloaded_file_name):
             c_time = time.time()
             await borg.send_file(
@@ -83,12 +89,16 @@ async def _(event):
                 thumb=thumb,
                 progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
                     progress(d, t, event, c_time, "trying to upload")
-                )
+                ),
             )
             end_two = datetime.now()
             os.remove(downloaded_file_name)
             ms_two = (end_two - end).seconds
-            await event.edit("Downloaded in {} seconds. Uploaded in {} seconds.".format(ms_dl, ms_two))
+            await event.edit(
+                "Downloaded in {} seconds. Uploaded in {} seconds.".format(
+                    ms_dl, ms_two
+                )
+            )
         else:
             await event.edit("File Not Found {}".format(input_str))
             await asyncio.sleep(5)
@@ -103,7 +113,9 @@ async def _(event):
     thumb = None
     if os.path.exists(thumb_image_path):
         thumb = thumb_image_path
-    await event.edit("Rename & Upload in process 🙄🙇‍♂️🙇‍♂️🙇‍♀️ It might take some time if file size is big")
+    await event.edit(
+        "Rename & Upload in process 🙄🙇‍♂️🙇‍♂️🙇‍♀️ It might take some time if file size is big"
+    )
     input_str = event.pattern_match.group(1)
     if not os.path.isdir(Config.TMP_DOWNLOAD_DIRECTORY):
         os.makedirs(Config.TMP_DOWNLOAD_DIRECTORY)
@@ -119,7 +131,7 @@ async def _(event):
             downloaded_file_name,
             progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
                 progress(d, t, event, c_time, "trying to download")
-            )
+            ),
         )
         end = datetime.now()
         ms_one = (end - start).seconds
@@ -138,12 +150,16 @@ async def _(event):
                 thumb=thumb,
                 progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
                     progress(d, t, event, c_time, "trying to upload")
-                )
+                ),
             )
             end_two = datetime.now()
             os.remove(downloaded_file_name)
             ms_two = (end_two - end).seconds
-            await event.edit("Downloaded in {} seconds. Uploaded in {} seconds.".format(ms_one, ms_two))
+            await event.edit(
+                "Downloaded in {} seconds. Uploaded in {} seconds.".format(
+                    ms_one, ms_two
+                )
+            )
             await asyncio.sleep(3)
             await event.delete()
         else:
@@ -158,7 +174,9 @@ async def _(event):
 async def _(event):
     if event.fwd_from:
         return
-    await event.edit("Rename & Upload as Streamable in process 🙄🙇‍♂️🙇‍♂️🙇‍♀️ It might take some time if file size is big")
+    await event.edit(
+        "Rename & Upload as Streamable in process 🙄🙇‍♂️🙇‍♂️🙇‍♀️ It might take some time if file size is big"
+    )
     input_str = event.pattern_match.group(1)
     if not os.path.isdir(Config.TMP_DOWNLOAD_DIRECTORY):
         os.makedirs(Config.TMP_DOWNLOAD_DIRECTORY)
@@ -174,7 +192,7 @@ async def _(event):
             downloaded_file_name,
             progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
                 progress(d, t, event, c_time, "trying to download")
-            )
+            ),
         )
         end_one = datetime.now()
         ms_one = (end_one - start).seconds
@@ -188,7 +206,7 @@ async def _(event):
             width = 0
             height = 0
             if metadata.has("duration"):
-                duration = metadata.get('duration').seconds
+                duration = metadata.get("duration").seconds
             if os.path.exists(thumb_image_path):
                 metadata = extractMetadata(createParser(thumb_image_path))
                 if metadata.has("width"):
@@ -214,12 +232,12 @@ async def _(event):
                             w=width,
                             h=height,
                             round_message=False,
-                            supports_streaming=True
+                            supports_streaming=True,
                         )
                     ],
                     progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
                         progress(d, t, event, c_time, "trying to upload")
-                    )
+                    ),
                 )
             except Exception as e:
                 await event.edit(str(e))
@@ -227,8 +245,14 @@ async def _(event):
                 end = datetime.now()
                 os.remove(downloaded_file_name)
                 ms_two = (end - end_one).seconds
-                await event.edit("Downloaded in {} seconds. Uploaded in {} seconds.".format(ms_one, ms_two))
+                await event.edit(
+                    "Downloaded in {} seconds. Uploaded in {} seconds.".format(
+                        ms_one, ms_two
+                    )
+                )
         else:
             await event.edit("File Not Found {}".format(input_str))
     else:
-        await event.edit("Syntax // .rnstreamupload file.name as reply to a Telegram media")
+        await event.edit(
+            "Syntax // .rnstreamupload file.name as reply to a Telegram media"
+        )

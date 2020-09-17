@@ -7,18 +7,16 @@ Available Commands:
 import logging
 
 from sample_config import Config
-from sql_helpers.snips_sql import (add_snip, get_all_snips, get_snips,
-                                   remove_snip)
+from sql_helpers.snips_sql import add_snip, get_all_snips, get_snips, remove_snip
 from uniborg.util import admin_cmd
 
-
 logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+    format="[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s", level=logging.WARNING
+)
 logger = logging.getLogger(__name__)
 
 
-@borg.on(admin_cmd(pattern=r'\#(\S+)', outgoing=True))
+@borg.on(admin_cmd(pattern=r"\#(\S+)", outgoing=True))
 async def on_snip(event):
     name = event.pattern_match.group(1)
     snip = get_snips(name)
@@ -27,8 +25,7 @@ async def on_snip(event):
     reply_message = await event.get_reply_message()
     if snip:
         msg_o = await event.client.get_messages(
-            entity=Config.PRIVATE_CHANNEL_BOT_API_ID,
-            ids=int(snip.f_mesg_id)
+            entity=Config.PRIVATE_CHANNEL_BOT_API_ID, ids=int(snip.f_mesg_id)
         )
         if msg_o.media is not None:
             if reply_message:
@@ -36,25 +33,22 @@ async def on_snip(event):
                     event.chat_id,
                     msg_o.media,
                     supports_streaming=True,
-                    reply_to=reply_message.id
+                    reply_to=reply_message.id,
                 )
             else:
                 await event.client.send_file(
-                    event.chat_id,
-                    msg_o.media,
-                    supports_streaming=True
+                    event.chat_id, msg_o.media, supports_streaming=True
                 )
         else:
             if reply_message:
                 await event.client.send_message(
                     entity=event.chat_id,
                     message=msg_o.message,
-                    reply_to=reply_message.id
+                    reply_to=reply_message.id,
                 )
             else:
                 await event.client.send_message(
-                    entity=event.chat_id,
-                    message=msg_o.message
+                    entity=event.chat_id, message=msg_o.message
                 )
 
 
@@ -69,10 +63,12 @@ async def on_snip_save(event):
             entity=Config.PRIVATE_CHANNEL_BOT_API_ID,
             messages=msg,
             from_peer=event.chat_id,
-            silent=True
+            silent=True,
         )
         add_snip(name, msg_o.id)
-        await event.edit("`Saved successfully`. Get it with `#{name}`".format(name=name))
+        await event.edit(
+            "`Saved successfully`. Get it with `#{name}`".format(name=name)
+        )
     else:
         await event.edit("Reply to a message with `snips keyword` to save the snip")
 
@@ -95,7 +91,7 @@ async def on_snip_list(event):
                 force_document=True,
                 allow_cache=False,
                 caption="Available Snips",
-                reply_to=event
+                reply_to=event,
             )
             await event.delete()
     else:

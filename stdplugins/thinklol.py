@@ -1,8 +1,9 @@
 # (c) @UniBorg
 
-from telethon import events
 import asyncio
 from collections import deque
+
+from telethon import events
 
 
 @borg.on(events.NewMessage(pattern=r"\.tlol", outgoing=True))

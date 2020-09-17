@@ -2,8 +2,8 @@
 # (c) <GNU/std::sakty_]> a.k.a. @sunda001
 
 
-from telethon import events
 import requests
+from telethon import events
 
 
 @borg.on(events.NewMessage(pattern=r"\.code (.*)", outgoing=True))
@@ -17,11 +17,7 @@ async def _(event):
         return False
     lang, code = input_str.split(DELIMITER)
     url = "http://www.suka.ml/api/v0/sakty/karbon"
-    a = requests.get(url, params={
-        "code": code,
-        "lang": lang,
-        "line": True
-    }).json()
+    a = requests.get(url, params={"code": code, "lang": lang, "line": True}).json()
     img_url = a["hasil"]["karbon"]
     reply_message_id = event.message.id
     if event.reply_to_msg_id:
@@ -33,7 +29,7 @@ async def _(event):
             caption=code,
             force_document=True,
             allow_cache=False,
-            reply_to=reply_message_id
+            reply_to=reply_message_id,
         )
         await event.delete()
     except Exception as e:

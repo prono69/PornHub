@@ -1,6 +1,8 @@
-import requests
 import asyncio
-from uniborg.util import parse_arguments, admin_cmd
+
+import requests
+
+from uniborg.util import admin_cmd, parse_arguments
 
 """Type
 `.docs <module name>`
@@ -11,10 +13,10 @@ It will search in the docs for for You.
 @borg.on(admin_cmd(pattern=r"docs\s+(.*)"))
 async def doc_search(e):
     params = e.pattern_match.group(1)
-    args, lib = parse_arguments(params, ['version'])
+    args, lib = parse_arguments(params, ["version"])
     lib = lib.strip()
 
-    version = int(args.get('version', 3))
+    version = int(args.get("version", 3))
     python_url = f"https://docs.python.org/{version}/library/{lib}.html"
     pip_url = f"https://pypi.org/project/{lib}/"
 

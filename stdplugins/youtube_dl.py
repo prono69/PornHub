@@ -10,26 +10,42 @@ import json
 import os
 import re
 from datetime import datetime
-from telethon import events
 
+from telethon import events
 
 # pylint:disable=E0602
 if Config.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
-    @tgbot.on(events.callbackquery.CallbackQuery(  # pylint:disable=E0602
-        data=re.compile(b"ytdl|(.*)|(.*)|(.*)")
-    ))
+
+    @tgbot.on(
+        events.callbackquery.CallbackQuery(  # pylint:disable=E0602
+            data=re.compile(b"ytdl|(.*)|(.*)|(.*)")
+        )
+    )
     async def on_plug_in_callback_query_handler(event):
         if event.query.user_id == borg.uid:  # pylint:disable=E0602
-            ctc, tg_send_type, ytdl_format_code, ytdl_extension = event.query.data.decode(
-                "UTF-8").split("|")
+            (
+                ctc,
+                tg_send_type,
+                ytdl_format_code,
+                ytdl_extension,
+            ) = event.query.data.decode("UTF-8").split("|")
             try:
-                with open(Config.TMP_DOWNLOAD_DIRECTORY + "/" + "YouTubeDL.json", "r", encoding="utf8") as f:
+                with open(
+                    Config.TMP_DOWNLOAD_DIRECTORY + "/" + "YouTubeDL.json",
+                    "r",
+                    encoding="utf8",
+                ) as f:
                     response_json = json.load(f)
             except FileNotFoundError:
                 await event.edit("Something Bad Happened")
                 return False
-            custom_file_name = str(response_json.get("title")) + \
-                "_" + ytdl_format_code + "." + ytdl_extension
+            custom_file_name = (
+                str(response_json.get("title"))
+                + "_"
+                + ytdl_format_code
+                + "."
+                + ytdl_extension
+            )
             youtube_dl_url = response_json["webpage_url"]
             download_directory = Config.TMP_DOWNLOAD_DIRECTORY + "/" + custom_file_name
             command_to_exec = []
@@ -39,10 +55,13 @@ if Config.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
                     "-c",
                     "--prefer-ffmpeg",
                     "--extract-audio",
-                    "--audio-format", ytdl_extension,
-                    "--audio-quality", ytdl_format_code,
+                    "--audio-format",
+                    ytdl_extension,
+                    "--audio-quality",
+                    ytdl_format_code,
                     youtube_dl_url,
-                    "-o", download_directory
+                    "-o",
+                    download_directory,
                 ]
             else:
                 minus_f_format = ytdl_format_code
@@ -52,10 +71,12 @@ if Config.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
                     "youtube-dl",
                     "-c",
                     "--embed-subs",
-                    "-f", minus_f_format,
+                    "-f",
+                    minus_f_format,
                     "--hls-prefer-ffmpeg",
                     youtube_dl_url,
-                    "-o", download_directory
+                    "-o",
+                    download_directory,
                 ]
             command_to_exec.append("--no-warnings")
             logger.info(command_to_exec)
@@ -79,15 +100,16 @@ if Config.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
                 return False
             if t_response:
                 # logger.info(t_response)
-                os.remove(
-                    Config.TMP_DOWNLOAD_DIRECTORY +
-                    "/" +
-                    "YouTubeDL.json")
+                os.remove(Config.TMP_DOWNLOAD_DIRECTORY + "/" + "YouTubeDL.json")
                 end_one = datetime.now()
                 time_taken_for_download = (end_one - start).seconds
-                await event.edit(f"Downloaded to `{download_directory}` in {time_taken_for_download} seconds")
+                await event.edit(
+                    f"Downloaded to `{download_directory}` in {time_taken_for_download} seconds"
+                )
             else:
                 await event.delete()
         else:
-            reply_pop_up_alert = "Please get your own @UniBorg, Nikal Pehli Fursat se Nikal! "
+            reply_pop_up_alert = (
+                "Please get your own @UniBorg, Nikal Pehli Fursat se Nikal! "
+            )
             await event.answer(reply_pop_up_alert, cache_time=0, alert=True)

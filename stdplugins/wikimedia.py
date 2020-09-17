@@ -1,7 +1,7 @@
 """WikiMedia.ORG
 Syntax: .wikimedia Query"""
-from telethon import events
 import requests
+from telethon import events
 
 
 @borg.on(events.NewMessage(pattern=r".wikimedia (.*)", outgoing=True))
@@ -10,7 +10,13 @@ async def _(event):
         return
     input_str = event.pattern_match.group(1)
     url = "https://commons.wikimedia.org/w/api.php?action={}&generator={}&prop=imageinfo&gimlimit={}&redirects=1&titles={}&iiprop={}&format={}".format(
-        "query", "images", "5", input_str, "timestamp|user|url|mime|thumbmime|mediatype", "json")
+        "query",
+        "images",
+        "5",
+        input_str,
+        "timestamp|user|url|mime|thumbmime|mediatype",
+        "json",
+    )
     r = requests.get(url).json()
     result = ""
     results = r["query"]["pages"]
@@ -31,5 +37,7 @@ async def _(event):
         user: [{}]({})
         mime: {}
         mediatype: {}
-        """.format(pageid, title, timestamp, user, descriptionurl, mime, mediatype)
+        """.format(
+            pageid, title, timestamp, user, descriptionurl, mime, mediatype
+        )
     await event.edit("**Search**: {} \n\n **Results**: {}".format(input_str, result))

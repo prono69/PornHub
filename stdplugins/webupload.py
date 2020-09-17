@@ -2,13 +2,18 @@
 # https://github.com/Total-Noob-69/X-tra-Telegram/blob/master/userbot/plugins/webupload.py
 # modified by __me__ to suit **my** needs
 """Syntax: `.web <supported sites>`"""
-from uniborg.util import admin_cmd
 import asyncio
 import json
 import os
 
+from uniborg.util import admin_cmd
 
-@borg.on(admin_cmd(pattern="web ?(.+?|) --(anonfiles|transfer|filebin|anonymousfiles|megaupload|bayfiles|letsupload|vshare|fileio)"))
+
+@borg.on(
+    admin_cmd(
+        pattern="web ?(.+?|) --(anonfiles|transfer|filebin|anonymousfiles|megaupload|bayfiles|letsupload|vshare|fileio)"
+    )
+)
 async def _(event):
     await event.edit("`processing ...`")
     input_str = event.pattern_match.group(1)
@@ -18,25 +23,24 @@ async def _(event):
     else:
         reply = await event.get_reply_message()
         file_name = await event.client.download_media(
-            reply.media,
-            Config.TMP_DOWNLOAD_DIRECTORY
+            reply.media, Config.TMP_DOWNLOAD_DIRECTORY
         )
     # a dictionary containing the shell commands
     CMD_WEB = {
-        "anonfiles": "curl -F \"file=@{full_file_path}\" https://anonfiles.com/api/upload",
-        "transfer": "curl --upload-file \"{full_file_path}\" https://transfer.sh/{bare_local_name}",
-        "filebin": "curl -X POST --data-binary \"@{full_file_path}\" -H \"filename: {bare_local_name}\" \"https://filebin.net\"",
-        "anonymousfiles": "curl -F file=\"@{full_file_path}\" https://api.anonymousfiles.io/",
-        "megaupload": "curl -F \"file=@{full_file_path}\" https://megaupload.is/api/upload",
-        "bayfiles": "curl -F \"file=@{full_file_path}\" https://bayfiles.com/api/upload",
-        "letsupload": "curl -F \"file=@{full_file_path}\" https://api.letsupload.cc/upload",
-        "vshare": "curl -F \"file=@{}\" https://api.vshare.is/upload",
-        "file.io": "curl -F file=\"@{}\" https://file.io"}
+        "anonfiles": 'curl -F "file=@{full_file_path}" https://anonfiles.com/api/upload',
+        "transfer": 'curl --upload-file "{full_file_path}" https://transfer.sh/{bare_local_name}',
+        "filebin": 'curl -X POST --data-binary "@{full_file_path}" -H "filename: {bare_local_name}" "https://filebin.net"',
+        "anonymousfiles": 'curl -F file="@{full_file_path}" https://api.anonymousfiles.io/',
+        "megaupload": 'curl -F "file=@{full_file_path}" https://megaupload.is/api/upload',
+        "bayfiles": 'curl -F "file=@{full_file_path}" https://bayfiles.com/api/upload',
+        "letsupload": 'curl -F "file=@{full_file_path}" https://api.letsupload.cc/upload',
+        "vshare": 'curl -F "file=@{}" https://api.vshare.is/upload',
+        "file.io": 'curl -F file="@{}" https://file.io',
+    }
     filename = os.path.basename(file_name)
     try:
         selected_one = CMD_WEB[selected_transfer].format(
-            full_file_path=file_name,
-            bare_local_name=filename
+            full_file_path=file_name, bare_local_name=filename
         )
     except KeyError:
         await event.edit("`Invalid selected Transfer`")
@@ -56,8 +60,7 @@ async def _(event):
 		return"""
     if t_response:
         try:
-            t_response = json.dumps(
-                json.loads(t_response), sort_keys=True, indent=4)
+            t_response = json.dumps(json.loads(t_response), sort_keys=True, indent=4)
         except Exception:
             # some sites don't return valid JSONs
             pass

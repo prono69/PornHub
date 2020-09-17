@@ -1,6 +1,6 @@
+from sqlalchemy import Column, String
 
 from sql_helpers import BASE, SESSION
-from sqlalchemy import Column, String
 
 
 class KRead(BASE):

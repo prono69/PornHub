@@ -8,19 +8,21 @@ Available Commands:
 .uploadasstream <Path To File>"""
 
 import asyncio
+import logging
 import os
 import subprocess
 import time
 from datetime import datetime
+
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
-from telethon.tl.types import DocumentAttributeVideo
-from telethon.tl.types import DocumentAttributeAudio
-from uniborg.util import progress, admin_cmd
-import logging
+from telethon.tl.types import DocumentAttributeAudio, DocumentAttributeVideo
+
+from uniborg.util import admin_cmd, progress
+
 logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.WARN)
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.WARN
+)
 
 thumb_image_path = Config.TMP_DOWNLOAD_DIRECTORY + "/thumb_image.jpg"
 
@@ -44,9 +46,9 @@ async def _(event):
         logger.info(lst_of_files)
         u = 0
         await event.edit(
-            "Found {} files. ".format(len(lst_of_files)) +
-            "Uploading will start soon. " +
-            "Please wait!"
+            "Found {} files. ".format(len(lst_of_files))
+            + "Uploading will start soon. "
+            + "Please wait!"
         )
         thumb = None
         if os.path.exists(thumb_image_path):
@@ -70,14 +72,14 @@ async def _(event):
                     metadata = extractMetadata(createParser(single_file))
                     duration = 0
                     if metadata.has("duration"):
-                        duration = metadata.get('duration').seconds
+                        duration = metadata.get("duration").seconds
                     document_attributes = [
                         DocumentAttributeVideo(
                             duration=duration,
                             w=width,
                             h=height,
                             round_message=False,
-                            supports_streaming=True
+                            supports_streaming=True,
                         )
                     ]
                     supports_streaming = True
@@ -88,7 +90,7 @@ async def _(event):
                     title = ""
                     artist = ""
                     if metadata.has("duration"):
-                        duration = metadata.get('duration').seconds
+                        duration = metadata.get("duration").seconds
                     if metadata.has("title"):
                         title = metadata.get("title")
                     if metadata.has("artist"):
@@ -99,7 +101,7 @@ async def _(event):
                             voice=False,
                             title=title,
                             performer=artist,
-                            waveform=None
+                            waveform=None,
                         )
                     ]
                     supports_streaming = True
@@ -123,7 +125,7 @@ async def _(event):
                     await borg.send_message(
                         event.chat_id,
                         "{} caused `{}`".format(caption_rts, str(e)),
-                        reply_to=event.message.id
+                        reply_to=event.message.id,
                     )
                     # some media were having some issues
                     continue
@@ -165,7 +167,7 @@ async def _(event):
             thumb=thumb,
             progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
                 progress(d, t, mone, c_time, "trying to upload")
-            )
+            ),
         )
         end = datetime.now()
         # os.remove(input_str)
@@ -179,13 +181,24 @@ async def _(event):
 
 def get_video_thumb(file, output=None, width=90):
     metadata = extractMetadata(createParser(file))
-    p = subprocess.Popen([
-        'ffmpeg', '-i', file,
-        '-ss', str(int((0, metadata.get('duration').seconds)[metadata.has('duration')] / 2)),
-        '-filter:v', 'scale={}:-1'.format(width),
-        '-vframes', '1',
-        output,
-    ], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+    p = subprocess.Popen(
+        [
+            "ffmpeg",
+            "-i",
+            file,
+            "-ss",
+            str(
+                int((0, metadata.get("duration").seconds)[metadata.has("duration")] / 2)
+            ),
+            "-filter:v",
+            "scale={}:-1".format(width),
+            "-vframes",
+            "1",
+            output,
+        ],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+    )
     if not p.returncode and os.path.lexists(file):
         return output
 
@@ -201,9 +214,9 @@ async def _(event):
     if os.path.exists(file_name):
         if not file_name.endswith((".mkv", ".mp4", ".mp3", ".flac")):
             await mone.edit(
-                "Sorry. But I don't think {} is a streamable file.".format(file_name) +
-                " Please try again.\n" +
-                "**Supported Formats**: MKV, MP4, MP3, FLAC"
+                "Sorry. But I don't think {} is a streamable file.".format(file_name)
+                + " Please try again.\n"
+                + "**Supported Formats**: MKV, MP4, MP3, FLAC"
             )
             return False
         if os.path.exists(thumb_image_path):
@@ -216,7 +229,7 @@ async def _(event):
         width = 0
         height = 0
         if metadata.has("duration"):
-            duration = metadata.get('duration').seconds
+            duration = metadata.get("duration").seconds
         if os.path.exists(thumb_image_path):
             metadata = extractMetadata(createParser(thumb_image_path))
             if metadata.has("width"):
@@ -242,12 +255,12 @@ async def _(event):
                         w=width,
                         h=height,
                         round_message=False,
-                        supports_streaming=True
+                        supports_streaming=True,
                     )
                 ],
                 progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
                     progress(d, t, mone, c_time, "trying to upload")
-                )
+                ),
             )
         except Exception as e:
             await mone.edit(str(e))

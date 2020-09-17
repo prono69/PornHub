@@ -3,10 +3,21 @@ Available Commands:
 .unbanall
 .kick option
 Available Options: d, y, m, w, o, q, r """
-from telethon.tl.types import UserStatusEmpty, UserStatusLastMonth, UserStatusLastWeek, UserStatusOffline, UserStatusOnline, UserStatusRecently, ChannelParticipantsKicked, ChatBannedRights
-from telethon.tl import functions
-from time import sleep
 import asyncio
+from time import sleep
+
+from telethon.tl import functions
+from telethon.tl.types import (
+    ChannelParticipantsKicked,
+    ChatBannedRights,
+    UserStatusEmpty,
+    UserStatusLastMonth,
+    UserStatusLastWeek,
+    UserStatusOffline,
+    UserStatusOnline,
+    UserStatusRecently,
+)
+
 from uniborg.util import admin_cmd
 
 
@@ -22,13 +33,14 @@ async def _(event):
             return False
         await event.edit("`Searching Participant Lists.`")
         p = 0
-        async for i in borg.iter_participants(event.chat_id, filter=ChannelParticipantsKicked, aggressive=True):
-            rights = ChatBannedRights(
-                until_date=0,
-                view_messages=False
-            )
+        async for i in borg.iter_participants(
+            event.chat_id, filter=ChannelParticipantsKicked, aggressive=True
+        ):
+            rights = ChatBannedRights(until_date=0, view_messages=False)
             try:
-                await borg(functions.channels.EditBannedRequest(event.chat_id, i, rights))
+                await borg(
+                    functions.channels.EditBannedRequest(event.chat_id, i, rights)
+                )
             except FloodWaitError as ex:
                 logger.warn("sleeping for {} seconds".format(ex.seconds))
                 sleep(ex.seconds)
@@ -69,17 +81,16 @@ async def _(event):
         #
         # Note that it's "reversed". You must set to ``True`` the permissions
         # you want to REMOVE, and leave as ``None`` those you want to KEEP.
-        rights = ChatBannedRights(
-            until_date=None,
-            view_messages=True
-        )
+        rights = ChatBannedRights(until_date=None, view_messages=True)
         if isinstance(i.status, UserStatusEmpty):
             y = y + 1
             if "y" in input_str:
                 status, e = await ban_user(event.chat_id, i, rights)
                 if not status:
                     try:
-                        await event.edit("I need admin priveleges to perform this action!")
+                        await event.edit(
+                            "I need admin priveleges to perform this action!"
+                        )
                     except BaseException:
                         pass
                     ee.append(str(e))
@@ -92,7 +103,9 @@ async def _(event):
                 status, e = await ban_user(event.chat_id, i, rights)
                 if not status:
                     try:
-                        await event.edit("I need admin priveleges to perform this action!")
+                        await event.edit(
+                            "I need admin priveleges to perform this action!"
+                        )
                     except BaseException:
                         pass
                     ee.append(str(e))
@@ -105,7 +118,9 @@ async def _(event):
                 status, e = await ban_user(event.chat_id, i, rights)
                 if not status:
                     try:
-                        await event.edit("I need admin priveleges to perform this action!")
+                        await event.edit(
+                            "I need admin priveleges to perform this action!"
+                        )
                     except BaseException:
                         pass
                     ee.append(str(e))
@@ -118,7 +133,9 @@ async def _(event):
                 status, e = await ban_user(event.chat_id, i, rights)
                 if not status:
                     try:
-                        await event.edit("I need admin priveleges to perform this action!")
+                        await event.edit(
+                            "I need admin priveleges to perform this action!"
+                        )
                     except BaseException:
                         pass
                     ee.append(str(e))
@@ -131,7 +148,9 @@ async def _(event):
                 status, e = await ban_user(event.chat_id, i, rights)
                 if not status:
                     try:
-                        await event.edit("I need admin priveleges to perform this action!")
+                        await event.edit(
+                            "I need admin priveleges to perform this action!"
+                        )
                     except BaseException:
                         pass
                     ee.append(str(e))
@@ -144,7 +163,9 @@ async def _(event):
                 status, e = await ban_user(event.chat_id, i, rights)
                 if not status:
                     try:
-                        await event.edit("I need admin priveleges to perform this action!")
+                        await event.edit(
+                            "I need admin priveleges to perform this action!"
+                        )
                     except BaseException:
                         pass
                     ee.append(str(e))
@@ -157,7 +178,9 @@ async def _(event):
                 status, e = await ban_user(event.chat_id, i, rights)
                 if not status:
                     try:
-                        await event.edit("I need admin priveleges to perform this action!")
+                        await event.edit(
+                            "I need admin priveleges to perform this action!"
+                        )
                     except BaseException:
                         pass
                     ee.append(str(e))
@@ -170,7 +193,9 @@ async def _(event):
                 status, e = await ban_user(event.chat_id, i, rights)
                 if not status:
                     try:
-                        await event.edit("I need admin priveleges to perform this action!")
+                        await event.edit(
+                            "I need admin priveleges to perform this action!"
+                        )
                     except BaseException:
                         pass
                     ee.append(str(e))
@@ -192,7 +217,8 @@ Bots: `{}`
 None: `{}`"""
         await event.edit(required_string.format(c, p, d, y, m, w, o, q, r, b, n))
         await asyncio.sleep(5)
-    await event.edit("""**Total:** `{}` users\n
+    await event.edit(
+        """**Total:** `{}` users\n
 Deleted Accounts: `{}`
 **Status**: Empty = `{}`
       : Last Month = `{}`
@@ -201,7 +227,10 @@ Deleted Accounts: `{}`
       : Online = `{}`
       : Recently = `{}`
 Bots = `{}`
-Unidentified = `{}`""".format(p, d, y, m, w, o, q, r, b, n))
+Unidentified = `{}`""".format(
+            p, d, y, m, w, o, q, r, b, n
+        )
+    )
 
 
 async def ban_user(chat_id, i, rights):

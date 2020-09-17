@@ -1,11 +1,13 @@
 # Imported from ppe-remix for PepeBot
 
+import asyncio
 import os
 import random
-import asyncio
+
+from uniborg import MODULE, SYNTAX
 from uniborg.util import admin_cmd
 from userbot import deEmojify
-from uniborg import MODULE, SYNTAX
+
 MODULE.append("waifu")
 
 senpais = [37, 38, 48, 55]
@@ -22,12 +24,15 @@ async def waifu(animu):
             return
     animus = [20, 32, 33, 40, 41, 42, 58]
     sticcers = await animu.client.inline_query(
-        "stickerizerbot", f"#{random.choice(animus)}{(deEmojify(text))}")
+        "stickerizerbot", f"#{random.choice(animus)}{(deEmojify(text))}"
+    )
     try:
-        await sticcers[0].click(animu.chat_id,
-                                reply_to=animu.reply_to_msg_id,
-                                silent=True if animu.is_reply else False,
-                                hide_via=True)
+        await sticcers[0].click(
+            animu.chat_id,
+            reply_to=animu.reply_to_msg_id,
+            silent=True if animu.is_reply else False,
+            hide_via=True,
+        )
     except Exception:
         return await animu.edit(
             "`You cannot send inline results in this chat (caused by SendInlineBotResultRequest)`"
@@ -36,7 +41,7 @@ async def waifu(animu):
     await animu.delete()
 
 
-@borg.on(admin_cmd(pattern='hz(:? |$)(.*)?'))
+@borg.on(admin_cmd(pattern="hz(:? |$)(.*)?"))
 async def _(hazmat):
     await hazmat.edit("`Sending information...`")
     level = hazmat.pattern_match.group(2)
@@ -58,16 +63,12 @@ async def _(hazmat):
             msg = await conv.send_message(reply_message)
             if level:
                 m = f"/hazmat {level}"
-                msg_reply = await conv.send_message(
-                    m,
-                    reply_to=msg.id)
+                msg_reply = await conv.send_message(m, reply_to=msg.id)
                 r = await conv.get_response()
                 response = await conv.get_response()
             elif reply_message.gif:
                 m = "/hazmat"
-                msg_reply = await conv.send_message(
-                    m,
-                    reply_to=msg.id)
+                msg_reply = await conv.send_message(m, reply_to=msg.id)
                 r = await conv.get_response()
                 response = await conv.get_response()
             else:
@@ -80,21 +81,20 @@ async def _(hazmat):
         if response.text.startswith("I can't"):
             await hazmat.edit("`Can't handle this GIF...`")
             await hazmat.client.delete_messages(
-                conv.chat_id,
-                [msg.id, response.id, r.id, msg_reply.id])
+                conv.chat_id, [msg.id, response.id, r.id, msg_reply.id]
+            )
             return
         else:
             downloaded_file_name = await hazmat.client.download_media(
-                response.media,
-                Config.TMP_DOWNLOAD_DIRECTORY
+                response.media, Config.TMP_DOWNLOAD_DIRECTORY
             )
             await hazmat.client.send_file(
                 hazmat.chat_id,
                 downloaded_file_name,
                 force_document=False,
-                reply_to=message_id_to_reply
+                reply_to=message_id_to_reply,
             )
-            #""" - cleanup chat after completed - """
+            # """ - cleanup chat after completed - """
             # if msg_reply is not None:
             # await hazmat.client.delete_messages(
             # conv.chat_id,
@@ -113,15 +113,20 @@ async def _(animu):
         if animu.is_reply:
             text = (await animu.get_reply_message()).message
         else:
-            await animu.answer("`No text given, hence the Senpai will beat u in the Toilet` 🌚")
+            await animu.answer(
+                "`No text given, hence the Senpai will beat u in the Toilet` 🌚"
+            )
             return
     sticcers = await animu.client.inline_query(
-        "stickerizerbot", f"#{random.choice(senpais)}{(deEmojify(text))}")
+        "stickerizerbot", f"#{random.choice(senpais)}{(deEmojify(text))}"
+    )
     try:
-        await sticcers[0].click(animu.chat_id,
-                                reply_to=animu.reply_to_msg_id,
-                                silent=True if animu.is_reply else False,
-                                hide_via=True)
+        await sticcers[0].click(
+            animu.chat_id,
+            reply_to=animu.reply_to_msg_id,
+            silent=True if animu.is_reply else False,
+            hide_via=True,
+        )
     except Exception:
         return await animu.edit(
             "`You cannot send inline results in this chat (caused by SendInlineBotResultRequest)`"
@@ -129,12 +134,14 @@ async def _(animu):
     await asyncio.sleep(3)
     await animu.delete()
 
-SYNTAX.update({
-    "waifu":
-    "`.waifu` text\
+
+SYNTAX.update(
+    {
+        "waifu": "`.waifu` text\
 \nUsage: for custom stickers.\
 \n\n`.hz` or `.hz [flip, x2, rotate (degree), background (number), black]`\
 \nUsage: Reply to a image / sticker to suit up!.\
 \n\n`.senpai` <text> or <reply to a message>\
 \nUsage: Go find yourself"
-})
+    }
+)

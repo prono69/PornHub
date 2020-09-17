@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Numeric, UnicodeText
-from sql_helpers import SESSION, BASE
+
+from sql_helpers import BASE, SESSION
 
 
 class Filters(BASE):
@@ -8,12 +9,7 @@ class Filters(BASE):
     keyword = Column(UnicodeText, primary_key=True)
     f_mesg_id = Column(Numeric)
 
-    def __init__(
-        self,
-        chat_id,
-        keyword,
-        f_mesg_id
-    ):
+    def __init__(self, chat_id, keyword, f_mesg_id):
         self.chat_id = chat_id
         self.keyword = keyword
         self.f_mesg_id = f_mesg_id

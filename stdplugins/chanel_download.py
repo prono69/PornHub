@@ -3,21 +3,24 @@ Telegram Channel Media Downloader Plugin for userbot.
 usage: .geta channel_username [will  get all media from channel, tho there is limit of 3000 there to prevent API limits.]
 By: @Zero_cool7870
 """
+import asyncio
+import math
+import os
+import time
+
 from telethon import errors
 from telethon.errors.rpcerrorlist import MessageNotModifiedError
-import asyncio
-import os
+
 from uniborg.util import admin_cmd, humanbytes, time_formatter
-import math
-import time
 
 SLEEP_TIME = 5
 
 
 def getProgressBarString(percentage):
     progress_bar_str = "[{0}{1}]\n".format(
-        ''.join(["▰" for i in range(math.floor(percentage / 5))]),
-        ''.join(["▱" for i in range(18 - math.floor(percentage / 5))]))
+        "".join(["▰" for i in range(math.floor(percentage / 5))]),
+        "".join(["▱" for i in range(18 - math.floor(percentage / 5))]),
+    )
     return progress_bar_str
 
 
@@ -119,8 +122,10 @@ class TelegramDownloader:
         diff = time.time() - self.start_time
         self.transfer_speed = self.transferredBytes() / diff
         try:
-            self._eta = round(
-                (self.totalBytes() - self.transferredBytes()) / self.speed()) * 1000
+            self._eta = (
+                round((self.totalBytes() - self.transferredBytes()) / self.speed())
+                * 1000
+            )
         except ZeroDivisionError:
             self._eta = 0
 
@@ -142,7 +147,9 @@ class TelegramDownloader:
         else:
             self.current_file_name = "file"
         try:
-            await borg.download_media(message, self.base_dir, progress_callback=self.onTransferProgress)
+            await borg.download_media(
+                message, self.base_dir, progress_callback=self.onTransferProgress
+            )
         except errors.FloodWaitError as e:
             await asyncio.sleep(e.seconds)
         self.last_downloaded = 0

@@ -8,21 +8,22 @@ to delete ur profile pic.
 to change ur username.
 .photo <number>"""
 
-import os
 import datetime
-from datetime import datetime
-from telethon.tl import functions
-from uniborg.util import admin_cmd
-from telethon.errors.rpcerrorlist import (UsernameOccupiedError,
-                                          UsernameInvalidError)
-from telethon.tl.functions.account import (UpdateUsernameRequest)
-from telethon.tl.functions.photos import (DeletePhotosRequest,
-                                          GetUserPhotosRequest)
-from telethon.tl.types import InputPhoto
 import logging
+import os
+from datetime import datetime
+
+from telethon.errors.rpcerrorlist import UsernameInvalidError, UsernameOccupiedError
+from telethon.tl import functions
+from telethon.tl.functions.account import UpdateUsernameRequest
+from telethon.tl.functions.photos import DeletePhotosRequest, GetUserPhotosRequest
+from telethon.tl.types import InputPhoto
+
+from uniborg.util import admin_cmd
+
 logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+    format="[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s", level=logging.WARNING
+)
 
 
 @borg.on(admin_cmd(pattern="cbio (.*)"))
@@ -31,9 +32,7 @@ async def _(event):
         return
     bio = event.pattern_match.group(1)
     try:
-        await borg(functions.account.UpdateProfileRequest(
-            about=bio
-        ))
+        await borg(functions.account.UpdateProfileRequest(about=bio))
         await event.edit("`Succesfully changed My Profile bio`")
     except Exception as e:  # pylint:disable=C0103,W0703
         await event.edit(str(e))
@@ -49,10 +48,11 @@ async def _(event):
     if "\\n" in names:
         first_name, last_name = names.split("\\n", 1)
     try:
-        await borg(functions.account.UpdateProfileRequest(
-            first_name=first_name,
-            last_name=last_name
-        ))
+        await borg(
+            functions.account.UpdateProfileRequest(
+                first_name=first_name, last_name=last_name
+            )
+        )
         await event.edit("`My name was changed successfully`")
     except Exception as e:  # pylint:disable=C0103,W0703
         await event.edit(str(e))
@@ -71,10 +71,7 @@ async def _(event):
         os.makedirs(Config.TMP_DOWNLOAD_DIRECTORY)
     photo = None
     try:
-        photo = await borg.download_media(
-            reply_message,
-            Config.TMP_DOWNLOAD_DIRECTORY
-        )
+        photo = await borg.download_media(reply_message, Config.TMP_DOWNLOAD_DIRECTORY)
     except Exception as e:
         await event.edit(str(e))
     else:
@@ -93,10 +90,11 @@ async def _(event):
                 catpic = await borg.upload_file(photo)
                 catvideo = None
             try:
-                await borg(functions.photos.UploadProfilePhotoRequest(
-                    file=catpic,
-                    video=catvideo,
-                    video_start_ts=0.01))
+                await borg(
+                    functions.photos.UploadProfilePhotoRequest(
+                        file=catpic, video=catvideo, video_start_ts=0.01
+                    )
+                )
             except Exception as e:  # pylint:disable=C0103,W0703
                 await event.edit(str(e))
             else:
@@ -111,7 +109,7 @@ async def _(event):
 async def remove_profilepic(delpfp):
     """ For .delpfp command, delete your current profile picture in Telegram. """
     group = delpfp.text[8:]
-    if group == 'all':
+    if group == "all":
         lim = 0
     elif group.isdigit():
         lim = int(group)
@@ -119,19 +117,19 @@ async def remove_profilepic(delpfp):
         lim = 1
 
     pfplist = await delpfp.client(
-        GetUserPhotosRequest(user_id=delpfp.from_id,
-                             offset=0,
-                             max_id=0,
-                             limit=lim))
+        GetUserPhotosRequest(user_id=delpfp.from_id, offset=0, max_id=0, limit=lim)
+    )
     input_photos = []
     for sep in pfplist.photos:
         input_photos.append(
-            InputPhoto(id=sep.id,
-                       access_hash=sep.access_hash,
-                       file_reference=sep.file_reference))
+            InputPhoto(
+                id=sep.id,
+                access_hash=sep.access_hash,
+                file_reference=sep.file_reference,
+            )
+        )
     await delpfp.client(DeletePhotosRequest(id=input_photos))
-    await delpfp.edit(
-        f"`Successfully deleted {len(input_photos)} profile picture(s).`")
+    await delpfp.edit(f"`Successfully deleted {len(input_photos)} profile picture(s).`")
 
 
 @borg.on(admin_cmd(pattern="username ?(.*)"))
@@ -169,7 +167,8 @@ async def _(event):
                 d = d.astimezone()
                 msg_utc = d.strftime("%d %m %Y %H:%M:%S")
                 msg = "Last profile photo changed: \n👉 `{}` `UTC+5:30`".format(
-                    str(msg_utc))
+                    str(msg_utc)
+                )
                 await a.edit(msg)
         except BaseException:
             pass
@@ -188,7 +187,8 @@ async def _(event):
                 d = d.astimezone()
                 msg_utc = d.strftime("%d %m %Y %H:%M:%S")
                 msg = "Last profile photo changed: \n👉 `{}` `UTC+5:30`".format(
-                    str(msg_utc))
+                    str(msg_utc)
+                )
                 await a.edit(msg)
         except BaseException:
             pass

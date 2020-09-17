@@ -8,9 +8,14 @@ Available Commands:
 .clearfilter"""
 import asyncio
 import re
-from sql_helpers.filters_sql import add_filter, get_all_filters, remove_all_filters, remove_filter
-from uniborg.util import admin_cmd
 
+from sql_helpers.filters_sql import (
+    add_filter,
+    get_all_filters,
+    remove_all_filters,
+    remove_filter,
+)
+from uniborg.util import admin_cmd
 
 DELETE_TIMEOUT = 300
 last_triggered_filters = {}
@@ -30,17 +35,13 @@ async def on_snip(event):
             pattern = r"( |^|[^\w])" + re.escape(snip.keyword) + r"( |$|[^\w])"
             if re.search(pattern, name, flags=re.IGNORECASE):
                 msg_o = await event.client.get_messages(
-                    entity=Config.PRIVATE_CHANNEL_BOT_API_ID,
-                    ids=int(snip.f_mesg_id)
+                    entity=Config.PRIVATE_CHANNEL_BOT_API_ID, ids=int(snip.f_mesg_id)
                 )
                 message_id = event.message.id
                 if event.reply_to_msg_id:
                     message_id = event.reply_to_msg_id
                 await event.client.send_message(
-                    event.chat_id,
-                    msg_o.message,
-                    reply_to=message_id,
-                    file=msg_o.media
+                    event.chat_id, msg_o.message, reply_to=message_id, file=msg_o.media
                 )
                 if event.chat_id not in last_triggered_filters:
                     last_triggered_filters[event.chat_id] = []
@@ -58,12 +59,14 @@ async def on_snip_save(event):
             entity=Config.PRIVATE_CHANNEL_BOT_API_ID,
             messages=msg,
             from_peer=event.chat_id,
-            silent=True
+            silent=True,
         )
         add_filter(event.chat_id, name, msg_o.id)
         await event.edit(f"Filter `{name}` saved successfully. Get it with `{name}`")
     else:
-        await event.edit("Reply to a message with `savefilter keyword` to save the filter")
+        await event.edit(
+            "Reply to a message with `savefilter keyword` to save the filter"
+        )
 
 
 @borg.on(admin_cmd(pattern="listfilters"))
@@ -84,7 +87,7 @@ async def on_snip_list(event):
                 force_document=True,
                 allow_cache=False,
                 caption="Available Filters in the Current Chat",
-                reply_to=event
+                reply_to=event,
             )
             await event.delete()
     else:

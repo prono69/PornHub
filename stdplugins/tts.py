@@ -7,7 +7,9 @@ import asyncio
 import os
 import subprocess
 from datetime import datetime
+
 from gtts import gTTS
+
 from uniborg.util import admin_cmd
 
 
@@ -46,11 +48,12 @@ async def _(event):
             "100k",
             "-vbr",
             "on",
-            required_file_name + ".opus"
+            required_file_name + ".opus",
         ]
         try:
             t_response = subprocess.check_output(
-                command_to_execute, stderr=subprocess.STDOUT)
+                command_to_execute, stderr=subprocess.STDOUT
+            )
         except (subprocess.CalledProcessError, NameError, FileNotFoundError) as exc:
             await event.edit(str(exc))
             # continue sending required_file_name
@@ -65,7 +68,7 @@ async def _(event):
             # caption="Processed {} ({}) in {} seconds!".format(text[0:97], lan, ms),
             reply_to=event.message.reply_to_msg_id,
             allow_cache=False,
-            voice_note=True
+            voice_note=True,
         )
         os.remove(required_file_name)
         await event.edit("Processed {} ({}) in {} seconds!".format(text[0:97], lan, ms))

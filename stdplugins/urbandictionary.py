@@ -4,6 +4,7 @@
 """Urban Dictionary
 Syntax: .ud Query"""
 import urbandict
+
 from uniborg.util import admin_cmd, edit_or_reply
 
 
@@ -25,13 +26,17 @@ async def _(event):
         mean = urbandict.define(query)
 
     except BaseException:
-        await hmm.edit(text=f"Sorry, couldn't find any results fer: `{query}``\nSed vary sed \n**TIP**: \n`Now head towerd Googal u nibba`")
+        await hmm.edit(
+            text=f"Sorry, couldn't find any results fer: `{query}``\nSed vary sed \n**TIP**: \n`Now head towerd Googal u nibba`"
+        )
         return
 
-    output = ''
+    output = ""
     for i, mean_ in enumerate(mean, start=1):
-        output += f"{i}- **{mean_['def']}**\n" + \
-            f" Examples:\n » `{mean_['example'] or 'not found'}`\n\n"
+        output += (
+            f"{i}- **{mean_['def']}**\n"
+            + f" Examples:\n » `{mean_['example'] or 'not found'}`\n\n"
+        )
         if i == 8:
             break
 

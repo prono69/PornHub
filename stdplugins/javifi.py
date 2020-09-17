@@ -1,6 +1,7 @@
 from telethon.errors.rpcerrorlist import YouBlockedUserError
-from uniborg.util import admin_cmd
+
 from uniborg import MODULE, SYNTAX
+from uniborg.util import admin_cmd
 
 naam = "NIKITA"
 nom = " You"
@@ -25,7 +26,13 @@ async def _(event):
                 await conv.get_response()
                 await conv.send_message("/hello")
                 audio = await conv.get_response()
-                await borg.send_file(event.chat_id, audio, caption="➡️**TO BOSS : **" + naam + "\n`Check out` [PEPEBOT](https://github.com/prono69/PepeBot)")
+                await borg.send_file(
+                    event.chat_id,
+                    audio,
+                    caption="➡️**TO BOSS : **"
+                    + naam
+                    + "\n`Check out` [PEPEBOT](https://github.com/prono69/PepeBot)",
+                )
                 await event.delete()
                 await event.client.send_read_acknowledge(conv.chat_id)
             except YouBlockedUserError:
@@ -37,7 +44,11 @@ async def _(event):
                 await conv.get_response()
                 await conv.send_message("/ss")
                 audio = await conv.get_response()
-                await borg.send_file(event.chat_id, audio, caption="**CREDITS : Dr.jr Genesis**\n`Check out` [PEPEBOT](https://github.com/prono69/PepeBot)")
+                await borg.send_file(
+                    event.chat_id,
+                    audio,
+                    caption="**CREDITS : Dr.jr Genesis**\n`Check out` [PEPEBOT](https://github.com/prono69/PepeBot)",
+                )
                 await event.delete()
                 await event.client.send_read_acknowledge(conv.chat_id)
             except YouBlockedUserError:
@@ -49,7 +60,11 @@ async def _(event):
                 await conv.get_response()
                 await conv.send_message("/help")
                 audio = await conv.get_response()
-                await borg.send_file(event.chat_id, audio, caption="**Dr.Bot Is Here To Help**\n`Check out` [PEPEBOT](https://github.com/prono69/PepeBot)")
+                await borg.send_file(
+                    event.chat_id,
+                    audio,
+                    caption="**Dr.Bot Is Here To Help**\n`Check out` [PEPEBOT](https://github.com/prono69/PepeBot)",
+                )
                 await event.delete()
                 await event.client.send_read_acknowledge(conv.chat_id)
             except YouBlockedUserError:
@@ -61,7 +76,13 @@ async def _(event):
                 await conv.get_response()
                 await conv.send_message("/nudepic")
                 audio = await conv.get_response()
-                await borg.send_file(event.chat_id, audio, caption="**For" + nom + " **\n`Check out` [PEPEBOT](https://github.com/prono69/PepeBot)")
+                await borg.send_file(
+                    event.chat_id,
+                    audio,
+                    caption="**For"
+                    + nom
+                    + " **\n`Check out` [PEPEBOT](https://github.com/prono69/PepeBot)",
+                )
                 await event.delete()
                 await event.client.send_read_acknowledge(conv.chat_id)
             except YouBlockedUserError:
@@ -73,7 +94,11 @@ async def _(event):
                 await conv.get_response()
                 await conv.send_message("/rs")
                 audio = await conv.get_response()
-                await borg.send_file(event.chat_id, audio, caption="**CREDITS : Dr.Pure Indian Lover**\n`Check out` [PEPEBOT](https://github.com/prono69/PepeBot)")
+                await borg.send_file(
+                    event.chat_id,
+                    audio,
+                    caption="**CREDITS : Dr.Pure Indian Lover**\n`Check out` [PEPEBOT](https://github.com/prono69/PepeBot)",
+                )
                 await event.delete()
                 await event.client.send_read_acknowledge(conv.chat_id)
             except YouBlockedUserError:
@@ -85,7 +110,11 @@ async def _(event):
                 await conv.get_response()
                 await conv.send_message("/ib")
                 audio = await conv.get_response()
-                await borg.send_file(event.chat_id, audio, caption="**CREDITS : Dr.BlueDevil**\n`Check out` [PEPEBOT](https://github.com/prono69/PepeBot)")
+                await borg.send_file(
+                    event.chat_id,
+                    audio,
+                    caption="**CREDITS : Dr.BlueDevil**\n`Check out` [PEPEBOT](https://github.com/prono69/PepeBot)",
+                )
                 await event.delete()
                 await event.client.send_read_acknowledge(conv.chat_id)
             except YouBlockedUserError:
@@ -115,13 +144,16 @@ async def _(event):
             except YouBlockedUserError:
                 await event.edit("**Error:** `unblock` @indianaibot `and retry!`")
     else:
-        await brog.send_message(event.chat_id, "**INVALID** -- FOR HELP COMMAND IS **.jav --h**")
+        await brog.send_message(
+            event.chat_id, "**INVALID** -- FOR HELP COMMAND IS **.jav --h**"
+        )
         await event.delete()
         await event.client.send_read_acknowledge(event.chat_id)
 
-SYNTAX.update({
-    "javifi":
-    "Usage: Various Bot Commands\
+
+SYNTAX.update(
+    {
+        "javifi": "Usage: Various Bot Commands\
 \n\n`.jav h` For Hello\
 \n\n`.jav --h` For Help\
 \n\n`.jav npic` For a Random Nude Pic\
@@ -130,4 +162,5 @@ SYNTAX.update({
 \n\n`.jav ib` \
 \n\n`.jav acc` \
 \n\n`.jav ccn`"
-})
+    }
+)

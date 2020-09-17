@@ -1,12 +1,15 @@
 """Color Plugin for @UniBorg
 Syntax: .color <color_code>"""
-import os
-from PIL import Image, ImageColor
-from uniborg.util import admin_cmd
 import logging
+import os
+
+from PIL import Image, ImageColor
+
+from uniborg.util import admin_cmd
+
 logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.WARN)
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.WARN
+)
 
 
 @borg.on(admin_cmd(pattern="color (.*)"))
@@ -32,7 +35,7 @@ async def _(event):
                 "UniBorg.png",
                 force_document=False,
                 caption=input_str,
-                reply_to=message_id
+                reply_to=message_id,
             )
             os.remove("UniBorg.png")
             await event.delete()

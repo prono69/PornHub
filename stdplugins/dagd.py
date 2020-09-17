@@ -1,5 +1,6 @@
 """COMMAND : .dns , .link, .unshort , .myip , .myisp , .myhead , .mywho , .myup , .iifast"""
 import requests
+
 from uniborg.util import admin_cmd
 
 
@@ -37,10 +38,14 @@ async def _(event):
     if not input_str.startswith("http"):
         input_str = "http://" + input_str
     r = requests.get(input_str, allow_redirects=False)
-    if str(r.status_code).startswith('3'):
-        await event.edit("Input URL: {}\nReDirected URL: {}".format(input_str, r.headers["Location"]))
+    if str(r.status_code).startswith("3"):
+        await event.edit(
+            "Input URL: {}\nReDirected URL: {}".format(input_str, r.headers["Location"])
+        )
     else:
-        await event.edit("Input URL {} returned status_code {}".format(input_str, r.status_code))
+        await event.edit(
+            "Input URL {} returned status_code {}".format(input_str, r.status_code)
+        )
 
 
 @borg.on(admin_cmd(pattern="myip(.*)"))
@@ -103,7 +108,9 @@ async def _(event):
     sample_url = "https://da.gd/up/{}".format(input_str)
     response_api = requests.get(sample_url).text
     if response_api:
-        await event.edit("`Is Website Up????`\n ☞ {}\n\n\nAns: `{}`".format(input_str, response_api))
+        await event.edit(
+            "`Is Website Up????`\n ☞ {}\n\n\nAns: `{}`".format(input_str, response_api)
+        )
     else:
         await event.edit("I can't seem to find {} on the internet".format(input_str))
 
@@ -116,6 +123,8 @@ async def _(event):
     sample_url = "https://tools.keycdn.com/geo".format(input_str)
     response_api = requests.get(sample_url).text
     if response_api:
-        await event.edit("`Here's What I Found:`\n{}\n{}".format(input_str, response_api))
+        await event.edit(
+            "`Here's What I Found:`\n{}\n{}".format(input_str, response_api)
+        )
     else:
         await event.edit("I can't seem to find {} on the internet".format(input_str))

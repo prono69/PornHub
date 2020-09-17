@@ -8,15 +8,13 @@
 ◇ to know syntax
 ◆ `.nigga` <plugin name>
 """
-import sys
 import shutil
+import sys
 import time
-from telethon import functions, __version__
-from uniborg.util import (
-    admin_cmd,
-    humanbytes,
-    time_formatter
-)
+
+from telethon import __version__, functions
+
+from uniborg.util import admin_cmd, humanbytes, time_formatter
 
 
 @borg.on(admin_cmd(pattern="info ?(.*)", allow_sudo=True))
@@ -45,23 +43,16 @@ async def _(event):
 <b>Used Disk Space</b>: <code>{}</code>
 <b>Free Disk Space</b>: <code>{}</code>
 
-<b>Custom Repo</b>: https://github.com/prono69/PepeBot """.format(current_run_time,
-                                                                  sys.version,
-                                                                  __version__,
-                                                                  check_sgnirts,
-                                                                  total,
-                                                                  used,
-                                                                  free)
+<b>Custom Repo</b>: https://github.com/prono69/PepeBot """.format(
+        current_run_time, sys.version, __version__, check_sgnirts, total, used, free
+    )
     tgbotusername = Config.TG_BOT_USER_NAME_BF_HER
     if tgbotusername is not None:
         results = await borg.inline_query(
-            tgbotusername,
-            help_string + "\n\n" + s_help_string
+            tgbotusername, help_string + "\n\n" + s_help_string
         )
         await results[0].click(
-            event.chat_id,
-            reply_to=event.reply_to_msg_id,
-            hide_via=True
+            event.chat_id, reply_to=event.reply_to_msg_id, hide_via=True
         )
         await event.delete()
     else:
@@ -74,9 +65,11 @@ async def _(event):
     if event.fwd_from:
         return
     result = await borg(functions.help.GetNearestDcRequest())  # pylint:disable=E0602
-    await event.edit(f"**Country** : `{result.country}`\n"
-                     f"**Nearest DC** : `{result.nearest_dc}`\n"
-                     f"**This DC** : `{result.this_dc}`")
+    await event.edit(
+        f"**Country** : `{result.country}`\n"
+        f"**Nearest DC** : `{result.nearest_dc}`\n"
+        f"**This DC** : `{result.this_dc}`"
+    )
 
 
 @borg.on(admin_cmd(pattern="config"))  # pylint:disable=E0602
@@ -96,7 +89,9 @@ async def _(event):
     plugin_name = event.pattern_match.group(1)
     if plugin_name in borg._plugins:
         help_string = borg._plugins[plugin_name].__doc__
-        unload_string = f"Use `.unload {plugin_name}` to remove this plugin.\n           © @UniBorg"
+        unload_string = (
+            f"Use `.unload {plugin_name}` to remove this plugin.\n           © @UniBorg"
+        )
         if help_string:
             plugin_syntax = f"Syntax for plugin **{plugin_name}**:\n\n{help_string}\n{unload_string}"
         else:

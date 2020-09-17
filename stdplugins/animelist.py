@@ -5,16 +5,19 @@
 \n\n**DON'T EDIT CREDITS**
 \n\n#LazyAF_Geng rocks.. 🔥
 """
-from jikanpy import Jikan
+import asyncio
+import datetime
 import html
+import textwrap
+
 import bs4
 import requests
-import datetime
-import asyncio
-import textwrap
-from uniborg.util import admin_cmd
+from jikanpy import Jikan
 from jikanpy.exceptions import APIException
+
 from uniborg import MODULE, SYNTAX
+from uniborg.util import admin_cmd
+
 MODULE.append("animelist")
 
 jikan = Jikan()
@@ -34,7 +37,7 @@ async def anime(event):
         await asyncio.sleep(6)
         await event.delete()
         return
-    #res = ""
+    # res = ""
     try:
         res = jikan.search("anime", query)
     except Exception as err:
@@ -95,7 +98,7 @@ async def anime(event):
     rep += f"<a href='{image_url}'>\u200c</a>"
     rep += f"📖 <b>Synopsis</b>: <i>{synopsis}</i>\n"
     rep += f'<b>Read More:</b> <a href="{url}">MyAnimeList</a>'
-    await event.edit(rep, parse_mode='HTML', link_preview=True)
+    await event.edit(rep, parse_mode="HTML", link_preview=True)
 
 
 @borg.on(admin_cmd(pattern="manga ?(.*)"))
@@ -143,7 +146,7 @@ async def manga(event):
         rep += f"<a href='{image}'>\u200c</a>"
         rep += f"📖 <b>Synopsis</b>: <i>{synopsis}</i>\n"
         rep += f'<b>Read More:</b> <a href="{url}">MyAnimeList</a>'
-        await event.edit(rep, parse_mode='HTML', link_preview=True)
+        await event.edit(rep, parse_mode="HTML", link_preview=True)
 
 
 @borg.on(admin_cmd(pattern="user ?(.*)"))
@@ -165,41 +168,40 @@ async def user(event):
         return
 
     date_format = "%Y-%m-%d"
-    if user['image_url'] is None:
+    if user["image_url"] is None:
         img = "https://telegra.ph//file/9b4205e1b1cc68a4ffd5e.jpg"
     else:
-        img = user['image_url']
+        img = user["image_url"]
 
     try:
-        user_birthday = datetime.datetime.fromisoformat(user['birthday'])
+        user_birthday = datetime.datetime.fromisoformat(user["birthday"])
         user_birthday_formatted = user_birthday.strftime(date_format)
     except BaseException:
         user_birthday_formatted = "Unknown"
 
-    user_joined_date = datetime.datetime.fromisoformat(user['joined'])
+    user_joined_date = datetime.datetime.fromisoformat(user["joined"])
     user_joined_date_formatted = user_joined_date.strftime(date_format)
-    user_last_online = datetime.datetime.fromisoformat(user['last_online'])
+    user_last_online = datetime.datetime.fromisoformat(user["last_online"])
     user_last_online_formatted = user_last_online.strftime(date_format)
 
     for entity in user:
         if user[entity] is None:
             user[entity] = "Unknown"
 
-    about = user['about'].split(" ", 60)
+    about = user["about"].split(" ", 60)
 
     try:
         about.pop(60)
     except IndexError:
         pass
 
-    about_string = ' '.join(about)
-    about_string = about_string.replace(
-        "<br>", "").strip().replace(
-        "\r\n", "\n")
+    about_string = " ".join(about)
+    about_string = about_string.replace("<br>", "").strip().replace("\r\n", "\n")
 
     caption = ""
 
-    caption += textwrap.dedent(f"""
+    caption += textwrap.dedent(
+        f"""
     **Username**: [{user['username']}]({user['url']})
 
     **Gender**: `{user['gender']}`
@@ -210,7 +212,8 @@ async def user(event):
     **Days wasted watching Anime**: `{user['anime_stats']['days_watched']}`
     **Days wasted reading Manga**: `{user['manga_stats']['days_read']}`
 
-    """)
+    """
+    )
 
     caption += f"**About**: {about_string}"
     await event.client.send_file(event.chat_id, file=img, caption=caption)
@@ -233,24 +236,24 @@ async def site_search(event):
         search_url = f"https://animekaizoku.com/?s={search_query}"
         html_text = requests.get(search_url).text
         soup = bs4.BeautifulSoup(html_text, "html.parser")
-        search_result = soup.find_all("h2", {'class': "post-title"})
+        search_result = soup.find_all("h2", {"class": "post-title"})
 
         if search_result:
             result = f"<a href='{search_url}'>Click Here For More Results</a> <b>of</b> <code>{html.escape(search_query)}</code> <b>on</b> <code>AnimeKaizoku</code>: \n\n"
             for entry in search_result:
-                post_link = entry.a['href']
+                post_link = entry.a["href"]
                 post_name = html.escape(entry.text.strip())
                 result += f"• <a href='{post_link}'>{post_name}</a>\n"
-                await event.edit(result, parse_mode='HTML')
+                await event.edit(result, parse_mode="HTML")
         else:
             result = f"<b>No result found for</b> <code>{html.escape(search_query)}</code> <b>on</b> <code>AnimeKaizoku</code>"
-            await event.edit(result, parse_mode='HTML')
+            await event.edit(result, parse_mode="HTML")
 
     elif site == "kayo":
         search_url = f"https://animekayo.com/?s={search_query}"
         html_text = requests.get(search_url).text
         soup = bs4.BeautifulSoup(html_text, "html.parser")
-        search_result = soup.find_all("h2", {'class': "title"})
+        search_result = soup.find_all("h2", {"class": "title"})
 
         result = f"<a href='{search_url}'>Click Here For More Results</a> <b>of</b> <code>{html.escape(search_query)}</code> <b>on</b> <code>AnimeKayo</code>: \n\n"
         for entry in search_result:
@@ -259,10 +262,10 @@ async def site_search(event):
                 result = f"<b>No result found for</b> <code>{html.escape(search_query)}</code> <b>on</b> <code>AnimeKayo</code>"
                 break
 
-            post_link = entry.a['href']
+            post_link = entry.a["href"]
             post_name = html.escape(entry.text.strip())
             result += f"• <a href='{post_link}'>{post_name}</a>\n"
-            await event.edit(result, parse_mode='HTML')
+            await event.edit(result, parse_mode="HTML")
 
 
 @borg.on(admin_cmd(pattern="char ?(.*)"))
@@ -285,31 +288,32 @@ async def character(event):
     first_mal_id = search_result["results"][0]["mal_id"]
     character = jikan.character(first_mal_id)
     caption = f"[{character['name']}]({character['url']})"
-    if character['name_kanji'] != "Japanese":
+    if character["name_kanji"] != "Japanese":
         caption += f" (`{character['name_kanji']}`)\n"
     else:
         caption += "\n"
 
-    if character['nicknames']:
-        nicknames_string = ", ".join(character['nicknames'])
+    if character["nicknames"]:
+        nicknames_string = ", ".join(character["nicknames"])
         caption += f"\n**Nicknames** : `{nicknames_string}`"
-    about = character['about'].split(" ", 60)
+    about = character["about"].split(" ", 60)
     try:
         about.pop(60)
     except IndexError:
         pass
-    about_string = ' '.join(about)
-    mal_url = search_result["results"][0]['url']
+    about_string = " ".join(about)
+    mal_url = search_result["results"][0]["url"]
     for entity in character:
         if character[entity] is None:
             character[entity] = "Unknown"
     caption += f"\n🔰**Extracted Character Data**🔰\n\n__{about_string}...__"
     caption += f"\n[READ MORE]({mal_url})"
-    await event.client.send_file(event.chat_id,
-                                 file=character['image_url'],
-                                 caption=replace_text(caption),
-                                 reply_to=event
-                                 )
+    await event.client.send_file(
+        event.chat_id,
+        file=character["image_url"],
+        caption=replace_text(caption),
+        reply_to=event,
+    )
 
 
 @borg.on(admin_cmd(pattern="upcoming ?(.*)"))
@@ -323,28 +327,21 @@ async def upcoming(message):
         rep += f"• <a href='{url}'>{name}</a>\n"
         if len(rep) > 1000:
             break
-        await message.edit(rep, parse_mode='html')
+        await message.edit(rep, parse_mode="html")
 
 
 def replace_text(text):
-    return text.replace(
-        "\"",
-        "").replace(
-        "\\r",
-        "").replace(
-            "\\n",
-            "").replace(
-                "\\",
-        "")
+    return text.replace('"', "").replace("\\r", "").replace("\\n", "").replace("\\", "")
 
 
-SYNTAX.update({
-    "animelist":
-    "Usage: Anime Information\
+SYNTAX.update(
+    {
+        "animelist": "Usage: Anime Information\
 \n\n`.anime <anime>` Returns with Anime information.\
 \n\n`.character <name>` Returns with Character information.\
 \n\n`.manga <manga name>` Returns with the Manga information.\
 \n\n`.user <MAL username>` Returns with MAL information.\
 \n\n`.sh <kaizoku or kayo> <anime name>` Returns with the Anime Downlaod link.\
 \n\n`.upcoming` Returns with Upcoming Anime information."
-})
+    }
+)

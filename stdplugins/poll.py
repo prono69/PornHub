@@ -1,7 +1,9 @@
 import random
+
 from telethon.errors.rpcbaseerrors import ForbiddenError
 from telethon.errors.rpcerrorlist import PollOptionInvalidError
 from telethon.tl.types import InputMediaPoll, Poll, PollAnswer
+
 from uniborg import SYNTAX
 from uniborg.util import admin_cmd, edit_or_reply
 
@@ -66,7 +68,8 @@ async def pollcreator(catpoll):
                 catpoll,
                 "Make sure that you used Correct syntax `.poll question ; option1 ; option2`",
             )
-            
+
+
 def Build_Poll(options):
     i = 0
     poll = []
@@ -74,6 +77,7 @@ def Build_Poll(options):
         i = i + 1
         poll.append(PollAnswer(option, bytes(i)))
     return poll
+
 
 SYNTAX.update(
     {

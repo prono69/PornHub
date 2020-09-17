@@ -5,6 +5,7 @@ Available Commands:
 
 import emoji
 from googletrans import LANGUAGES, Translator
+
 from uniborg.util import admin_cmd
 
 
@@ -30,14 +31,14 @@ async def _(event):
         after_tr_text = translated.text
         # TODO: emojify the :
         # either here, or before translation
-        source_lan = LANGUAGES[f'{translated.src.lower()}']
-        transl_lan = LANGUAGES[f'{translated.dest.lower()}']
+        source_lan = LANGUAGES[f"{translated.src.lower()}"]
+        transl_lan = LANGUAGES[f"{translated.dest.lower()}"]
         output_str = """Detected Language: **{}**\nTRANSLATED To: **{}**\n\n{}
 """.format(
             # previous_message.message,
             source_lan.title(),
             transl_lan.title(),
-            after_tr_text
+            after_tr_text,
         )
         await event.edit(output_str)
     except Exception as exc:

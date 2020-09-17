@@ -2,8 +2,8 @@
 # By Priyam Kalra
 # modified by @authoritydmc
 # Syntax (.modules)
-from uniborg.util import admin_cmd
 from uniborg import MODULE
+from uniborg.util import admin_cmd
 
 
 @borg.on(admin_cmd(pattern="modules ?(.*)"))

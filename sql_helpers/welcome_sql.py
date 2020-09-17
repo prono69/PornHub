@@ -1,5 +1,6 @@
 from sqlalchemy import BigInteger, Boolean, Column, Numeric
-from sql_helpers import SESSION, BASE
+
+from sql_helpers import BASE, SESSION
 
 
 class Welcome(BASE):
@@ -9,13 +10,7 @@ class Welcome(BASE):
     previous_welcome = Column(BigInteger)
     f_mesg_id = Column(Numeric)
 
-    def __init__(
-        self,
-        chat_id,
-        should_clean_welcome,
-        previous_welcome,
-        f_mesg_id
-    ):
+    def __init__(self, chat_id, should_clean_welcome, previous_welcome, f_mesg_id):
         self.chat_id = chat_id
         self.should_clean_welcome = should_clean_welcome
         self.previous_welcome = previous_welcome
@@ -34,24 +29,14 @@ def get_current_welcome_settings(chat_id):
         SESSION.close()
 
 
-def add_welcome_setting(
-    chat_id,
-    should_clean_welcome,
-    previous_welcome,
-    f_mesg_id
-):
+def add_welcome_setting(chat_id, should_clean_welcome, previous_welcome, f_mesg_id):
     adder = SESSION.query(Welcome).get(chat_id)
     if adder:
         adder.should_clean_welcome = should_clean_welcome
         adder.previous_welcome = previous_welcome
         adder.f_mesg_id = f_mesg_id
     else:
-        adder = Welcome(
-            chat_id,
-            should_clean_welcome,
-            previous_welcome,
-            f_mesg_id
-        )
+        adder = Welcome(chat_id, should_clean_welcome, previous_welcome, f_mesg_id)
     SESSION.add(adder)
     SESSION.commit()
 

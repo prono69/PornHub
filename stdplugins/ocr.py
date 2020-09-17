@@ -3,17 +3,17 @@ Syntax: `.ocr <LangCode>`
 Available Languages: `.ocrlangs`"""
 import json
 import os
-from PIL import Image
+
 import requests
+from PIL import Image
+
 from uniborg.util import admin_cmd
 
 
 def ocr_space_file(
-        filename,
-        overlay=False,
-        api_key=Config.OCR_SPACE_API_KEY,
-        language='eng'):
-    """ OCR.space API request with local file.
+    filename, overlay=False, api_key=Config.OCR_SPACE_API_KEY, language="eng"
+):
+    """OCR.space API request with local file.
         Python3.5 - not tested on 2.7
     :param filename: Your file path & name.
     :param overlay: Is OCR.space overlay required in your response.
@@ -26,24 +26,22 @@ def ocr_space_file(
     :return: Result in JSON format.
     """
 
-    payload = {'isOverlayRequired': overlay,
-               'apikey': api_key,
-               'language': language,
-               }
-    with open(filename, 'rb') as f:
-        r = requests.post('https://api.ocr.space/parse/image',
-                          files={filename: f},
-                          data=payload,
-                          )
+    payload = {
+        "isOverlayRequired": overlay,
+        "apikey": api_key,
+        "language": language,
+    }
+    with open(filename, "rb") as f:
+        r = requests.post(
+            "https://api.ocr.space/parse/image",
+            files={filename: f},
+            data=payload,
+        )
     return r.json()
 
 
-def ocr_space_url(
-        url,
-        overlay=False,
-        api_key=Config.OCR_SPACE_API_KEY,
-        language='eng'):
-    """ OCR.space API request with remote file.
+def ocr_space_url(url, overlay=False, api_key=Config.OCR_SPACE_API_KEY, language="eng"):
+    """OCR.space API request with remote file.
         Python3.5 - not tested on 2.7
     :param url: Image url.
     :param overlay: Is OCR.space overlay required in your response.
@@ -56,20 +54,25 @@ def ocr_space_url(
     :return: Result in JSON format.
     """
 
-    payload = {'url': url,
-               'isOverlayRequired': overlay,
-               'apikey': api_key,
-               'language': language,
-               }
-    r = requests.post('https://api.ocr.space/parse/image',
-                      data=payload,
-                      )
+    payload = {
+        "url": url,
+        "isOverlayRequired": overlay,
+        "apikey": api_key,
+        "language": language,
+    }
+    r = requests.post(
+        "https://api.ocr.space/parse/image",
+        data=payload,
+    )
     return r.json()
 
 
 def progress(current, total):
-    logger.info("Downloaded {} of {}\nCompleted {}".format(
-        current, total, (current / total) * 100))
+    logger.info(
+        "Downloaded {} of {}\nCompleted {}".format(
+            current, total, (current / total) * 100
+        )
+    )
 
 
 @borg.on(admin_cmd(pattern="ocrlangs"))
@@ -116,22 +119,29 @@ async def parse_ocr_space_api(event):
     downloaded_file_name = await borg.download_media(
         await event.get_reply_message(),
         Config.TMP_DOWNLOAD_DIRECTORY,
-        progress_callback=progress
+        progress_callback=progress,
     )
     if downloaded_file_name.endswith((".webp")):
         downloaded_file_name = conv_image(downloaded_file_name)
-    test_file = ocr_space_file(
-        filename=downloaded_file_name,
-        language=lang_code)
+    test_file = ocr_space_file(filename=downloaded_file_name, language=lang_code)
     ParsedText = "hmm"
     try:
         ParsedText = test_file["ParsedResults"][0]["ParsedText"]
         ProcessingTimeInMilliseconds = str(
-            int(test_file["ProcessingTimeInMilliseconds"]) // 1000)
+            int(test_file["ProcessingTimeInMilliseconds"]) // 1000
+        )
     except Exception as e:
-        await event.edit("Errors.\n `{}`\nReport This to @UniBorg\n\n`{}`".format(str(e), json.dumps(test_file, sort_keys=True, indent=4)))
+        await event.edit(
+            "Errors.\n `{}`\nReport This to @UniBorg\n\n`{}`".format(
+                str(e), json.dumps(test_file, sort_keys=True, indent=4)
+            )
+        )
     else:
-        await event.edit("Read Document in {} seconds. \n{}".format(ProcessingTimeInMilliseconds, ParsedText))
+        await event.edit(
+            "Read Document in {} seconds. \n{}".format(
+                ProcessingTimeInMilliseconds, ParsedText
+            )
+        )
     os.remove(downloaded_file_name)
     await event.edit(ParsedText)
 

@@ -8,9 +8,10 @@ All Thenks goes to Emily ( The creater of This Plugin)
 Type `.poto` for get **All profile pics of that User**
 \nOr type `.poto (number)` to get the **desired number of photo of a User** .
 """
-import logging
-from uniborg.util import admin_cmd
 import asyncio
+import logging
+
+from uniborg.util import admin_cmd
 
 logger = logging.getLogger(__name__)
 
@@ -38,7 +39,9 @@ if 1 == 1:
                     if u is True:
                         photo = await event.client.download_profile_photo(user.sender)
                     else:
-                        photo = await event.client.download_profile_photo(event.input_chat)
+                        photo = await event.client.download_profile_photo(
+                            event.input_chat
+                        )
                     await event.client.send_file(event.chat_id, photo)
                 except a:
                     await event.edit("**This user has no photos.\nGEYYYY!**")
@@ -57,6 +60,8 @@ if 1 == 1:
                 await event.client.send_file(event.chat_id, send_photos)
                 await event.delete()
             else:
-                await event.edit("```No photo found of this NIBBA / NIBBI. Now u Die!```")
+                await event.edit(
+                    "```No photo found of this NIBBA / NIBBI. Now u Die!```"
+                )
                 await asyncio.sleep(8)
                 return

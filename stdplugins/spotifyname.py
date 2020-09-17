@@ -9,10 +9,12 @@ from json import loads
 from json.decoder import JSONDecodeError
 from os import environ
 from sys import setrecursionlimit
+
+import spotify_token as st
 from requests import get
 from telethon import events
 from telethon.tl.functions.account import UpdateProfileRequest
-import spotify_token as st
+
 from sample_config import Config
 
 # =================== CONSTANT ===================
@@ -54,12 +56,12 @@ async def update_spotify_info():
         try:
             RUNNING = True
             spftoken = environ.get("spftoken", None)
-            hed = {'Authorization': 'Bearer ' + spftoken}
-            url = 'https://api.spotify.com/v1/me/player/currently-playing'
+            hed = {"Authorization": "Bearer " + spftoken}
+            url = "https://api.spotify.com/v1/me/player/currently-playing"
             response = get(url, headers=hed)
             data = loads(response.content)
-            artist = data['item']['album']['artists'][0]['name']
-            song = data['item']['name']
+            artist = data["item"]["album"]["artists"][0]["name"]
+            song = data["item"]["name"]
             OLDEXCEPT = False
             oldsong = environ.get("oldsong", None)
             if song != oldsong and artist != oldartist:
@@ -77,9 +79,7 @@ async def update_spotify_info():
                 await borg(UpdateProfileRequest(first_name=Config.DEFAULT_NAME))
                 print(ERROR_MSG)
                 if Config.LOGGER:
-                    await borg.send_message(
-                        Config.PM_LOGGR_BOT_API_ID,
-                        ERROR_MSG)
+                    await borg.send_message(Config.PM_LOGGR_BOT_API_ID, ERROR_MSG)
         except JSONDecodeError:
             OLDEXCEPT = True
             await sleep(6)

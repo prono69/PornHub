@@ -1,4 +1,5 @@
 import re
+
 from remotezip import RemoteZip
 from telethon import events
 
@@ -20,8 +21,8 @@ async def _(event):
     else:
         await event.edit("`Usage: .runzip <url>`")
         return
-    reply = ''
-    links = re.findall(r'\.zip', textx)
+    reply = ""
+    links = re.findall(r"\.zip", textx)
     if not links:
         reply = "`No .zip extension link found!`"
         await event.edit(reply)

@@ -32,7 +32,6 @@ Syntax:
 
 import requests
 
-
 from uniborg.util import admin_cmd
 
 
@@ -46,13 +45,18 @@ async def _(event):
     input_str = event.pattern_match.group(1)
 
     sample_url = "https://da.gd/s?url=http://google.com/search?q={}".format(
-        input_str.replace(" ", "+"))
+        input_str.replace(" ", "+")
+    )
 
     response_api = requests.get(sample_url).text
 
     if response_api:
 
-        await event.edit("Let me **Googal** that for you:\n👉 [{}]({})\n`Le link dal de apne piche, Thank me later 😉` ".format(input_str, response_api.rstrip()))
+        await event.edit(
+            "Let me **Googal** that for you:\n👉 [{}]({})\n`Le link dal de apne piche, Thank me later 😉` ".format(
+                input_str, response_api.rstrip()
+            )
+        )
 
     else:
 
@@ -68,14 +72,21 @@ async def _(event):
 
     input_str = event.pattern_match.group(1)
 
-    sample_url = "https://da.gd/s?url=https://www.youtube.com/results?search_query={}".format(
-        input_str.replace(" ", "+"))
+    sample_url = (
+        "https://da.gd/s?url=https://www.youtube.com/results?search_query={}".format(
+            input_str.replace(" ", "+")
+        )
+    )
 
     response_api = requests.get(sample_url).text
 
     if response_api:
 
-        await event.edit("Let me **UThooB** that for you:\n👉 [{}]({})\n`Thank me later 😉` ".format(input_str, response_api.rstrip()))
+        await event.edit(
+            "Let me **UThooB** that for you:\n👉 [{}]({})\n`Thank me later 😉` ".format(
+                input_str, response_api.rstrip()
+            )
+        )
 
     else:
 
@@ -91,14 +102,21 @@ async def _(event):
 
     input_str = event.pattern_match.group(1)
 
-    sample_url = "https://da.gd/s?url=https://duckduckgo.com/?q={}&t=h_&ia=about".format(
-        input_str.replace(" ", "+"))
+    sample_url = (
+        "https://da.gd/s?url=https://duckduckgo.com/?q={}&t=h_&ia=about".format(
+            input_str.replace(" ", "+")
+        )
+    )
 
     response_api = requests.get(sample_url).text
 
     if response_api:
 
-        await event.edit("Let me **DuckDuckGo** that for you:\n👉 [{}]({})\n`Thank me later 😉` ".format(input_str, response_api.rstrip()))
+        await event.edit(
+            "Let me **DuckDuckGo** that for you:\n👉 [{}]({})\n`Thank me later 😉` ".format(
+                input_str, response_api.rstrip()
+            )
+        )
 
     else:
 
@@ -115,13 +133,18 @@ async def _(event):
     input_str = event.pattern_match.group(1)
 
     sample_url = "https://da.gd/s?url=https://www.xvideos.com/?k={}".format(
-        input_str.replace(" ", "+"))
+        input_str.replace(" ", "+")
+    )
 
     response_api = requests.get(sample_url).text
 
     if response_api:
 
-        await event.edit("Let me **xvideo** that for you:\n👉 [{}]({})\n`Maze kar Bsdk, Thank me later 😉` ".format(input_str, response_api.rstrip()))
+        await event.edit(
+            "Let me **xvideo** that for you:\n👉 [{}]({})\n`Maze kar Bsdk, Thank me later 😉` ".format(
+                input_str, response_api.rstrip()
+            )
+        )
 
     else:
 
@@ -137,14 +160,21 @@ async def _(event):
 
     input_str = event.pattern_match.group(1)
 
-    sample_url = "https://da.gd/s?url=https://www.pornhub.com/video/search?search={}".format(
-        input_str.replace(" ", "+"))
+    sample_url = (
+        "https://da.gd/s?url=https://www.pornhub.com/video/search?search={}".format(
+            input_str.replace(" ", "+")
+        )
+    )
 
     response_api = requests.get(sample_url).text
 
     if response_api:
 
-        await event.edit("Let me **pornhub** that for you:\n👉 [{}]({})\n`Le Tharak ke pujari, Thank me later 😉` ".format(input_str, response_api.rstrip()))
+        await event.edit(
+            "Let me **pornhub** that for you:\n👉 [{}]({})\n`Le Tharak ke pujari, Thank me later 😉` ".format(
+                input_str, response_api.rstrip()
+            )
+        )
 
     else:
 
@@ -161,13 +191,18 @@ async def _(event):
     input_str = event.pattern_match.group(1)
 
     sample_url = "https://da.gd/s?url=https://www.altnews.in/?s={}".format(
-        input_str.replace(" ", "+"))
+        input_str.replace(" ", "+")
+    )
 
     response_api = requests.get(sample_url).text
 
     if response_api:
 
-        await event.edit("Let me **altnews** that for you:\n👉 [{}]({})\n`Thank me later 😉` ".format(input_str, response_api.rstrip()))
+        await event.edit(
+            "Let me **altnews** that for you:\n👉 [{}]({})\n`Thank me later 😉` ".format(
+                input_str, response_api.rstrip()
+            )
+        )
 
     else:
 
@@ -183,14 +218,21 @@ async def _(event):
 
     input_str = event.pattern_match.group(1)
 
-    sample_url = "https://da.gd/s?url=https://dashboard.heroku.com/apps/{}/settings".format(
-        input_str.replace(" ", "+"))
+    sample_url = (
+        "https://da.gd/s?url=https://dashboard.heroku.com/apps/{}/settings".format(
+            input_str.replace(" ", "+")
+        )
+    )
 
     response_api = requests.get(sample_url).text
 
     if response_api:
 
-        await event.edit("Let me **var** that for you:\n👉 [{}]({})\n`Thank me later 😉` ".format(input_str, response_api.rstrip()))
+        await event.edit(
+            "Let me **var** that for you:\n👉 [{}]({})\n`Thank me later 😉` ".format(
+                input_str, response_api.rstrip()
+            )
+        )
 
     else:
 
@@ -207,13 +249,18 @@ async def _(event):
     input_str = event.pattern_match.group(1)
 
     sample_url = "https://da.gd/s?url=https://dashboard.heroku.com/apps/{}/logs".format(
-        input_str.replace(" ", "+"))
+        input_str.replace(" ", "+")
+    )
 
     response_api = requests.get(sample_url).text
 
     if response_api:
 
-        await event.edit("Let me **log** that for you:\n👉 [{}]({})\n`Thank me later 😉` ".format(input_str, response_api.rstrip()))
+        await event.edit(
+            "Let me **log** that for you:\n👉 [{}]({})\n`Thank me later 😉` ".format(
+                input_str, response_api.rstrip()
+            )
+        )
 
     else:
 
@@ -230,13 +277,18 @@ async def _(event):
     input_str = event.pattern_match.group(1)
 
     sample_url = "https://da.gd/s?url=https://www.xvideos2.com/?k={}".format(
-        input_str.replace(" ", "+"))
+        input_str.replace(" ", "+")
+    )
 
     response_api = requests.get(sample_url).text
 
     if response_api:
 
-        await event.edit("Let me **xvideos** that for you:\n👉 [{}]({})\n`Katei Tharki ho raha hain launda, Thank me later 😉` ".format(input_str, response_api.rstrip()))
+        await event.edit(
+            "Let me **xvideos** that for you:\n👉 [{}]({})\n`Katei Tharki ho raha hain launda, Thank me later 😉` ".format(
+                input_str, response_api.rstrip()
+            )
+        )
 
     else:
 
@@ -253,13 +305,18 @@ async def _(event):
     input_str = event.pattern_match.group(1)
 
     sample_url = "https://da.gd/s?url=https://indiankanoon.org/search/?formInput={}+sortby%3Amostrecent".format(
-        input_str.replace(" ", "+"))
+        input_str.replace(" ", "+")
+    )
 
     response_api = requests.get(sample_url).text
 
     if response_api:
 
-        await event.edit("Let me **Indiankanoon.com :** that for you:\n👉 [{}]({})\n`Thank me later 😉` ".format(input_str, response_api.rstrip()))
+        await event.edit(
+            "Let me **Indiankanoon.com :** that for you:\n👉 [{}]({})\n`Thank me later 😉` ".format(
+                input_str, response_api.rstrip()
+            )
+        )
 
     else:
 

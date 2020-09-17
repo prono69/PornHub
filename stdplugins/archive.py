@@ -7,10 +7,11 @@ import asyncio
 import os
 import subprocess
 import time
+
+import patoolib
+
 from sample_config import Config
 from uniborg.util import admin_cmd, progress
-import subprocess
-import patoolib
 
 extracted = Config.TMP_DOWNLOAD_DIRECTORY + "extracted/"
 thumb_image_path = Config.TMP_DOWNLOAD_DIRECTORY + "/thumb_image.jpg"
@@ -33,15 +34,14 @@ async def _(event):
                 Config.TMP_DOWNLOAD_DIRECTORY,
                 progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
                     progress(d, t, mone, c_time, "trying to download")
-                )
+                ),
             )
             directory_name = downloaded_file_name
             await event.edit("creating rar archive, please wait..")
             # patoolib.create_archive(directory_name + '.7z',directory_name)
             patoolib.create_archive(
-                directory_name + ".rar",
-                (directory_name,
-                 Config.TMP_DOWNLOAD_DIRECTORY))
+                directory_name + ".rar", (directory_name, Config.TMP_DOWNLOAD_DIRECTORY)
+            )
             # patoolib.create_archive("/content/21.yy Avrupa (1).pdf.zip",("/content/21.yy Avrupa (1).pdf","/content/"))
             await borg.send_file(
                 event.chat_id,
@@ -64,7 +64,9 @@ async def _(event):
     elif input_str:
         directory_name = input_str
 
-        await event.edit("Local file compressed to `{}`".format(directory_name + ".rar"))
+        await event.edit(
+            "Local file compressed to `{}`".format(directory_name + ".rar")
+        )
 
 
 @borg.on(admin_cmd(pattern=("7z ?(.*)")))
@@ -84,15 +86,14 @@ async def _(event):
                 Config.TMP_DOWNLOAD_DIRECTORY,
                 progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
                     progress(d, t, mone, c_time, "trying to download")
-                )
+                ),
             )
             directory_name = downloaded_file_name
             await event.edit("creating 7z archive, please wait..")
             # patoolib.create_archive(directory_name + '.7z',directory_name)
             patoolib.create_archive(
-                directory_name + ".7z",
-                (directory_name,
-                 Config.TMP_DOWNLOAD_DIRECTORY))
+                directory_name + ".7z", (directory_name, Config.TMP_DOWNLOAD_DIRECTORY)
+            )
             # patoolib.create_archive("/content/21.yy Avrupa (1).pdf.zip",("/content/21.yy Avrupa (1).pdf","/content/"))
             await borg.send_file(
                 event.chat_id,
@@ -135,19 +136,14 @@ async def _(event):
                 Config.TMP_DOWNLOAD_DIRECTORY,
                 progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
                     progress(d, t, mone, c_time, "trying to download")
-                )
+                ),
             )
             directory_name = downloaded_file_name
             await event.edit("Finish downloading to my local")
-            command_to_exec = [
-                "7z",
-                "e",
-                "-o" + extracted,
-                directory_name]
+            command_to_exec = ["7z", "e", "-o" + extracted, directory_name]
             sp = subprocess.Popen(
-                command_to_exec,
-                stderr=subprocess.STDOUT,
-                stdout=subprocess.PIPE)
+                command_to_exec, stderr=subprocess.STDOUT, stdout=subprocess.PIPE
+            )
             await borg.send_file(
                 event.chat_id,
                 directory_name + ".zip",
@@ -169,4 +165,6 @@ async def _(event):
     elif input_str:
         directory_name = input_str
 
-        await event.edit("Local file compressed to `{}`".format(directory_name + ".zip"))
+        await event.edit(
+            "Local file compressed to `{}`".format(directory_name + ".zip")
+        )

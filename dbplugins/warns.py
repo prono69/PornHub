@@ -1,9 +1,10 @@
 import html
+
 from telethon.tl.functions.channels import EditBannedRequest
 from telethon.tl.types import ChatBannedRights
-from uniborg.util import admin_cmd, is_admin
-import sql_helpers.warns_sql as sql
 
+import sql_helpers.warns_sql as sql
+from uniborg.util import admin_cmd, is_admin
 
 banned_rights = ChatBannedRights(
     until_date=None,
@@ -14,7 +15,7 @@ banned_rights = ChatBannedRights(
     send_gifs=True,
     send_games=True,
     send_inline=True,
-    embed_links=True
+    embed_links=True,
 )
 
 unbanned_rights = ChatBannedRights(
@@ -26,7 +27,7 @@ unbanned_rights = ChatBannedRights(
     send_gifs=None,
     send_games=None,
     send_inline=None,
-    embed_links=None
+    embed_links=None,
 )
 
 
@@ -40,24 +41,33 @@ async def _(event):
         return
     limit, soft_warn = sql.get_warn_setting(event.chat_id)
     num_warns, reasons = sql.warn_user(
-        reply_message.from_id, event.chat_id, warn_reason)
+        reply_message.from_id, event.chat_id, warn_reason
+    )
     if num_warns >= limit:
         sql.reset_warns(reply_message.from_id, event.chat_id)
         if soft_warn:
-            await borg(EditBannedRequest(event.chat_id, reply_message.from_id, banned_rights))
+            await borg(
+                EditBannedRequest(event.chat_id, reply_message.from_id, banned_rights)
+            )
             reply = "{} warnings, <u><a href='tg://user?id={}'>user</a></u> has been kicked!".format(
-                limit, reply_message.from_id)
-            await borg(EditBannedRequest(event.chat_id, reply_message.from_id, unbanned_rights))
+                limit, reply_message.from_id
+            )
+            await borg(
+                EditBannedRequest(event.chat_id, reply_message.from_id, unbanned_rights)
+            )
         else:
-            await borg(EditBannedRequest(event.chat_id, reply_message.from_id, banned_rights))
+            await borg(
+                EditBannedRequest(event.chat_id, reply_message.from_id, banned_rights)
+            )
             reply = "{} warnings, <u><a href='tg://user?id={}'>user</a></u> has been banned!".format(
-                limit, reply_message.from_id)
+                limit, reply_message.from_id
+            )
     else:
         reply = "<u><a href='tg://user?id={}'>user</a></u> has {}/{} warnings... watch out!".format(
-            reply_message.from_id, num_warns, limit)
+            reply_message.from_id, num_warns, limit
+        )
         if warn_reason:
-            reply += "\nReason for last warn:\n{}".format(
-                html.escape(warn_reason))
+            reply += "\nReason for last warn:\n{}".format(html.escape(warn_reason))
     #
     await event.edit(reply, parse_mode="html")
 
@@ -73,12 +83,17 @@ async def _(event):
         limit, soft_warn = sql.get_warn_setting(event.chat_id)
         if reasons:
             text = "This user has {}/{} warnings, for the following reasons:".format(
-                num_warns, limit)
+                num_warns, limit
+            )
             text += "\r\n"
             text += reasons
             await event.edit(text)
         else:
-            await event.edit("this user has {} / {} warning, but no reasons for any of them.".format(num_warns, limit))
+            await event.edit(
+                "this user has {} / {} warning, but no reasons for any of them.".format(
+                    num_warns, limit
+                )
+            )
     else:
         await event.edit("this user hasn't got any warnings!")
 

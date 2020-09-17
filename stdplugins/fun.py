@@ -1,5 +1,6 @@
 """COMMAND : .runs , .metoo , .rape , .inkut , .pro , .abuse , .gey"""
 import random
+
 from uniborg.util import admin_cmd
 
 METOOSTR = [
@@ -83,7 +84,6 @@ ABUSE_STRINGS = [
     "`Gand mare gandu Chut mare Chutiya Sabse accha mutti 2 mint me chutti😛`",
     "`Marzi Ka Sex Pap Nahi Hota.. Piche Se Dalne Wala Kabhi Baap Nahi Hota.. Condom Zarur Lagana Mere Dost Qki.. Sex K Waqt Popat Ke Pass Dimag Nahi Hota.`",
     "`Uss Ne Hothon Se Chhu Kar Lowd* Pe Nasha Kar Diya; Lu*D Ki Baat To Aur Thi, Uss Ne To Jhato* Ko Bhi Khada Kar Diya!`",
-
 ]
 
 GEY_STRINGS = [
@@ -165,7 +165,8 @@ INSULT_STRINGS = [
     "`Yaar ajab tere nkhare,gazab tera style hain, gand dhone ki tameez nahi, haath main mobile hai`",
     "`When your mom dropped you off at the school, she got a ticket for littering.`",
     "`You’re so ugly that when you cry, the tears roll down the back of your head…just to avoid your face.`",
-    "`If you’re talking behind my back then you’re in a perfect position to kiss my a**!.`"]
+    "`If you’re talking behind my back then you’re in a perfect position to kiss my a**!.`",
+]
 
 
 @borg.on(admin_cmd(pattern="runs($)"))
@@ -173,7 +174,7 @@ async def _(event):
     if event.fwd_from:
         return
     bro = random.randint(0, len(RUNSREACTS) - 1)
-    #input_str = event.pattern_match.group(1)
+    # input_str = event.pattern_match.group(1)
     reply_text = RUNSREACTS[bro]
     await event.edit(reply_text)
 
@@ -181,8 +182,7 @@ async def _(event):
 @borg.on(admin_cmd(pattern="disable runs", outgoing=True))
 async def disable_runs(norun):
     """ Some people don't like running... """
-    if not norun.text[0].isalpha() and norun.text[0] not in (
-            "/", "#", "@", "!"):
+    if not norun.text[0].isalpha() and norun.text[0] not in ("/", "#", "@", "!"):
         global DISABLE_RUN
         DISABLE_RUN = True
         await norun.edit("```Disabled .runs !!```")
@@ -202,7 +202,7 @@ async def _(event):
     if event.fwd_from:
         return
     bro = random.randint(0, len(METOOSTR) - 1)
-    #input_str = event.pattern_match.group(1)
+    # input_str = event.pattern_match.group(1)
     reply_text = METOOSTR[bro]
     await event.edit(reply_text)
 
@@ -212,7 +212,7 @@ async def _(event):
     if event.fwd_from:
         return
     bro = random.randint(0, len(RAPE_STRINGS) - 1)
-    #input_str = event.pattern_match.group(1)
+    # input_str = event.pattern_match.group(1)
     reply_text = RAPE_STRINGS[bro]
     await event.edit(reply_text)
 
@@ -222,7 +222,7 @@ async def _(event):
     if event.fwd_from:
         return
     bro = random.randint(0, len(INSULT_STRINGS) - 1)
-    #input_str = event.pattern_match.group(1)
+    # input_str = event.pattern_match.group(1)
     reply_text = INSULT_STRINGS[bro]
     await event.edit(reply_text)
 
@@ -232,7 +232,7 @@ async def _(event):
     if event.fwd_from:
         return
     bro = random.randint(0, len(PRO_STRINGS) - 1)
-    #input_str = event.pattern_match.group(1)
+    # input_str = event.pattern_match.group(1)
     reply_text = PRO_STRINGS[bro]
     await event.edit(reply_text)
 
@@ -242,7 +242,7 @@ async def _(event):
     if event.fwd_from:
         return
     bro = random.randint(0, len(ABUSE_STRINGS) - 1)
-    #input_str = event.pattern_match.group(1)
+    # input_str = event.pattern_match.group(1)
     reply_text = ABUSE_STRINGS[bro]
     await event.edit(reply_text)
 

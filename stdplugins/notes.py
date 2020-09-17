@@ -10,11 +10,13 @@
 .rmbotnotes`
 """
 
-from sql_helpers.global_variables_sql import LOGGER
-from sql_helpers.notes_sql import get_notes, rm_note, add_note, rm_all_notes
-from uniborg.util import admin_cmd
 import time
+
+from sql_helpers.global_variables_sql import LOGGER
+from sql_helpers.notes_sql import add_note, get_notes, rm_all_notes, rm_note
 from uniborg import MODULE, SYNTAX
+from uniborg.util import admin_cmd
+
 MODULE.append("notes")
 
 
@@ -82,7 +84,9 @@ async def _(prg):
         return
     if not prg.text[0].isalpha():
         await prg.edit("```Purging all notes.```")
-        await prg.edit("**All notes have been purged successfully.**\n```This auto generated message will be deleted in a few seconds...```")
+        await prg.edit(
+            "**All notes have been purged successfully.**\n```This auto generated message will be deleted in a few seconds...```"
+        )
         rm_all_notes(str(prg.chat_id))
         time.sleep(5)
         await prg.delete()
@@ -108,16 +112,21 @@ async def kick_marie_notes(kick):
                 if bot_type == "marie":
                     await kick.reply("/clear %s" % (i.strip()))
                 if bot_type == "rose":
-                    i = i.replace('`', '')
+                    i = i.replace("`", "")
                     await kick.reply("/clear %s" % (i.strip()))
                     time.sleep(0.3)
-                    await kick.respond("```Successfully purged bots notes yaay!```\n Gimme cookies!")
+                    await kick.respond(
+                        "```Successfully purged bots notes yaay!```\n Gimme cookies!"
+                    )
     if LOGGER:
         await kick.client.send_message(
-            LOGGER, "I cleaned all Notes at " + str(kick.chat_id))
+            LOGGER, "I cleaned all Notes at " + str(kick.chat_id)
+        )
 
-SYNTAX.update({
-    "notes": "\
+
+SYNTAX.update(
+    {
+        "notes": "\
 ```.get <notename>```\
 \nUsage: Gets the note with name <notename>\
 \n\n```.seb <notename>``` (as a reply to message to save)\
@@ -130,4 +139,5 @@ SYNTAX.update({
 \nUsage: Clear all notes at Once.\
 \n\n```.rmbotnotes```\
 \nUsage: Clear Marie and Rose Bot notes"
-})
+    }
+)

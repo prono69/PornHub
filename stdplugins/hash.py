@@ -9,9 +9,12 @@
 
 from subprocess import PIPE
 from subprocess import run as runapp
+
 import pybase64
-from uniborg.util import admin_cmd
+
 from uniborg import MODULE, SYNTAX
+from uniborg.util import admin_cmd
+
 MODULE.append("hash")
 
 
@@ -38,8 +41,19 @@ async def gethash(hash_q):
     sha512 = runapp(["sha512sum", "hashdis.txt"], stdout=PIPE)
     runapp(["rm", "hashdis.txt"], stdout=PIPE)
     sha512 = sha512.stdout.decode()
-    ans = ("Text: `" + hashtxt_ + "`\nMD5: `" + md5 + "`SHA1: `" + sha1 +
-           "`SHA256: `" + sha256 + "`SHA512: `" + sha512[:-1] + "`")
+    ans = (
+        "Text: `"
+        + hashtxt_
+        + "`\nMD5: `"
+        + md5
+        + "`SHA1: `"
+        + sha1
+        + "`SHA256: `"
+        + sha256
+        + "`SHA512: `"
+        + sha512[:-1]
+        + "`"
+    )
     if len(ans) > 4096:
         hashfile = open("hashes.txt", "w+")
         hashfile.write(ans)
@@ -48,7 +62,8 @@ async def gethash(hash_q):
             hash_q.chat_id,
             "hashes.txt",
             reply_to=hash_q.id,
-            caption="`It's too big, sending a text file instead. `")
+            caption="`It's too big, sending a text file instead. `",
+        )
         runapp(["rm", "hashes.txt"], stdout=PIPE)
     else:
         await hash_q.reply(ans)
@@ -65,21 +80,18 @@ async def endecrypt(query):
         await query.edit("Uffff.. Sar Gib me something")
         return
     if query.pattern_match.group(1) == "en":
-        lething = str(
-            pybase64.b64encode(bytes(input_str,
-                                     "utf-8")))[2:]
+        lething = str(pybase64.b64encode(bytes(input_str, "utf-8")))[2:]
         await query.reply("Encoded: `" + lething[:-1] + "`")
     else:
-        lething = str(
-            pybase64.b64decode(bytes(input_str, "utf-8"),
-                               validate=True))[2:]
+        lething = str(pybase64.b64decode(bytes(input_str, "utf-8"), validate=True))[2:]
         await query.reply("Decoded: `" + lething[:-1] + "`")
 
 
-SYNTAX.update({
-    "hash":
-    "`.base <en or de>`\
+SYNTAX.update(
+    {
+        "hash": "`.base <en or de>`\
     \n`Usage: Find the base64 encoding of the given string.`\
     \n\n`.hash`\
     \n`Usage: Find the md5, sha1, sha256, sha512 of the string when written into a txt file.`"
-})
+    }
+)

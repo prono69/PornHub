@@ -3,11 +3,12 @@ SLAP Plugin For Userbot
 usage:- .slap in reply to any message, or u gonna slap urself.
 
 """
-from uniborg.util import admin_cmd
 import random
+
 from telethon.tl.functions.users import GetFullUserRequest
 from telethon.tl.types import MessageEntityMentionName
 
+from uniborg.util import admin_cmd
 
 SLAP_TEMPLATES = [
     "{hits} {user2} with a {item}.",
@@ -20,7 +21,7 @@ SLAP_TEMPLATES = [
     "pins {user2} down and repeatedly {hits} them with a {item}.",
     "grabs up a {item} and {hits} {user2} with it.",
     "ties {user2} to a chair and {throws} a {item} at them.",
-    "gave a friendly push to help {user2} learn to swim in lava."
+    "gave a friendly push to help {user2} learn to swim in lava.",
 ]
 
 ITEMS = [
@@ -106,9 +107,7 @@ async def get_user(event):
         if event.message.entities is not None:
             probable_user_mention_entity = event.message.entities[0]
 
-            if isinstance(
-                    probable_user_mention_entity,
-                    MessageEntityMentionName):
+            if isinstance(probable_user_mention_entity, MessageEntityMentionName):
                 user_id = probable_user_mention_entity.user_id
                 replied_user = await event.client(GetFullUserRequest(user_id))
                 return replied_user
@@ -138,7 +137,11 @@ async def slap(replied_user, event):
     hit = random.choice(HIT)
     throw = random.choice(THROW)
 
-    caption = "@" + borg.me.username + " " + \
-        temp.format(user2=slapped, item=item, hits=hit, throws=throw)
+    caption = (
+        "@"
+        + borg.me.username
+        + " "
+        + temp.format(user2=slapped, item=item, hits=hit, throws=throw)
+    )
 
     return caption

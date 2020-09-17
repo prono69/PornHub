@@ -1,7 +1,8 @@
 # By RaphielGang (https://da.gd/HlfJ)
 
-from sql_helpers import SESSION, BASE
 from sqlalchemy import Column, String, UnicodeText
+
+from sql_helpers import BASE, SESSION
 
 
 class Notes(BASE):
@@ -38,7 +39,8 @@ def add_note(chat_id, keyword, reply):
 
 def rm_note(chat_id, keyword):
     note = SESSION.query(Notes).filter(
-        Notes.chat_id == str(chat_id), Notes.keyword == keyword)
+        Notes.chat_id == str(chat_id), Notes.keyword == keyword
+    )
     if note:
         note.delete()
         SESSION.commit()

@@ -26,7 +26,7 @@ import sys
 def main():
     """Example usage of TrashGuy class."""
     # user_input = '🍓 🍅 🍊'
-    user_input = ' '.join(sys.argv[1:])
+    user_input = " ".join(sys.argv[1:])
 
     trash_guy = TrashGuy(user_input, symbol_spacing=Symbols.SPACER_EMOJI)
 
@@ -34,24 +34,27 @@ def main():
 
 
 class Symbols:
-    SPACER_DEFAULT = '\u0020'
-    SPACER_WIDE = '\u2800\u0020'
-    SPACER_EMOJI = '➖'
-    DEFAULT_INPUT = '\u2622'
-    MONOSPACE_WRAPPER = '`'
-    TRASH_EMOJI = '\U0001F5D1'
-    GUY_LEFT = '<(^_^ <)'
-    GUY_RIGHT = '(> ^_^)>'
+    SPACER_DEFAULT = "\u0020"
+    SPACER_WIDE = "\u2800\u0020"
+    SPACER_EMOJI = "➖"
+    DEFAULT_INPUT = "\u2622"
+    MONOSPACE_WRAPPER = "`"
+    TRASH_EMOJI = "\U0001F5D1"
+    GUY_LEFT = "<(^_^ <)"
+    GUY_RIGHT = "(> ^_^)>"
 
 
 class TrashGuy:
-    def __init__(self, user_input: str,
-                 symbol_trash: str = Symbols.TRASH_EMOJI,
-                 symbol_left: str = Symbols.GUY_LEFT,
-                 symbol_right: str = Symbols.GUY_RIGHT,
-                 symbol_spacing: str = Symbols.SPACER_DEFAULT,
-                 monospace_wrapper: str = Symbols.MONOSPACE_WRAPPER,
-                 wrap_monospace: bool = False):
+    def __init__(
+        self,
+        user_input: str,
+        symbol_trash: str = Symbols.TRASH_EMOJI,
+        symbol_left: str = Symbols.GUY_LEFT,
+        symbol_right: str = Symbols.GUY_RIGHT,
+        symbol_spacing: str = Symbols.SPACER_DEFAULT,
+        monospace_wrapper: str = Symbols.MONOSPACE_WRAPPER,
+        wrap_monospace: bool = False,
+    ):
         if not user_input:
             self.user_input = [Symbols.DEFAULT_INPUT]
         else:
@@ -65,14 +68,14 @@ class TrashGuy:
         self.wrap_monospace = wrap_monospace
 
     def __str__(self):
-        return '\n'.join(frame for frame in self)
+        return "\n".join(frame for frame in self)
 
     def __add(self, frames: list, frame):
         wrapper = [Symbols.MONOSPACE_WRAPPER]
         if self.wrap_monospace:
-            frames.append(''.join(wrapper + list(frame) + wrapper))
+            frames.append("".join(wrapper + list(frame) + wrapper))
         else:
-            frames.append(''.join(list(frame)))
+            frames.append("".join(list(frame)))
 
     def __iter__(self):
         """Dynamically generated frames of the animated trash guy using provided symbols."""
@@ -100,14 +103,7 @@ class TrashGuy:
             space_padding = [s_space] * truncated_len_difference
 
             # Create a dynamic canvas while each item disappears
-            canvas = [
-                *
-                truncating_items +
-                space_padding,
-                *
-                [s_space] *
-                3,
-                s_trash]
+            canvas = [*truncating_items + space_padding, *[s_space] * 3, s_trash]
             r_canvas = list(reversed(canvas))
 
             last_item_index = -len(truncating_items)
@@ -143,7 +139,10 @@ class TrashGuy:
 
                         # Animate trash guy going right with the item until he
                         # hits the trash can
-                        elif r_canvas[index - 1] == s_space and r_canvas[index - 1] != s_trash:
+                        elif (
+                            r_canvas[index - 1] == s_space
+                            and r_canvas[index - 1] != s_trash
+                        ):
                             r_canvas[index - 1] = item
                             r_canvas[index] = s_right
 
@@ -187,5 +186,5 @@ class TrashGuy:
         return iter(trash_item_sequence)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

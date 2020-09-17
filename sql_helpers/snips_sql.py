@@ -1,5 +1,6 @@
-from sql_helpers import BASE, SESSION
 from sqlalchemy import Column, Numeric, UnicodeText
+
+from sql_helpers import BASE, SESSION
 
 
 class Snips(BASE):
@@ -7,11 +8,7 @@ class Snips(BASE):
     snip = Column(UnicodeText, primary_key=True)
     f_mesg_id = Column(Numeric)
 
-    def __init__(
-        self,
-        snip,
-        f_mesg_id
-    ):
+    def __init__(self, snip, f_mesg_id):
         self.snip = snip
         self.f_mesg_id = f_mesg_id
 

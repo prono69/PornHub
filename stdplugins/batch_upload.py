@@ -6,6 +6,7 @@ By:-@Zero_cool7870
 
 """
 import os
+
 from telethon import events
 
 
@@ -20,11 +21,7 @@ async def batch_upload(event):
         for file in files:
             required_file_name = temp_dir + "/" + file
             print(required_file_name)
-            await borg.send_file(
-                event.chat_id,
-                required_file_name,
-                force_document=True
-            )
+            await borg.send_file(event.chat_id, required_file_name, force_document=True)
     else:
         await event.edit("Directory Not Found.")
         return

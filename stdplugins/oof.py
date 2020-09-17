@@ -29,7 +29,6 @@ async def _(event):
         await event.edit(input_str)
 
         animation_chars = [
-
             "o",
             "oo",
             "ooo",
@@ -42,7 +41,7 @@ async def _(event):
             "ooooooooooo",
             "oooooooooooo",
             "ooooooooooooo",
-            "oooooooooooooof"
+            "oooooooooooooof",
         ]
 
         for i in animation_ttl:

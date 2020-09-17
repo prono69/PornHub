@@ -10,16 +10,16 @@ import tarfile
 import time
 from datetime import datetime
 
-from telethon.tl.types import DocumentAttributeVideo
-
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
+from telethon.tl.types import DocumentAttributeVideo
+
 from sample_config import Config
 from uniborg.util import admin_cmd, progress
 
 logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+    format="[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s", level=logging.WARNING
+)
 logger = logging.getLogger(__name__)
 
 
@@ -44,15 +44,17 @@ async def _(event):
                 Config.TMP_DOWNLOAD_DIRECTORY,
                 progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
                     progress(d, t, mone, c_time, "trying to download")
-                )
+                ),
             )
         except Exception as e:  # pylint:disable=C0103,W0703
             await mone.edit(str(e))
         else:
             end = datetime.now()
             ms = (end - start).seconds
-            await mone.edit("Stored the tar to `{}` in {} seconds.".format(downloaded_file_name, ms))
-        with tarfile.TarFile.open(downloaded_file_name, 'r') as tar_file:
+            await mone.edit(
+                "Stored the tar to `{}` in {} seconds.".format(downloaded_file_name, ms)
+            )
+        with tarfile.TarFile.open(downloaded_file_name, "r") as tar_file:
             tar_file.extractall(path=extracted)
         # tf = tarfile.open(downloaded_file_name)
         # tf.extractall(path=extracted)
@@ -61,7 +63,7 @@ async def _(event):
         # with zipfile.ZipFile(downloaded_file_name, 'r') as zip_ref:
         #     zip_ref.extractall(extracted)
         filename = sorted(get_lst_of_files(extracted, []))
-        #filename = filename + "/"
+        # filename = filename + "/"
         await event.edit("Untarring now")
         # r=root, d=directories, f = files
         for single_file in filename:
@@ -77,10 +79,9 @@ async def _(event):
                     width = 0
                     height = 0
                     if metadata.has("duration"):
-                        duration = metadata.get('duration').seconds
+                        duration = metadata.get("duration").seconds
                     if os.path.exists(thumb_image_path):
-                        metadata = extractMetadata(
-                            createParser(thumb_image_path))
+                        metadata = extractMetadata(createParser(thumb_image_path))
                         if metadata.has("width"):
                             width = metadata.get("width")
                         if metadata.has("height"):
@@ -91,7 +92,7 @@ async def _(event):
                             w=width,
                             h=height,
                             round_message=False,
-                            supports_streaming=True
+                            supports_streaming=True,
                         )
                     ]
                 try:
@@ -112,7 +113,7 @@ async def _(event):
                     await borg.send_message(
                         event.chat_id,
                         "{} caused `{}`".format(caption_rts, str(e)),
-                        reply_to=event.message.id
+                        reply_to=event.message.id,
                     )
                     # some media were having some issues
                     continue

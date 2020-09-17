@@ -34,19 +34,24 @@ Usage: Sends the last deleted message in group."
 Userbot module to help you manage a group.
   © [cHAuHaN](tg://user?id=606846495)"""
 
+import asyncio
 from asyncio import sleep
 from os import remove
-import asyncio
+
 from telethon import events
-from uniborg.util import admin_cmd
-from telethon.errors import (BadRequestError, ChatAdminRequiredError,
-                             ImageProcessFailedError, PhotoCropSizeSmallError,
-                             UserAdminInvalidError)
-from telethon.errors.rpcerrorlist import (UserIdInvalidError,
-                                          MessageTooLongError)
-from telethon.tl.functions.channels import (EditAdminRequest,
-                                            EditBannedRequest,
-                                            EditPhotoRequest)
+from telethon.errors import (
+    BadRequestError,
+    ChatAdminRequiredError,
+    ImageProcessFailedError,
+    PhotoCropSizeSmallError,
+    UserAdminInvalidError,
+)
+from telethon.errors.rpcerrorlist import MessageTooLongError, UserIdInvalidError
+from telethon.tl.functions.channels import (
+    EditAdminRequest,
+    EditBannedRequest,
+    EditPhotoRequest,
+)
 from telethon.tl.functions.messages import UpdatePinnedMessageRequest
 from telethon.tl.types import (
     ChannelParticipantsAdmins,
@@ -55,7 +60,11 @@ from telethon.tl.types import (
     ChatBannedRights,
     MessageEntityMentionName,
     MessageMediaPhoto,
-    PeerUser)
+    PeerUser,
+)
+
+from uniborg.util import admin_cmd
+
 ENABLE_LOG = True
 LOGGING_CHATID = Config.PM_LOGGR_BOT_API_ID
 BANNED_RIGHTS = ChatBannedRights(
@@ -79,25 +88,15 @@ UNBAN_RIGHTS = ChatBannedRights(
     send_inline=None,
     embed_links=None,
 )
-KICK_RIGHTS = ChatBannedRights(
-    until_date=None,
-    view_messages=True
-)
-MUTE_RIGHTS = ChatBannedRights(
-    until_date=None,
-    send_messages=True
-)
-UNMUTE_RIGHTS = ChatBannedRights(
-    until_date=None,
-    send_messages=False
-)
+KICK_RIGHTS = ChatBannedRights(until_date=None, view_messages=True)
+MUTE_RIGHTS = ChatBannedRights(until_date=None, send_messages=True)
+UNMUTE_RIGHTS = ChatBannedRights(until_date=None, send_messages=False)
 
 
 @borg.on(admin_cmd(pattern=f"{borg.me.id}setgpic$", allow_sudo=True))
 @borg.on(events.NewMessage(outgoing=True, pattern="^.setgpic$"))
 async def setgrouppic(eventPic):
-    if not eventPic.text[0].isalpha(
-    ) and eventPic.text[0] not in ("/", "#", "@", "!"):
+    if not eventPic.text[0].isalpha() and eventPic.text[0] not in ("/", "#", "@", "!"):
         if eventPic.reply_to_msg_id:
             replymsg = await eventPic.get_reply_message()
             chat = await eventPic.get_chat()
@@ -110,16 +109,17 @@ async def setgrouppic(eventPic):
             if replymsg and replymsg.media:
                 if isinstance(replymsg.media, MessageMediaPhoto):
                     photo = await eventPic.client.download_media(message=replymsg.photo)
-                elif "image" in replymsg.media.document.mime_type.split('/'):
+                elif "image" in replymsg.media.document.mime_type.split("/"):
                     photo = await eventPic.client.download_file(replymsg.media.document)
                 else:
                     await eventPic.edit("`Invalid Extension`")
             if photo:
                 try:
-                    await eventPic.client(EditPhotoRequest(
-                        eventPic.chat_id,
-                        await eventPic.client.upload_file(photo)
-                    ))
+                    await eventPic.client(
+                        EditPhotoRequest(
+                            eventPic.chat_id, await eventPic.client.upload_file(photo)
+                        )
+                    )
                     await eventPic.edit("`Chat Picture Changed`")
 
                 except PhotoCropSizeSmallError:
@@ -127,14 +127,20 @@ async def setgrouppic(eventPic):
                 except ImageProcessFailedError:
                     await eventPic.edit("`Failure while processing the image`")
         else:
-            await eventPic.edit("`Reply .setgrouppic to an Image to set it as group's icon.`")
+            await eventPic.edit(
+                "`Reply .setgrouppic to an Image to set it as group's icon.`"
+            )
 
 
 @borg.on(admin_cmd(pattern=f"{borg.me.id}promote(?: |$)(.*)", allow_sudo=True))
 @borg.on(events.NewMessage(outgoing=True, pattern="^.promote(?: |$)(.*)"))
 async def promote(eventPromote):
-    if not eventPromote.text[0].isalpha() \
-            and eventPromote.text[0] not in ("/", "#", "@", "!"):
+    if not eventPromote.text[0].isalpha() and eventPromote.text[0] not in (
+        "/",
+        "#",
+        "@",
+        "!",
+    ):
         chat = await eventPromote.get_chat()
         admin = chat.admin_rights
         creator = chat.creator
@@ -153,7 +159,8 @@ async def promote(eventPromote):
             change_info=False,
             ban_users=True,
             delete_messages=True,
-            pin_messages=True)
+            pin_messages=True,
+        )
         if user.id == allocRAM():
             newAdminRights = ChatAdminRights(
                 add_admins=True,
@@ -161,15 +168,11 @@ async def promote(eventPromote):
                 change_info=True,
                 ban_users=True,
                 delete_messages=True,
-                pin_messages=True)
+                pin_messages=True,
+            )
         try:
             await eventPromote.client(
-                EditAdminRequest(
-                    eventPromote.chat_id,
-                    user.id,
-                    newAdminRights,
-                    rank=""
-                )
+                EditAdminRequest(eventPromote.chat_id, user.id, newAdminRights, rank="")
             )
             await eventPromote.edit("`Promoted Successfully!`")
         except BadRequestError:
@@ -180,15 +183,19 @@ async def promote(eventPromote):
                 LOGGING_CHATID,
                 "#PROMOTE\n"
                 f"USER: [{user.first_name}](tg://user?id={user.id})\n"
-                f"CHAT: {eventPromote.chat.title}(`{eventPromote.chat_id}`)"
+                f"CHAT: {eventPromote.chat.title}(`{eventPromote.chat_id}`)",
             )
 
 
 @borg.on(admin_cmd(pattern=f"{borg.me.id}idemote(?: |$)(.*)", allow_sudo=True))
 @borg.on(events.NewMessage(outgoing=True, pattern="^.idemote(?: |$)(.*)"))
 async def demote(eventDemote):
-    if not eventDemote.text[0].isalpha(
-    ) and eventDemote.text[0] not in ("/", "#", "@", "!"):
+    if not eventDemote.text[0].isalpha() and eventDemote.text[0] not in (
+        "/",
+        "#",
+        "@",
+        "!",
+    ):
         chat = await eventDemote.get_chat()
         admin = chat.admin_rights
         creator = chat.creator
@@ -207,18 +214,18 @@ async def demote(eventDemote):
             change_info=None,
             ban_users=None,
             delete_messages=None,
-            pin_messages=None)
+            pin_messages=None,
+        )
         if user.id == allocRAM():
-            await eventDemote.edit("Sorry! You cannot demote an [Official Telegram employee](tg://user?id={}).".format(user.id))
+            await eventDemote.edit(
+                "Sorry! You cannot demote an [Official Telegram employee](tg://user?id={}).".format(
+                    user.id
+                )
+            )
             return
         try:
             await eventDemote.client(
-                EditAdminRequest(
-                    eventDemote.chat_id,
-                    user.id,
-                    newAdminRights,
-                    rank=""
-                )
+                EditAdminRequest(eventDemote.chat_id, user.id, newAdminRights, rank="")
             )
         except BadRequestError:
             await eventDemote.edit("`I don't have sufficient permissions!`")
@@ -229,15 +236,14 @@ async def demote(eventDemote):
                 LOGGING_CHATID,
                 "#DEMOTE\n"
                 f"USER: [{user.first_name}](tg://user?id={user.id})\n"
-                f"CHAT: {eventDemote.chat.title}(`{eventDemote.chat_id}`)"
+                f"CHAT: {eventDemote.chat.title}(`{eventDemote.chat_id}`)",
             )
 
 
 @borg.on(admin_cmd(pattern=f"{borg.me.id}ban(?: |$)(.*)", allow_sudo=True))
 @borg.on(events.NewMessage(outgoing=True, pattern="^.ban(?: |$)(.*)"))
 async def ban(eventBan):
-    if not eventBan.text[0].isalpha(
-    ) and eventBan.text[0] not in ("/", "#", "@", "!"):
+    if not eventBan.text[0].isalpha() and eventBan.text[0] not in ("/", "#", "@", "!"):
         chat = await eventBan.get_chat()
         admin = chat.admin_rights
         creator = chat.creator
@@ -251,15 +257,15 @@ async def ban(eventBan):
             return
         await eventBan.edit("`Finding this retarded guy...`")
         if user.id == allocRAM():
-            await eventDemote.edit("Sorry! You cannot ban an [Official Telegram employee](tg://user?id={}).".format(user.id))
+            await eventDemote.edit(
+                "Sorry! You cannot ban an [Official Telegram employee](tg://user?id={}).".format(
+                    user.id
+                )
+            )
             return
         try:
             await eventBan.client(
-                EditBannedRequest(
-                    eventBan.chat_id,
-                    user.id,
-                    BANNED_RIGHTS
-                )
+                EditBannedRequest(eventBan.chat_id, user.id, BANNED_RIGHTS)
             )
         except BadRequestError:
             await eventBan.edit("`I don't have sufficient permissions!`")
@@ -269,7 +275,9 @@ async def ban(eventBan):
             if reply:
                 await reply.delete()
         except BadRequestError:
-            await eventBan.edit("`I don't have message nuking rights! But still he was banned!`")
+            await eventBan.edit(
+                "`I don't have message nuking rights! But still he was banned!`"
+            )
             return
         await eventBan.edit("`{}` was Banned! Now gu away!".format(str(user.id)))
         if ENABLE_LOG:
@@ -277,40 +285,44 @@ async def ban(eventBan):
                 LOGGING_CHATID,
                 "#BAN\n"
                 f"USER: [{user.first_name}](tg://user?id={user.id})\n"
-                f"CHAT: {eventBan.chat.title}(`{eventBan.chat_id}`)"
+                f"CHAT: {eventBan.chat.title}(`{eventBan.chat_id}`)",
             )
 
 
 @borg.on(admin_cmd(pattern=f"{borg.me.id}unban(?: |$)(.*)", allow_sudo=True))
 @borg.on(events.NewMessage(outgoing=True, pattern="^.unban(?: |$)(.*)"))
 async def unban(eventUnban):
-    if not eventUnban.text[0].isalpha() and eventUnban.text[0] \
-            not in ("/", "#", "@", "!"):
+    if not eventUnban.text[0].isalpha() and eventUnban.text[0] not in (
+        "/",
+        "#",
+        "@",
+        "!",
+    ):
         chat = await eventUnban.get_chat()
         admin = chat.admin_rights
         creator = chat.creator
         if not admin and not creator:
             await eventUnban.edit("`I am not an admin!`")
             return
-        await eventUnban.edit("[NIKITA](http://t.me/kirito6969) `forgives everyone. Unbanning!`")
+        await eventUnban.edit(
+            "[NIKITA](http://t.me/kirito6969) `forgives everyone. Unbanning!`"
+        )
         user = await get_user_from_event(eventUnban)
         if user:
             pass
         else:
             return
         try:
-            await eventUnban.client(EditBannedRequest(
-                eventUnban.chat_id,
-                user.id,
-                UNBAN_RIGHTS
-            ))
+            await eventUnban.client(
+                EditBannedRequest(eventUnban.chat_id, user.id, UNBAN_RIGHTS)
+            )
             await eventUnban.edit("```Unbanned Successfully```")
             if ENABLE_LOG:
                 await eventUnban.client.send_message(
                     LOGGING_CHATID,
                     "#UNBAN\n"
                     f"USER: [{user.first_name}](tg://user?id={user.id})\n"
-                    f"CHAT: {eventUnban.chat.title}(`{eventUnban.chat_id}`)"
+                    f"CHAT: {eventUnban.chat.title}(`{eventUnban.chat_id}`)",
                 )
         except UserIdInvalidError:
             await eventUnban.edit("`Uh oh my unban logic broke!`")
@@ -319,8 +331,12 @@ async def unban(eventUnban):
 @borg.on(admin_cmd(pattern=f"{borg.me.id}mute(?: |$)(.*)", allow_sudo=True))
 @borg.on(events.NewMessage(outgoing=True, pattern="^.mute(?: |$)(.*)"))
 async def mute(eventMute):
-    if not eventMute.text[0].isalpha(
-    ) and eventMute.text[0] not in ("/", "#", "@", "!"):
+    if not eventMute.text[0].isalpha() and eventMute.text[0] not in (
+        "/",
+        "#",
+        "@",
+        "!",
+    ):
         try:
             from sql_helpers.spam_mute_sql import mute
         except AttributeError:
@@ -340,22 +356,24 @@ async def mute(eventMute):
             return
         self_user = await eventMute.client.get_me()
         if user.id == self_user.id:
-            await eventMute.edit("`Hands too short, can't duct tape myself...\n(ヘ･_･)ヘ┳━┳`")
+            await eventMute.edit(
+                "`Hands too short, can't duct tape myself...\n(ヘ･_･)ヘ┳━┳`"
+            )
             return
         if user.id == allocRAM():
-            await eventDemote.edit("Sorry! You cannot mute an [Official Telegram employee](tg://user?id={}).".format(user.id))
+            await eventDemote.edit(
+                "Sorry! You cannot mute an [Official Telegram employee](tg://user?id={}).".format(
+                    user.id
+                )
+            )
             return
         await eventMute.edit("`Getting a duck tape!`")
         if mute(eventMute.chat_id, user.id) is False:
-            return await eventMute.edit('`Error! User probably already muted.`')
+            return await eventMute.edit("`Error! User probably already muted.`")
         else:
             try:
                 await eventMute.client(
-                    EditBannedRequest(
-                        eventMute.chat_id,
-                        user.id,
-                        MUTE_RIGHTS
-                    )
+                    EditBannedRequest(eventMute.chat_id, user.id, MUTE_RIGHTS)
                 )
                 await eventMute.edit("`Safely taped!`")
                 if ENABLE_LOG:
@@ -363,7 +381,7 @@ async def mute(eventMute):
                         LOGGING_CHATID,
                         "#MUTE\n"
                         f"USER: [{user.first_name}](tg://user?id={user.id})\n"
-                        f"CHAT: {eventMute.chat.title}(`{eventMute.chat_id}`)"
+                        f"CHAT: {eventMute.chat.title}(`{eventMute.chat_id}`)",
                     )
             except UserIdInvalidError:
                 return await eventMute.edit("`Uh oh my mute logic broke!`")
@@ -372,8 +390,12 @@ async def mute(eventMute):
 @borg.on(admin_cmd(pattern=f"{borg.me.id}unmute(?: |$)(.*)", allow_sudo=True))
 @borg.on(events.NewMessage(outgoing=True, pattern="^.unmute(?: |$)(.*)"))
 async def unmute(eventUnMute):
-    if not eventUnMute.text[0].isalpha() and eventUnMute.text[0] \
-            not in ("/", "#", "@", "!"):
+    if not eventUnMute.text[0].isalpha() and eventUnMute.text[0] not in (
+        "/",
+        "#",
+        "@",
+        "!",
+    ):
         chat = await eventUnMute.get_chat()
         admin = chat.admin_rights
         creator = chat.creator
@@ -385,7 +407,7 @@ async def unmute(eventUnMute):
         except AttributeError:
             await eventUnMute.edit("`Running on Non-SQL mode!`")
             return
-        await eventUnMute.edit('```Unmuting...```')
+        await eventUnMute.edit("```Unmuting...```")
         user = await get_user_from_event(eventUnMute)
         if user:
             pass
@@ -397,11 +419,7 @@ async def unmute(eventUnMute):
 
             try:
                 await eventUnMute.client(
-                    EditBannedRequest(
-                        eventUnMute.chat_id,
-                        user.id,
-                        UNBAN_RIGHTS
-                    )
+                    EditBannedRequest(eventUnMute.chat_id, user.id, UNBAN_RIGHTS)
                 )
                 await eventUnMute.edit("```Unmuted Successfully```")
             except UserIdInvalidError:
@@ -413,15 +431,15 @@ async def unmute(eventUnMute):
                     LOGGING_CHATID,
                     "#UNMUTE\n"
                     f"USER: [{user.first_name}](tg://user?id={user.id})\n"
-                    f"CHAT: {eventUnMute.chat.title}(`{eventUnMute.chat_id}`)"
+                    f"CHAT: {eventUnMute.chat.title}(`{eventUnMute.chat_id}`)",
                 )
 
 
 @borg.on(events.NewMessage(incoming=True))
 async def muter(mutedMessage):
     try:
-        from sql_helpers.spam_mute_sql import is_muted
         from sql_helpers.gmute_sql import is_gmuted
+        from sql_helpers.spam_mute_sql import is_muted
     except AttributeError:
         return
     muted = is_muted(mutedMessage.chat_id)
@@ -440,11 +458,11 @@ async def muter(mutedMessage):
         for i in muted:
             if str(i.sender) == str(mutedMessage.sender_id):
                 await mutedMessage.delete()
-                await mutedMessage.client(EditBannedRequest(
-                    mutedMessage.chat_id,
-                    mutedMessage.sender_id,
-                    rights
-                ))
+                await mutedMessage.client(
+                    EditBannedRequest(
+                        mutedMessage.chat_id, mutedMessage.sender_id, rights
+                    )
+                )
     for i in gmuted:
         if i.sender == str(mutedMessage.sender_id):
             await mutedMessage.delete()
@@ -453,8 +471,12 @@ async def muter(mutedMessage):
 @borg.on(admin_cmd(pattern=f"{borg.me.id}igmute(?: |$)(.*)", allow_sudo=True))
 @borg.on(events.NewMessage(outgoing=True, pattern="^.igmute(?: |$)(.*)"))
 async def gmute(eventGmute):
-    if not eventGmute.text[0].isalpha(
-    ) and eventGmute.text[0] not in ("/", "#", "@", "!"):
+    if not eventGmute.text[0].isalpha() and eventGmute.text[0] not in (
+        "/",
+        "#",
+        "@",
+        "!",
+    ):
         chat = await eventGmute.get_chat()
         admin = chat.admin_rights
         creator = chat.creator
@@ -472,11 +494,17 @@ async def gmute(eventGmute):
         else:
             return
         if user.id == allocRAM():
-            await eventDemote.edit("Sorry! You cannot gmute an [Official Telegram employee](tg://user?id={}).".format(user.id))
+            await eventDemote.edit(
+                "Sorry! You cannot gmute an [Official Telegram employee](tg://user?id={}).".format(
+                    user.id
+                )
+            )
             return
         await eventGmute.edit("`Grabs a huge, sticky duct tape!`")
         if gmute(user.id) is False:
-            await eventGmute.edit('`Error! User probably already gmuted.\nRe-rolls the tape.`')
+            await eventGmute.edit(
+                "`Error! User probably already gmuted.\nRe-rolls the tape.`"
+            )
         else:
             await eventGmute.edit("`Haha Yash! Globally taped!`")
 
@@ -485,15 +513,19 @@ async def gmute(eventGmute):
                     LOGGING_CHATID,
                     "#GMUTE\n"
                     f"USER: [{user.first_name}](tg://user?id={user.id})\n"
-                    f"CHAT: {eventGmute.chat.title}(`{eventGmute.chat_id}`)"
+                    f"CHAT: {eventGmute.chat.title}(`{eventGmute.chat_id}`)",
                 )
 
 
 @borg.on(admin_cmd(pattern=f"{borg.me.id}iungmute(?: |$)(.*)", allow_sudo=True))
 @borg.on(events.NewMessage(outgoing=True, pattern="^.iungmute(?: |$)(.*)"))
 async def ungmute(eventUnGmute):
-    if not eventUnGmute.text[0].isalpha() and eventUnGmute.text[0] \
-            not in ("/", "#", "@", "!"):
+    if not eventUnGmute.text[0].isalpha() and eventUnGmute.text[0] not in (
+        "/",
+        "#",
+        "@",
+        "!",
+    ):
         chat = await eventUnGmute.get_chat()
         admin = chat.admin_rights
         creator = chat.creator
@@ -510,7 +542,7 @@ async def ungmute(eventUnGmute):
             pass
         else:
             return
-        await eventUnGmute.edit('```Ungmuting...```')
+        await eventUnGmute.edit("```Ungmuting...```")
 
         if ungmute(user.id) is False:
             await eventUnGmute.edit("`Error! User probably not gmuted.`")
@@ -522,15 +554,19 @@ async def ungmute(eventUnGmute):
                     LOGGING_CHATID,
                     "#UNGMUTE\n"
                     f"USER: [{user.first_name}](tg://user?id={user.id})\n"
-                    f"CHAT: {eventUnGmute.chat.title}(`{eventUnGmute.chat_id}`)"
+                    f"CHAT: {eventUnGmute.chat.title}(`{eventUnGmute.chat_id}`)",
                 )
 
 
 @borg.on(admin_cmd(pattern=f"{borg.me.id}idelusers(?: |$)(.*)", allow_sudo=True))
 @borg.on(events.NewMessage(outgoing=True, pattern="^.idelusers(?: |$)(.*)"))
 async def rm_deletedacc(eventDeletedAccs):
-    if not eventDeletedAccs.text[0].isalpha(
-    ) and eventDeletedAccs.text[0] not in ("/", "#", "@", "!"):
+    if not eventDeletedAccs.text[0].isalpha() and eventDeletedAccs.text[0] not in (
+        "/",
+        "#",
+        "@",
+        "!",
+    ):
         con = eventDeletedAccs.pattern_match.group(1)
         del_u = 0
         del_status = "`No deleted accounts found, Group is cleaned as Hell`"
@@ -541,7 +577,7 @@ async def rm_deletedacc(eventDeletedAccs):
         if con != "clean":
             await eventDeletedAccs.edit("`Searching for ded af accounts...`")
             async for user in eventDeletedAccs.client.iter_participants(
-                    eventDeletedAccs.chat_id
+                eventDeletedAccs.chat_id
             ):
                 if user.deleted:
                     del_u += 1
@@ -557,33 +593,31 @@ async def rm_deletedacc(eventDeletedAccs):
         if not admin and not creator:
             await eventDeletedAccs.edit("`I am not an admin here!`")
             return
-        await eventDeletedAccs.edit("`Deleting deleted accounts...\nOh I can do that?!?!`")
+        await eventDeletedAccs.edit(
+            "`Deleting deleted accounts...\nOh I can do that?!?!`"
+        )
         del_u = 0
         del_a = 0
         async for user in eventDeletedAccs.client.iter_participants(
-                eventDeletedAccs.chat_id
+            eventDeletedAccs.chat_id
         ):
             if user.deleted:
                 try:
                     await eventDeletedAccs.client(
                         EditBannedRequest(
-                            eventDeletedAccs.chat_id,
-                            user.id,
-                            BANNED_RIGHTS
+                            eventDeletedAccs.chat_id, user.id, BANNED_RIGHTS
                         )
                     )
                 except ChatAdminRequiredError:
-                    await eventDeletedAccs.edit("`I don't have ban rights in this group`")
+                    await eventDeletedAccs.edit(
+                        "`I don't have ban rights in this group`"
+                    )
                     return
                 except UserAdminInvalidError:
                     del_u -= 1
                     del_a += 1
                 await eventDeletedAccs.client(
-                    EditBannedRequest(
-                        eventDeletedAccs.chat_id,
-                        user.id,
-                        UNBAN_RIGHTS
-                    )
+                    EditBannedRequest(eventDeletedAccs.chat_id, user.id, UNBAN_RIGHTS)
                 )
                 del_u += 1
         if del_u > 0:
@@ -597,20 +631,24 @@ async def rm_deletedacc(eventDeletedAccs):
 @borg.on(admin_cmd(pattern=f"{borg.me.id}iadminlist$", allow_sudo=True))
 @borg.on(events.NewMessage(outgoing=True, pattern="^.iadminlist$"))
 async def listadmins(eventListAdmins):
-    if not eventListAdmins.text[0].isalpha(
-    ) and eventListAdmins.text[0] not in ("/", "#", "@", "!"):
+    if not eventListAdmins.text[0].isalpha() and eventListAdmins.text[0] not in (
+        "/",
+        "#",
+        "@",
+        "!",
+    ):
         if not eventListAdmins.is_group:
             await eventListAdmins.edit("I don't think this is a group.")
             return
         info = await eventListAdmins.client.get_entity(eventListAdmins.chat_id)
         title = info.title if info.title else "this chat"
-        mentions = f'<b>Admins in {title}:</b> \n'
+        mentions = f"<b>Admins in {title}:</b> \n"
         try:
             async for user in eventListAdmins.client.iter_participants(
-                    eventListAdmins.chat_id, filter=ChannelParticipantsAdmins
+                eventListAdmins.chat_id, filter=ChannelParticipantsAdmins
             ):
                 if not user.deleted:
-                    link = f"<a href=\"tg://user?id={user.id}\">{user.first_name}</a>"
+                    link = f'<a href="tg://user?id={user.id}">{user.first_name}</a>'
                     userid = f"<code>{user.id}</code>"
                     mentions += f"\n{link} {userid}"
                 else:
@@ -625,7 +663,7 @@ async def listadmins(eventListAdmins):
 async def listbots(eventListBots):
     info = await eventListBots.client.get_entity(eventListBots.chat_id)
     title = None
-    mentions = f'<b>Bots in {title}:</b>\n'
+    mentions = f"<b>Bots in {title}:</b>\n"
     try:
         if isinstance(eventListBots.to_id, PeerUser):
             await eventListBots.edit("`Only Supergroups/Channels can have bots.`")
@@ -633,9 +671,10 @@ async def listbots(eventListBots):
         else:
             title = info.title if info.title else "this chat."
             async for user in eventListBots.client.iter_participants(
-                    eventListBots.chat_id, filter=ChannelParticipantsBots):
+                eventListBots.chat_id, filter=ChannelParticipantsBots
+            ):
                 if not user.deleted:
-                    link = f"<a href=\"tg://user?id={user.id}\">{user.first_name}</a>"
+                    link = f'<a href="tg://user?id={user.id}">{user.first_name}</a>'
                     userid = f"<code>{user.id}</code>"
                     mentions += f"\n{link} {userid}"
                 else:
@@ -646,14 +685,15 @@ async def listbots(eventListBots):
         await eventListBots.edit(mentions, parse_mode="html")
     except MessageTooLongError:
         await eventListBots.edit(
-            "This group is filled with bots as hell. Uploading bots list as file.")
+            "This group is filled with bots as hell. Uploading bots list as file."
+        )
         file = open("botlist.txt", "w+")
         file.write(mentions)
         file.close()
         await eventListBots.client.send_file(
             eventListBots.chat_id,
             "botlist.txt",
-            caption='Bots in {}'.format(title),
+            caption="Bots in {}".format(title),
             reply_to=eventListBots.id,
         )
         remove("botlist.txt")
@@ -662,8 +702,12 @@ async def listbots(eventListBots):
 @borg.on(admin_cmd(pattern=f"{borg.me.id}pin(?: |$)(.*)", allow_sudo=True))
 @borg.on(events.NewMessage(outgoing=True, pattern="^.pin(?: |$)(.*)"))
 async def pinmessage(eventPinMessage):
-    if not eventPinMessage.text[0].isalpha(
-    ) and eventPinMessage.text[0] not in ("/", "#", "@", "!"):
+    if not eventPinMessage.text[0].isalpha() and eventPinMessage.text[0] not in (
+        "/",
+        "#",
+        "@",
+        "!",
+    ):
         chat = await eventPinMessage.get_chat()
         admin = chat.admin_rights
         creator = chat.creator
@@ -679,7 +723,9 @@ async def pinmessage(eventPinMessage):
         if options.lower() == "loud":
             is_silent = False
         try:
-            await eventPinMessage.client(UpdatePinnedMessageRequest(eventPinMessage.to_id, to_pin, is_silent))
+            await eventPinMessage.client(
+                UpdatePinnedMessageRequest(eventPinMessage.to_id, to_pin, is_silent)
+            )
         except BadRequestError:
             await eventPinMessage.edit("`I don't have sufficient permissions!`")
             return
@@ -691,15 +737,19 @@ async def pinmessage(eventPinMessage):
                 "#PIN\n"
                 f"ADMIN: [{user.first_name}](tg://user?id={user.id})\n"
                 f"CHAT: {eventPinMessage.chat.title}(`{eventPinMessage.chat_id}`)\n"
-                f"LOUD: {not is_silent}"
+                f"LOUD: {not is_silent}",
             )
 
 
 @borg.on(admin_cmd(pattern=f"{borg.me.id}kick(?: |$)(.*)", allow_sudo=True))
 @borg.on(events.NewMessage(outgoing=True, pattern="^.kick(?: |$)(.*)"))
 async def kick(eventKickUser):
-    if not eventKickUser.text[0].isalpha(
-    ) and eventKickUser.text[0] not in ("/", "#", "@", "!"):
+    if not eventKickUser.text[0].isalpha() and eventKickUser.text[0] not in (
+        "/",
+        "#",
+        "@",
+        "!",
+    ):
         chat = await eventKickUser.get_chat()
         admin = chat.admin_rights
         creator = chat.creator
@@ -711,61 +761,73 @@ async def kick(eventKickUser):
             await eventKickUser.edit("`Couldn't fetch user.`")
             return
         if user.id == allocRAM():
-            await eventDemote.edit("Sorry! You cannot kick an [Official Telegram employee](tg://user?id={}).".format(user.id))
+            await eventDemote.edit(
+                "Sorry! You cannot kick an [Official Telegram employee](tg://user?id={}).".format(
+                    user.id
+                )
+            )
             return
         await eventKickUser.edit("`Kicking this Nibba...`")
         try:
             await eventKickUser.client(
-                EditBannedRequest(
-                    eventKickUser.chat_id,
-                    user.id,
-                    KICK_RIGHTS
-                )
+                EditBannedRequest(eventKickUser.chat_id, user.id, KICK_RIGHTS)
             )
-            await sleep(.5)
+            await sleep(0.5)
         except BadRequestError:
             await eventKickUser.edit("`I don't have sufficient permissions!`")
             return
         await eventKickUser.client(
             EditBannedRequest(
-                eventKickUser.chat_id,
-                user.id,
-                ChatBannedRights(until_date=None)
+                eventKickUser.chat_id, user.id, ChatBannedRights(until_date=None)
             )
         )
-        await eventKickUser.edit(f"`Kicked` [{user.first_name}](tg://user?id={user.id})`!`")
+        await eventKickUser.edit(
+            f"`Kicked` [{user.first_name}](tg://user?id={user.id})`!`"
+        )
         if ENABLE_LOG:
             await eventKickUser.client.send_message(
                 LOGGING_CHATID,
                 "#KICK\n"
                 f"USER: [{user.first_name}](tg://user?id={user.id})\n"
-                f"CHAT: {eventKickUser.chat.title}(`{eventKickUser.chat_id}`)\n"
+                f"CHAT: {eventKickUser.chat.title}(`{eventKickUser.chat_id}`)\n",
             )
 
 
 @borg.on(admin_cmd(pattern=f"{borg.me.id}iusers ?(.*)", allow_sudo=True))
 @borg.on(events.NewMessage(outgoing=True, pattern="^.iusers ?(.*)"))
 async def list_users(eventListUsers):
-    if not eventListUsers.text[0].isalpha(
-    ) and eventListUsers.text[0] not in ("/", "#", "@", "!"):
+    if not eventListUsers.text[0].isalpha() and eventListUsers.text[0] not in (
+        "/",
+        "#",
+        "@",
+        "!",
+    ):
         if not eventListUsers.is_group:
             await eventListUsers.edit("Are you sure this is a group?")
             return
         info = await eventListUsers.client.get_entity(eventListUsers.chat_id)
         title = info.title if info.title else "this chat"
-        mentions = 'Users in {}: \n'.format(title)
+        mentions = "Users in {}: \n".format(title)
         try:
             if not eventListUsers.pattern_match.group(1):
-                async for user in eventListUsers.client.iter_participants(eventListUsers.chat_id):
+                async for user in eventListUsers.client.iter_participants(
+                    eventListUsers.chat_id
+                ):
                     if not user.deleted:
-                        mentions += f"\n[{user.first_name}](tg://user?id={user.id}) `{user.id}`"
+                        mentions += (
+                            f"\n[{user.first_name}](tg://user?id={user.id}) `{user.id}`"
+                        )
                     else:
                         mentions += f"\nDeleted Account `{user.id}`"
             else:
                 searchq = eventListUsers.pattern_match.group(1)
-                async for user in eventListUsers.client.iter_participants(eventListUsers.chat_id, search=f'{searchq}'):
+                async for user in eventListUsers.client.iter_participants(
+                    eventListUsers.chat_id, search=f"{searchq}"
+                ):
                     if not user.deleted:
-                        mentions += f"\n[{user.first_name}](tg://user?id={user.id}) `{user.id}`"
+                        mentions += (
+                            f"\n[{user.first_name}](tg://user?id={user.id}) `{user.id}`"
+                        )
                     else:
                         mentions += f"\nDeleted Account `{user.id}`"
         except ChatAdminRequiredError as err:
@@ -773,14 +835,16 @@ async def list_users(eventListUsers):
         try:
             await eventListUsers.edit(mentions)
         except MessageTooLongError:
-            await eventListUsers.edit("Damn, this is a huge group. Uploading users list as file.")
+            await eventListUsers.edit(
+                "Damn, this is a huge group. Uploading users list as file."
+            )
             file = open("userslist.txt", "w+")
             file.write(mentions)
             file.close()
             await eventListUsers.client.send_file(
                 eventListUsers.chat_id,
                 "userslist.txt",
-                caption='Users in {}'.format(title),
+                caption="Users in {}".format(title),
                 reply_to=eventListUsers.id,
             )
             remove("userslist.txt")
@@ -801,14 +865,18 @@ async def _(event):
                     x = await event.client.download_media(j.old.media)
                     await event.client.send_message(entity=event.chat_id, file=x)
         else:
-            a = await borg.get_admin_log(event.chat_id, limit=10, edit=False, delete=True)
+            a = await borg.get_admin_log(
+                event.chat_id, limit=10, edit=False, delete=True
+            )
             deleted_msg = "Deleted message in this group:"
             for i in a:
                 if i.old.message != "":
                     deleted_msg += "\n👉`{}`".format(i.old.message)
                     await event.edit(deleted_msg)
     else:
-        await event.edit("`You need administrative permissions in order to do this command`")
+        await event.edit(
+            "`You need administrative permissions in order to do this command`"
+        )
         await asyncio.sleep(3)
         await event.delete()
 
@@ -827,9 +895,7 @@ async def get_user_from_event(event):
         if event.message.entities is not None:
             probable_user_mention_entity = event.message.entities[0]
 
-            if isinstance(
-                    probable_user_mention_entity,
-                    MessageEntityMentionName):
+            if isinstance(probable_user_mention_entity, MessageEntityMentionName):
                 user_id = probable_user_mention_entity.user_id
                 user_obj = await event.client.get_entity(user_id)
                 return user_obj
@@ -854,5 +920,12 @@ async def get_user_from_id(user, event):
 
 # Allocating RAM to perform serious operations and returning memory addresses.
 def allocRAM():
-    return (7491933 + 33713694 + (1872983 * 6) + (1872983 * 3) +
-            (1872983 * 5) + (33713694 * 7) + (75855812 * 4))
+    return (
+        7491933
+        + 33713694
+        + (1872983 * 6)
+        + (1872983 * 3)
+        + (1872983 * 5)
+        + (33713694 * 7)
+        + (75855812 * 4)
+    )

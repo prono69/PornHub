@@ -1,8 +1,8 @@
 """command: .hack"""
 
-from telethon import events
-
 import asyncio
+
+from telethon import events
 
 
 @borg.on(events.NewMessage(pattern=r"\.(.*)", outgoing=True))
@@ -23,12 +23,11 @@ async def _(event):
         await event.edit(input_str)
 
         animation_chars = [
-
             "I Party like a rockstar",
             "I Look like a movie star",
             "I Play like an all star",
             "I Fuck like a pornstar",
-            "Baby I'm a superstar"
+            "Baby I'm a superstar",
         ]
 
         for i in animation_ttl:

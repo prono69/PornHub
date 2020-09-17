@@ -5,9 +5,10 @@
 import logging
 import os
 import sys
-from uniborg import Uniborg
+
 from telethon.sessions import StringSession
 
+from uniborg import Uniborg
 
 logging.basicConfig(level=logging.INFO)
 
@@ -21,7 +22,8 @@ else:
     else:
         logging.warning("No config.py Found!")
         logging.info(
-            "Please run the command, again, after creating config.py similar to README.md")
+            "Please run the command, again, after creating config.py similar to README.md"
+        )
         sys.exit(1)
 
 
@@ -42,7 +44,7 @@ if Config.HU_STRING_SESSION is not None:
         db_plugin_path="dbplugins/",
         api_config=Config,
         api_id=Config.APP_ID,
-        api_hash=Config.API_HASH
+        api_hash=Config.API_HASH,
     )
     borg.run_until_disconnected()
 elif len(sys.argv) == 2:
@@ -55,12 +57,14 @@ elif len(sys.argv) == 2:
         connection_retries=None,
         api_config=Config,
         api_id=Config.APP_ID,
-        api_hash=Config.API_HASH
+        api_hash=Config.API_HASH,
     )
     borg.run_until_disconnected()
 else:
     # throw error
-    logging.error("USAGE EXAMPLE:\n"
-                  "python3 -m stdborg <SESSION_NAME>"
-                  "\n 👆👆 Please follow the above format to run your userbot."
-                  "\n Bot quitting.")
+    logging.error(
+        "USAGE EXAMPLE:\n"
+        "python3 -m stdborg <SESSION_NAME>"
+        "\n 👆👆 Please follow the above format to run your userbot."
+        "\n Bot quitting."
+    )

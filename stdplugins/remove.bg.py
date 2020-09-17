@@ -15,16 +15,20 @@
 """Remove.BG Plugin for @UniBorg
 Syntax: .rbg https://link.to/image.extension
 Syntax: .rbg as reply to a media"""
-from datetime import datetime
 import io
 import os
+from datetime import datetime
+
 import requests
+
 from uniborg.util import admin_cmd
 
 
 @borg.on(admin_cmd(pattern="rbg ?(.*)"))
 async def _(event):
-    HELP_STR = "`.rbg` as reply to a media, or give a link as an argument to this command"
+    HELP_STR = (
+        "`.rbg` as reply to a media, or give a link as an argument to this command"
+    )
     if event.fwd_from:
         return
     if Config.REM_BG_API_KEY is None:
@@ -40,8 +44,7 @@ async def _(event):
         await event.edit("`Abe Kuch Der Rukja ...`")
         try:
             downloaded_file_name = await borg.download_media(
-                reply_message,
-                Config.TMP_DOWNLOAD_DIRECTORY
+                reply_message, Config.TMP_DOWNLOAD_DIRECTORY
             )
         except Exception as e:
             await event.edit(str(e))
@@ -66,13 +69,21 @@ async def _(event):
                 force_document=True,
                 supports_streaming=False,
                 allow_cache=False,
-                reply_to=message_id
+                reply_to=message_id,
             )
         end = datetime.now()
         ms = (end - start).seconds
-        await event.edit("Background Removed in {} seconds using ReMove.BG API, powered by @PepeBot".format(ms))
+        await event.edit(
+            "Background Removed in {} seconds using ReMove.BG API, powered by @PepeBot".format(
+                ms
+            )
+        )
     else:
-        await event.edit("ReMove.BG API returned Errors. Please report to @UniBorg\n`{}".format(output_file_name.content.decode("UTF-8")))
+        await event.edit(
+            "ReMove.BG API returned Errors. Please report to @UniBorg\n`{}".format(
+                output_file_name.content.decode("UTF-8")
+            )
+        )
 
 
 # this method will call the API, and return in the appropriate format
@@ -89,7 +100,7 @@ def ReTrieveFile(input_file_name):
         headers=headers,
         files=files,
         allow_redirects=True,
-        stream=True
+        stream=True,
     )
     return r
 
@@ -98,14 +109,12 @@ def ReTrieveURL(input_url):
     headers = {
         "X-API-Key": Config.REM_BG_API_KEY,
     }
-    data = {
-        "image_url": input_url
-    }
+    data = {"image_url": input_url}
     r = requests.post(
         "https://api.remove.bg/v1.0/removebg",
         headers=headers,
         data=data,
         allow_redirects=True,
-        stream=True
+        stream=True,
     )
     return r

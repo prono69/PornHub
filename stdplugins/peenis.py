@@ -32,6 +32,6 @@ async def emoji_penis(e):
     await e.edit("`Dickifying...`")
     message = PENIS_TEMPLATE
     if emoji:
-        message = message.replace('🍆', emoji)
+        message = message.replace("🍆", emoji)
 
     await e.edit(message)

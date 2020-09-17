@@ -2,8 +2,9 @@
 # By Priyam Kalra
 # Syntax (.spam <number of msgs> <text>)
 
-from uniborg.util import admin_cmd
 from time import sleep
+
+from uniborg.util import admin_cmd
 
 
 @borg.on(admin_cmd(pattern="spam ?(.*)"))
@@ -22,7 +23,9 @@ async def _(event):
         strip = len(count)
         text = input[strip:]
     else:
-        await event.edit("Fatal Error!\nPlease contact the developer of this module [@A_FRICKING_GAMER] for support.")
+        await event.edit(
+            "Fatal Error!\nPlease contact the developer of this module [@A_FRICKING_GAMER] for support."
+        )
         return
     if text and count is not None:
         for spam in range(int(count)):

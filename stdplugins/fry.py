@@ -1,10 +1,11 @@
 """Type `.df` or `.df <1-9>` reply to a photo or sticker
 """
 from telethon.errors.rpcerrorlist import YouBlockedUserError
+
 from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd(pattern='df(:? |$)(.*)?'))
+@borg.on(admin_cmd(pattern="df(:? |$)(.*)?"))
 async def _(event):
     await event.edit("`Destroying Image...`")
     level = event.pattern_match.group(2)
@@ -26,16 +27,12 @@ async def _(event):
             msg = await conv.send_message(reply_message)
             if level:
                 m = f"/deepfry {level}"
-                msg_reply = await conv.send_message(
-                    m,
-                    reply_to=msg.id)
+                msg_reply = await conv.send_message(m, reply_to=msg.id)
                 r = await conv.get_response()
                 response = await conv.get_response()
             elif reply_message.gif:
                 m = "/deepfry"
-                msg_reply = await conv.send_message(
-                    m,
-                    reply_to=msg.id)
+                msg_reply = await conv.send_message(m, reply_to=msg.id)
                 r = await conv.get_response()
                 response = await conv.get_response()
             else:
@@ -48,8 +45,8 @@ async def _(event):
         if response.text.startswith("Couldn't"):
             await event.edit("`Send Image Plox`")
             await event.client.delete_messages(
-                conv.chat_id,
-                [msg.id, response.id, r.id, msg_reply.id])
+                conv.chat_id, [msg.id, response.id, r.id, msg_reply.id]
+            )
             return
         else:
             await event.client.send_file(event.chat_id, response)

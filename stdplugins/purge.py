@@ -1,13 +1,16 @@
 """Purge your messages without the admins seeing it in Recent Actions"""
 
 import asyncio
-from asyncio import sleep
-from uniborg.util import admin_cmd
-from telethon import events
 import logging
+from asyncio import sleep
+
+from telethon import events
+
+from uniborg.util import admin_cmd
+
 logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+    format="[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s", level=logging.WARNING
+)
 
 level = logging.INFO
 print(level)
@@ -30,9 +33,7 @@ async def _(event):
             from_user = await borg.get_entity(input_str)
             logger.info(from_user)
         async for message in borg.iter_messages(
-            event.chat_id,
-            min_id=event.reply_to_msg_id,
-            from_user=from_user
+            event.chat_id, min_id=event.reply_to_msg_id, from_user=from_user
         ):
             i = i + 1
             msgs.append(message)
@@ -54,8 +55,7 @@ async def purgeme(delme):
     count = int(message[8:])
     i = 1
 
-    async for message in delme.client.iter_messages(delme.chat_id,
-                                                    from_user='me'):
+    async for message in delme.client.iter_messages(delme.chat_id, from_user="me"):
         if i > count + 1:
             break
         i = i + 1
@@ -80,8 +80,9 @@ async def selfdestruct(destroy):
     await sleep(counter)
     await smsg.delete()
     if Config.BOTLOG:
-        await destroy.client.send_message(Config.PRIVATE_GROUP_BOT_API_ID,
-                                          "`Sd query done successfully`")
+        await destroy.client.send_message(
+            Config.PRIVATE_GROUP_BOT_API_ID, "`Sd query done successfully`"
+        )
 
 
 @borg.on(admin_cmd(pattern="ipurg ?(.*)"))
@@ -108,33 +109,35 @@ async def fastpurger(purg):
     if msgs:
         await purg.client.delete_messages(chat, msgs)
         done = await purg.client.send_message(
-            purg.chat_id, f"`Fast purge complete!`\
-        \nPurged {str(count)} messages")
+            purg.chat_id,
+            f"`Fast purge complete!`\
+        \nPurged {str(count)} messages",
+        )
 
     await sleep(1)
     await done.delete()
 
 
-@borg.on(events.NewMessage(pattern=r'\.(s(?:elf)?)?y(?:eet)?p(?:urge)?', outgoing=True))
+@borg.on(events.NewMessage(pattern=r"\.(s(?:elf)?)?y(?:eet)?p(?:urge)?", outgoing=True))
 async def yeetpurge(e):
     global _YEETPURGES
     selfonly = 1 if e.pattern_match.group(1) else 0
     if not e.is_reply:
-        await e.edit('err \\\nNo reply')
+        await e.edit("err \\\nNo reply")
         return
     if e.from_id not in _YEETPURGES[selfonly]:
         _YEETPURGES[selfonly][e.from_id] = dict()
     cond = e.chat_id not in _YEETPURGES[selfonly][e.from_id]
     if cond:
         _YEETPURGES[selfonly][e.from_id][e.chat_id] = e
-        await e.edit('`Yeetpurge from destination set! Reply to end destination`')
+        await e.edit("`Yeetpurge from destination set! Reply to end destination`")
         return
     ype = _YEETPURGES[selfonly][e.from_id].pop(e.chat_id)
     minmax = sorted([ype.reply_to_msg_id, e.reply_to_msg_id])
     messages = [e.message, ype.message]
-    kw = {'min_id': minmax[0] - 1, 'max_id': minmax[1] + 1}
+    kw = {"min_id": minmax[0] - 1, "max_id": minmax[1] + 1}
     if selfonly:
-        kw['from_user'] = 'me'
+        kw["from_user"] = "me"
     async for m in e.client.iter_messages(e.chat_id, **kw):
         messages.append(m)
     await e.client.delete_messages(e.chat_id, messages)

@@ -8,13 +8,16 @@ By:- JaskaranSM ( @Zero_cool7870 )
 
 """
 
-from telethon import events
 import logging
+
+from telethon import events
+
 from uniborg.util import admin_cmd
+
 logging.basicConfig(level=logging.INFO)
 MONGO_URI = Config.MONGO_URI
 try:
-    db = mongo_client['test']
+    db = mongo_client["test"]
     muted = db.muted
 except Exception as e:
     logging.error(str(e))
@@ -46,15 +49,19 @@ async def gmute_user(event):
         try:
             c = muted.find({})
             for i in c:
-                if i['user_id'] == user_id:
+                if i["user_id"] == user_id:
                     await event.edit("`User is Already G-Muted.`")
                     return
             if user_id == borg.me.id:
                 await event.edit("`Cant Mute Myself..`")
                 return
             else:
-                muted.insert_one({'user_id': user_id})
-                await event.edit("`G-Muted` [{}](tg://user?id={}).".format(str(user_id), str(user_id)))
+                muted.insert_one({"user_id": user_id})
+                await event.edit(
+                    "`G-Muted` [{}](tg://user?id={}).".format(
+                        str(user_id), str(user_id)
+                    )
+                )
                 logging.info("G-Muted {}".format(str(user_id)))
         except Exception as e:
             logging.error(str(e))
@@ -79,8 +86,10 @@ async def un_gmute_user(event):
         user_id = int(input_str)
     await event.edit("`Removing Duct Tape from User's Mouth.`")
     try:
-        muted.delete_one({'user_id': user_id})
-        await event.edit("`Un-Gmuted` [{}](tg://user?id={}).".format(str(user_id), str(user_id)))
+        muted.delete_one({"user_id": user_id})
+        await event.edit(
+            "`Un-Gmuted` [{}](tg://user?id={}).".format(str(user_id), str(user_id))
+        )
         logging.info("Un-Gmuted {}".format(str(user_id)))
     except Exception as e:
         logging.error(str(e))
@@ -95,7 +104,7 @@ async def list_gmuted(event):
         cur = muted.find({})
         msg = "**G-Muted Users:**\n"
         for c in cur:
-            msg += "__User:__ `" + str(c['user_id']) + "`\n"
+            msg += "__User:__ `" + str(c["user_id"]) + "`\n"
         await event.edit(msg)
     except Exception as e:
         logging.error(str(e))
@@ -109,7 +118,7 @@ async def gmute_listener(sender):
     try:
         curs = muted.find({})
         for c in curs:
-            if c['user_id'] == sender.from_id:
+            if c["user_id"] == sender.from_id:
                 await sender.delete()
     except BaseException:
         return

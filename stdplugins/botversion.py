@@ -9,6 +9,7 @@ cmd is .ver"""
 from asyncio import create_subprocess_shell as asyncrunapp
 from asyncio.subprocess import PIPE as asyncPIPE
 from shutil import which
+
 from uniborg.util import admin_cmd
 
 
@@ -23,8 +24,7 @@ async def bot_ver(event):
             stderr=asyncPIPE,
         )
         stdout, stderr = await ver.communicate()
-        verout = str(stdout.decode().strip()) \
-            + str(stderr.decode().strip())
+        verout = str(stdout.decode().strip()) + str(stderr.decode().strip())
 
         invokerev = "git rev-list --all --count"
         rev = await asyncrunapp(
@@ -33,15 +33,11 @@ async def bot_ver(event):
             stderr=asyncPIPE,
         )
         stdout, stderr = await rev.communicate()
-        revout = str(stdout.decode().strip()) \
-            + str(stderr.decode().strip())
+        revout = str(stdout.decode().strip()) + str(stderr.decode().strip())
 
-        await event.edit("`Userbot Version: "
-                         f"{verout}"
-                         "` \n"
-                         "`Revision: "
-                         f"{revout}"
-                         "`")
+        await event.edit(
+            "`Userbot Version: " f"{verout}" "` \n" "`Revision: " f"{revout}" "`"
+        )
     else:
         await event.edit(
             "Shame that you don't have git, You're running 69.0 - 'Master' anyway"

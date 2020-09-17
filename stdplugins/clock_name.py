@@ -2,8 +2,10 @@
 
 import asyncio
 import time
-from telethon.tl import functions
+
 from telethon.errors import FloodWaitError
+from telethon.tl import functions
+
 from uniborg.util import admin_cmd
 
 DEL_TIME_OUT = 140
@@ -19,16 +21,18 @@ async def _(event):
         name = f"{HM}🔥NIKITA🔥{DMY}"
         logger.info(name)
         try:
-            await borg(functions.account.UpdateProfileRequest(  # pylint:disable=E0602
-                last_name=name
-            ))
+            await borg(
+                functions.account.UpdateProfileRequest(  # pylint:disable=E0602
+                    last_name=name
+                )
+            )
         except FloodWaitError as ex:
             logger.warning(str(e))
             await asyncio.sleep(ex.seconds)
         # else:
-            # logger.info(r.stringify())
-            # await borg.send_message(  # pylint:disable=E0602
-            #     Config.PRIVATE_GROUP_BOT_API_ID,  # pylint:disable=E0602
-            #     "Changed Profile Picture"
-            # )
+        # logger.info(r.stringify())
+        # await borg.send_message(  # pylint:disable=E0602
+        #     Config.PRIVATE_GROUP_BOT_API_ID,  # pylint:disable=E0602
+        #     "Changed Profile Picture"
+        # )
         await asyncio.sleep(DEL_TIME_OUT)

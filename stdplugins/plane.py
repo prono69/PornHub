@@ -1,6 +1,7 @@
 # By STARKTM1
-from telethon import events
 import asyncio
+
+from telethon import events
 
 
 @borg.on(events.NewMessage(pattern=r"\.plane", outgoing=True))

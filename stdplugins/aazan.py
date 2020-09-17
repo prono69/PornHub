@@ -1,8 +1,10 @@
 import json
+
 import requests
+
 from uniborg.util import admin_cmd
 
-TEMPAT = ''
+TEMPAT = ""
 
 """ aazan: .aazan <city> or .aazan <country>
         \nUsage: Gets the prayer time for muslims.
@@ -22,7 +24,7 @@ async def get_adzan(adzan):
     else:
         LOCATION = adzan.pattern_match.group(1)
 
-    url = f'http://muslimsalat.com/{LOCATION}.json?key=bd099c5825cbedb9aa934e255a81a5fc'
+    url = f"http://muslimsalat.com/{LOCATION}.json?key=bd099c5825cbedb9aa934e255a81a5fc"
     request = requests.get(url)
     result = json.loads(request.text)
 
@@ -37,19 +39,22 @@ async def get_adzan(adzan):
     location4 = result["state"]
 
     subuh = result["items"][0]["fajr"]
-   #### syuruk = result["items"][0]["shurooq"]
+    #### syuruk = result["items"][0]["shurooq"]
     zuhur = result["items"][0]["dhuhr"]
     ashar = result["items"][0]["asr"]
     maghrib = result["items"][0]["maghrib"]
     isya = result["items"][0]["isha"]
 
-    textkirim = (f"⏱  **Namaz Schedule** `{date}`:\n" +
-                 f"`{location} | {location3} | {location4} | {location2}`\n\n" +
-                 f"**Subuh :** `{subuh}`\n" +
-                 # f"**Syuruk :** `{syuruk}`\n" +
-                 f"**Zuhur :** `{zuhur}`\n" +
-                 f"**Ashar :** `{ashar}`\n" +
-                 f"**Maghrib :** `{maghrib}`\n" +
-                 f"**Isya :** `{isya}`\n")
+    textkirim = (
+        f"⏱  **Namaz Schedule** `{date}`:\n"
+        + f"`{location} | {location3} | {location4} | {location2}`\n\n"
+        + f"**Subuh :** `{subuh}`\n"
+        +
+        # f"**Syuruk :** `{syuruk}`\n" +
+        f"**Zuhur :** `{zuhur}`\n"
+        + f"**Ashar :** `{ashar}`\n"
+        + f"**Maghrib :** `{maghrib}`\n"
+        + f"**Isya :** `{isya}`\n"
+    )
 
     await adzan.edit(textkirim)

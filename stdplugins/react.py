@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 """ Command: .react happy|thinking|waving|wtf|love|confused|dead|sad|dog """
 
-from telethon import events
 import random
+
+from telethon import events
 
 
 @borg.on(events.NewMessage(pattern=r"\.react (.*)", outgoing=True))

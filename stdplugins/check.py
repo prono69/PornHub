@@ -1,9 +1,6 @@
 # modified by @UniBorg
-from telethon.tl.types import (
-    Channel,
-    Chat,
-    User
-)
+from telethon.tl.types import Channel, Chat, User
+
 from uniborg.util import admin_cmd
 
 
@@ -20,8 +17,9 @@ async def _(event):
         return
     # chat = "@CheckRestrictionsBot"
     reply_entity = reply_message.entities[0]
-    reply_res = reply_message.text[reply_entity.offset:
-                                   reply_entity.offset + reply_entity.length]
+    reply_res = reply_message.text[
+        reply_entity.offset : reply_entity.offset + reply_entity.length
+    ]
     rr = await event.client.get_entity(reply_res)
     await event.edit(get_restriction_string(rr))
 
@@ -41,7 +39,8 @@ def get_restriction_string(a) -> str:
         c = "__UN-KNOWN__"
     if a.restriction_reason is None or len(a.restriction_reason) == 0:
         b = "{}: Good News! No Limitations are currently applied to this @CheckRestrictionsBot".format(
-            c)
+            c
+        )
         # plox: do not remove -_- this credit. thx.!
     else:
         tmp_string = f"{c} has the following restriction_reason(s): \n"

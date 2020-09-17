@@ -27,16 +27,18 @@
 
 # requires: deezloader hachoir Pillow
 
-import deezloader
 import os
 import shutil
 import time
 
-from uniborg.util import admin_cmd
+import deezloader
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
+
 # from PIL import Image
 from telethon.tl.types import DocumentAttributeAudio
+
+from uniborg.util import admin_cmd
 
 
 @borg.on(admin_cmd(pattern=r"deezload (.+?|) --(FLAC|MP3\_320|MP3\_256|MP3\_128)"))
@@ -52,7 +54,8 @@ async def _(event):
         "invalid_arl_token": "please set the required variables for this module",
         "wrong_cmd_syntax": "bruh, now i think how far should we go. please terminate my Session 🥺",
         "server_error": "We're experiencing technical difficulties.",
-        "processing": "`Downloading...`"}
+        "processing": "`Downloading...`",
+    }
 
     ARL_TOKEN = Config.DEEZER_ARL_TOKEN
 
@@ -66,9 +69,7 @@ async def _(event):
         await event.edit(str(er))
         return
 
-    temp_dl_path = os.path.join(
-        Config.TMP_DOWNLOAD_DIRECTORY, str(
-            time.time()))
+    temp_dl_path = os.path.join(Config.TMP_DOWNLOAD_DIRECTORY, str(time.time()))
     if not os.path.exists(temp_dl_path):
         os.makedirs(temp_dl_path)
 
@@ -85,7 +86,7 @@ async def _(event):
                 quality=required_qty,
                 recursive_quality=True,
                 recursive_download=True,
-                not_interface=True
+                not_interface=True,
             )
             await event.edit("`Uploading...`")
             await upload_track(required_track, event)
@@ -100,7 +101,7 @@ async def _(event):
                 recursive_quality=True,
                 recursive_download=True,
                 not_interface=True,
-                zips=False
+                zips=False,
             )
             for required_track in reqd_albums:
                 await upload_track(required_track, event)
@@ -115,7 +116,7 @@ async def _(event):
                 quality=required_qty,
                 recursive_quality=True,
                 recursive_download=True,
-                not_interface=True
+                not_interface=True,
             )
             await event.edit("Uploading...")
             await upload_track(required_track, event)
@@ -130,7 +131,7 @@ async def _(event):
                 recursive_quality=True,
                 recursive_download=True,
                 not_interface=True,
-                zips=False
+                zips=False,
             )
             for required_track in reqd_albums:
                 await upload_track(required_track, event)
@@ -158,7 +159,7 @@ async def upload_track(track_location, message):
             voice=False,
             title=title,
             performer=performer,
-            waveform=None
+            waveform=None,
         )
     ]
     supports_streaming = True

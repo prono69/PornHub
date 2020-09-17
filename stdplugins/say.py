@@ -1,8 +1,9 @@
 # For UniBorg
 # By Priyam Kalra
 # Syntax (.say <text_to_print>)
-from uniborg.util import admin_cmd
 import time
+
+from uniborg.util import admin_cmd
 
 
 @borg.on(admin_cmd(pattern="say ?(.*)"))

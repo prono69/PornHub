@@ -3,9 +3,11 @@
 \n`.unmutechat`
 """
 from asyncio import sleep
+
 from sample_config import Config
-from uniborg.util import admin_cmd
 from uniborg import MODULE
+from uniborg.util import admin_cmd
+
 MODULE.append("chatmute")
 
 
@@ -15,7 +17,7 @@ async def unmute_chat(unm_e):
     try:
         from sql_helpers.keep_read_sql import unkread
     except AttributeError:
-        await unm_e.edit('`Running on Non-SQL Mode!`')
+        await unm_e.edit("`Running on Non-SQL Mode!`")
         return
     unkread(str(unm_e.chat_id))
     await unm_e.edit("```Unmuted this chat Successfully```")
@@ -38,8 +40,8 @@ async def mute_chat(mute_e):
     await mute_e.delete()
     if Config.BOTLOG:
         await mute_e.client.send_message(
-            Config.PRIVATE_GROUP_BOT_API_ID,
-            str(mute_e.chat_id) + " was silenced.")
+            Config.PRIVATE_GROUP_BOT_API_ID, str(mute_e.chat_id) + " was silenced."
+        )
 
 
 async def keep_read(message):

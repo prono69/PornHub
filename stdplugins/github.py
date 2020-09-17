@@ -1,6 +1,7 @@
 """Get information about an user on GitHub
 Syntax: .github USERNAME"""
 import requests
+
 from uniborg.util import admin_cmd
 
 
@@ -30,11 +31,13 @@ async def _(event):
 **Blog:** {}
 **Location:** `{}`
 **Bio:** `{}`\n
-**Profile Created:** `{}`""".format(name, html_url, gh_type, company, blog, location, bio, created_at),
+**Profile Created:** `{}`""".format(
+                name, html_url, gh_type, company, blog, location, bio, created_at
+            ),
             file=avatar_url,
             force_document=False,
             allow_cache=False,
-            reply_to=event
+            reply_to=event,
         )
         await event.delete()
     else:

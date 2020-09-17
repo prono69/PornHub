@@ -4,8 +4,9 @@ usage = .meme someCharacter //default delay will be 3
 By : - @Zero_cool7870
 
 """
-from telethon import events
 import asyncio
+
+from telethon import events
 
 
 @borg.on(events.NewMessage(pattern=r"\.mememe", outgoing=True))
@@ -33,6 +34,7 @@ async def meme(event):
     await event.edit(memeVar)
     await asyncio.sleep(sleepValue)
 
+
 """
 Bonus : Flower Boquee Generater
 usage:- .flower
@@ -52,8 +54,34 @@ async def meme(event):
     await event.edit(flower + flower + flower + "      ")
     await event.edit(flower + flower + flower + flower + "     ")
     await event.edit(flower + flower + flower + flower + flower + "    ")
-    await event.edit(flower + flower + flower + flower + flower + flower + flower + "   ")
-    await event.edit(flower + flower + flower + flower + flower + flower + flower + flower + "  ")
-    await event.edit(flower + flower + flower + flower + flower + flower + flower + flower + flower + " ")
-    await event.edit(flower + flower + flower + flower + flower + flower + flower + flower + flower + flower)
+    await event.edit(
+        flower + flower + flower + flower + flower + flower + flower + "   "
+    )
+    await event.edit(
+        flower + flower + flower + flower + flower + flower + flower + flower + "  "
+    )
+    await event.edit(
+        flower
+        + flower
+        + flower
+        + flower
+        + flower
+        + flower
+        + flower
+        + flower
+        + flower
+        + " "
+    )
+    await event.edit(
+        flower
+        + flower
+        + flower
+        + flower
+        + flower
+        + flower
+        + flower
+        + flower
+        + flower
+        + flower
+    )
     await asyncio.sleep(sleepValue)

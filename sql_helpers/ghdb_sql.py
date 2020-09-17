@@ -1,5 +1,6 @@
 from sqlalchemy import Column, String
-from sql_helpers import SESSION, BASE
+
+from sql_helpers import BASE, SESSION
 
 
 class ghdb(BASE):

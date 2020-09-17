@@ -12,14 +12,14 @@ async def download_file_from_google_drive(id):
 
     session = requests.Session()
 
-    response = session.get(URL, params={'id': id}, stream=True)
+    response = session.get(URL, params={"id": id}, stream=True)
     token = await get_confirm_token(response)
     if token:
-        params = {'id': id, 'confirm': token}
+        params = {"id": id, "confirm": token}
         response = session.get(URL, params=params, stream=True)
 
     headers = response.headers
-    content = headers['Content-Disposition']
+    content = headers["Content-Disposition"]
     destination = await get_file_name(content)
 
     file_name = await save_response_content(response, destination)
@@ -28,7 +28,7 @@ async def download_file_from_google_drive(id):
 
 async def get_confirm_token(response):
     for key, value in response.cookies.items():
-        if key.startswith('download_warning'):
+        if key.startswith("download_warning"):
             return value
 
     return None

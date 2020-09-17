@@ -8,10 +8,13 @@ This module can search images in danbooru and send in to the chat!
 Search images from Danbooru.
 """
 
-import requests
 from asyncio import sleep
-from uniborg.util import admin_cmd
+
+import requests
+
 from uniborg import MODULE, SYNTAX
+from uniborg.util import admin_cmd
+
 MODULE.append("nsfw")
 
 
@@ -22,15 +25,21 @@ async def danbooru(message):
     rating = "Explicit" if "nsfw" in message.pattern_match.group(1) else "Safe"
     search_query = message.pattern_match.group(2)
 
-    params = {"limit": 1,
-              "random": "true",
-              "tags": f"Rating:{rating} {search_query}".strip()}
+    params = {
+        "limit": 1,
+        "random": "true",
+        "tags": f"Rating:{rating} {search_query}".strip(),
+    }
 
-    with requests.get("http://danbooru.donmai.us/posts.json", params=params) as response:
+    with requests.get(
+        "http://danbooru.donmai.us/posts.json", params=params
+    ) as response:
         if response.status_code == 200:
             response = response.json()
         else:
-            await message.edit(f"`An error occurred, response code:` **{response.status_code}**")
+            await message.edit(
+                f"`An error occurred, response code:` **{response.status_code}**"
+            )
             await sleep(5)
             await message.delete()
             return
@@ -43,7 +52,7 @@ async def danbooru(message):
 
     valid_urls = [
         response[0][url]
-        for url in ['file_url', 'large_file_url', 'source']
+        for url in ["file_url", "large_file_url", "source"]
         if url in response[0].keys()
     ]
 
@@ -69,10 +78,9 @@ async def boobs(e):
     await e.edit("`Finding some big boobs...`")
     await sleep(3)
     await e.edit("`Sending some big boobs...`")
-    nsfw = requests.get('http://api.oboobs.ru/noise/1').json()[0]["preview"]
-    urllib.request.urlretrieve(
-        "http://media.oboobs.ru/{}".format(nsfw), "*.jpg")
-    os.rename('*.jpg', 'boobs.jpg')
+    nsfw = requests.get("http://api.oboobs.ru/noise/1").json()[0]["preview"]
+    urllib.request.urlretrieve("http://media.oboobs.ru/{}".format(nsfw), "*.jpg")
+    os.rename("*.jpg", "boobs.jpg")
     await e.client.send_file(e.chat_id, "boobs.jpg")
     os.remove("boobs.jpg")
     await e.delete()
@@ -83,20 +91,21 @@ async def butts(e):
     await e.edit("`Finding some beautiful butts...`")
     await sleep(3)
     await e.edit("`Sending some beautiful butts...`")
-    nsfw = requests.get('http://api.obutts.ru/noise/1').json()[0]["preview"]
-    urllib.request.urlretrieve(
-        "http://media.obutts.ru/{}".format(nsfw), "*.jpg")
-    os.rename('*.jpg', 'butts.jpg')
+    nsfw = requests.get("http://api.obutts.ru/noise/1").json()[0]["preview"]
+    urllib.request.urlretrieve("http://media.obutts.ru/{}".format(nsfw), "*.jpg")
+    os.rename("*.jpg", "butts.jpg")
     await e.client.send_file(e.chat_id, "butts.jpg")
     os.remove("butts.jpg")
     await e.delete()
 
-SYNTAX.update({
-    'nsfw':
-    ">`.amimu` or `aninsfw`"
-    "\nUsage: Go find Yourself.\n"
-    ">`.boobs`"
-    "\nUsage: Get boobs image.\n"
-    ">`.butts`"
-    "\nUsage: Get butts image."
-})
+
+SYNTAX.update(
+    {
+        "nsfw": ">`.amimu` or `aninsfw`"
+        "\nUsage: Go find Yourself.\n"
+        ">`.boobs`"
+        "\nUsage: Get boobs image.\n"
+        ">`.butts`"
+        "\nUsage: Get butts image."
+    }
+)

@@ -1,18 +1,19 @@
 """Log PMs
 Check https://t.me/tgbeta/3505"""
-from asyncio import sleep
-from uniborg import SYNTAX
-from uniborg.util import admin_cmd
-from telethon import events
-import asyncio
 import asyncio
 import logging
 import os
 import sys
+from asyncio import sleep
+
+from telethon import events
+
+from uniborg import SYNTAX
+from uniborg.util import admin_cmd
 
 logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.WARN)
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.WARN
+)
 
 NO_PM_LOG_USERS = []
 
@@ -52,9 +53,7 @@ async def monito_p_m_s(event):
                     if event.message:
                         e = await borg.get_entity(int(Config.PM_LOGGR_BOT_API_ID))
                         fwd_message = await borg.forward_messages(
-                            e,
-                            event.message,
-                            silent=True
+                            e, event.message, silent=True
                         )
                     else:
                         return
@@ -93,7 +92,10 @@ async def set_no_log_p_m(event):
                 await asyncio.sleep(2)
                 await event.delete()
 
-SYNTAX.update({"log_pms": "`.save` :\
+
+SYNTAX.update(
+    {
+        "log_pms": "`.save` :\
       \nUSAGE: saves taged message in private group .\
       \n\n `.kickme`:\
       \nUSAGE: kicks you from the chat where you used this\
@@ -101,4 +103,5 @@ SYNTAX.update({"log_pms": "`.save` :\
       \nUSAGE:By default will log all private chat messages if you use .nolog and want to log again then you need to use this\
       \n\n`.nolog`:\
       \nUSAGE:to stops logging from a private chat "
-               })
+    }
+)

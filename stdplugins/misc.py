@@ -1,10 +1,12 @@
-from uniborg.util import admin_cmd
-from telethon.tl.types import MessageEntityMentionName
 from asyncio import create_subprocess_shell as asyncrunapp
 from asyncio.subprocess import PIPE as asyncPIPE
-from platform import python_version
 from os import remove
+from platform import python_version
+
 from telethon import version
+from telethon.tl.types import MessageEntityMentionName
+
+from uniborg.util import admin_cmd
 
 """Type:
 \n`.permalink`
@@ -24,14 +26,15 @@ async def permalink(mention):
     if custom:
         await mention.edit(f"[{custom}](tg://user?id={user.id})")
     else:
-        tag = user.first_name.replace("\u2060",
-                                      "") if user.first_name else user.username
+        tag = (
+            user.first_name.replace("\u2060", "") if user.first_name else user.username
+        )
         await mention.edit(f"[{tag}](tg://user?id={user.id})")
 
 
 async def get_user_from_event(event):
     """ Get the user from argument or replied message. """
-    args = event.pattern_match.group(1).split(':', 1)
+    args = event.pattern_match.group(1).split(":", 1)
     extra = None
     if event.reply_to_msg_id and not len(args) == 2:
         previous_message = await event.get_reply_message()
@@ -52,8 +55,7 @@ async def get_user_from_event(event):
         if event.message.entities is not None:
             probable_user_mention_entity = event.message.entities[0]
 
-            if isinstance(probable_user_mention_entity,
-                          MessageEntityMentionName):
+            if isinstance(probable_user_mention_entity, MessageEntityMentionName):
                 user_id = probable_user_mention_entity.user_id
                 user_obj = await event.client.get_entity(user_id)
                 return user_obj
@@ -96,8 +98,7 @@ async def useridgetter(target):
                 name = "@" + message.forward.sender.username
             else:
                 name = "*" + message.forward.sender.first_name + "*"
-        await target.edit("**Name:** {} \n**User ID:** `{}`".format(
-            name, user_id))
+        await target.edit("**Name:** {} \n**User ID:** `{}`".format(name, user_id))
 
 
 @borg.on(admin_cmd(pattern="pip(?: |$)(.*)"))
@@ -114,8 +115,7 @@ async def pipcheck(pip):
         )
 
         stdout, stderr = await pipc.communicate()
-        pipout = str(stdout.decode().strip()) \
-            + str(stderr.decode().strip())
+        pipout = str(stdout.decode().strip()) + str(stderr.decode().strip())
 
         if pipout:
             if len(pipout) > 4096:
@@ -130,15 +130,15 @@ async def pipcheck(pip):
                 )
                 remove("output.txt")
                 return
-            await pip.edit("**Query: **\n`"
-                           f"{invokepip}"
-                           "`\n**Result: **\n`"
-                           f"{pipout}"
-                           "`")
+            await pip.edit(
+                "**Query: **\n`" f"{invokepip}" "`\n**Result: **\n`" f"{pipout}" "`"
+            )
         else:
-            await pip.edit("**Query: **\n`"
-                           f"{invokepip}"
-                           "`\n**Result: **\n`No Result Returned/False`")
+            await pip.edit(
+                "**Query: **\n`"
+                f"{invokepip}"
+                "`\n**Result: **\n`No Result Returned/False`"
+            )
     else:
         await pip.edit("`Use .help pip to see an example`")
 
@@ -146,10 +146,12 @@ async def pipcheck(pip):
 @borg.on(admin_cmd(pattern="on"))
 async def amireallyalive(alive):
     """ For .on command, check if the bot is running.  """
-    await alive.edit("`"
-                     "My bot is running \n\n"
-                     f"Telethon version: {version.__version__} \n"
-                     f"Python: {python_version()} \n"
-                     f"User: Kirito \n"
-                     f"Plugins: {plugs}"
-                     "`")
+    await alive.edit(
+        "`"
+        "My bot is running \n\n"
+        f"Telethon version: {version.__version__} \n"
+        f"Python: {python_version()} \n"
+        f"User: Kirito \n"
+        f"Plugins: {plugs}"
+        "`"
+    )

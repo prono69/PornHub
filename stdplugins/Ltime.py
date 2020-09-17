@@ -4,9 +4,10 @@ Syntax: .igetime"""
 import asyncio
 import os
 from datetime import datetime
-from PIL import Image, ImageDraw, ImageFont
-from uniborg.util import admin_cmd
 
+from PIL import Image, ImageDraw, ImageFont
+
+from uniborg.util import admin_cmd
 
 FONT_FILE_TO_USE = "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf"
 
@@ -24,12 +25,12 @@ async def _(event):
     elif event.reply_to_msg_id:
         previous_message = await event.get_reply_message()
         reply_msg_id = previous_message.id
-    if not os.path.isdir(
-            Config.TMP_DOWNLOAD_DIRECTORY):  # pylint:disable=E0602
+    if not os.path.isdir(Config.TMP_DOWNLOAD_DIRECTORY):  # pylint:disable=E0602
         os.makedirs(Config.TMP_DOWNLOAD_DIRECTORY)  # pylint:disable=E0602
     # pylint:disable=E0602
-    required_file_name = Config.TMP_DOWNLOAD_DIRECTORY + \
-        " " + str(datetime.now()) + ".webp"
+    required_file_name = (
+        Config.TMP_DOWNLOAD_DIRECTORY + " " + str(datetime.now()) + ".webp"
+    )
     img = Image.new("RGB", (250, 50), color=(0, 0, 0))
     fnt = ImageFont.truetype(FONT_FILE_TO_USE, 30)
     drawn_text = ImageDraw.Draw(img)
@@ -40,7 +41,7 @@ async def _(event):
         required_file_name,
         caption="Time: Powered by @PepeB0t",
         # Courtesy: @ManueI15
-        reply_to=reply_msg_id
+        reply_to=reply_msg_id,
     )
     os.remove(required_file_name)
     end = datetime.now()

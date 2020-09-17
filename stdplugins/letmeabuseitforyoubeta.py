@@ -1,7 +1,8 @@
 """command: .mxhin , .mxmal"""
 
-from uniborg.util import admin_cmd
 import random
+
+from uniborg.util import admin_cmd
 
 
 @borg.on(admin_cmd(pattern="mx(.*)"))

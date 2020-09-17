@@ -18,38 +18,27 @@ class Config(object):
     # Get your own APPID from https://api.openweathermap.org/data/2.5/weather
     OPEN_WEATHER_MAP_APPID = os.environ.get("OPEN_WEATHER_MAP_APPID", None)
     # Get your own ACCESS_KEY from http://api.screenshotlayer.com/api/capture
-    SCREEN_SHOT_LAYER_ACCESS_KEY = os.environ.get(
-        "SCREEN_SHOT_LAYER_ACCESS_KEY", None)
+    SCREEN_SHOT_LAYER_ACCESS_KEY = os.environ.get("SCREEN_SHOT_LAYER_ACCESS_KEY", None)
     # Send .get_id in any group to fill this value.
     PRIVATE_GROUP_BOT_API_ID = os.environ.get("PRIVATE_GROUP_BOT_API_ID", None)
     if PRIVATE_GROUP_BOT_API_ID:
         PRIVATE_GROUP_BOT_API_ID = int(PRIVATE_GROUP_BOT_API_ID)
     # Send .g_id in any channel to fill this value.
-    PRIVATE_CHANNEL_BOT_API_ID = os.environ.get(
-        "PRIVATE_CHANNEL_BOT_API_ID",
-        None
-    )
+    PRIVATE_CHANNEL_BOT_API_ID = os.environ.get("PRIVATE_CHANNEL_BOT_API_ID", None)
     if PRIVATE_CHANNEL_BOT_API_ID:
         PRIVATE_CHANNEL_BOT_API_ID = int(PRIVATE_CHANNEL_BOT_API_ID)
     # This is required for the plugins involving the file system.
-    TMP_DOWNLOAD_DIRECTORY = os.environ.get(
-        "TMP_DOWNLOAD_DIRECTORY",
-        "./pepe/"
-    )
+    TMP_DOWNLOAD_DIRECTORY = os.environ.get("TMP_DOWNLOAD_DIRECTORY", "./pepe/")
     # This is required for the speech to text module. Get your USERNAME from
     # https://console.bluemix.net/docs/services/speech-to-text/getting-started.html
     IBM_WATSON_CRED_URL = os.environ.get("IBM_WATSON_CRED_URL", None)
     IBM_WATSON_CRED_PASSWORD = os.environ.get("IBM_WATSON_CRED_PASSWORD", None)
     # This is required for the hash to torrent file functionality to work.
     HASH_TO_TORRENT_API = os.environ.get(
-        "HASH_TO_TORRENT_API",
-        "https://example.com/torrent/{}"
+        "HASH_TO_TORRENT_API", "https://example.com/torrent/{}"
     )
     # This is required for the @telegraph functionality.
-    TELEGRAPH_SHORT_NAME = os.environ.get(
-        "TELEGRAPH_SHORT_NAME",
-        "Kirito"
-    )
+    TELEGRAPH_SHORT_NAME = os.environ.get("TELEGRAPH_SHORT_NAME", "Kirito")
     # Get a Free API Key from OCR.Space
     OCR_SPACE_API_KEY = os.environ.get("OCR_SPACE_API_KEY", None)
     # Send .get_id in any group with all your administration bots (added)
@@ -65,10 +54,9 @@ class Config(object):
     # TG API limit. A message can have maximum 4096 characters!
     MAX_MESSAGE_SIZE_LIMIT = 4095
     # set blacklist_chats where you do not want userbot's features
-    UB_BLACK_LIST_CHAT = set(int(x) for x in os.environ.get(
-        "UB_BLACK_LIST_CHAT",
-        ""
-    ).split())
+    UB_BLACK_LIST_CHAT = set(
+        int(x) for x in os.environ.get("UB_BLACK_LIST_CHAT", "").split()
+    )
     # specify LOAD and NO_LOAD
     LOAD = []
     # Remove This To Make Them Work But Would Make Bot Unstable AF...⚡
@@ -96,9 +84,9 @@ class Config(object):
     # DataBase would not work
     DB_URI = os.environ.get("DATABASE_URL", None)
     # number of rows of buttons to be displayed in .helpme command
-    NO_OF_BUTTONS_DISPLAYED_IN_H_ME_CMD = int(os.environ.get(
-        "NO_OF_BUTTONS_DISPLAYED_IN_H_ME_CMD", 5
-    ))
+    NO_OF_BUTTONS_DISPLAYED_IN_H_ME_CMD = int(
+        os.environ.get("NO_OF_BUTTONS_DISPLAYED_IN_H_ME_CMD", 5)
+    )
     # specify command handler that should be used for the plugins
     # this should be a valid "regex" pattern
     COMMAND_HAND_LER = os.environ.get("COMMAND_HAND_LER", r"\.")
@@ -106,7 +94,7 @@ class Config(object):
     # WARNING: be careful who you grant access to your bot.
     # malicious users could do ".exec rm -rf /*"
     SUDO_USERS = set(int(x) for x in os.environ.get("SUDO_USERS", "").split())
-    #Temp
+    # Temp
     TEMP_DIR = os.environ.get("TEMP_DIR", None)
     CHANNEL_ID = os.environ.get("CHANNEL_ID", None)
     # Google Drive ()
@@ -124,24 +112,23 @@ class Config(object):
     TELE_GRAM_2FA_CODE = os.environ.get("TELE_GRAM_2FA_CODE", None)
     #
     GROUP_REG_SED_EX_BOT_S = os.environ.get(
-        "GROUP_REG_SED_EX_BOT_S",
-        r"(regex|moku|BananaButler_|rgx|l4mR)bot"
+        "GROUP_REG_SED_EX_BOT_S", r"(regex|moku|BananaButler_|rgx|l4mR)bot"
     )
     # Google Chrome Selenium Stuff
     # taken from
     # https://github.com/jaskaranSM/UniBorg/blob/9072e3580cc6c98d46f30e41edbe73ffc9d850d3/sample_config.py#L104-L106
     GOOGLE_CHROME_DRIVER = os.environ.get(
-        "GOOGLE_CHROME_DRIVER", "/usr/bin/google-chrome")
-    GOOGLE_CHROME_BIN = os.environ.get(
-        "GOOGLE_CHROME_BIN", "/usr/bin/chromedriver")
+        "GOOGLE_CHROME_DRIVER", "/usr/bin/google-chrome"
+    )
+    GOOGLE_CHROME_BIN = os.environ.get("GOOGLE_CHROME_BIN", "/usr/bin/chromedriver")
     #
     LYDIA_API = os.environ.get("LYDIA_API", None)
     # Heroku Miscellaneous
     HEROKU_API_KEY = os.environ.get("HEROKU_API_KEY", None)
     HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME", None)
     UPSTREAM_REPO_URL = os.environ.get(
-        "UPSTREAM_REPO_URL",
-        "https://github.com/prono69/PepeBot")
+        "UPSTREAM_REPO_URL", "https://github.com/prono69/PepeBot"
+    )
     #
     CHROME_DRIVER = os.environ.get("CHROME_DRIVER", None)
     CHROME_BIN = os.environ.get("CHROME_BIN", None)
@@ -170,14 +157,14 @@ class Config(object):
     # define the "types" that should be uplaoded as streamable
     TL_VID_STREAM_TYPES = ("MP4", "WEBM")
     TL_MUS_STREAM_TYPES = ("MP3", "WAV", "FLAC", "M4A")
-    TL_FF_NOAQ_TYPES = ("WEBP")
+    TL_FF_NOAQ_TYPES = "WEBP"
     # Uthob
     YOUTUBE_API_KEY = os.environ.get("YOUTUBE_API_KEY", None)
     # For Lol
     API_TOKEN = os.environ.get("API_TOKEN", None)
     THUMB_IMG = os.environ.get(
-        "THUMB_IMG",
-        "https://telegra.ph/file/c9377de879b53bc72b4ed.jpg")
+        "THUMB_IMG", "https://telegra.ph/file/c9377de879b53bc72b4ed.jpg"
+    )
     # BOTLOG
     BOTLOG = os.environ.get("BOTLOG", None)
     if BOTLOG:
@@ -200,14 +187,8 @@ class Config(object):
     # Uptobox
     USR_TOKEN = os.environ.get("USR_TOKEN_UPTOBOX", None)
     # for video trimming and screenshot plugins
-    LT_QOAN_NOE_FF_MPEG_CTD = os.environ.get(
-        "LT_QOAN_NOE_FF_MPEG_CTD",
-        None
-    )
-    LT_QOAN_NOE_FF_MPEG_URL = os.environ.get(
-        "LT_QOAN_NOE_FF_MPEG_URL",
-        None
-    )
+    LT_QOAN_NOE_FF_MPEG_CTD = os.environ.get("LT_QOAN_NOE_FF_MPEG_CTD", None)
+    LT_QOAN_NOE_FF_MPEG_URL = os.environ.get("LT_QOAN_NOE_FF_MPEG_URL", None)
 
 
 class Production(Config):

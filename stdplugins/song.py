@@ -1,13 +1,16 @@
 """PepeBot Module for Finding Songs"""
 
-from telethon import events
-import subprocess
 import asyncio
-from uniborg.util import admin_cmd
-from uniborg import MODULE, SYNTAX
-from telethon.errors.rpcerrorlist import YouBlockedUserError
 import glob
 import os
+import subprocess
+
+from telethon import events
+from telethon.errors.rpcerrorlist import YouBlockedUserError
+
+from uniborg import MODULE, SYNTAX
+from uniborg.util import admin_cmd
+
 MODULE.append("song")
 try:
     import subprocess
@@ -42,7 +45,7 @@ async def _(event):
         force_document=True,
         allow_cache=False,
         caption=cmd,
-        reply_to=reply_to_id
+        reply_to=reply_to_id,
     )
     os.system("rm -rf *.mp3")
     subprocess.check_output("rm -rf *.mp3", shell=True)
@@ -60,13 +63,14 @@ async def _(event):
         await event.edit("`Downloading music taking some times,  Stay Tuned.....`")
         try:
             response = conv.wait_event(
-                events.NewMessage(
-                    incoming=True,
-                    from_users=752979930))
+                events.NewMessage(incoming=True, from_users=752979930)
+            )
             await event.client.send_message(chat, name)
             respond = await response
         except YouBlockedUserError:
-            await event.reply("```Please unblock @SpotifyMusicDownloaderBot and try again```")
+            await event.reply(
+                "```Please unblock @SpotifyMusicDownloaderBot and try again```"
+            )
             return
         await event.delete()
         await event.client.send_message(event.chat_id, respond.message)
@@ -95,8 +99,7 @@ async def WooMai(netase):
         await netase.edit("`Sending Your Music...`")
         await asyncio.sleep(3)
         await netase.client.send_file(netase.chat_id, respond)
-    await netase.client.delete_messages(conv.chat_id,
-                                        [msg.id, response.id, respond.id])
+    await netase.client.delete_messages(conv.chat_id, [msg.id, response.id, respond.id])
     await netase.delete()
 
 
@@ -128,9 +131,10 @@ async def DeezLoader(event):
         # [msg_start.id, response.id, r.id, msg.id, details.id, song.id])
         await event.delete()
 
-SYNTAX.update({
-    "music":
-        "`.song` <search title>\
+
+SYNTAX.update(
+    {
+        "music": "`.song` <search title>\
             \nUsage: For searching songs.\
             \n\n`.spd`<Artist - Song Title>\
             \nUsage:For searching songs from Spotify.\
@@ -138,4 +142,5 @@ SYNTAX.update({
             \nUsage:Download music with @WooMaiBot\
             \n\n`.dzd` <Spotify/Deezer Link>\
             \nUsage:Download music from Spotify or Deezer."
-})
+    }
+)

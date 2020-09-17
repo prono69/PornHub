@@ -4,9 +4,10 @@
   don't edit credits"""
 
 from geopy.geocoders import Nominatim
-from uniborg.util import admin_cmd
 from telethon.tl import types
 from telethon.tl.functions.messages import ImportChatInviteRequest
+
+from uniborg.util import admin_cmd
 
 
 @borg.on(admin_cmd(pattern="gps ?(.*)"))
@@ -36,12 +37,7 @@ async def gps(event):
         lon = geoloc.longitude
         lat = geoloc.latitude
         await reply_to_id.reply(
-            input_str,
-            file=types.InputMediaGeoPoint(
-                types.InputGeoPoint(
-                    lat, lon
-                )
-            )
+            input_str, file=types.InputMediaGeoPoint(types.InputGeoPoint(lat, lon))
         )
         await event.delete()
     else:

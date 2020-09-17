@@ -7,14 +7,15 @@ By:- @Zero_cool7870
 
 """
 
-import time
+import io
 import os
 import os.path
+import time
 from os.path import exists, isdir
-from uniborg.util import admin_cmd, humanbytes, edit_or_reply
+
 from uniborg import SYNTAX
+from uniborg.util import admin_cmd, edit_or_reply, humanbytes
 from userbot import runcmd
-import io
 
 
 @borg.on(admin_cmd(pattern="ls ?(.*)"))
@@ -27,7 +28,9 @@ async def lst(event):
     else:
         path = os.getcwd()
     if not exists(path):
-        await event.edit(f"There is no such directory or file with the name `{cat}` check again")
+        await event.edit(
+            f"There is no such directory or file with the name `{cat}` check again"
+        )
         return
     if isdir(path):
         if cat:
@@ -114,11 +117,12 @@ async def lst(event):
                 out_file,
                 force_document=True,
                 allow_cache=False,
-                caption=path
+                caption=path,
             )
             await event.delete()
     else:
         await event.edit(msg)
+
 
 @borg.on(admin_cmd(pattern="rem (.*)", allow_sudo=True))
 async def lst(event):
@@ -140,11 +144,12 @@ async def lst(event):
         await edit_or_reply(event, f"Succesfully removed `{path}` directory")
     else:
         await runcmd(catcmd)
-        await edit_or_reply(event, f"Succesfully removed `{path}` file")        
-        
+        await edit_or_reply(event, f"Succesfully removed `{path}` file")
 
-SYNTAX.update({
-    "filemanager": "List Files plugin for userbot \
+
+SYNTAX.update(
+    {
+        "filemanager": "List Files plugin for userbot \
      \ncmd: `.ls`\
      \nUSAGE : will return files from current working directory\
      \n\t.ls path\
@@ -153,4 +158,5 @@ SYNTAX.update({
      \nUSAGE : will return file details\
      \n\nSimple Module for people who dont wanna use shell executor for listing files.\
 "
-})
+    }
+)

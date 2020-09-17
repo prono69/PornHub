@@ -1,18 +1,20 @@
 """iffuci.tk pastebin site
 Code written by @loxxi {iffuci}
 Syntax: .iffuci"""
-from datetime import datetime
 import os
+from datetime import datetime
+
 import requests
+
 from uniborg.util import admin_cmd
 
 
 def progress(current, total):
     logger.info(
         "Downloaded {} of {}\nCompleted {}".format(
-            current,
-            total,
-            (current / total) * 100))
+            current, total, (current / total) * 100
+        )
+    )
 
 
 @borg.on(admin_cmd(pattern="iffuci ?(.*)"))
@@ -32,7 +34,7 @@ async def _(event):
             downloaded_file_name = await borg.download_media(
                 previous_message,
                 Config.TMP_DOWNLOAD_DIRECTORY,
-                progress_callback=progress
+                progress_callback=progress,
             )
             m_list = None
             with open(downloaded_file_name, "rb") as fd:
@@ -52,6 +54,10 @@ async def _(event):
     ms = (end - start).seconds
     if r["isUrl"]:
         nurl = f"https://iffuci.tk/v/{r['key']}"
-        await event.edit("Code is Pasted to {} in {} seconds. **GoTo Original URL:** {}".format(url, ms, nurl))
+        await event.edit(
+            "Code is Pasted to {} in {} seconds. **GoTo Original URL:** {}".format(
+                url, ms, nurl
+            )
+        )
     else:
         await event.edit("Code is Pasted to {} in {} seconds".format(url, ms))

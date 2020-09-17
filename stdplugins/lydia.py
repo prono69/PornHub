@@ -10,12 +10,14 @@ This Module also Needs DB_URI For Storage of Some Data So make sure you have tha
 """
 
 
-from coffeehouse.lydia import LydiaAI
-from coffeehouse.api import API
 import asyncio
 import io
-from sql_helpers.lydia_ai_sql import get_s, get_all_s, add_s, remove_s
 from time import time
+
+from coffeehouse.api import API
+from coffeehouse.lydia import LydiaAI
+
+from sql_helpers.lydia_ai_sql import add_s, get_all_s, get_s, remove_s
 from uniborg.util import admin_cmd
 
 if Config.LYDIA_API is not None:
@@ -69,14 +71,18 @@ async def lydia_disable_enable(event):
                         force_document=True,
                         allow_cache=False,
                         caption="Lydia AI enabled users",
-                        reply_to=event
+                        reply_to=event,
                     )
             else:
                 await event.edit(output_str)
         else:
-            await event.edit("Reply To User Message to Add / Delete them from Lydia Auto-Chat.")
+            await event.edit(
+                "Reply To User Message to Add / Delete them from Lydia Auto-Chat."
+            )
     else:
-        await event.edit("Reply To A User's Message to Add / Delete them from Lydia Auto-Chat.")
+        await event.edit(
+            "Reply To A User's Message to Add / Delete them from Lydia Auto-Chat."
+        )
 
 
 @borg.on(admin_cmd(incoming=True))
@@ -109,12 +115,7 @@ async def on_new_message(event):
                 logger.info(session)
                 session_id = session.id
                 session_expires = session.expires
-                logger.info(
-                    add_s(
-                        user_id,
-                        chat_id,
-                        session_id,
-                        session_expires))
+                logger.info(add_s(user_id, chat_id, session_id, session_expires))
             # Try to think a thought.
             try:
                 async with event.client.action(event.chat_id, "typing"):

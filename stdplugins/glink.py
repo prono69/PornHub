@@ -5,17 +5,18 @@ import asyncio
 import math
 import os
 import time
-from pySmartDL import SmartDL
-from telethon import events
 from datetime import datetime
-from googleapiclient.discovery import build
+from mimetypes import guess_type
+
+import httplib2
 from apiclient.http import MediaFileUpload
+from googleapiclient.discovery import build
 from oauth2client.client import OAuth2WebServerFlow
 from oauth2client.file import Storage
-from mimetypes import guess_type
-import httplib2
-from uniborg.util import admin_cmd, progress, humanbytes
+from pySmartDL import SmartDL
+from telethon import events
 
+from uniborg.util import admin_cmd, humanbytes, progress
 
 # Path to token json file, it should be in same directory as script
 G_DRIVE_TOKEN_FILE = Config.TMP_DOWNLOAD_DIRECTORY + "/auth_token.txt"
@@ -66,9 +67,10 @@ async def download(dryb):
                 downloader.get_speed()
                 round(diff) * 1000
                 progress_str = "[{0}{1}]\nProgress: {2}%".format(
-                    ''.join(["●" for i in range(math.floor(percentage / 5))]),
-                    ''.join(["○" for i in range(20 - math.floor(percentage / 5))]),
-                    round(percentage, 2))
+                    "".join(["●" for i in range(math.floor(percentage / 5))]),
+                    "".join(["○" for i in range(20 - math.floor(percentage / 5))]),
+                    round(percentage, 2),
+                )
                 estimated_total_time = downloader.get_eta(human=True)
                 try:
                     current_message = f"{status}...\nURL: {url}\nFile Name: {file_name}\n{progress_str}\n{humanbytes(downloaded)} of {humanbytes(total_length)}\nETA: {estimated_total_time}"
@@ -83,13 +85,12 @@ async def download(dryb):
             if downloader.isSuccessful():
                 await dryb.edit(
                     "Downloaded to `{}` in {} seconds.\nNow Uploading to Google Drive...".format(
-                        downloaded_file_name, ms)
+                        downloaded_file_name, ms
+                    )
                 )
                 required_file_name = downloaded_file_name
             else:
-                await dryb.edit(
-                    "Incorrect URL\n{}".format(url)
-                )
+                await dryb.edit("Incorrect URL\n{}".format(url))
         elif dryb.reply_to_msg_id:
             start = datetime.now()
             try:
@@ -99,7 +100,7 @@ async def download(dryb):
                     Config.TMP_DOWNLOAD_DIRECTORY,
                     progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
                         progress(d, t, dryb, c_time, "Downloading...")
-                    )
+                    ),
                 )
             except Exception as e:  # pylint:disable=C0103,W0703
                 await dryb.edit(str(e))
@@ -109,7 +110,8 @@ async def download(dryb):
                 ms = (end - start).seconds
                 await dryb.edit(
                     "Downloaded to `{}` in {} seconds.\nNow Uploading to GDrive...".format(
-                        downloaded_file_name, ms)
+                        downloaded_file_name, ms
+                    )
                 )
     if required_file_name:
         #
@@ -128,10 +130,16 @@ async def download(dryb):
         # required_file_name will have the full path
         # Sometimes API fails to retrieve starting URI, we wrap it.
         try:
-            g_drive_link = await upload_file(http, required_file_name, file_name, mime_type, dryb)
-            await dryb.edit(f"File:`{required_file_name}`\nHas Successfully Uploaded to : [Google Drive]({g_drive_link})")
+            g_drive_link = await upload_file(
+                http, required_file_name, file_name, mime_type, dryb
+            )
+            await dryb.edit(
+                f"File:`{required_file_name}`\nHas Successfully Uploaded to : [Google Drive]({g_drive_link})"
+            )
         except Exception as e:
-            await dryb.edit(f"Error while uploading to Google Drive\nError Code:\n`{e}`")
+            await dryb.edit(
+                f"Error while uploading to Google Drive\nError Code:\n`{e}`"
+            )
 
 
 # Get mime type and name of given file
@@ -145,18 +153,16 @@ def file_ops(file_path):
 async def create_token_file(token_file, event):
     # Run through the OAuth flow and retrieve credentials
     flow = OAuth2WebServerFlow(
-        CLIENT_ID,
-        CLIENT_SECRET,
-        OAUTH_SCOPE,
-        redirect_uri=REDIRECT_URI
+        CLIENT_ID, CLIENT_SECRET, OAUTH_SCOPE, redirect_uri=REDIRECT_URI
     )
     authorize_url = flow.step1_get_authorize_url()
     async with event.client.conversation(Config.PRIVATE_GROUP_BOT_API_ID) as conv:
-        await conv.send_message(f"Go to the following link in your browser: {authorize_url} and reply the code")
-        response = conv.wait_event(events.NewMessage(
-            outgoing=True,
-            chats=Config.PRIVATE_GROUP_BOT_API_ID
-        ))
+        await conv.send_message(
+            f"Go to the following link in your browser: {authorize_url} and reply the code"
+        )
+        response = conv.wait_event(
+            events.NewMessage(outgoing=True, chats=Config.PRIVATE_GROUP_BOT_API_ID)
+        )
         response = await response
         code = response.message.message.strip()
         credentials = flow.step2_exchange(code)
@@ -192,12 +198,7 @@ async def upload_file(http, file_path, file_name, mime_type, event):
     # Permissions body description: anyone who has link can upload
     # Other permissions can be found at
     # https://developers.google.com/drive/v2/reference/permissions
-    permissions = {
-        "role": "reader",
-        "type": "anyone",
-        "value": None,
-        "withLink": True
-    }
+    permissions = {"role": "reader", "type": "anyone", "value": None, "withLink": True}
     # Insert a file
     file = drive_service.files().insert(body=body, media_body=media_body)
     response = None
@@ -207,18 +208,21 @@ async def upload_file(http, file_path, file_name, mime_type, event):
         if status:
             percentage = int(status.progress() * 100)
             progress_str = "[{0}{1}]\nProgress: {2}%\n".format(
-                ''.join(["●" for i in range(math.floor(percentage / 5))]),
-                ''.join(["○" for i in range(20 - math.floor(percentage / 5))]),
-                round(percentage, 2))
-            await event.edit(f"Uploading to Google Drive...\n\nFile Name: {file_name}\n{progress_str}")
+                "".join(["●" for i in range(math.floor(percentage / 5))]),
+                "".join(["○" for i in range(20 - math.floor(percentage / 5))]),
+                round(percentage, 2),
+            )
+            await event.edit(
+                f"Uploading to Google Drive...\n\nFile Name: {file_name}\n{progress_str}"
+            )
     if file:
         await event.edit(file_name + " Uploaded Successfully")
     # Insert new permissions
     drive_service.permissions().insert(
-        fileId=response.get('id'),
-        body=permissions).execute()
+        fileId=response.get("id"), body=permissions
+    ).execute()
     # Define file instance and get url for download
-    file = drive_service.files().get(fileId=response.get('id')).execute()
+    file = drive_service.files().get(fileId=response.get("id")).execute()
     download_url = response.get("webContentLink")
     return download_url
 
@@ -228,4 +232,6 @@ async def _(event):
     if event.fwd_from:
         return
     folder_link = "https://drive.google.com/drive/u/2/folders/" + parent_id
-    await event.edit(f"Your current Google Drive Upload Directory : [Here]({folder_link})")
+    await event.edit(
+        f"Your current Google Drive Upload Directory : [Here]({folder_link})"
+    )

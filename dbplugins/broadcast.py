@@ -8,12 +8,13 @@
 `.search`"""
 
 import asyncio
-from uniborg.util import admin_cmd
-from telethon.tl.types import (
-    InputMediaUploadedPhoto
-)
-from sql_helpers.ghdb_sql import in_channels, add_channel, rm_channel, get_all_channels
+
+from telethon.tl.types import InputMediaUploadedPhoto
+
+from sql_helpers.ghdb_sql import add_channel, get_all_channels, in_channels, rm_channel
 from uniborg import MODULE
+from uniborg.util import admin_cmd
+
 MODULE.append("broadcast")
 
 logs_id = Config.PM_LOGGR_BOT_API_ID
@@ -39,19 +40,26 @@ async def forw(event):
         try:
             await borg.forward_messages(int(channel.chat_id), previous_message)
             sent_count += 1
-            await event.edit(f"Sent : {sent_count}\nError : {error_count}\nTotal : {len(channels)}")
+            await event.edit(
+                f"Sent : {sent_count}\nError : {error_count}\nTotal : {len(channels)}"
+            )
         except Exception as error:
             try:
-                await borg.send_message(logs_id, f"Error in sending at {channel.chat_id}.")
+                await borg.send_message(
+                    logs_id, f"Error in sending at {channel.chat_id}."
+                )
                 await borg.send_message(logs_id, "Error! " + str(error))
                 if error == "The message cannot be empty unless a file is provided":
                     event.edit(
-                        "For sending files, upload in Saved Messages and reply .forward to in.")
+                        "For sending files, upload in Saved Messages and reply .forward to in."
+                    )
                     return
             except BaseException:
                 pass
             error_count += 1
-            await event.edit(f"Sent : {sent_count}\nError : {error_count}\nTotal : {len(channels)}")
+            await event.edit(
+                f"Sent : {sent_count}\nError : {error_count}\nTotal : {len(channels)}"
+            )
             if error_count >= 10 and sent_count == 0:
                 await event.edit * ("Stopped for too many errors.")
                 return
@@ -79,7 +87,17 @@ async def _(event):
         if previous_message.sticker or previous_message.poll:
             await event.edit("Reply .forward for stickers and polls.")
             return
-        if previous_message.gif or previous_message.audio or previous_message.voice or previous_message.video or previous_message.video_note or previous_message.contact or previous_message.game or previous_message.geo or previous_message.invoice:          # Written by @HeisenbergTheDanger
+        if (
+            previous_message.gif
+            or previous_message.audio
+            or previous_message.voice
+            or previous_message.video
+            or previous_message.video_note
+            or previous_message.contact
+            or previous_message.game
+            or previous_message.geo
+            or previous_message.invoice
+        ):  # Written by @HeisenbergTheDanger
             await event.edit("Not supported. Try .forward")
             return
         if previous_message.document:
@@ -95,28 +113,36 @@ async def _(event):
                     if previous_message.photo:
                         await borg.send_file(
                             int(channel.chat_id),
-                            InputMediaUploadedPhoto(
-                                file=uploaded_doc
-                            ),
+                            InputMediaUploadedPhoto(file=uploaded_doc),
                             force_document=False,
                             caption=raw_text,
-                            link_preview=False
+                            link_preview=False,
                         )
 
                     sent_count += 1
-                    await event.edit(f"Sent : {sent_count}\nError : {error_count}\nTotal : {len(channels)}")
+                    await event.edit(
+                        f"Sent : {sent_count}\nError : {error_count}\nTotal : {len(channels)}"
+                    )
                 except Exception as error:
                     try:
-                        await borg.send_message(logs_id, f"Error in sending at {chat_id}.")
+                        await borg.send_message(
+                            logs_id, f"Error in sending at {chat_id}."
+                        )
                         await borg.send_message(logs_id, "Error! " + str(error))
-                        if error == "The message cannot be empty unless a file is provided":
+                        if (
+                            error
+                            == "The message cannot be empty unless a file is provided"
+                        ):
                             event.edit(
-                                "For sending files, upload in Saved Messages and reply .forward to in.")
+                                "For sending files, upload in Saved Messages and reply .forward to in."
+                            )
                             return
                     except BaseException:
                         pass
                     error_count += 1
-                    await event.edit(f"Sent : {sent_count}\nError : {error_count}\nTotal : {len(channels)}")
+                    await event.edit(
+                        f"Sent : {sent_count}\nError : {error_count}\nTotal : {len(channels)}"
+                    )
                     if error_count >= 10 and sent_count == 0:
                         await event.edit * ("`Stopped for too many errors.`")
                         return
@@ -130,21 +156,33 @@ async def _(event):
             raw_text = previous_message.text
             for channel in channels:
                 try:
-                    await borg.send_message(int(channel.chat_id), raw_text, link_preview=False)
+                    await borg.send_message(
+                        int(channel.chat_id), raw_text, link_preview=False
+                    )
                     sent_count += 1
-                    await event.edit(f"Sent : {sent_count}\nError : {error_count}\nTotal : {len(channels)}")
+                    await event.edit(
+                        f"Sent : {sent_count}\nError : {error_count}\nTotal : {len(channels)}"
+                    )
                 except Exception as error:
                     try:
-                        await borg.send_message(logs_id, f"Error in sending at {channel.chat_id}.")
+                        await borg.send_message(
+                            logs_id, f"Error in sending at {channel.chat_id}."
+                        )
                         await borg.send_message(logs_id, "Error! " + str(error))
-                        if error == "The message cannot be empty unless a file is provided":
+                        if (
+                            error
+                            == "The message cannot be empty unless a file is provided"
+                        ):
                             event.edit(
-                                "For sending files, upload in Saved Messages and reply .forward to in.")
+                                "For sending files, upload in Saved Messages and reply .forward to in."
+                            )
                             return
                     except BaseException:
                         pass
                     error_count += 1
-                    await event.edit(f"Sent : {sent_count}\nError : {error_count}\nTotal : {len(channels)}")
+                    await event.edit(
+                        f"Sent : {sent_count}\nError : {error_count}\nTotal : {len(channels)}"
+                    )
                     if error_count >= 10 and sent_count == 0:
                         await event.edit * ("Stopped for too many errors.")
                         return
@@ -154,6 +192,7 @@ async def _(event):
                     await borg.send_message(logs_id, f"{error_count} Errors")
                 except BaseException:
                     await event.edit("`Set up log channel for checking errors.`")
+
 
 # Written by @HeisenbergTheDanger
 
@@ -237,7 +276,7 @@ async def list(event):
                 force_document=True,
                 allow_cache=False,
                 caption="`Channels in database`",
-                reply_to=event
+                reply_to=event,
             )
             await event.delete()
     else:

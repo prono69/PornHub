@@ -1,9 +1,8 @@
 # For UniBorg
 # By Priyam Kalra
 # Syntax (.syntax <module_name>)
+from uniborg import MODULE, SYNTAX
 from uniborg.util import admin_cmd
-from uniborg import SYNTAX, MODULE
-
 
 MODULE.append("syntax")
 
@@ -19,4 +18,6 @@ async def _(event):
         else:
             await event.edit("Please specify a valid module.")
     else:
-        await event.edit("Please specify a module.\n**Tip: Get a list of all modules using .modules**")
+        await event.edit(
+            "Please specify a module.\n**Tip: Get a list of all modules using .modules**"
+        )

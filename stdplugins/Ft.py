@@ -16,5 +16,6 @@ async def payf(event):
         paytext * 2,
         paytext * 2,
         paytext * 2,
-        paytext * 2)
+        paytext * 2,
+    )
     await event.edit(pay)

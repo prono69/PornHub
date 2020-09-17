@@ -4,9 +4,9 @@ Available Commands:
 
 .padmin thanks @r4v4n4 ..."""
 
-from telethon import events
-
 import asyncio
+
+from telethon import events
 
 
 @borg.on(events.NewMessage(pattern=r"\.(.*)", outgoing=True))
@@ -27,7 +27,6 @@ async def _(event):
         await event.edit(input_str)
 
         animation_chars = [
-
             "**Promoting User As Admin...**",
             "**Enabling All Permissions To User...**",
             "**(1) Send Messages: ☑️**",
@@ -47,8 +46,7 @@ async def _(event):
             "**(8) Change Chat Info: ☑️**",
             "**(8) Change Chat Info: ✅**",
             "**Permission Granted Successfully**",
-            "**pRoMoTeD SuCcEsSfUlLy bY: @NeoMatrix90**"
-
+            "**pRoMoTeD SuCcEsSfUlLy bY: @NeoMatrix90**",
         ]
 
         for i in animation_ttl:

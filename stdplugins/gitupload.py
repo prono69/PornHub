@@ -7,13 +7,14 @@ By:- @Zero_cool7870
 """
 
 
-from github import Github
 import asyncio
 import os
 import time
 from datetime import datetime
-from uniborg.util import admin_cmd, progress
 
+from github import Github
+
+from uniborg.util import admin_cmd, progress
 
 GIT_TEMP_DIR = "./temp/"
 BRANCH = "master"
@@ -42,7 +43,7 @@ async def download(event):
             GIT_TEMP_DIR,
             progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
                 progress(d, t, mone, c_time, "trying to download")
-            )
+            ),
         )
     except Exception as e:
         await mone.edit(str(e))
@@ -50,7 +51,9 @@ async def download(event):
         end = datetime.now()
         ms = (end - start).seconds
         await event.delete()
-        await mone.edit("Downloaded to `{}` in {} seconds.".format(downloaded_file_name, ms))
+        await mone.edit(
+            "Downloaded to `{}` in {} seconds.".format(downloaded_file_name, ms)
+        )
         await mone.edit("Committing to Github....")
         await git_commit(downloaded_file_name, mone)
 
@@ -59,7 +62,7 @@ async def git_commit(file_name, mone):
     content_list = []
     access_token = Config.GITHUB_ACCESS_TOKEN
     g = Github(access_token)
-    file = open(file_name, "r", encoding='utf-8')
+    file = open(file_name, "r", encoding="utf-8")
     commit_data = file.read()
     repo = g.get_repo(Config.GIT_REPO_NAME)
     print(repo.name)
@@ -79,12 +82,12 @@ async def git_commit(file_name, mone):
         print(file_name)
         try:
             repo.create_file(
-                file_name,
-                "Uploaded New Plugin",
-                commit_data,
-                branch=BRANCH)
+                file_name, "Uploaded New Plugin", commit_data, branch=BRANCH
+            )
             print("Committed File")
-            await mone.edit("`Committed on Your Github Repo.\nCheck from` [HERE](https://github.com/prono69/PepeBot/blob/master/stdplugins/{file_name})")
+            await mone.edit(
+                "`Committed on Your Github Repo.\nCheck from` [HERE](https://github.com/prono69/PepeBot/blob/master/stdplugins/{file_name})"
+            )
         except BaseException:
             print("Cannot Create Plugin")
             await mone.edit("Cannot Upload Plugin")

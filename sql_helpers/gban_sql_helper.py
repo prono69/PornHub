@@ -1,7 +1,8 @@
 # credits to @mrconfused and @sandy1709
 
 from sqlalchemy import Column, String
-from sql_helpers import SESSION, BASE
+
+from sql_helpers import BASE, SESSION
 
 
 class GBan(BASE):

@@ -1,5 +1,7 @@
 from re import findall
+
 from search_engine_parser import GoogleSearch
+
 from uniborg.util import admin_cmd
 
 
@@ -38,6 +40,6 @@ async def gsearch(q_event):
 
             i += 1
 
-    await q_event.edit("**Search Query:**\n`" + url + "`\n\n**Results:**\n" +
-                       msg,
-                       link_preview=False)
+    await q_event.edit(
+        "**Search Query:**\n`" + url + "`\n\n**Results:**\n" + msg, link_preview=False
+    )

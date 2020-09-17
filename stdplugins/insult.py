@@ -2,11 +2,12 @@
 # By Priyam Kalra
 # Based on the insult module made by Hackintosh for friendly telegram bot (https://da.gd/RG2hfe)
 # Syntax (.insult <no_of_times_to_insult>)
-from uniborg.util import admin_cmd
 import random
-from sql_helpers.global_variables_sql import SUDO_USERS
 import sys
 import time
+
+from sql_helpers.global_variables_sql import SUDO_USERS
+from uniborg.util import admin_cmd
 
 """
 insult:
@@ -22,10 +23,17 @@ async def _(event):
     if event.fwd_from:
         return
     args = event.pattern_match.group(1)
-    adjectives_start = ["salty", "fat", "fucking", "shitty",
-                        "stupid", "retarded", "self conscious", "tiny"]
-    adjectives_mid = ["little", "vitamin D deficient",
-                      "idiotic", "incredibly stupid"]
+    adjectives_start = [
+        "salty",
+        "fat",
+        "fucking",
+        "shitty",
+        "stupid",
+        "retarded",
+        "self conscious",
+        "tiny",
+    ]
+    adjectives_mid = ["little", "vitamin D deficient", "idiotic", "incredibly stupid"]
     nouns = [
         "cunt",
         "pig",
@@ -41,9 +49,16 @@ async def _(event):
         "idiot",
         "motherfucker",
         "loner",
-        "creep"]
-    starts = ["You're a", "You", "Fuck off you", "Actually die you",
-              "Listen up you", "What the fuck is wrong with you, you"]
+        "creep",
+    ]
+    starts = [
+        "You're a",
+        "You",
+        "Fuck off you",
+        "Actually die you",
+        "Listen up you",
+        "What the fuck is wrong with you, you",
+    ]
     ends = ["!!!!", "!", ""]
     log_insults = ""
     if args:
@@ -60,8 +75,16 @@ async def _(event):
         adjective_mid = random.choice(adjectives_mid)
         noun = random.choice(nouns)
         end = random.choice(ends)
-        insult = start + " " + adjective_start + " " + \
-            adjective_mid + (" " if adjective_mid else "") + noun + end
+        insult = (
+            start
+            + " "
+            + adjective_start
+            + " "
+            + adjective_mid
+            + (" " if adjective_mid else "")
+            + noun
+            + end
+        )
         log_insults += f"```{insult}```\n\n"
         reply_msg = await event.get_reply_message()
         if reply_msg:
@@ -71,7 +94,9 @@ async def _(event):
             user_id = "Unknown user"
             noformat_userid = "Unknown user"
         if noformat_userid in SUDO_USERS:
-            await event.edit("**Wait! WHAT?!\nDid you just try to insult my creator?!?!\nBYE!**")
+            await event.edit(
+                "**Wait! WHAT?!\nDid you just try to insult my creator?!?!\nBYE!**"
+            )
             sys.exit()
             # probably not needed but meh
             break

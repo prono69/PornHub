@@ -1,13 +1,16 @@
 "get music from .gaana\n.spotbot <music query>  Credits https://t.me/By_Azade"
 import logging
-from uniborg.util import admin_cmd
+
 from telethon import events
+
 from uniborg import MODULE
+from uniborg.util import admin_cmd
+
 MODULE.append("song1")
 
 logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+    format="[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s", level=logging.WARNING
+)
 logger = logging.getLogger(__name__)
 
 
@@ -23,18 +26,14 @@ async def music_find(event):
         song_result = await event.client.inline_query("deezermusicbot", music_name)
 
         await song_result[0].click(
-            event.chat_id,
-            reply_to=event.reply_to_msg_id,
-            hide_via=True
+            event.chat_id, reply_to=event.reply_to_msg_id, hide_via=True
         )
     elif msg:
         await event.delete()
         song_result = await event.client.inline_query("deezermusicbot", msg.message)
 
         await song_result[0].click(
-            event.chat_id,
-            reply_to=event.reply_to_msg_id,
-            hide_via=True
+            event.chat_id, reply_to=event.reply_to_msg_id, hide_via=True
         )
 
 
@@ -55,21 +54,27 @@ async def _(event):
 
             if "(FLAC)" in song_result[res].title:
 
-                j = await song_result[res].click(event.chat_id, reply_to=event.reply_to_msg_id, hide_via=True)
+                j = await song_result[res].click(
+                    event.chat_id, reply_to=event.reply_to_msg_id, hide_via=True
+                )
                 k = await event.respond(j)
                 await j.delete()
                 await k.edit("`Error Sar`")
 
             elif "(MP3_320)" in song_result[res].title:
 
-                j = await song_result[res].click(event.chat_id, reply_to=event.reply_to_msg_id, hide_via=True)
+                j = await song_result[res].click(
+                    event.chat_id, reply_to=event.reply_to_msg_id, hide_via=True
+                )
                 k = await event.respond(j)
                 await j.delete()
                 await k.edit("`Error Sar`")
 
             elif "(MP3_128)" in song_result[res].title:
 
-                j = await song_result[res].click(event.chat_id, reply_to=event.reply_to_msg_id, hide_via=True)
+                j = await song_result[res].click(
+                    event.chat_id, reply_to=event.reply_to_msg_id, hide_via=True
+                )
                 k = await event.respond(j)
                 await j.delete()
                 await k.edit("`Error Sar`")
@@ -82,21 +87,27 @@ async def _(event):
 
             if "(FLAC)" in song_result[res].title:
 
-                j = await song_result[res].click(event.chat_id, reply_to=event.reply_to_msg_id, hide_via=True)
+                j = await song_result[res].click(
+                    event.chat_id, reply_to=event.reply_to_msg_id, hide_via=True
+                )
                 k = await event.respond(j)
                 await j.delete()
                 await k.edit("`Error Sar`")
 
             elif "(MP3_320)" in song_result[res].title:
 
-                j = await song_result[res].click(event.chat_id, reply_to=event.reply_to_msg_id, hide_via=True)
+                j = await song_result[res].click(
+                    event.chat_id, reply_to=event.reply_to_msg_id, hide_via=True
+                )
                 k = await event.respond(j)
                 await j.delete()
                 await k.edit("`Error Sar`")
 
             elif "(MP3_128)" in song_result[res].title:
 
-                j = await song_result[res].click(event.chat_id, reply_to=event.reply_to_msg_id, hide_via=True)
+                j = await song_result[res].click(
+                    event.chat_id, reply_to=event.reply_to_msg_id, hide_via=True
+                )
                 k = await event.respond(j)
                 await j.delete()
                 await k.edit("`Error Sar`")
@@ -121,8 +132,9 @@ async def _(event):
     await event.edit("```Processing```")
     async with event.client.conversation(chat) as conv:
         try:
-            response = conv.wait_event(events.NewMessage(
-                incoming=True, from_users=507379365))
+            response = conv.wait_event(
+                events.NewMessage(incoming=True, from_users=507379365)
+            )
             await event.client.send_message(chat, reply_message)
             response = await response
         except YouBlockedUserError:

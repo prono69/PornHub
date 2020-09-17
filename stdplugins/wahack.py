@@ -13,10 +13,9 @@ by © Thunder God Raiden
 """
 
 
-from telethon import events
-
-
 import asyncio
+
+from telethon import events
 
 
 @borg.on(events.NewMessage(pattern=r"\.(.*)", outgoing=True))
@@ -51,7 +50,8 @@ async def _(event):
             "Hacking... 93.50%\n[█████████████████░░░]\n`Decryption successful!`\nETA: 0m, 02s",
             "Hacking... 100%\n[████████████████████]\n`Scanning file...`\nETA: 0m, 00s",
             "Hacking complete!\nUploading file...",
-            "Targeted Account Hacked...!\n\n ✅ File has been successfully uploaded to my server.\nWhatsApp Database:\n`./DOWNLOADS/msgstore.db.crypt12`"]
+            "Targeted Account Hacked...!\n\n ✅ File has been successfully uploaded to my server.\nWhatsApp Database:\n`./DOWNLOADS/msgstore.db.crypt12`",
+        ]
 
         for i in animation_ttl:
 

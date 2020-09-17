@@ -8,12 +8,15 @@
 `.tweet`
 `.carry`"""
 
-import requests
 from asyncio import sleep
+
+import requests
+from PIL import Image
+
+from uniborg import MODULE
 from uniborg.util import admin_cmd
 from userbot import deEmojify
-from uniborg import MODULE
-from PIL import Image
+
 MODULE.append("tweet")
 
 
@@ -31,11 +34,14 @@ async def trumptweet(event):
     await event.edit("`Trump Tweeting...`")
     args = deEmojify(args)
     r = requests.get(
-        f"https://nekobot.xyz/api/imagegen?type=trumptweet&text={args}").json()
+        f"https://nekobot.xyz/api/imagegen?type=trumptweet&text={args}"
+    ).json()
     meow = r.get("message")
     if not meow:
         return await event.edit("`Trump not found. He ran away :)`")
-    await event.client.send_file(event.chat_id, file=meow, reply_to=event.reply_to_msg_id)
+    await event.client.send_file(
+        event.chat_id, file=meow, reply_to=event.reply_to_msg_id
+    )
     await sleep(2)
     await event.delete()
 
@@ -54,7 +60,8 @@ async def changemymind(e):
     await e.edit("`Creating Banner...`")
     args = deEmojify(args)
     r = requests.get(
-        f"https://nekobot.xyz/api/imagegen?type=changemymind&text={args}").json()
+        f"https://nekobot.xyz/api/imagegen?type=changemymind&text={args}"
+    ).json()
     wew = r.get("message")
     if not wew:
         return await e.edit("`Can't able to change Mind :(`")
@@ -76,7 +83,8 @@ async def kannagen(e):
         args = rep.text
     args = deEmojify(args)
     r = requests.get(
-        f"https://nekobot.xyz/api/imagegen?type=kannagen&text={args}").json()
+        f"https://nekobot.xyz/api/imagegen?type=kannagen&text={args}"
+    ).json()
     kk = r.get("message")
     if not kk:
         return await e.edit("`Nothing found from the API`")
@@ -104,7 +112,9 @@ async def trumptweet(event):
     if not meow:
         return await event.edit("`Modi not found. He ran away :)`")
     await event.edit("`Modi is Tweeting`")
-    await event.client.send_file(event.chat_id, file=meow, reply_to=event.reply_to_msg_id)
+    await event.client.send_file(
+        event.chat_id, file=meow, reply_to=event.reply_to_msg_id
+    )
     await sleep(2)
     await event.delete()
 
@@ -137,7 +147,8 @@ async def nekobot(cat):
 
 async def tweets(text1, text2):
     r = requests.get(
-        f"https://nekobot.xyz/api/imagegen?type=tweet&text={text1}&username={text2}").json()
+        f"https://nekobot.xyz/api/imagegen?type=tweet&text={text1}&username={text2}"
+    ).json()
     pepe = r.get("message")
     if not pepe:
         return "check syntax once more"
@@ -166,6 +177,8 @@ async def trumptweet(event):
     if not meow:
         return await event.edit("`Carryminati not found. He iz Busy :)`")
     await event.edit("`Carry Minati is Tweeting for You` 😎")
-    await event.client.send_file(event.chat_id, file=meow, reply_to=event.reply_to_msg_id)
+    await event.client.send_file(
+        event.chat_id, file=meow, reply_to=event.reply_to_msg_id
+    )
     await sleep(2)
     await event.delete()

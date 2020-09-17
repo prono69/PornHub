@@ -1,6 +1,7 @@
 """Count the Number of Dialogs you have in your Telegram Account
 Syntax: .stat"""
 from datetime import datetime
+
 from uniborg.util import admin_cmd
 
 
@@ -32,9 +33,13 @@ async def _(event):
             logger.info(d.stringify())
     end = datetime.now()
     ms = (end - start).seconds
-    await event.edit("""Obtained in {} seconds.\n
+    await event.edit(
+        """Obtained in {} seconds.\n
 `Users:`\t**{}**
 `Groups:`\t**{}**
 `Super Groups:`\t**{}**
 `Channels:`\t**{}**
-`Bots:`\t**{}**""".format(ms, u, g, c, bc, b))
+`Bots:`\t**{}**""".format(
+            ms, u, g, c, bc, b
+        )
+    )

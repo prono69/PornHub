@@ -3,11 +3,12 @@ Syntax: .lsroot , .lslocal"""
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
-from telethon import events
-import io
 import asyncio
-import time
+import io
 import os
+import time
+
+from telethon import events
 
 if not os.path.isdir("./SAVED"):
     os.makedirs("./SAVED")
@@ -20,10 +21,10 @@ async def _(event):
     if event.fwd_from:
         return
     PROCESS_RUN_TIME = 100
-#    dirname = event.pattern_match.group(1)
-#    tempdir = "localdir"
+    #    dirname = event.pattern_match.group(1)
+    #    tempdir = "localdir"
     cmd = "ls -lh ./ravana/"
-#    if dirname == tempdir:
+    #    if dirname == tempdir:
 
     event.message.id
     if event.reply_to_msg_id:
@@ -43,13 +44,15 @@ async def _(event):
                 force_document=True,
                 allow_cache=False,
                 caption=OUTPUT,
-                reply_to=reply_to_id
+                reply_to=reply_to_id,
             )
             await event.delete()
     if stderr.decode():
         await event.edit(f"**{stderr.decode()}**")
         return
     await event.edit(f"{OUTPUT}`{stdout.decode()}`")
+
+
 #    else:
 #        await event.edit("Unknown Command")
 
@@ -79,7 +82,7 @@ async def _(event):
                 force_document=True,
                 allow_cache=False,
                 caption=OUTPUT,
-                reply_to=reply_to_id
+                reply_to=reply_to_id,
             )
             await event.delete()
     if stderr.decode():
@@ -113,7 +116,7 @@ async def _(event):
                 force_document=True,
                 allow_cache=False,
                 caption=OUTPUT,
-                reply_to=reply_to_id
+                reply_to=reply_to_id,
             )
             await event.delete()
     if stderr.decode():
@@ -151,7 +154,7 @@ async def _(event):
                 force_document=True,
                 allow_cache=False,
                 caption=OUTPUT,
-                reply_to=reply_to_id
+                reply_to=reply_to_id,
             )
             await event.delete()
     if stderr.decode():
@@ -189,7 +192,7 @@ async def _(event):
                 force_document=True,
                 allow_cache=False,
                 caption=OUTPUT,
-                reply_to=reply_to_id
+                reply_to=reply_to_id,
             )
             await event.delete()
     if stderr.decode():

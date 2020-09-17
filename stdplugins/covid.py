@@ -2,6 +2,7 @@
 Syntax: .covid <country>"""
 
 from covid import Covid
+
 from uniborg.util import admin_cmd
 
 
@@ -24,7 +25,9 @@ async def corona(event):
         output_text += f"😇 **Recovered**   : `{country_data['recovered']}`\n"
         output_text += f"🧪 **Total tests** : `{country_data['total_tests']}`\n\n"
 
-        output_text += "Data provided by [Johns Hopkins University](https://j.mp/2xf6oxF)"
+        output_text += (
+            "Data provided by [Johns Hopkins University](https://j.mp/2xf6oxF)"
+        )
     else:
         output_text = "No information yet about this country!"
     await event.edit(f"Corona Virus Info in **{country}**:\n\n{output_text}")

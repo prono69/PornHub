@@ -3,11 +3,13 @@ Lyrics Plugin Syntax:
 	.lyrics <aritst name - song nane>
 
 """
-from uniborg.util import admin_cmd
 import os
-from uniborg import SYNTAX
 import random
+
 import lyricsgenius
+
+from uniborg import SYNTAX
+from uniborg.util import admin_cmd
 
 GENIUS = Config.GENIUS
 
@@ -17,19 +19,22 @@ async def lyrics(lyric):
     if r"-" in lyric.text:
         pass
     else:
-        await lyric.edit("Please use '-' as divider for <artist> and <song>\n"
-                         "eg: `.lyrics Alan Walker - Lily`")
+        await lyric.edit(
+            "Please use '-' as divider for <artist> and <song>\n"
+            "eg: `.lyrics Alan Walker - Lily`"
+        )
         return
 
     if GENIUS is None:
         await lyric.edit(
-            "`Provide genius access token to config.py or Heroku Var first kthxbye!`")
+            "`Provide genius access token to config.py or Heroku Var first kthxbye!`"
+        )
     else:
         genius = lyricsgenius.Genius(GENIUS)
         try:
-            args = lyric.text.split('.lyrics')[1].split('-')
-            artist = args[0].strip(' ')
-            song = args[1].strip(' ')
+            args = lyric.text.split(".lyrics")[1].split("-")
+            artist = args[0].strip(" ")
+            song = args[1].strip(" ")
         except Exception:
             await lyric.edit("`LMAO please provide artist and song names`")
             return
@@ -59,15 +64,17 @@ async def lyrics(lyric):
         )
         os.remove("lyrics.txt")
     else:
-        await lyric.edit(f"**Search query**: \n`{artist} - {song}`\n\n```{songs.lyrics}```")
+        await lyric.edit(
+            f"**Search query**: \n`{artist} - {song}`\n\n```{songs.lyrics}```"
+        )
     return
 
 
-@borg.on(admin_cmd(pattern='iff(?: |$)(.*)'))
+@borg.on(admin_cmd(pattern="iff(?: |$)(.*)"))
 async def pressf(f):
     """Pays respects"""
     args = f.text.split()
-    arg = (f.text.split(' ', 1))[1] if len(args) > 1 else None
+    arg = (f.text.split(" ", 1))[1] if len(args) > 1 else None
     if len(args) == 1:
         r = random.randint(0, 3)
         logger.info(r)
@@ -86,5 +93,9 @@ async def pressf(f):
         await f.edit("`" + out + "`")
 
 
-SYNTAX.update({"lyrics": "**Usage:** `provide artist and song name to find lyrics`\n\n"
-               "For multiple-word artist name use * (Exmpl: `.lyrics Валентин-Стрыкало Все решено`)"})
+SYNTAX.update(
+    {
+        "lyrics": "**Usage:** `provide artist and song name to find lyrics`\n\n"
+        "For multiple-word artist name use * (Exmpl: `.lyrics Валентин-Стрыкало Все решено`)"
+    }
+)

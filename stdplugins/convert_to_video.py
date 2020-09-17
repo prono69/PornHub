@@ -6,22 +6,24 @@
 """
 
 import asyncio
+import logging
 import os
 import subprocess
 import time
 from datetime import datetime
-from telethon import *
-from telethon.tl.types import *
 
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
+from telethon import *
+from telethon.tl.types import *
+
 from sample_config import Config
 from uniborg.util import *
 from uniborg.util import admin_cmd, progress
-import logging
+
 logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+    format="[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s", level=logging.WARNING
+)
 # thumb_image_path = Config.TMP_DOWNLOAD_DIRECTORY + "thumb_image.jpg"
 
 
@@ -46,7 +48,7 @@ async def _(event):
                 Config.TMP_DOWNLOAD_DIRECTORY,
                 progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
                     progress(d, t, mone, c_time, "trying to download")
-                )
+                ),
             )
         except Exception as e:  # pylint:disable=C0103,W0703
             await mone.edit(str(e))
@@ -54,21 +56,19 @@ async def _(event):
             end = datetime.now()
             ms = (end - start).seconds
             await mone.edit("`Downloaded now preparing to streaming upload`")
-        # if os.path.exists(input_str):
+            # if os.path.exists(input_str):
 
             if os.path.exists(Config.TMP_DOWNLOAD_DIRECTORY):
                 if not downloaded_file_name.endswith(
-                        (".mkv", ".mp4", ".mp3", ".flac", ".webm", ".ts", ".mov")):
-                    await mone.edit(
-                        "**Supported Formats**: MKV, MP4, MP3, FLAC"
-                    )
+                    (".mkv", ".mp4", ".mp3", ".flac", ".webm", ".ts", ".mov")
+                ):
+                    await mone.edit("**Supported Formats**: MKV, MP4, MP3, FLAC")
                     return False
                 if downloaded_file_name.upper().endswith(("MKV", "MP4", "WEBM")):
-                    metadata = extractMetadata(
-                        createParser(downloaded_file_name))
+                    metadata = extractMetadata(createParser(downloaded_file_name))
                     duration = 0
                     if metadata.has("duration"):
-                        duration = metadata.get('duration').seconds
+                        duration = metadata.get("duration").seconds
                     width = 0
                     height = 0
                     thumb = None
@@ -78,7 +78,7 @@ async def _(event):
                     thumb = await take_screen_shot(
                         downloaded_file_name,
                         os.path.dirname(os.path.abspath(downloaded_file_name)),
-                        (duration / 2)
+                        (duration / 2),
                     )
                 start = datetime.now()
                 metadata = extractMetadata(createParser(downloaded_file_name))
@@ -109,12 +109,12 @@ async def _(event):
                                 w=width,
                                 h=height,
                                 round_message=False,
-                                supports_streaming=True
+                                supports_streaming=True,
                             )
                         ],
                         progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
                             progress(d, t, mone, c_time, "trying to upload")
-                        )
+                        ),
                     )
                 except Exception as e:
                     await mone.edit(str(e))
@@ -133,23 +133,31 @@ async def _(event):
 
 def get_video_thumb(file, output=None, width=90):
     metadata = extractMetadata(createParser(file))
-    p = subprocess.Popen([
-        'ffmpeg', '-i', file,
-        '-ss', str(int((0, metadata.get('duration').seconds)[metadata.has('duration')] / 2)),
-        '-filter:v', 'scale={}:-1'.format(width),
-        '-vframes', '1',
-        output,
-    ], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+    p = subprocess.Popen(
+        [
+            "ffmpeg",
+            "-i",
+            file,
+            "-ss",
+            str(
+                int((0, metadata.get("duration").seconds)[metadata.has("duration")] / 2)
+            ),
+            "-filter:v",
+            "scale={}:-1".format(width),
+            "-vframes",
+            "1",
+            output,
+        ],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+    )
     if not p.returncode and os.path.lexists(file):
         return output
 
 
 async def take_screen_shot(video_file, output_directory, ttl):
     # https://stackoverflow.com/a/13891070/4723940
-    out_put_file_name = os.path.join(
-        output_directory,
-        str(time.time()) + ".jpg"
-    )
+    out_put_file_name = os.path.join(output_directory, str(time.time()) + ".jpg")
     if video_file.upper().endswith(("MKV", "MP4", "WEBM")):
         file_genertor_command = [
             "ffmpeg",
@@ -159,7 +167,7 @@ async def take_screen_shot(video_file, output_directory, ttl):
             video_file,
             "-vframes",
             "1",
-            out_put_file_name
+            out_put_file_name,
         ]
         # width = "90"
         process = await asyncio.create_subprocess_exec(

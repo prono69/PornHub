@@ -2,9 +2,10 @@
 \nThis is the Most dangours plugin. This can RIPPED ur UserBot.
 """
 
-from telethon import events
 import asyncio
 from collections import deque
+
+from telethon import events
 
 
 @borg.on(events.NewMessage(pattern=r".floodwarn", outgoing=True))

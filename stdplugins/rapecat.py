@@ -6,9 +6,9 @@ Available Commands:
 
 build by legend @r4v4n4 , if u edit it then u r gay...
 edited by @TECHOPS_recompiled"""
-from telethon import events
-
 import asyncio
+
+from telethon import events
 
 
 @borg.on(events.NewMessage(pattern=r"\.(.*)", outgoing=True))
@@ -29,7 +29,6 @@ async def _(event):
         await event.edit(input_str)
 
         animation_chars = [
-
             "**r**",
             "**ra**",
             "**rap**",
@@ -57,7 +56,7 @@ async def _(event):
             "🐈🐈",
             "🐈",
             "🐅",
-            "**rApEd**"
+            "**rApEd**",
         ]
 
         for i in animation_ttl:

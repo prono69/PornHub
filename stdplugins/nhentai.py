@@ -4,6 +4,7 @@ To view hentai manga in telegra.ph format. xD:)"""
 
 from telethon import events
 from telethon.errors.rpcerrorlist import YouBlockedUserError
+
 from uniborg.util import admin_cmd
 
 
@@ -24,9 +25,8 @@ async def _(event):
     async with event.client.conversation(chat) as conv:
         try:
             response = conv.wait_event(
-                events.NewMessage(
-                    incoming=True,
-                    from_users=424466890))
+                events.NewMessage(incoming=True, from_users=424466890)
+            )
             await event.client.send_message(chat, link)
             response = await response
             # Now bot can't send Notification :)

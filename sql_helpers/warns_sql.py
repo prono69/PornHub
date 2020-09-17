@@ -1,8 +1,8 @@
 import threading
 
-from sqlalchemy import Integer, Column, String, UnicodeText, func, distinct, Boolean
+from sqlalchemy import Boolean, Column, Integer, String, UnicodeText, distinct, func
 
-from sql_helpers import SESSION, BASE
+from sql_helpers import BASE, SESSION
 
 
 class Warns(BASE):
@@ -21,7 +21,8 @@ class Warns(BASE):
 
     def __repr__(self):
         return "<{} warns for {} in {} for reasons {}>".format(
-            self.num_warns, self.user_id, self.chat_id, self.reasons)
+            self.num_warns, self.user_id, self.chat_id, self.reasons
+        )
 
 
 class WarnSettings(BASE):
@@ -36,8 +37,7 @@ class WarnSettings(BASE):
         self.soft_warn = soft_warn
 
     def __repr__(self):
-        return "<{} has {} possible warns.>".format(
-            self.chat_id, self.warn_limit)
+        return "<{} has {} possible warns.>".format(self.chat_id, self.warn_limit)
 
 
 Warns.__table__.create(checkfirst=True)
@@ -56,8 +56,9 @@ def warn_user(user_id, chat_id, reason=None):
 
         warned_user.num_warns += 1
         if reason:
-            warned_user.reasons = warned_user.reasons + "\r\n\r\n" + \
-                reason  # TODO:: double check this wizardry
+            warned_user.reasons = (
+                warned_user.reasons + "\r\n\r\n" + reason
+            )  # TODO:: double check this wizardry
 
         reasons = warned_user.reasons
         num = warned_user.num_warns

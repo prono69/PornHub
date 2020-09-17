@@ -1,9 +1,10 @@
 import asyncio
+import io
 import time
+from datetime import datetime
+
 from sample_config import Config
 from uniborg.util import admin_cmd
-from datetime import datetime
-import io
 
 
 @borg.on(admin_cmd(pattern=("cmrdl ?(.*)")))
@@ -25,9 +26,7 @@ async def _(event):
         reply_to_id = event.reply_to_msg_id
     time.time() + PROCESS_RUN_TIME
     process = await asyncio.create_subprocess_shell(
-        command_to_exec,
-        stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE
+        command_to_exec, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
     )
     logger.info(command_to_exec)
     OUTPUT = "**Files in DOWNLOADS folder:**\n"
@@ -36,7 +35,7 @@ async def _(event):
     if len(stdout) > Config.MAX_MESSAGE_SIZE_LIMIT:
         with io.BytesIO(stdout) as out_file:
             stdout.decode().strip()
-            output = stdout.decode('utf-8').splitlines()
+            output = stdout.decode("utf-8").splitlines()
             file_name = output[1]
             file_name = file_name.split()
             full_file_name = file_name[2]
@@ -49,5 +48,5 @@ async def _(event):
                 force_document=True,
                 allow_cache=False,
                 caption=f"`{full_file_name}`",
-                reply_to=reply_to_id
+                reply_to=reply_to_id,
             )

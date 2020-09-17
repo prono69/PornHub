@@ -5,21 +5,23 @@ Available Commands
 .bar <long text to include>"""
 
 import asyncio
-from datetime import datetime
 import os
+from datetime import datetime
+
 import barcode
-from barcode.writer import ImageWriter
-from uniborg.util import admin_cmd
 import qrcode
+from barcode.writer import ImageWriter
 from bs4 import BeautifulSoup
+
+from uniborg.util import admin_cmd
 
 
 def progress(current, total):
     logger.info(
         "Downloaded {} of {}\nCompleted {}".format(
-            current,
-            total,
-            (current / total) * 100))
+            current, total, (current / total) * 100
+        )
+    )
 
 
 @borg.on(admin_cmd(pattern="getqr"))
@@ -32,14 +34,16 @@ async def _(event):
     downloaded_file_name = await borg.download_media(
         await event.get_reply_message(),
         Config.TMP_DOWNLOAD_DIRECTORY,
-        progress_callback=progress
+        progress_callback=progress,
     )
     # parse the Official ZXing webpage to decode the QR
     command_to_exec = [
         "curl",
-        "-X", "POST",
-        "-F", "f=@" + downloaded_file_name + "",
-        "https://zxing.org/w/decode"
+        "-X",
+        "POST",
+        "-F",
+        "f=@" + downloaded_file_name + "",
+        "https://zxing.org/w/decode",
     ]
     process = await asyncio.create_subprocess_exec(
         *command_to_exec,
@@ -61,7 +65,9 @@ async def _(event):
     qr_contents = soup.find_all("pre")[0].text
     end = datetime.now()
     ms = (end - start).seconds
-    await event.edit("Obtained QRCode contents in {} seconds.\n`{}`".format(ms, qr_contents))
+    await event.edit(
+        "Obtained QRCode contents in {} seconds.\n`{}`".format(ms, qr_contents)
+    )
     await asyncio.sleep(4)
     await event.edit(qr_contents)
 
@@ -83,7 +89,7 @@ async def _(event):
             downloaded_file_name = await borg.download_media(
                 previous_message,
                 Config.TMP_DOWNLOAD_DIRECTORY,
-                progress_callback=progress
+                progress_callback=progress,
             )
             m_list = None
             with open(downloaded_file_name, "rb") as fd:
@@ -110,7 +116,7 @@ async def _(event):
         event.chat_id,
         "img_file.webp",
         reply_to=reply_msg_id,
-        progress_callback=progress
+        progress_callback=progress,
     )
     os.remove("img_file.webp")
     end = datetime.now()
@@ -152,8 +158,7 @@ async def _(event):
         message = "SYNTAX: `.barcode <long text to include>`"
     bar_code_type = "code128"
     try:
-        bar_code_mode_f = barcode.get(
-            bar_code_type, message, writer=ImageWriter())
+        bar_code_mode_f = barcode.get(bar_code_type, message, writer=ImageWriter())
         filename = bar_code_mode_f.save(bar_code_type)
         await borg.send_file(
             event.chat_id,

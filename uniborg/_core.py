@@ -7,12 +7,14 @@ import logging
 import os
 import traceback
 from datetime import datetime
+
 from uniborg import util
+
 thumb_image_path = Config.TMP_DOWNLOAD_DIRECTORY + "/thumb_image.jpg"
 
 logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+    format="[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s", level=logging.WARNING
+)
 logger = logging.getLogger(__name__)
 DELETE_TIMEOUT = 5
 
@@ -69,10 +71,13 @@ async def send_plug_in(event):
             allow_cache=False,
             caption="©️ @LazyAF_Pepe",
             reply_to=message_id,
-            thumb=thumb)
+            thumb=thumb,
+        )
         end = datetime.now()
         time_taken_in_ms = (end - start).seconds
-        await event.edit("Ok, BTC Uploaded {} in {} seconds".format(input_str, time_taken_in_ms))
+        await event.edit(
+            "Ok, BTC Uploaded {} in {} seconds".format(input_str, time_taken_in_ms)
+        )
         await asyncio.sleep(DELETE_TIMEOUT)
         await event.delete()
     else:
@@ -86,12 +91,15 @@ async def install_plug_in(event):
     if event.reply_to_msg_id:
         try:
             downloaded_file_name = await event.client.download_media(
-                await event.get_reply_message(),
-                borg.n_plugin_path
+                await event.get_reply_message(), borg.n_plugin_path
             )
             if "(" not in downloaded_file_name:
                 borg.load_plugin_from_file(downloaded_file_name)
-                await event.edit("Installed temp Plugin `{}`".format(os.path.basename(downloaded_file_name)))
+                await event.edit(
+                    "Installed temp Plugin `{}`".format(
+                        os.path.basename(downloaded_file_name)
+                    )
+                )
             else:
                 os.remove(downloaded_file_name)
                 await event.edit("`Abe Sale ! Plugin already exists, Can't instll`")

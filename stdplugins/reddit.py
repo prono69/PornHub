@@ -13,7 +13,7 @@ async def subreddit(e):
     if matches:
         print("REDDIT")
         for match in matches:
-            sub_name = match.split('/')[-1]
+            sub_name = match.split("/")[-1]
             link = f"[{match}](https://reddit.com/r/{sub_name})"
             message = e.text.replace(match, link)
 

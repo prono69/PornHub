@@ -1,5 +1,6 @@
-from sql_helpers import BASE, SESSION
 from sqlalchemy import Boolean, Column, String
+
+from sql_helpers import BASE, SESSION
 
 
 class Locks(BASE):

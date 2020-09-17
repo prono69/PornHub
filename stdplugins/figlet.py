@@ -3,6 +3,7 @@
 Ported by @NeoMatrix90 (Legend)
 With the help of lejhand @r4v4n4"""
 import pyfiglet
+
 from uniborg.util import admin_cmd
 
 
@@ -23,7 +24,8 @@ async def figlet(event):
         "dotm": "dotmatrix",
         "bubble": "bubble",
         "bulb": "bulbhead",
-        "digi": "digital"}
+        "digi": "digital",
+    }
     input_str = event.pattern_match.group(1)
     if "|" in input_str:
         text, cmd = input_str.split("|", maxsplit=1)

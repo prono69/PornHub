@@ -1,15 +1,17 @@
 """File Converter
 .nfc """
-from sample_config import Config
-from uniborg.util import admin_cmd, progress
-from datetime import datetime
-import time
-import os
 import asyncio
 import logging
+import os
+import time
+from datetime import datetime
+
+from sample_config import Config
+from uniborg.util import admin_cmd, progress
+
 logging.basicConfig(
-    format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-    level=logging.WARNING)
+    format="[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s", level=logging.WARNING
+)
 
 
 @borg.on(admin_cmd(pattern="nfc (.*)"))  # pylint:disable=E0602
@@ -30,14 +32,16 @@ async def _(event):
             Config.TMP_DOWNLOAD_DIRECTORY,
             progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
                 progress(d, t, event, c_time, "trying to download")
-            )
+            ),
         )
     except Exception as e:  # pylint:disable=C0103,W0703
         await event.edit(str(e))
     else:
         end = datetime.now()
         ms = (end - start).seconds
-        await event.edit("Downloaded to `{}` in {} seconds.".format(downloaded_file_name, ms))
+        await event.edit(
+            "Downloaded to `{}` in {} seconds.".format(downloaded_file_name, ms)
+        )
         new_required_file_name = ""
         new_required_file_caption = ""
         command_to_run = []
@@ -59,7 +63,7 @@ async def _(event):
                 "100k",
                 "-vbr",
                 "on",
-                new_required_file_name
+                new_required_file_name,
             ]
             voice_note = True
             supports_streaming = True
@@ -71,7 +75,7 @@ async def _(event):
                 "-i",
                 downloaded_file_name,
                 "-vn",
-                new_required_file_name
+                new_required_file_name,
             ]
             voice_note = False
             supports_streaming = True
@@ -105,7 +109,7 @@ async def _(event):
                 supports_streaming=supports_streaming,
                 progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
                     progress(d, t, event, c_time, "uploading..")
-                )
+                ),
             )
             ms_two = (end_two - end).seconds
             os.remove(new_required_file_name)

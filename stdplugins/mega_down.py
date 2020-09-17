@@ -6,20 +6,22 @@ Ported for PepeBot
 \nBy [NIKITA](https://t.me/kirito6969)
 """
 
+import asyncio
+import errno
+import json
+import math
+import multiprocessing
+import os
+import re
+import time
 from asyncio import create_subprocess_shell as asyncSubprocess
 from asyncio.subprocess import PIPE as asyncPIPE
-import asyncio
-import re
-import json
-import os
-import multiprocessing
-import errno
-import math
-import time
-from pySmartDL import SmartDL
 from urllib.error import HTTPError
-from uniborg import MODULE, SYNTAX, LOGS
-from uniborg.util import humanbytes, time_formatter, admin_cmd
+
+from pySmartDL import SmartDL
+
+from uniborg import LOGS, MODULE, SYNTAX
+from uniborg.util import admin_cmd, humanbytes, time_formatter
 
 TEMP_DOWNLOAD_DIRECTORY = Config.TMP_DOWNLOAD_DIRECTORY
 MODULE.append("mega_down")
@@ -31,10 +33,11 @@ async def subprocess_run(megadl, cmd):
     exitCode = subproc.returncode
     if exitCode != 0:
         await megadl.edit(
-            '**An error was detected while running subprocess.**\n'
-            f'exitCode : `{exitCode}`\n'
-            f'stdout : `{stdout.decode().strip()}`\n'
-            f'stderr : `{stderr.decode().strip()}`')
+            "**An error was detected while running subprocess.**\n"
+            f"exitCode : `{exitCode}`\n"
+            f"stdout : `{stdout.decode().strip()}`\n"
+            f"stderr : `{stderr.decode().strip()}`"
+        )
         return exitCode
     return stdout.decode().strip(), stderr.decode().strip(), exitCode
 
@@ -53,7 +56,7 @@ async def mega_downloader(megadl):
     else:
         return await megadl.edit("Usage: `.mega` **<MEGA.nz link>**")
     try:
-        link = re.findall(r'\bhttps?://.*mega.*\.nz\S+', link)[0]
+        link = re.findall(r"\bhttps?://.*mega.*\.nz\S+", link)[0]
         """ - Mega changed their URL again - """
         if "file" in link:
             link = link.replace("#", "!").replace("file/", "#!")
@@ -62,7 +65,7 @@ async def mega_downloader(megadl):
             return
     except IndexError:
         return await megadl.edit("`MEGA.nz link not found...`")
-    cmd = f'bin/megadown -q -m {link}'
+    cmd = f"bin/megadown -q -m {link}"
     result = await subprocess_run(megadl, cmd)
     try:
         data = json.loads(result[0])
@@ -79,12 +82,10 @@ async def mega_downloader(megadl):
     file_path = TEMP_DOWNLOAD_DIRECTORY + file_name
     if os.path.isfile(file_path):
         try:
-            raise FileExistsError(
-                errno.EEXIST, os.strerror(errno.EEXIST), file_path)
+            raise FileExistsError(errno.EEXIST, os.strerror(errno.EEXIST), file_path)
         except FileExistsError as e:
             return await megadl.edit(f"`{str(e)}`")
-    downloader = SmartDL(
-        file_url, temp_file_path, progress_bar=False)
+    downloader = SmartDL(file_url, temp_file_path, progress_bar=False)
     display_message = None
     try:
         downloader.start(blocking=False)
@@ -100,11 +101,10 @@ async def mega_downloader(megadl):
         estimated_total_time = round(downloader.get_eta())
         progress_str = "`{0}` | [{1}{2}] `{3}%`".format(
             status,
-            ''.join(["▰" for i in range(
-                    math.floor(percentage / 10))]),
-            ''.join(["▱" for i in range(
-                    10 - math.floor(percentage / 10))]),
-            round(percentage, 2))
+            "".join(["▰" for i in range(math.floor(percentage / 10))]),
+            "".join(["▱" for i in range(10 - math.floor(percentage / 10))]),
+            round(percentage, 2),
+        )
         diff = time.time() - start
         try:
             current_message = (
@@ -114,11 +114,11 @@ async def mega_downloader(megadl):
                 f"`{humanbytes(downloaded)}` of `{humanbytes(total_length)}`"
                 f" @ `{speed}`\n"
                 f"**➥ETA -> **`{time_formatter(estimated_total_time)}`\n"
-                f"**➥ Duration -> **`{time_formatter(round(diff))}`")
-            if round(
-                    diff %
-                    10.00) == 0 and (
-                    display_message != current_message or total_length == downloaded):
+                f"**➥ Duration -> **`{time_formatter(round(diff))}`"
+            )
+            if round(diff % 10.00) == 0 and (
+                display_message != current_message or total_length == downloaded
+            ):
                 await megadl.edit(current_message)
                 await asyncio.sleep(2)
                 display_message = current_message
@@ -131,10 +131,12 @@ async def mega_downloader(megadl):
     if downloader.isSuccessful():
         download_time = round(downloader.get_dl_time() + wait)
         try:
-            P = multiprocessing.Process(target=await decrypt_file(megadl,
-                                                                  file_path, temp_file_path,
-                                                                  hex_key, hex_raw_key),
-                                        name="Decrypt_File")
+            P = multiprocessing.Process(
+                target=await decrypt_file(
+                    megadl, file_path, temp_file_path, hex_key, hex_raw_key
+                ),
+                name="Decrypt_File",
+            )
             P.start()
             P.join()
         except FileNotFoundError as e:
@@ -143,30 +145,32 @@ async def mega_downloader(megadl):
             return await megadl.edit(
                 f"`{file_name}`\n\n"
                 f"Successfully downloaded in: `{file_path}`.\n"
-                f"Download took: {time_formatter(download_time)}.")
+                f"Download took: {time_formatter(download_time)}."
+            )
     else:
-        await megadl.edit("`Failed to download, "
-                          "check heroku Logs for more details`.")
+        await megadl.edit(
+            "`Failed to download, " "check heroku Logs for more details`."
+        )
         for e in downloader.get_errors():
             LOGS.info(str(e))
     return
 
 
-async def decrypt_file(megadl, file_path, temp_file_path,
-                       hex_key, hex_raw_key):
-    cmd = ("cat '{}' | openssl enc -d -aes-128-ctr -K {} -iv {} > '{}'"
-           .format(temp_file_path, hex_key, hex_raw_key, file_path))
+async def decrypt_file(megadl, file_path, temp_file_path, hex_key, hex_raw_key):
+    cmd = "cat '{}' | openssl enc -d -aes-128-ctr -K {} -iv {} > '{}'".format(
+        temp_file_path, hex_key, hex_raw_key, file_path
+    )
     if await subprocess_run(megadl, cmd):
         os.remove(temp_file_path)
     else:
-        raise FileNotFoundError(
-            errno.ENOENT, os.strerror(errno.ENOENT), file_path)
+        raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), file_path)
     return
 
 
-SYNTAX.update({
-    "mega":
-    ".mega <MEGA.nz link>"
-    "\nUsage: Reply to a MEGA.nz link or paste your MEGA.nz link to "
-    "download the file into your userbot server."
-})
+SYNTAX.update(
+    {
+        "mega": ".mega <MEGA.nz link>"
+        "\nUsage: Reply to a MEGA.nz link or paste your MEGA.nz link to "
+        "download the file into your userbot server."
+    }
+)

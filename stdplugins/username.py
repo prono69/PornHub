@@ -3,9 +3,10 @@ Available Commands:
 .usr <Username>"""
 
 
-from uniborg.util import admin_cmd
 from telethon.errors.rpcerrorlist import UsernameOccupiedError
 from telethon.tl.functions.account import UpdateUsernameRequest
+
+from uniborg.util import admin_cmd
 
 
 @borg.on(admin_cmd(pattern="usr ?(.*)"))

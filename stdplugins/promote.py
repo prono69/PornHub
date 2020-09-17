@@ -1,7 +1,9 @@
 """Reply to a user to .premote / .demote / .prankpremote them in the current chat"""
 from datetime import datetime
+
 from telethon.tl.functions.channels import EditAdminRequest
 from telethon.tl.types import ChatAdminRights
+
 from uniborg.util import admin_cmd
 
 
@@ -69,9 +71,7 @@ async def _(event):
         return
     datetime.now()
     to_prankpremote_id = None
-    rights = ChatAdminRights(
-
-    )
+    rights = ChatAdminRights()
     input_str = event.pattern_match.group(1)
     reply_msg_id = event.message.id
     if reply_msg_id:

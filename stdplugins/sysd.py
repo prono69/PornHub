@@ -1,6 +1,7 @@
 """Get the info your system. Using .neofetch then .sysd"""
 from asyncio import create_subprocess_shell as asyncrunapp
 from asyncio.subprocess import PIPE as asyncPIPE
+
 from uniborg.util import admin_cmd
 
 
@@ -18,9 +19,10 @@ async def sysdetails(sysd):
             )
 
             stdout, stderr = await fetch.communicate()
-            result = str(stdout.decode().strip()) \
-                + str(stderr.decode().strip())
+            result = str(stdout.decode().strip()) + str(stderr.decode().strip())
 
             await sysd.edit("Neofetch Result: `" + result + "`")
         except FileNotFoundError:
-            await sysd.edit("`On PepeBot Neofetch not installed. Install it by .neofetch, kthxbye!`")
+            await sysd.edit(
+                "`On PepeBot Neofetch not installed. Install it by .neofetch, kthxbye!`"
+            )

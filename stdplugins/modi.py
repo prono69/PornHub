@@ -1,4 +1,5 @@
 import random
+
 from uniborg.util import admin_cmd
 
 
@@ -8,7 +9,8 @@ async def _(event):
         return
     await event.edit("`Mitro, Main Hoon Modi. Jo is desh ki Gand Mar raha hain.`")
 
-   # ===================================================================
+
+# ===================================================================
 
 MODISTR = [
     "`Mitron, Mandir Wahi Banadiya`",
@@ -18,8 +20,6 @@ MODISTR = [
     "`Mitron, Jo bhi kuch sawal puchega woh Anti-nationalist, Deshdrohi`",
     "`Mitron, Mujhe time do, main tumhe Kala Dhan dunga`",
     "`Mitron, Main Hoon MODI, maine kal Ranu ke sath sex kiya, ekdam chod dala jaise main is desh ko chod raha hu`",
-
-
 ]
 
 # =======================================================================================================

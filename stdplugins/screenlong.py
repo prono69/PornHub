@@ -4,7 +4,9 @@ Syntax: .long <Website URL>"""
 import io
 import traceback
 from datetime import datetime
+
 from selenium import webdriver
+
 from uniborg.util import admin_cmd
 
 
@@ -19,12 +21,12 @@ async def _(event):
     start = datetime.now()
     try:
         chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument('--ignore-certificate-errors')
+        chrome_options.add_argument("--ignore-certificate-errors")
         chrome_options.add_argument("--test-type")
         chrome_options.add_argument("--headless")
         # https://stackoverflow.com/a/53073789/4723940
-        chrome_options.add_argument('--no-sandbox')
-        chrome_options.add_argument('--disable-dev-shm-usage')
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.binary_location = Config.GOOGLE_CHROME_BIN
         await event.edit("Starting Google Chrome BIN")
         driver = webdriver.Chrome(chrome_options=chrome_options)
@@ -32,9 +34,11 @@ async def _(event):
         driver.get(input_str)
         await event.edit("Calculating Page Dimensions")
         height = driver.execute_script(
-            "return Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);")
+            "return Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);"
+        )
         width = driver.execute_script(
-            "return Math.max(document.body.scrollWidth, document.body.offsetWidth, document.documentElement.clientWidth, document.documentElement.scrollWidth, document.documentElement.offsetWidth);")
+            "return Math.max(document.body.scrollWidth, document.body.offsetWidth, document.documentElement.clientWidth, document.documentElement.scrollWidth, document.documentElement.offsetWidth);"
+        )
         await event.edit("Painting web-page")
         driver.set_window_size(width + 100, height + 100)
         # Add some pixels on top of the calculated dimensions
@@ -55,7 +59,7 @@ async def _(event):
                 force_document=True,
                 reply_to=message_id,
                 allow_cache=False,
-                silent=True
+                silent=True,
             )
         end = datetime.now()
         ms = (end - start).seconds

@@ -10,26 +10,22 @@ cmds: Magnet link : .magnet magnetLink
 By:- @Zero_cool7870
 
 """
+import asyncio
+import logging
+import os
+
 import aria2p
 from telethon import events
-import asyncio
-import os
-import logging
+
 logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.WARN)
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.WARN
+)
 
 cmd = "aria2c --enable-rpc --rpc-listen-all=false --rpc-listen-port 6800  --max-connection-per-server=10 --rpc-max-request-size=1024M --seed-time=0.01 --min-split-size=10M --follow-torrent=mem --split=10 --daemon=true --allow-overwrite=true"
 EDIT_SLEEP_TIME_OUT = 5
 aria2_is_running = os.system(cmd)
 
-aria2 = aria2p.API(
-    aria2p.Client(
-        host="http://localhost",
-        port=6800,
-        secret=""
-    )
-)
+aria2 = aria2p.API(aria2p.Client(host="http://localhost", port=6800, secret=""))
 
 
 @borg.on(events.NewMessage(pattern=r"\.magnet", outgoing=True))
@@ -65,10 +61,8 @@ async def torrent_download(event):
     logger.info(torrent_file_path)
     try:  # Add Torrent Into Queue
         download = aria2.add_torrent(
-            torrent_file_path,
-            uris=None,
-            options=None,
-            position=None)
+            torrent_file_path, uris=None, options=None, position=None
+        )
     except Exception as e:
         await event.edit("Error :\n`{}`".format(str(e)))
         return
@@ -119,13 +113,27 @@ async def show_all(event):
     downloads = aria2.get_downloads()
     msg = ""
     for download in downloads:
-        msg = msg + "File: `" + str(download.name) + "`\nSpeed: " + str(download.download_speed_string()) + "\nProgress: " + str(download.progress_string(
-        )) + "\nTotal Size: " + str(download.total_length_string()) + "\nStatus: " + str(download.status) + "\nETA:  " + str(download.eta_string()) + "\n\n"
+        msg = (
+            msg
+            + "File: `"
+            + str(download.name)
+            + "`\nSpeed: "
+            + str(download.download_speed_string())
+            + "\nProgress: "
+            + str(download.progress_string())
+            + "\nTotal Size: "
+            + str(download.total_length_string())
+            + "\nStatus: "
+            + str(download.status)
+            + "\nETA:  "
+            + str(download.eta_string())
+            + "\n\n"
+        )
     if len(msg) <= 4096:
         await event.edit("`Current Downloads: `\n" + msg)
     else:
         await event.edit("`Output is huge. Sending as a file...`")
-        with open(output, 'w') as f:
+        with open(output, "w") as f:
             f.write(msg)
         await asyncio.sleep(2)
         await event.delete()
@@ -151,8 +159,21 @@ async def progress_status(gid, event, previous):
         file = aria2.get_download(gid)
         if not file.is_complete:
             if not file.error_message:
-                msg = "Downloading File: `" + str(file.name) + "`\nSpeed: " + str(file.download_speed_string()) + "\nProgress: " + str(file.progress_string(
-                )) + "\nTotal Size: " + str(file.total_length_string()) + "\nStatus: " + str(file.status) + "\nETA:  " + str(file.eta_string()) + "\n\n"
+                msg = (
+                    "Downloading File: `"
+                    + str(file.name)
+                    + "`\nSpeed: "
+                    + str(file.download_speed_string())
+                    + "\nProgress: "
+                    + str(file.progress_string())
+                    + "\nTotal Size: "
+                    + str(file.total_length_string())
+                    + "\nStatus: "
+                    + str(file.status)
+                    + "\nETA:  "
+                    + str(file.eta_string())
+                    + "\n\n"
+                )
                 if previous != msg:
                     await event.edit(msg)
                     previous = msg
@@ -171,7 +192,11 @@ async def progress_status(gid, event, previous):
             return
         elif " depth exceeded" in str(e):
             file.remove(force=True)
-            await event.edit("Download Auto Canceled :\n`{}`\nYour Torrent/Link is Dead.".format(file.name))
+            await event.edit(
+                "Download Auto Canceled :\n`{}`\nYour Torrent/Link is Dead.".format(
+                    file.name
+                )
+            )
         else:
             logger.info(str(e))
             await event.edit("Error :\n`{}`".format(str(e)))

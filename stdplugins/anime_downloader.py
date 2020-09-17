@@ -5,10 +5,12 @@ cmd:- .anid page_link
 By:- @Zero_cool7870
 
 """
-from telethon import events
-from bs4 import BeautifulSoup as bs
-import requests
 import os
+
+import requests
+from bs4 import BeautifulSoup as bs
+from telethon import events
+
 chunk_size = 3242880
 
 
@@ -16,7 +18,7 @@ async def get_file_name(link):
     new_link = link[26:]
     l = ""
     for c in new_link:
-        if c == '?':
+        if c == "?":
             break
         l = l + c
     l = l.replace("/", "_")
@@ -50,17 +52,17 @@ async def anime_download(event):
     var = event.text
     var = var[6:]
     res = requests.get(var)
-    source = bs(res.text, 'lxml')
+    source = bs(res.text, "lxml")
 
-    for a in source.find_all('a', {'class': 'infovan'}):
-        url_links.append(a['href'])
+    for a in source.find_all("a", {"class": "infovan"}):
+        url_links.append(a["href"])
 
     for i in url_links:
         res = requests.get(i)
-        source = bs(res.text, 'lxml')
+        source = bs(res.text, "lxml")
 
-        for a in source.find_all('a', {'class': 'an'}):
-            urls.append(a['href'])
+        for a in source.find_all("a", {"class": "an"}):
+            urls.append(a["href"])
         print("Getting Link...")
 
     counter = 0

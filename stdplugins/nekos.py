@@ -19,12 +19,14 @@ Cmds = `.nk <argument from POSSIBLE list>`
 \n\n**DON'T EVEN TRY TO TO CHANGE CREDITS**'
 """
 
+import os
+
 import nekos
-from uniborg.util import admin_cmd
 import requests
 from PIL import Image
-import os
+
 from uniborg import MODULE
+from uniborg.util import admin_cmd
 
 MODULE.append("nekos")
 
@@ -37,7 +39,7 @@ async def _(event):
         return
     await event.edit("`Processing...Nekos`")
     await event.delete()
-    target = nekos.img(f'{hmm}')
+    target = nekos.img(f"{hmm}")
     await event.client.send_file(event.chat_id, file=target, caption=f"{hmm}")
 
 
@@ -53,7 +55,7 @@ async def dva(event):
 
 @borg.on(admin_cmd(pattern="nsfw"))
 async def avatarlewd(event):
-    target = 'nsfw_avatar'
+    target = "nsfw_avatar"
     with open("temp.png", "wb") as f:
         f.write(requests.get(nekos.img(target)).content)
     img = Image.open("temp.png")
@@ -88,7 +90,7 @@ async def _(event):
 
 @borg.on(admin_cmd(pattern="gasm"))
 async def gasm(event):
-    target = 'gasm'
+    target = "gasm"
     with open("temp.png", "wb") as f:
         f.write(requests.get(nekos.img(target)).content)
     img = Image.open("temp.png")
@@ -99,7 +101,7 @@ async def gasm(event):
 
 @borg.on(admin_cmd(pattern="ifu"))
 async def waifu(event):
-    target = 'waifu'
+    target = "waifu"
     with open("temp.png", "wb") as f:
         f.write(requests.get(nekos.img(target)).content)
     img = Image.open("temp.png")

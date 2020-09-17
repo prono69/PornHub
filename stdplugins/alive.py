@@ -1,11 +1,14 @@
 """Check if userbot alive or not . """
 
 import time
-from userbot import StartTime, pepe, get_readable_time
-from uniborg.util import admin_cmd
-from telethon import version
 from platform import python_version
+
+from telethon import version
+
 from uniborg import MODULE
+from uniborg.util import admin_cmd
+from userbot import StartTime, get_readable_time, pepe
+
 MODULE.append("alive")
 
 
@@ -32,7 +35,9 @@ async def amireallyalive(alive):
 
 ✧ **Repo** : [PEPEBOT](https://github.com/prono69/PepeBot)"""
 
-    sticker = (await borg.get_messages('LazyAF_Pepe', 25))
+    sticker = await borg.get_messages("LazyAF_Pepe", 25)
     await borg.send_file(alive.chat_id, file=sticker)
-    await borg.send_message(alive.chat_id, output, reply_to=reply_to_id, link_preview=False)
+    await borg.send_message(
+        alive.chat_id, output, reply_to=reply_to_id, link_preview=False
+    )
     await alive.delete()

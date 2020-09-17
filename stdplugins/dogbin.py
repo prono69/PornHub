@@ -1,23 +1,26 @@
 """IX.IO pastebin like site
 Syntax: .paste
         .getp <to get the dogbin content>"""
-from datetime import datetime
-import os
-import requests
-from uniborg.util import admin_cmd
 import logging
+import os
+from datetime import datetime
+
+import requests
+
+from uniborg.util import admin_cmd
 from userbot import AioHttp
+
 logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.WARN)
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.WARN
+)
 
 
 def progress(current, total):
     logger.info(
         "Downloaded {} of {}\nCompleted {}".format(
-            current,
-            total,
-            (current / total) * 100))
+            current, total, (current / total) * 100
+        )
+    )
 
 
 DOGBIN_URL = "https://del.dog/"
@@ -41,7 +44,7 @@ async def _(event):
             downloaded_file_name = await borg.download_media(
                 previous_message,
                 Config.TMP_DOWNLOAD_DIRECTORY,
-                progress_callback=progress
+                progress_callback=progress,
             )
             m_list = None
             with open(downloaded_file_name, "rb") as fd:
@@ -62,15 +65,21 @@ async def _(event):
     ms = (end - start).seconds
     if r["isUrl"]:
         nurl = f"https://del.dog/v/{r['key']}"
-        await event.edit("Dogged to {} in {} seconds. GoTo Original URL: {}".format(url, ms, nurl))
+        await event.edit(
+            "Dogged to {} in {} seconds. GoTo Original URL: {}".format(url, ms, nurl)
+        )
     else:
-        await event.edit("`Pasted Successfully!` \n**LINK:** [URL]({}) | **RAW:** [URL]({})\n__Link Generated In__ **{}** __seconds__".format(url, raw_url, ms))
+        await event.edit(
+            "`Pasted Successfully!` \n**LINK:** [URL]({}) | **RAW:** [URL]({})\n__Link Generated In__ **{}** __seconds__".format(
+                url, raw_url, ms
+            )
+        )
 
 
 @borg.on(admin_cmd(pattern="getp ?(.*)"))
 async def get_dogbin_content(dog_url):
-    """ For .get_dogbin_content command,
-        fetches the content of a dogbin URL. """
+    """For .get_dogbin_content command,
+    fetches the content of a dogbin URL."""
     textx = await dog_url.get_reply_message()
     link = dog_url.pattern_match.group(1)
     await dog_url.edit("`Getting dogbin content...`")
@@ -78,23 +87,23 @@ async def get_dogbin_content(dog_url):
     if textx:
         link = str(textx.message)
 
-    format_view = f'{DOGBIN_URL}v/'
+    format_view = f"{DOGBIN_URL}v/"
 
     if link.startswith(format_view):
-        link = link[len(format_view):]
-        raw_link = f'https://del.dog/raw/{link}'
+        link = link[len(format_view) :]
+        raw_link = f"https://del.dog/raw/{link}"
     elif link.startswith("https://del.dog/"):
-        link = link[len("https://del.dog/"):]
-        raw_link = f'https://del.dog/raw/{link}'
+        link = link[len("https://del.dog/") :]
+        raw_link = f"https://del.dog/raw/{link}"
     elif link.startswith("del.dog/"):
-        link = link[len("del.dog/"):]
-        raw_link = f'https://del.dog/raw/{link}'
+        link = link[len("del.dog/") :]
+        raw_link = f"https://del.dog/raw/{link}"
     elif link.startswith("https://nekobin.com/"):
-        link = link[len("https://nekobin.com/"):]
-        raw_link = f'https://nekobin.com/raw/{link}'
+        link = link[len("https://nekobin.com/") :]
+        raw_link = f"https://nekobin.com/raw/{link}"
     elif link.startswith("nekobin.com/"):
-        link = link[len("nekobin.com/"):]
-        raw_link = f'https://nekobin.com/raw/{link}'
+        link = link[len("nekobin.com/") :]
+        raw_link = f"https://nekobin.com/raw/{link}"
     else:
         await dog_url.edit("`Is that even a paste url?`")
         return
@@ -105,11 +114,12 @@ async def get_dogbin_content(dog_url):
             await dog_url.client.send_file(dog_url.chat_id, out_file)
             await dog_url.delete()
     else:
-        await dog_url.edit(
-            f"**URL content** :\n\n`{resp}`")
+        await dog_url.edit(f"**URL content** :\n\n`{resp}`")
     if BOTLOG:
         await dog_url.client.send_message(
             BOTLOG,
-            "Get dogbin content query for `" + link + "` was \
+            "Get dogbin content query for `"
+            + link
+            + "` was \
 executed successfully",
         )

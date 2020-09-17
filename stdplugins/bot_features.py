@@ -1,10 +1,12 @@
 """Cmds:
 `.sg`\n`.fakemail`\n`.mailid`\n`.ub`\n`.gid`\n`.urban`\n`.voicy`\n`.mashup`\n`.ascii`"""
 import asyncio
+
 from telethon import events
 from telethon.errors.rpcerrorlist import YouBlockedUserError
-from uniborg.util import admin_cmd
+
 from uniborg import SYNTAX
+from uniborg.util import admin_cmd
 
 
 @borg.on(admin_cmd(pattern="sg ?(.*)", allow_sudo=True))
@@ -27,16 +29,17 @@ async def _(event):
     async with borg.conversation(chat) as conv:
         try:
             response = conv.wait_event(
-                events.NewMessage(
-                    incoming=True,
-                    from_users=461843263))
+                events.NewMessage(incoming=True, from_users=461843263)
+            )
             await borg.forward_messages(chat, reply_message)
             response = await response
         except YouBlockedUserError:
             await event.reply("```Please unblock @sangmatainfo_bot and try again```")
             return
         if response.text.startswith("Forward"):
-            await event.edit("```can you kindly disable your forward privacy settings for good?```")
+            await event.edit(
+                "```can you kindly disable your forward privacy settings for good?```"
+            )
         else:
             await event.edit(f"{response.message.message}")
 
@@ -51,7 +54,9 @@ async def _(event):
         try:
             await event.client.send_message("@fakemailbot", "/generate")
             await asyncio.sleep(5)
-            k = await event.client.get_messages(entity="@fakemailbot", limit=1, reverse=False)
+            k = await event.client.get_messages(
+                entity="@fakemailbot", limit=1, reverse=False
+            )
             mail = k[0].text
             # print(k[0].text)
         except YouBlockedUserError:
@@ -70,7 +75,9 @@ async def _(event):
         try:
             await event.client.send_message("@fakemailbot", "/id")
             await asyncio.sleep(5)
-            k = await event.client.get_messages(entity="@fakemailbot", limit=1, reverse=False)
+            k = await event.client.get_messages(
+                entity="@fakemailbot", limit=1, reverse=False
+            )
             mail = k[0].text
             # print(k[0].text)
         except YouBlockedUserError:
@@ -99,16 +106,17 @@ async def _(event):
     async with borg.conversation(chat) as conv:
         try:
             response = conv.wait_event(
-                events.NewMessage(
-                    incoming=True,
-                    from_users=97342984))
+                events.NewMessage(incoming=True, from_users=97342984)
+            )
             await borg.forward_messages(chat, reply_message)
             response = await response
         except YouBlockedUserError:
             await event.reply("```Please unblock @sangmatainfo_bot and try again```")
             return
         if response.text.startswith("Hi!,"):
-            await event.edit("```can you kindly disable your forward privacy settings for good?```")
+            await event.edit(
+                "```can you kindly disable your forward privacy settings for good?```"
+            )
         else:
             await event.edit(f"{response.message.message}")
 
@@ -133,16 +141,17 @@ async def _(event):
     async with borg.conversation(chat) as conv:
         try:
             response = conv.wait_event(
-                events.NewMessage(
-                    incoming=True,
-                    from_users=186675376))
+                events.NewMessage(incoming=True, from_users=186675376)
+            )
             await borg.forward_messages(chat, reply_message)
             response = await response
         except YouBlockedUserError:
             await event.reply("```Nikal Gendu```")
             return
         if response.text.startswith("Hello,"):
-            await event.edit("```can you kindly disable your forward privacy settings for good?```")
+            await event.edit(
+                "```can you kindly disable your forward privacy settings for good?```"
+            )
         else:
             await event.edit(f"{response.message.message}")
 
@@ -170,16 +179,17 @@ async def _(event):
     async with borg.conversation(chat) as conv:
         try:
             response = conv.wait_event(
-                events.NewMessage(
-                    incoming=True,
-                    from_users=185693644))
+                events.NewMessage(incoming=True, from_users=185693644)
+            )
             await borg.forward_messages(chat, reply_message)
             response = await response
         except YouBlockedUserError:
             await event.reply("```Nikal Gendu```")
             return
         if response.text.startswith("Hello,"):
-            await event.edit("```Can you Kindly disable your forward privacy settings for good?```")
+            await event.edit(
+                "```Can you Kindly disable your forward privacy settings for good?```"
+            )
         else:
             await event.edit(f"{response.message.message}")
 
@@ -202,11 +212,14 @@ async def voicy(event):
         try:
             await event.client.forward_messages(chat, reply_message)
         except YouBlockedUserError:
-            await event.reply(f"`Mmmh sanırım` {chat} `engellemişsin. Lütfen engeli aç.`")
+            await event.reply(
+                f"`Mmmh sanırım` {chat} `engellemişsin. Lütfen engeli aç.`"
+            )
             return
 
-        response = conv.wait_event(events.MessageEdited(
-            incoming=True, from_users=259276793))
+        response = conv.wait_event(
+            events.MessageEdited(incoming=True, from_users=259276793)
+        )
         response = await response
         if response.text.startswith("__👋"):
             await event.edit("`Botu başlatıp Türkçe yapmanız gerekmektedir.`")
@@ -234,9 +247,8 @@ async def _(event):
     async with event.client.conversation(chat) as conv:
         try:
             response = conv.wait_event(
-                events.NewMessage(
-                    incoming=True,
-                    from_users=285336877))
+                events.NewMessage(incoming=True, from_users=285336877)
+            )
             await event.client.send_message(chat, "{}".format(input_str))
             response = await response
         except YouBlockedUserError:
@@ -246,7 +258,9 @@ async def _(event):
             await event.edit("`Sorry i can't find it`")
         else:
             await event.delete()
-            await borg.send_file(event.chat_id, response.message, reply_to=event.reply_to_msg_id)
+            await borg.send_file(
+                event.chat_id, response.message, reply_to=event.reply_to_msg_id
+            )
 
 
 @borg.on(admin_cmd(pattern="ascii"))
@@ -264,27 +278,34 @@ async def _(event):
     chat = "@asciiart_bot"
     reply_message.sender
     if reply_message.sender.bot:
-        await event.edit(
-            "Reply to actual users message."
-        )
+        await event.edit("Reply to actual users message.")
         return
-    downloaded_file_name = await borg.download_media(reply_message, Var.TEMP_DOWNLOAD_DIRECTORY)
+    downloaded_file_name = await borg.download_media(
+        reply_message, Var.TEMP_DOWNLOAD_DIRECTORY
+    )
     end = datetime.now()
     ms = (end - start).seconds
-    await event.edit("Downloaded to `{}` in **{}** seconds.".format(downloaded_file_name, ms))
+    await event.edit(
+        "Downloaded to `{}` in **{}** seconds.".format(downloaded_file_name, ms)
+    )
     async with borg.conversation(chat) as conv:
         try:
             await conv.send_message("/start")
             await conv.get_response()
             await conv.send_file(downloaded_file_name)
             ascii = await conv.get_response()
-            await borg.send_file(event.chat_id, ascii, caption="💠**Here's the requested ascii image!**💠")
+            await borg.send_file(
+                event.chat_id, ascii, caption="💠**Here's the requested ascii image!**💠"
+            )
             await event.delete()
         except YouBlockedUserError:
             await event.edit("**Error:** `unblock` @asciiart_bot `and retry!`")
             await event.delete()
 
 
-SYNTAX.update({"mashup": "`.mashup` <text> :\
+SYNTAX.update(
+    {
+        "mashup": "`.mashup` <text> :\
       \n**USAGE:** Send you the related video message of given text . "
-               })
+    }
+)

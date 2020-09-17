@@ -2,15 +2,17 @@
 Syntax: `.eval {PythonCode}`
         `.exec `{LinuxCode}`
 """
-import traceback
-import sys
 import io
-import time
-from uniborg.util import admin_cmd
 import logging
+import sys
+import time
+import traceback
+
+from uniborg.util import admin_cmd
+
 logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.WARN)
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.WARN
+)
 
 
 @borg.on(admin_cmd(pattern="eval"))
@@ -50,7 +52,8 @@ async def _(event):
         evaluation = "Success"
 
     final_output = "⬤ **EVAL**: `{}` \n\n⬤ **Result**: \n`{}` \n".format(
-        cmd, evaluation)
+        cmd, evaluation
+    )
 
     if len(final_output) > Config.MAX_MESSAGE_SIZE_LIMIT:
         with io.BytesIO(str.encode(final_output)) as out_file:
@@ -61,7 +64,7 @@ async def _(event):
                 force_document=True,
                 allow_cache=False,
                 caption=cmd,
-                reply_to=reply_to_id
+                reply_to=reply_to_id,
             )
             await event.delete()
     else:
@@ -71,11 +74,10 @@ async def _(event):
 async def aexec(code, event):
     reply = await event.get_reply_message()
     exec(
-        f'async def __aexec(message, reply): ' +
-        ''.join(f'\n {l}' for l in code.split('\n'))
+        f"async def __aexec(message, reply): "
+        + "".join(f"\n {l}" for l in code.split("\n"))
     )
-    return await locals()['__aexec'](event, reply)
- 
+    return await locals()["__aexec"](event, reply)
 
 
 @borg.on(admin_cmd(pattern="exec ?(.*)"))
@@ -112,7 +114,7 @@ async def _(event):
                 force_document=True,
                 allow_cache=False,
                 caption=cmd,
-                reply_to=reply_to_id
+                reply_to=reply_to_id,
             )
             await event.delete()
     await event.edit(OUTPUT)

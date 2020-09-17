@@ -1,6 +1,7 @@
 """Quickly make a decision
 Syntax: .decide"""
 import requests
+
 from uniborg.util import admin_cmd
 
 
@@ -13,9 +14,6 @@ async def _(event):
         message_id = event.reply_to_msg_id
     r = requests.get("https://yesno.wtf/api").json()
     await borg.send_message(
-        event.chat_id,
-        r["answer"],
-        reply_to=message_id,
-        file=r["image"]
+        event.chat_id, r["answer"], reply_to=message_id, file=r["image"]
     )
     await event.delete()

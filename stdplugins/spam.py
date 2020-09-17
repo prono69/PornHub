@@ -6,6 +6,7 @@
 
 import asyncio
 from asyncio import sleep
+
 from uniborg import SYNTAX
 from uniborg.util import admin_cmd
 
@@ -21,8 +22,8 @@ async def tmeme(e):
         await e.respond(letter)
     if BOTLOG:
         await e.client.send_message(
-            BOTLOG, "#CSPAM\n"
-            "TSpam was executed successfully")
+            BOTLOG, "#CSPAM\n" "TSpam was executed successfully"
+        )
 
 
 @borg.on(admin_cmd(pattern="wspam (.*)"))
@@ -34,19 +35,18 @@ async def tmeme(e):
         await e.respond(word)
     if BOTLOG:
         await e.client.send_message(
-            BOTLOG, "#WSPAM\n"
-            "WSpam was executed successfully")
+            BOTLOG, "#WSPAM\n" "WSpam was executed successfully"
+        )
 
 
 @borg.on(admin_cmd(pattern="ispam (.*)"))
 async def spammer(e):
-    counter = int(e.pattern_match.group(1).split(' ', 1)[0])
-    spam_message = str(e.pattern_match.group(1).split(' ', 1)[1])
+    counter = int(e.pattern_match.group(1).split(" ", 1)[0])
+    spam_message = str(e.pattern_match.group(1).split(" ", 1)[1])
     await e.delete()
     await asyncio.wait([e.respond(spam_message) for i in range(counter)])
     if BOTLOG:
-        await e.client.send_message(BOTLOG, "#SPAM\n"
-                                    "Spam was executed successfully")
+        await e.client.send_message(BOTLOG, "#SPAM\n" "Spam was executed successfully")
 
 
 @borg.on(admin_cmd(pattern="picspam"))
@@ -60,29 +60,29 @@ async def tiny_pic_spam(e):
         await e.client.send_file(e.chat_id, link)
     if BOTLOG:
         await e.client.send_message(
-            BOTLOG, "#PICSPAM\n"
-            "PicSpam was executed successfully")
+            BOTLOG, "#PICSPAM\n" "PicSpam was executed successfully"
+        )
 
 
 @borg.on(admin_cmd(pattern="delayspam (.*)"))
 async def spammer(e):
-    spamDelay = float(e.pattern_match.group(1).split(' ', 2)[0])
-    counter = int(e.pattern_match.group(1).split(' ', 2)[1])
-    spam_message = str(e.pattern_match.group(1).split(' ', 2)[2])
+    spamDelay = float(e.pattern_match.group(1).split(" ", 2)[0])
+    counter = int(e.pattern_match.group(1).split(" ", 2)[1])
+    spam_message = str(e.pattern_match.group(1).split(" ", 2)[2])
     await e.delete()
     for i in range(1, counter):
         await e.respond(spam_message)
         await sleep(spamDelay)
     if BOTLOG:
         await e.client.send_message(
-            BOTLOG, "#DelaySPAM\n"
-            "DelaySpam was executed successfully")
+            BOTLOG, "#DelaySPAM\n" "DelaySpam was executed successfully"
+        )
 
 
-SYNTAX.update({
-    "Spam/Fun":
-    "**Your spam is your death wish.**"
-    """
+SYNTAX.update(
+    {
+        "Spam/Fun": "**Your spam is your death wish.**"
+        """
 .tspam <text>\
 \nUsage: Spam the text letter by letter.\
 \n\n.ispam <count> <text>\
@@ -95,4 +95,5 @@ SYNTAX.update({
 \nUsage: .bigspam but with custom delay.\
 \n\n\nNOTE : Spam at your own risk !!
     """
-})
+    }
+)

@@ -26,7 +26,8 @@ async def _(event):
             "@aaaaddddmmmmiiiinnnn",
             "@aaadddmmmiiinnn",
             "@aaddmmiinn",
-            "@admin"]
+            "@admin",
+        ]
 
         for i in animation_ttl:
             await event.edit(animation_chars[i % 96])

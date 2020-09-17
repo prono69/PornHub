@@ -6,8 +6,10 @@
 \nPorted by © [EYEPATCH](t.me/neomatrix90)
 \n`Don't Copy Without Credits.`"""
 from html import unescape
+
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+
 from uniborg.util import admin_cmd
 
 
@@ -21,14 +23,19 @@ async def yt_search(video_q):
         query = reply.message
     else:
         return await video_q.edit("Invalid syntax")
-    resultamt = int(video_q.pattern_match.group(
-        1)) if video_q.pattern_match.group(1) is not None else 10
-    result = ''
+    resultamt = (
+        int(video_q.pattern_match.group(1))
+        if video_q.pattern_match.group(1) is not None
+        else 10
+    )
+    result = ""
     i = 1
 
     if Config.YOUTUBE_API_KEY is None:
-        await video_q.edit("`Error: YouTube API key missing!\
-            Add it to environment vars or config.env.`")
+        await video_q.edit(
+            "`Error: YouTube API key missing!\
+            Add it to environment vars or config.env.`"
+        )
         return
 
     await video_q.edit("```Processing...```")
@@ -47,26 +54,32 @@ async def yt_search(video_q):
     await video_q.edit(reply_text)
 
 
-def youtube_search(query,
-                   order="relevance",
-                   token=None,
-                   location=None,
-                   location_radius=None,
-                   resultamt=10):
+def youtube_search(
+    query,
+    order="relevance",
+    token=None,
+    location=None,
+    location_radius=None,
+    resultamt=10,
+):
     """ Do a YouTube search. """
-    youtube = build('youtube',
-                    'v3',
-                    developerKey=Config.YOUTUBE_API_KEY,
-                    cache_discovery=False)
-    search_response = youtube.search().list(
-        q=query,
-        type="video",
-        pageToken=token,
-        order=order,
-        part="id,snippet",
-        maxResults=resultamt,
-        location=location,
-        locationRadius=location_radius).execute()
+    youtube = build(
+        "youtube", "v3", developerKey=Config.YOUTUBE_API_KEY, cache_discovery=False
+    )
+    search_response = (
+        youtube.search()
+        .list(
+            q=query,
+            type="video",
+            pageToken=token,
+            order=order,
+            part="id,snippet",
+            maxResults=resultamt,
+            location=location,
+            locationRadius=location_radius,
+        )
+        .execute()
+    )
 
     videos = []
 

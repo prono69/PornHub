@@ -6,8 +6,13 @@ Commands:
 """
 
 from telethon import events
-from sql_helpers.welcome_sql import get_current_welcome_settings, \
-    add_welcome_setting, rm_welcome_setting, update_previous_welcome
+
+from sql_helpers.welcome_sql import (
+    add_welcome_setting,
+    get_current_welcome_settings,
+    rm_welcome_setting,
+    update_previous_welcome,
+)
 from uniborg.util import admin_cmd
 
 
@@ -24,22 +29,19 @@ async def _(event):
             if cws.should_clean_welcome:
                 try:
                     await event.client.delete_messages(
-                        event.chat_id,
-                        cws.previous_welcome
+                        event.chat_id, cws.previous_welcome
                     )
                 except Exception as e:  # pylint:disable=C0103,W0703
                     logger.warn(str(e))  # pylint:disable=E0602
             a_user = await event.get_user()
             msg_o = await event.client.get_messages(
-                entity=Config.PRIVATE_CHANNEL_BOT_API_ID,
-                ids=int(cws.f_mesg_id)
+                entity=Config.PRIVATE_CHANNEL_BOT_API_ID, ids=int(cws.f_mesg_id)
             )
             current_saved_welcome_message = msg_o.message
             mention = "[{}](tg://user?id={})".format(a_user.first_name, a_user.id)
             file_media = msg_o.media
             current_message = await event.reply(
-                current_saved_welcome_message.format(mention=mention),
-                file=file_media
+                current_saved_welcome_message.format(mention=mention), file=file_media
             )
             update_previous_welcome(event.chat_id, current_message.id)
 
@@ -56,7 +58,7 @@ async def _(event):
             entity=Config.PRIVATE_CHANNEL_BOT_API_ID,
             messages=msg,
             from_peer=event.chat_id,
-            silent=True
+            silent=True,
         )
         add_welcome_setting(event.chat_id, True, 0, msg_o.id)
         await event.edit("`Welcome note saved.` ")
@@ -69,10 +71,9 @@ async def _(event):
     cws = get_current_welcome_settings(event.chat_id)
     rm_welcome_setting(event.chat_id)
     await event.edit(
-        "`Welcome Note Cleared.` " +
-        "[THIS](https://t.me/c/{}/{}) `Was Your Previous Welcome Message.`".format(
-            str(Config.PRIVATE_CHANNEL_BOT_API_ID)[4:],
-            cws.f_mesg_id
+        "`Welcome Note Cleared.` "
+        + "[THIS](https://t.me/c/{}/{}) `Was Your Previous Welcome Message.`".format(
+            str(Config.PRIVATE_CHANNEL_BOT_API_ID)[4:], cws.f_mesg_id
         )
     )
 
@@ -82,12 +83,10 @@ async def _(event):
     if event.fwd_from:
         return
     cws = get_current_welcome_settings(event.chat_id)
-    if hasattr(cws, 'custom_welcome_message'):
+    if hasattr(cws, "custom_welcome_message"):
         await event.edit(
-            "Welcome note found. " +
-            "Your welcome message is\n\n`{}`.".format(cws.custom_welcome_message)
+            "Welcome note found. "
+            + "Your welcome message is\n\n`{}`.".format(cws.custom_welcome_message)
         )
     else:
-        await event.edit(
-            "No Welcome Message found"
-        )
+        await event.edit("No Welcome Message found")

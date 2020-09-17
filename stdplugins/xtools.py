@@ -3,7 +3,9 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from datetime import datetime
+
 import requests
+
 from uniborg.util import admin_cmd
 
 
@@ -20,11 +22,13 @@ async def _(event):
     else:
         sub_domain, username = input_str.split("|")
     final_url = "https://xtools.wmflabs.org/api/user/simple_editcount/{}.wikipedia.org/{}".format(
-        sub_domain, username)
+        sub_domain, username
+    )
     json_string = requests.get(final_url).json()
     result_text = json_string["liveEditCount"]
     end = datetime.now()
     ms = (end - start).seconds
     output_str = "edit count of {} ({}) in {} seconds. \n {}".format(
-        username, sub_domain, str(ms), result_text)
+        username, sub_domain, str(ms), result_text
+    )
     await event.edit(output_str)

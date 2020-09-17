@@ -6,13 +6,16 @@ CMD:
 `.movie torrentz2.eu|idop.se` <query>
 
 """
-import cfscrape  # https://github.com/Anorov/cloudflare-scrape
-from bs4 import BeautifulSoup as bs
-import requests
 import asyncio
-from uniborg.util import admin_cmd, humanbytes
 from datetime import datetime
+
+import cfscrape  # https://github.com/Anorov/cloudflare-scrape
+import requests
+from bs4 import BeautifulSoup as bs
+
 from uniborg import MODULE
+from uniborg.util import admin_cmd, humanbytes
+
 MODULE.append("torrents")
 
 
@@ -34,7 +37,8 @@ async def tor_search(event):
     if event.fwd_from:
         return
     headers = {
-        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36'}
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36"
+    }
 
     search_str = event.pattern_match.group(1)
 
@@ -44,28 +48,28 @@ async def tor_search(event):
         search_str = search_str.replace(" ", "+")
         print(search_str)
         res = requests.get(
-            "https://www.torrentdownloads.me/search/?new=1&s_cat=0&search=" +
-            search_str,
-            headers)
+            "https://www.torrentdownloads.me/search/?new=1&s_cat=0&search="
+            + search_str,
+            headers,
+        )
 
     else:
         res = requests.get(
-            "https://www.torrentdownloads.me/search/?search=" +
-            search_str,
-            headers)
+            "https://www.torrentdownloads.me/search/?search=" + search_str, headers
+        )
 
-    source = bs(res.text, 'lxml')
+    source = bs(res.text, "lxml")
     urls = []
     magnets = []
     titles = []
     counter = 0
-    for div in source.find_all('div', {'class': 'grey_bar3 back_none'}):
+    for div in source.find_all("div", {"class": "grey_bar3 back_none"}):
         # print("https://www.torrentdownloads.me"+a['href'])
         try:
-            title = div.p.a['title']
+            title = div.p.a["title"]
             title = title[20:]
             titles.append(title)
-            urls.append("https://www.torrentdownloads.me" + div.p.a['href'])
+            urls.append("https://www.torrentdownloads.me" + div.p.a["href"])
         except KeyError:
             pass
         except TypeError:
@@ -83,10 +87,10 @@ async def tor_search(event):
     for url in urls:
         res = requests.get(url, headers)
         # print("URl: "+url)
-        source = bs(res.text, 'lxml')
-        for div in source.find_all('div', {'class': 'grey_bar1 back_none'}):
+        source = bs(res.text, "lxml")
+        for div in source.find_all("div", {"class": "grey_bar1 back_none"}):
             try:
-                mg = div.p.a['href']
+                mg = div.p.a["href"]
                 magnets.append(mg)
             except Exception:
                 pass
@@ -98,12 +102,15 @@ async def tor_search(event):
         search_str = search_str.replace("+", " ")
     except BaseException:
         pass
-    msg = "**Torrent Search Query**\n`{}`".format(
-        search_str) + "\n**Results**\n"
+    msg = "**Torrent Search Query**\n`{}`".format(search_str) + "\n**Results**\n"
     counter = 0
     while counter != len(titles):
-        msg = msg + "⁍ [{}]".format(titles[counter]) + \
-            "({})".format(shorted_links[counter]) + "\n\n"
+        msg = (
+            msg
+            + "⁍ [{}]".format(titles[counter])
+            + "({})".format(shorted_links[counter])
+            + "\n\n"
+        )
         counter = counter + 1
 
     await event.edit(msg, link_preview=False)
@@ -119,20 +126,20 @@ async def ts_message_f(message):
     if not query and not replied:
         await message.edit("`Can't search void`")
         return
-    r = requests.get(
-        "https://sjprojectsapi.herokuapp.com/torrent/?query=" +
-        query)
+    r = requests.get("https://sjprojectsapi.herokuapp.com/torrent/?query=" + query)
     try:
         torrents = r.json()
         reply_ = ""
         for torrent in torrents:
             if len(reply_) < 4096:
                 try:
-                    reply_ = (reply_ + f"\n\n<b>{torrent['name']}</b>\n"
-                              f"<b>Size:</b> {torrent['size']}\n"
-                              f"<b>Seeders:</b> {torrent['seeder']}\n"
-                              f"<b>Leechers:</b> {torrent['leecher']}\n"
-                              f"<code>{torrent['magnet']}</code>")
+                    reply_ = (
+                        reply_ + f"\n\n<b>{torrent['name']}</b>\n"
+                        f"<b>Size:</b> {torrent['size']}\n"
+                        f"<b>Seeders:</b> {torrent['seeder']}\n"
+                        f"<b>Leechers:</b> {torrent['leecher']}\n"
+                        f"<code>{torrent['magnet']}</code>"
+                    )
                     await asyncio.sleep(3)
                     await i_m_sefg.edit(reply_, parse_mode="html")
                 except Exception:
@@ -145,9 +152,9 @@ async def ts_message_f(message):
         await i_m_sefg.edit("`Torrent Search API is Down!\nTry again later`")
 
 
-@borg.on(admin_cmd(  # pylint:disable=E0602
-    pattern=r"movie (torrentz2\.eu|idop\.se) (.*)"
-))
+@borg.on(
+    admin_cmd(pattern=r"movie (torrentz2\.eu|idop\.se) (.*)")  # pylint:disable=E0602
+)
 async def _(event):
     if event.fwd_from:
         return
@@ -166,12 +173,20 @@ async def _(event):
     for result in search_results:
         if i > 10:
             break
-        message_text = "👉 <a href=https://t.me/TorrentSearchRoBot?start=" + \
-            result["hash"] + ">" + result["title"] + ": " + "</a>" + " \r\n"
+        message_text = (
+            "👉 <a href=https://t.me/TorrentSearchRoBot?start="
+            + result["hash"]
+            + ">"
+            + result["title"]
+            + ": "
+            + "</a>"
+            + " \r\n"
+        )
         message_text += " FILE SIZE: " + result["size"] + "\r\n"
         # message_text += " Uploaded " + result["date"] + "\r\n"
-        message_text += " SEEDS: " + \
-            result["seeds"] + " PEERS: " + result["peers"] + " \r\n"
+        message_text += (
+            " SEEDS: " + result["seeds"] + " PEERS: " + result["peers"] + " \r\n"
+        )
         message_text += "===\r\n"
         output_str += message_text
         i = i + 1
@@ -180,7 +195,7 @@ async def _(event):
     await event.edit(
         f"Scrapped {input_type} for {input_str} in {ms} seconds. Obtained Results: \n {output_str}",
         link_preview=False,
-        parse_mode="html"
+        parse_mode="html",
     )
 
 
@@ -190,21 +205,22 @@ def search_idop_se(search_query):
     raw_json = requests.get(url).json()
     results = raw_json["result"]["items"]
     for item in results:
-        """ The content scrapped on 24.09.2018 22:56:45
-        """
+        """The content scrapped on 24.09.2018 22:56:45"""
         title = item["name"]
         hash = item["info_hash"]
         age = item["create_time"]
         size = item["length"]
         seeds = str(item["seeds"])
-        r.append({
-            "title": title,
-            "hash": hash,
-            "age": age,
-            "size": humanbytes(size),
-            "seeds": seeds,
-            "peers": "NA"
-        })
+        r.append(
+            {
+                "title": title,
+                "hash": hash,
+                "age": age,
+                "size": humanbytes(size),
+                "seeds": seeds,
+                "peers": "NA",
+            }
+        )
     return r
 
 
@@ -221,8 +237,7 @@ def search_torrentz_eu(search_query):
         results = results[0]
         for item in results.find_all("dl"):
             # print(item)
-            """The content scrapped on 23.06.2018 15:40:35
-            """
+            """The content scrapped on 23.06.2018 15:40:35"""
             dt = item.find_all("dt")[0]
             dd = item.find_all("dd")[0]
             #
@@ -236,14 +251,16 @@ def search_torrentz_eu(search_query):
                 seeds = span_elements[3].get_text()
                 peers = span_elements[4].get_text()
                 #
-                r.append({
-                    "title": title,
-                    "hash": link,
-                    "date": date,
-                    "size": size,
-                    "seeds": seeds,
-                    "peers": peers
-                })
+                r.append(
+                    {
+                        "title": title,
+                        "hash": link,
+                        "date": date,
+                        "size": size,
+                        "seeds": seeds,
+                        "peers": peers,
+                    }
+                )
             except BaseException:
                 pass
     return r

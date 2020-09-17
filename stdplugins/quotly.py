@@ -1,8 +1,9 @@
 """QuotLy: Avaible commands: .qbot
 """
+from telethon import events
+
 from uniborg import MODULE, SYNTAX
 from uniborg.util import admin_cmd
-from telethon import events
 
 MODULE.append("quotly")
 
@@ -28,9 +29,8 @@ async def _(event):
                 response = await silently_send_message(bot_conv, quote)
             elif reply:
                 response = bot_conv.wait_event(
-                    events.NewMessage(
-                        incoming=True,
-                        from_users=1031952739))
+                    events.NewMessage(incoming=True, from_users=1031952739)
+                )
                 await borg.forward_messages(bot, quote)
                 response = await response
                 response = response.message
@@ -48,11 +48,13 @@ async def silently_send_message(conv, text):
     return response
 
 
-SYNTAX.update({
-    "quotly": "\
+SYNTAX.update(
+    {
+        "quotly": "\
 **Requested Module --> quotly**\
 \n\n**Detailed usage of fuction(s):**\
 \n\n```.qbot <text_to_quote> [or as a reply to a message to quote]```\
 \nUsage: Quotes the target message.\nUses @QuotLyBot.\
 "
-})
+    }
+)

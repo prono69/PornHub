@@ -36,7 +36,7 @@ async def _(event):
             "F",
             "Y",
             "F",
-            "Ok Sar 😇"
+            "Ok Sar 😇",
         ]
 
         for i in animation_ttl:

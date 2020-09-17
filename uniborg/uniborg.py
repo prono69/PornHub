@@ -2,15 +2,16 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 import asyncio
-import os
-import time
 import importlib.util
 import logging
+import os
+import time
 from pathlib import Path
+
+import telethon.events
+import telethon.utils
 from pymongo import MongoClient
 from telethon import TelegramClient
-import telethon.utils
-import telethon.events
 
 from . import hacks
 
@@ -24,7 +25,7 @@ class Uniborg(TelegramClient):
         db_plugin_path="plugins",
         bot_token=None,
         api_config=None,
-        **kwargs
+        **kwargs,
     ):
         self._name = "LoggedIn"
         self._logger = logging.getLogger("PepeBot")
@@ -40,16 +41,14 @@ class Uniborg(TelegramClient):
             "device_model": "Kali Linux nonUI",
             "app_version": "@PepeBot 7.0",
             "lang_code": "en",
-            **kwargs
+            **kwargs,
         }
 
         self.tgbot = None
         if api_config.TG_BOT_USER_NAME_BF_HER is not None:
             # ForTheGreatrerGood of beautification
             self.tgbot = TelegramClient(
-                "TG_BOT_TOKEN",
-                api_id=api_config.APP_ID,
-                api_hash=api_config.API_HASH
+                "TG_BOT_TOKEN", api_id=api_config.APP_ID, api_hash=api_config.API_HASH
             ).start(bot_token=api_config.TG_BOT_TOKEN_BF_HER)
 
         super().__init__(session, **kwargs)
@@ -144,7 +143,6 @@ class Uniborg(TelegramClient):
                 fut.set_result(event)
                 raise
 
-        fut.add_done_callback(
-            lambda _: self.remove_event_handler(cb, event_matcher))
+        fut.add_done_callback(lambda _: self.remove_event_handler(cb, event_matcher))
 
         return fut

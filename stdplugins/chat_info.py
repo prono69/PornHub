@@ -13,23 +13,23 @@
 
 
 from telethon.tl.functions.users import GetFullUserRequest
+from telethon.tl.types import Channel, ChatInviteExported, User
 from telethon.tl.types.messages import ChatFull
-from telethon.tl.types import Channel, User, ChatInviteExported
 
-from userbot.utils import list_admins, inline_mention, list_bots, get_chat_from_event
 from uniborg.util import admin_cmd, parse_arguments
 from userbot.tgdoc import *
+from userbot.utils import get_chat_from_event, inline_mention, list_admins, list_bots
 
 
 @borg.on(admin_cmd(pattern=r"c(?:hat)?(\s+[\S\s]+|$)"))
 async def chat_info(e):
     params = e.pattern_match.group(1) or ""
-    args, chat = parse_arguments(
-        params, ['id', 'general', 'admins', 'bots', 'all'])
-    args['chat'] = chat
+    args, chat = parse_arguments(params, ["id", "general", "admins", "bots", "all"])
+    args["chat"] = chat
 
     if isinstance(e.chat, User):
         from .userinfo import fetch_info as fetch_user_info
+
         replied_user = await e.client(GetFullUserRequest(e.chat.id))
         response = await fetch_user_info(replied_user, **args)
     else:
@@ -43,11 +43,11 @@ async def chat_info(e):
 
 async def fetch_info(event, full_chat, **kwargs):
     chat = full_chat.chats[0]
-    show_all = kwargs.get('all', False)
-    id_only = kwargs.get('id', False)
-    show_general = kwargs.get('general', True)
-    show_admins = kwargs.get('admins', False)
-    show_bots = kwargs.get('bots', False)
+    show_all = kwargs.get("all", False)
+    id_only = kwargs.get("id", False)
+    show_general = kwargs.get("general", True)
+    show_admins = kwargs.get("admins", False)
+    show_bots = kwargs.get("bots", False)
 
     is_private = False
     if isinstance(chat, Channel) and chat.username:
@@ -71,25 +71,28 @@ async def fetch_info(event, full_chat, **kwargs):
 
     if show_general:
         exported_invite = full_chat.full_chat.exported_invite
-        invite_link = exported_invite.link if isinstance(
-            exported_invite, ChatInviteExported) else None
+        invite_link = (
+            exported_invite.link
+            if isinstance(exported_invite, ChatInviteExported)
+            else None
+        )
         admin_count = full_chat.full_chat.admins_count or len(admin_list)
 
-        general = SubSection(KeyValueItem("   \t**Chat Id**",
-                                          Code(str(f"-100{chat.id}"))),
-                             KeyValueItem("**Title**",
-                                          f"[{chat.title}](t.me/{chat.username})"),
-                             KeyValueItem("**Private**",
-                                          Code(str(is_private))),
-                             KeyValueItem("**Invite Link**",
-                                          Link(invite_link.split('/')[-1],
-                                               invite_link)) if invite_link else None,
-                             KeyValueItem("**Admins**",
-                                          Code(str(admin_count))),
-                             KeyValueItem("**Online**",
-                                          Code(str(full_chat.full_chat.online_count))),
-                             KeyValueItem("**Total**",
-                                          Code(str(full_chat.full_chat.participants_count))))
+        general = SubSection(
+            KeyValueItem("   \t**Chat Id**", Code(str(f"-100{chat.id}"))),
+            KeyValueItem("**Title**", f"[{chat.title}](t.me/{chat.username})"),
+            KeyValueItem("**Private**", Code(str(is_private))),
+            KeyValueItem(
+                "**Invite Link**", Link(invite_link.split("/")[-1], invite_link)
+            )
+            if invite_link
+            else None,
+            KeyValueItem("**Admins**", Code(str(admin_count))),
+            KeyValueItem("**Online**", Code(str(full_chat.full_chat.online_count))),
+            KeyValueItem(
+                "**Total**", Code(str(full_chat.full_chat.participants_count))
+            ),
+        )
     else:
         general = None
 
@@ -108,7 +111,11 @@ async def fetch_info(event, full_chat, **kwargs):
         if not bots:
             bots.items.append(String("No Bots"))
 
-    return TGDoc(Section(title,
-                         general if show_general else None,
-                         admins if show_admins else None,
-                         bots if show_bots else None))
+    return TGDoc(
+        Section(
+            title,
+            general if show_general else None,
+            admins if show_admins else None,
+            bots if show_bots else None,
+        )
+    )

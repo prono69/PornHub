@@ -1,7 +1,9 @@
 """ Userbot module for shortening links using kutt.it """
 
-import requests
 from re import findall
+
+import requests
+
 from uniborg.util import admin_cmd, parse_arguments
 
 API_ENDPOINT = "https://kutt.it/api/"
@@ -11,7 +13,7 @@ API_ENDPOINT = "https://kutt.it/api/"
 async def kutt_it(e):
     reply_message = await e.get_reply_message()
     params = e.pattern_match.group(1) or ""
-    args, params = parse_arguments(params, ['reuse'])
+    args, params = parse_arguments(params, ["reuse"])
 
     urls = extract_urls(params)
     urls.extend(extract_urls(reply_message.text or ""))
@@ -24,22 +26,18 @@ async def kutt_it(e):
         await asyncio.sleep(3)
         return
 
-    reuse = args.get('reuse', False)
+    reuse = args.get("reuse", False)
     await e.edit("`Kutting...`")
 
     shortened = {}
     for url in urls:
-        payload = {'target': url, 'reuse': reuse}
-        headers = {'X-API-Key': Config.KUTT_IT_API_KEY}
-        resp = requests.post(
-            API_ENDPOINT +
-            "url/submit",
-            json=payload,
-            headers=headers)
+        payload = {"target": url, "reuse": reuse}
+        headers = {"X-API-Key": Config.KUTT_IT_API_KEY}
+        resp = requests.post(API_ENDPOINT + "url/submit", json=payload, headers=headers)
 
         json = resp.json()
         if resp.status_code == 200:
-            shortened[url] = json['shortUrl']
+            shortened[url] = json["shortUrl"]
         else:
             shortened[url] = None
 
@@ -51,5 +49,5 @@ async def kutt_it(e):
 
 
 def extract_urls(message):
-    matches = findall(r'(https?://\S+)', str(message))
+    matches = findall(r"(https?://\S+)", str(message))
     return list(matches)

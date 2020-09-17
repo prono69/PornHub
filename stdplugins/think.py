@@ -5,6 +5,7 @@ Available Commands:
 .think"""
 
 import asyncio
+
 from uniborg.util import admin_cmd
 
 
@@ -53,7 +54,7 @@ async def _(event):
             "¶H×NK&N*",
             "NGITHKIN",
             "T+I#K@₹G",
-            "THINKING... 🤔"
+            "THINKING... 🤔",
         ]
 
         for i in animation_ttl:

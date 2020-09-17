@@ -34,9 +34,9 @@ Available Commands:
 .cry
 .herber`"""
 
-from telethon import events
-
 import asyncio
+
+from telethon import events
 
 
 @borg.on(events.NewMessage(pattern=r"\.(.*)", outgoing=True))
@@ -56,18 +56,7 @@ async def _(event):
 
         await event.edit(input_str)
 
-        animation_chars = [
-
-            "▮",
-
-            "▯",
-
-            "▬",
-
-            "▭"
-            "‎"
-
-        ]
+        animation_chars = ["▮", "▯", "▬", "▭" "‎"]
 
         for i in animation_ttl:
 
@@ -130,18 +119,7 @@ async def _(event):
 
         await event.edit(input_str)
 
-        animation_chars = [
-
-            "◧",
-
-            "◨",
-
-            "◧",
-
-            "◨"
-            "‎"
-
-        ]
+        animation_chars = ["◧", "◨", "◧", "◨" "‎"]
 
         for i in animation_ttl:
 
@@ -167,18 +145,7 @@ async def _(event):
 
         await event.edit(input_str)
 
-        animation_chars = [
-
-            "╹",
-
-            "╻",
-
-            "╹",
-
-            "╻"
-            "‎"
-
-        ]
+        animation_chars = ["╹", "╻", "╹", "╻" "‎"]
 
         for i in animation_ttl:
 
@@ -204,18 +171,7 @@ async def _(event):
 
         await event.edit(input_str)
 
-        animation_chars = [
-
-            "⚫",
-
-            "⬤",
-
-            "●",
-
-            "∘"
-            "‎"
-
-        ]
+        animation_chars = ["⚫", "⬤", "●", "∘" "‎"]
 
         for i in animation_ttl:
 
@@ -241,18 +197,7 @@ async def _(event):
 
         await event.edit(input_str)
 
-        animation_chars = [
-
-            "🖤",
-
-            "❤️",
-
-            "🖤",
-
-            "❤️"
-            "‎"
-
-        ]
+        animation_chars = ["🖤", "❤️", "🖤", "❤️" "‎"]
 
         for i in animation_ttl:
 
@@ -279,29 +224,17 @@ async def _(event):
         await event.edit(input_str)
 
         animation_chars = [
-
             "😁",
-
             "😧",
-
             "😡",
-
             "😢",
-
             "‎**Repo by @NeoMatrix90**",
-
             "😁",
-
             "😧",
-
             "😡",
-
             "😢",
-
             "‎github.com/prono69/PepeBot",
-
-            "__**RePe GeNg Is BeHiNd You....Get Ready....**__"
-
+            "__**RePe GeNg Is BeHiNd You....Get Ready....**__",
         ]
 
         for i in animation_ttl:
@@ -329,19 +262,12 @@ async def _(event):
         await event.edit(input_str)
 
         animation_chars = [
-
             "😁🏿",
-
             "😁🏾",
-
             "😁🏽",
-
             "😁🏼",
-
             "‎😁",
-
-            "**Fair & Lovely GeNg Is BeHiNd You....**"
-
+            "**Fair & Lovely GeNg Is BeHiNd You....**",
         ]
 
         for i in animation_ttl:
@@ -369,21 +295,13 @@ async def _(event):
         await event.edit(input_str)
 
         animation_chars = [
-
             "🐵",
-
             "🙉",
-
             "🙈",
-
             "🐒",
-
             "🙊",
-
             "🖕‎🐵🖕",
-
-            "**Harami GeNg Is BeHiNd You....**"
-
+            "**Harami GeNg Is BeHiNd You....**",
         ]
 
         for i in animation_ttl:
@@ -411,27 +329,16 @@ async def _(event):
         await event.edit(input_str)
 
         animation_chars = [
-
             "**===================**\n      **Server Details**  \n**===================**\n\n\n**=>>>   CPU   <<<=**\n\n    **🔹current_freq:** 2500.09MHz\n    **🔹total_usage:** 68.8%\n\n    |████████▋    |\n\n    **🔹cpu core**\n\n        **🔹core_usage:** 86.9%\n        **🔹current_freq:** 2500.09MHz\n        |██████████▉  |\n       \n**=>>>   RAM   <<<=**\n\n    **🔹free:** 8.13GB\n    **🔹used:** 33.77GB\n    **🔹total:** 60.0GB\n    \n    |███████     |\n\n\n**=>>>   DISK   <<<=**\n\n   **🔹free:** 224.12GB\n    **🔹used:** 131.84GB\n    **🔹total:** 375.02GB\n    **🔹usage:** 37.0%\n\n    |████▍        |\n\n\n**=>>>   NETWORK   <<<=**\n\n    **🔹sent:** 158.98GB\n    **🔹recv:** 188.43GB\n    **🔹sent_packets:** 84518799\n    **🔹recv_packets:** 159720314\n\n\n**===================**\n",
-
             "**===================**\n      **Server Details**  \n**===================**\n\n\n**=>>>   CPU   <<<=**\n\n    **🔹current_freq:** 2500.09MHz\n    **🔹total_usage:** 68.8%\n\n    |████████▋    |\n\n    **🔹cpu core**\n\n        **🔹core_usage:** 86.9%\n        **🔹current_freq:** 2500.09MHz\n        |██████████▉  |\n       \n**=>>>   RAM   <<<=**\n\n    **🔹free:** 8.13GB\n    **🔹used:** 33.77GB\n    **🔹total:** 60.0GB\n    \n    |███████     |\n\n\n**=>>>   DISK   <<<=**\n\n   **🔹free:** 224.12GB\n    **🔹used:** 131.84GB\n    **🔹total:** 375.02GB\n    **🔹usage:** 37.0%\n\n    |████▍        |\n\n\n**=>>>   NETWORK   <<<=**\n\n    **🔹sent:** 158.98GB\n    **🔹recv:** 188.43GB\n    **🔹sent_packets:** 84518799\n    **🔹recv_packets:** 159720314\n\n\n**===================**\n",
-
             "**===================**\n      **Server Details**  \n**===================**\n\n\n**=>>>   CPU   <<<=**\n\n    **🔹current_freq:** 2500.09MHz\n    **🔹total_usage:** 68.8%\n\n    |████████▋    |\n\n    **🔹cpu core**\n\n        **🔹core_usage:** 86.9%\n        **🔹current_freq:** 2500.09MHz\n        |██████████▉  |\n       \n**=>>>   RAM   <<<=**\n\n    **🔹free:** 8.13GB\n    **🔹used:** 33.77GB\n    **🔹total:** 60.0GB\n    \n    |███████     |\n\n\n**=>>>   DISK   <<<=**\n\n   **🔹free:** 224.12GB\n    **🔹used:** 131.84GB\n    **🔹total:** 375.02GB\n    **🔹usage:** 37.0%\n\n    |████▍        |\n\n\n**=>>>   NETWORK   <<<=**\n\n    **🔹sent:** 158.98GB\n    **🔹recv:** 188.43GB\n    **🔹sent_packets:** 84518799\n    **🔹recv_packets:** 159720314\n\n\n**===================**\n",
-
             "**===================**\n      **Server Details**  \n**===================**\n\n\n**=>>>   CPU   <<<=**\n\n    **🔹current_freq:** 2500.09MHz\n    **🔹total_usage:** 68.8%\n\n    |████████▋    |\n\n    **🔹cpu core**\n\n        **🔹core_usage:** 86.9%\n        **🔹current_freq:** 2500.09MHz\n        |██████████▉  |\n       \n**=>>>   RAM   <<<=**\n\n    **🔹free:** 8.13GB\n    **🔹used:** 33.77GB\n    **🔹total:** 60.0GB\n    \n    |███████     |\n\n\n**=>>>   DISK   <<<=**\n\n   **🔹free:** 224.12GB\n    **🔹used:** 131.84GB\n    **🔹total:** 375.02GB\n    **🔹usage:** 37.0%\n\n    |████▍        |\n\n\n**=>>>   NETWORK   <<<=**\n\n    **🔹sent:** 158.98GB\n    **🔹recv:** 188.43GB\n    **🔹sent_packets:** 84518799\n    **🔹recv_packets:** 159720314\n\n\n**===================**\n",
-
             "**===================**\n      **Server Details**  \n**===================**\n\n\n**=>>>   CPU   <<<=**\n\n    **🔹current_freq:** 2500.09MHz\n    **🔹total_usage:** 68.8%\n\n    |████████▋    |\n\n    **🔹cpu core**\n\n        **🔹core_usage:** 86.9%\n        **🔹current_freq:** 2500.09MHz\n        |██████████▉  |\n       \n**=>>>   RAM   <<<=**\n\n    **🔹free:** 8.13GB\n    **🔹used:** 33.77GB\n    **🔹total:** 60.0GB\n    \n    |███████     |\n\n\n**=>>>   DISK   <<<=**\n\n   **🔹free:** 224.12GB\n    **🔹used:** 131.84GB\n    **🔹total:** 375.02GB\n    **🔹usage:** 37.0%\n\n    |████▍        |\n\n\n**=>>>   NETWORK   <<<=**\n\n    **🔹sent:** 158.98GB\n    **🔹recv:** 188.43GB\n    **🔹sent_packets:** 84518799\n    **🔹recv_packets:** 159720314\n\n\n**===================**\n",
-
             "**===================**\n      **Server Details**  \n**===================**\n\n\n**=>>>   CPU   <<<=**\n\n    **🔹current_freq:** 2500.09MHz\n    **🔹total_usage:** 68.8%\n\n    |████████▋    |\n\n    **🔹cpu core**\n\n        **🔹core_usage:** 86.9%\n        **🔹current_freq:** 2500.09MHz\n        |██████████▉  |\n       \n**=>>>   RAM   <<<=**\n\n    **🔹free:** 8.13GB\n    **🔹used:** 33.77GB\n    **🔹total:** 60.0GB\n    \n    |███████     |\n\n\n**=>>>   DISK   <<<=**\n\n   **🔹free:** 224.12GB\n    **🔹used:** 131.84GB\n    **🔹total:** 375.02GB\n    **🔹usage:** 37.0%\n\n    |████▍        |\n\n\n**=>>>   NETWORK   <<<=**\n\n    **🔹sent:** 158.98GB\n    **🔹recv:** 188.43GB\n    **🔹sent_packets:** 84518799\n    **🔹recv_packets:** 159720314\n\n\n**===================**\n",
-
             "**===================**\n      **Server Details**  \n**===================**\n\n\n**=>>>   CPU   <<<=**\n\n    **🔹current_freq:** 2500.09MHz\n    **🔹total_usage:** 68.8%\n\n    |████████▋    |\n\n    **🔹cpu core**\n\n        **🔹core_usage:** 86.9%\n        **🔹current_freq:** 2500.09MHz\n        |██████████▉  |\n       \n**=>>>   RAM   <<<=**\n\n    **🔹free:** 8.13GB\n    **🔹used:** 33.77GB\n    **🔹total:** 60.0GB\n    \n    |███████     |\n\n\n**=>>>   DISK   <<<=**\n\n   **🔹free:** 224.12GB\n    **🔹used:** 131.84GB\n    **🔹total:** 375.02GB\n    **🔹usage:** 37.0%\n\n    |████▍        |\n\n\n**=>>>   NETWORK   <<<=**\n\n    **🔹sent:** 158.98GB\n    **🔹recv:** 188.43GB\n    **🔹sent_packets:** 84518799\n    **🔹recv_packets:** 159720314\n\n\n**===================**\n",
-
             "**===================**\n      **Server Details**  \n**===================**\n\n\n**=>>>   CPU   <<<=**\n\n    **🔹current_freq:** 2500.09MHz\n    **🔹total_usage:** 68.8%\n\n    |████████▋    |\n\n    **🔹cpu core**\n\n        **🔹core_usage:** 86.9%\n        **🔹current_freq:** 2500.09MHz\n        |██████████▉  |\n       \n**=>>>   RAM   <<<=**\n\n    **🔹free:** 8.13GB\n    **🔹used:** 33.77GB\n    **🔹total:** 60.0GB\n    \n    |███████     |\n\n\n**=>>>   DISK   <<<=**\n\n   **🔹free:** 224.12GB\n    **🔹used:** 131.84GB\n    **🔹total:** 375.02GB\n    **🔹usage:** 37.0%\n\n    |████▍        |\n\n\n**=>>>   NETWORK   <<<=**\n\n    **🔹sent:** 158.98GB\n    **🔹recv:** 188.43GB\n    **🔹sent_packets:** 84518799\n    **🔹recv_packets:** 159720314\n\n\n**===================**\n",
-
             "**===================**\n      **Server Details**  \n**===================**\n\n\n**=>>>   CPU   <<<=**\n\n    **🔹current_freq:** 2500.09MHz\n    **🔹total_usage:** 68.8%\n\n    |████████▋    |\n\n    **🔹cpu core**\n\n        **🔹core_usage:** 86.9%\n        **🔹current_freq:** 2500.09MHz\n        |██████████▉  |\n       \n**=>>>   RAM   <<<=**\n\n    **🔹free:** 8.13GB\n    **🔹used:** 33.77GB\n    **🔹total:** 60.0GB\n    \n    |███████     |\n\n\n**=>>>   DISK   <<<=**\n\n   **🔹free:** 224.12GB\n    **🔹used:** 131.84GB\n    **🔹total:** 375.02GB\n    **🔹usage:** 37.0%\n\n    |████▍        |\n\n\n**=>>>   NETWORK   <<<=**\n\n    **🔹sent:** 158.98GB\n    **🔹recv:** 188.43GB\n    **🔹sent_packets:** 84518799\n    **🔹recv_packets:** 159720314\n\n\n**===================**\n",
-
             "**===================**\n      **Server Details**  \n**===================**\n\n\n**=>>>   CPU   <<<=**\n\n    **🔹current_freq:** 2500.09MHz\n    **🔹total_usage:** 68.8%\n\n    |████████▋    |\n\n    **🔹cpu core**\n\n        **🔹core_usage:** 86.9%\n        **🔹current_freq:** 2500.09MHz\n        |██████████▉  |\n       \n**=>>>   RAM   <<<=**\n\n    **🔹free:** 8.13GB\n    **🔹used:** 33.77GB\n    **🔹total:** 60.0GB\n    \n    |███████     |\n\n\n**=>>>   DISK   <<<=**\n\n   **🔹free:** 224.12GB\n    **🔹used:** 131.84GB\n    **🔹total:** 375.02GB\n    **🔹usage:** 37.0%\n\n    |████▍        |\n\n\n**=>>>   NETWORK   <<<=**\n\n    **🔹sent:** 158.98GB\n    **🔹recv:** 188.43GB\n    **🔹sent_packets:** 84518799\n    **🔹recv_packets:** 159720314\n\n\n**===================**\n",
-
         ]
 
         for i in animation_ttl:
@@ -471,7 +378,8 @@ async def _(event):
             "Uploading To G-Drive...\n\n█████████░",
             "Uploading To G-Drive Completed.\n\n██████████",
             "Generating G-Drive link........",
-            "Link Generated: [G-Drive Link](https://drive.google.com/a/oxford.edu.in/uc?id=1hn_VuI6WdVlg6oZb3t1ch0dZ-qA&export=download)"]
+            "Link Generated: [G-Drive Link](https://drive.google.com/a/oxford.edu.in/uc?id=1hn_VuI6WdVlg6oZb3t1ch0dZ-qA&export=download)",
+        ]
 
         for i in animation_ttl:
 
@@ -498,7 +406,6 @@ async def _(event):
         await event.edit(input_str)
 
         animation_chars = [
-
             "**Promoting User As Admin...**",
             "**Enabling All Permissions To User...**",
             "**(1) Send Messages: ☑️**",
@@ -518,8 +425,7 @@ async def _(event):
             "**(8) Change Chat Info: ☑️**",
             "**(8) Change Chat Info: ✅**",
             "**Permission Granted Successfully**",
-            "**pRoMoTeD SuCcEsSfUlLy bY: @NeoMatrix90**"
-
+            "**pRoMoTeD SuCcEsSfUlLy bY: @NeoMatrix90**",
         ]
 
         for i in animation_ttl:
@@ -547,27 +453,16 @@ async def _(event):
         await event.edit(input_str)
 
         animation_chars = [
-
             "8✊️===D",
-
             "8=✊️==D",
-
             "8==✊️=D",
-
             "8===✊️D",
-
             "8==✊️=D",
-
             "8=✊️==D",
-
             "8✊️===D",
-
             "8===✊️D💦",
-
             "8==✊️=D💦💦",
-
-            "8=✊️==D💦💦💦"
-
+            "8=✊️==D💦💦💦",
         ]
 
         for i in animation_ttl:
@@ -611,7 +506,8 @@ async def _(event):
             "⬜⬜⬜⬜\n⬜⬜⬜⬜\n⬜⬜⬜⬜\n⬜⬜⬜⬜",
             "⬜⬜⬜\n⬜⬜⬜\n⬜⬜⬜",
             "⬜⬜\n⬜⬜",
-            "[🎁](https://github.com/prono69/PepeBot/)"]
+            "[🎁](https://github.com/prono69/PepeBot/)",
+        ]
 
         for i in animation_ttl:
 
@@ -638,7 +534,6 @@ async def _(event):
         await event.edit(input_str)
 
         animation_chars = [
-
             "`Connecting To Jio Network Server...`",
             "`█ ▇ ▆ ▅ ▄ ▂ ▁`",
             "`▒ ▇ ▆ ▅ ▄ ▂ ▁`",
@@ -657,8 +552,7 @@ async def _(event):
             "`▁ ▂ ▄ ▅ ▆ ▒ ▒`",
             "`▁ ▂ ▄ ▅ ▆ ▇ ▒`",
             "`▁ ▂ ▄ ▅ ▆ ▇ █`",
-            "**Jio Network Boosted....**"
-
+            "**Jio Network Boosted....**",
         ]
 
         for i in animation_ttl:
@@ -696,7 +590,8 @@ async def _(event):
             "`Hacking... 52%\n█████████████▒▒▒▒▒▒▒▒▒▒▒▒ `",
             "`Hacking... 84%\n█████████████████████▒▒▒▒ `",
             "`Hacking... 100%\n█████████HACKED███████████ `",
-            "`Targeted Account Hacked...\n\nPay 999$ and a Plate of Biriyani To this Nigga @NeoMatrix90 To Remove This Hack`"]
+            "`Targeted Account Hacked...\n\nPay 999$ and a Plate of Biriyani To this Nigga @NeoMatrix90 To Remove This Hack`",
+        ]
 
         for i in animation_ttl:
 
@@ -722,12 +617,7 @@ async def _(event):
 
         await event.edit(input_str)
 
-        animation_chars = [
-            "me",
-            "loge",
-            "kya?",
-            "gaand"
-        ]
+        animation_chars = ["me", "loge", "kya?", "gaand"]
 
         for i in animation_ttl:
 
@@ -753,17 +643,7 @@ async def _(event):
 
         await event.edit(input_str)
 
-        animation_chars = [
-
-            "🍆       🍑️",
-
-            "🍆     🍑️",
-
-            "🍆  🍑️",
-
-            "🍆🍑️💦"
-
-        ]
+        animation_chars = ["🍆       🍑️", "🍆     🍑️", "🍆  🍑️", "🍆🍑️💦"]
 
         for i in animation_ttl:
 
@@ -790,7 +670,6 @@ async def _(event):
         await event.edit(input_str)
 
         animation_chars = [
-
             "⬛⬛⬛⬛⬛⬛\n⬛⬛⬛⬛⬛⬛\n⬛⬛⬛⬛⬛⬛\n⬛⬛⬛⬛⬛⬛\n⬛⬛⬛⬛⬛⬛\n⬛⬛⬛⬛⬛⬛",
             "⬛⬛⬛⬛⬛⬛\n⬛⬛⬛⬛⬛⬛\n⬛⬛⬛⬛⬛⬛\n⬛⬛⬛⬛⬛⬛\n⬛⬛⬛⬛⬛⬛\n🚀⬛⬛⬛⬛⬛",
             "⬛⬛⬛⬛⬛⬛\n⬛⬛⬛⬛⬛⬛\n⬛⬛⬛⬛⬛⬛\n⬛⬛⬛⬛⬛⬛\n⬛🚀⬛⬛⬛⬛\n⬛⬛⬛⬛⬛⬛",
@@ -814,8 +693,7 @@ async def _(event):
             "⬛⬛⬛⬛⬛⬛\n⬛⬛⬛⬛⬛⬛\n⬛⬛⬛⬛⬛⬛\n⬛⬛⬛⬛⬛⬛\n👽⬛⬛🛸🚶‍♂️⬛\n⬜⬜⬜⬜⬜⬜",
             "⬛⬛⬛⬛⬛⬛\n⬛⬛⬛⬛⬛⬛\n⬛⬛⬛⬛⬛⬛\n⬛⬛⬛⬛⬛⬛\n⬛👽⬛🛸🚶‍♂️⬛\n⬜⬜⬜⬜⬜⬜",
             "⬛⬛⬛⬛⬛⬛\n⬛⬛⬛⬛⬛⬛\n⬛⬛⬛⬛⬛⬛\n⬛⬛⬛⬛⬛⬛\n⬛⬛👽🛸🚶‍♂️⬛\n⬜⬜⬜⬜⬜⬜",
-            "__Signal Lost....__"
-
+            "__Signal Lost....__",
         ]
 
         for i in animation_ttl:
@@ -843,7 +721,6 @@ async def _(event):
         await event.edit(input_str)
 
         animation_chars = [
-
             "**Heroku Connecting To Latest Github Build (PepeBot)**",
             "**Build started by user** @NeoMatrix90",
             "**Deploy** `535a74f0` **by user** @NeoMatrix90",
@@ -855,8 +732,7 @@ async def _(event):
             "**State changed from starting to up**",
             "__INFO:PepeBot:Logged in as 557667062__",
             "__INFO:PepeBot:Successfully loaded all plugins__",
-            "**Build Succeeded**"
-
+            "**Build Succeeded**",
         ]
 
         for i in animation_ttl:
@@ -898,7 +774,8 @@ async def _(event):
             "⬜⬜⬜⬜⬜⬜⬜\n⬜⬛⬛⬛⬛⬛⬜\n⬜⬛⬜⬜⬜⬛⬜\n⬜⬛⬜⬛⬜⬛⬜\n⬜⬛⬜⬜⬜⬛⬜\n⬜⬛⬛⬛⬛⬛⬜\n⬜⬜⬜⬜⬜⬜⬜",
             "⬛⬛⬛⬛⬛\n⬛⬜⬜⬜⬛\n⬛⬜⬛⬜⬛\n⬛⬜⬜⬜⬛\n⬛⬛⬛⬛⬛",
             "⬜⬜⬜\n⬜⬛⬜\n⬜⬜⬜",
-            "[👉🔴👈](t.me/kirito6969)"]
+            "[👉🔴👈](t.me/kirito6969)",
+        ]
 
         for i in animation_ttl:
 
@@ -939,7 +816,8 @@ async def _(event):
             "**Chat Message Exported To** `./ravana/chatbackup/`",
             "**Chat Message Exported To** `./ravana/chatbackup/new.txt`",
             "__Legend is leaving this chat.....!__ @admin __Goodbye aren't forever..__",
-            "__Legend is leaving this chat.....!__ @admin __Goodbye aren't forever..__"]
+            "__Legend is leaving this chat.....!__ @admin __Goodbye aren't forever..__",
+        ]
 
         for i in animation_ttl:
 
@@ -966,7 +844,6 @@ async def _(event):
         await event.edit(input_str)
 
         animation_chars = [
-
             "👁👁\n  👄  =====> Abey Ja Na Gandu",
             "👁👁\n  👅  =====> Abey Ja Na Madarchod",
             "👁👁\n  💋  =====> Abey Ja Na Randi",
@@ -976,7 +853,7 @@ async def _(event):
             "👁👁\n  👄  =====> Abey Ja Na Randi",
             "👁👁\n  👅  =====> Abey Ja Na Bhosdk",
             "👁👁\n  💋  =====> Abey Ja Na Chutiye",
-            "👁👁\n  👄  =====> Hi All, How Are You Guys..."
+            "👁👁\n  👄  =====> Hi All, How Are You Guys...",
         ]
 
         for i in animation_ttl:
@@ -1014,7 +891,8 @@ async def _(event):
             "` Fucking Your Mom\n\n\nYour Mom's Pussy Get Red\n Spanking Your Mom's Ass\nCumming On Pussy\n\nAlmost Done... \n\nFucked Percentage... 52%\n█████████████▒▒▒▒▒▒▒▒▒▒▒▒ `",
             "` Fucking Your Mom\n\n\nYour Mom's Pussy Get Red\n Spanking Your Mom's Ass\nCumming On Pussy\n\nAlmost Done... \n\nFucked Percentage... 84%\n█████████████████████▒▒▒▒ `",
             "` Fucking Your Mom\n\n\nYour Mom's Pussy Get Red\n Spanking Your Mom's Ass\nCumming On Pussy\n\nAlmost Done... \n\nFucked Percentage... 100%\n█████████████████████████ `",
-            "`Fucking Your Mom\n\n\nYour Mom's Pussy Get Red\nCumming On Pussy\n\nYour mom get Pregnant\n\nResult: Now You Have 1 More Younger Brother\nAnd His Father Name Is` @NeoMatrix90"]
+            "`Fucking Your Mom\n\n\nYour Mom's Pussy Get Red\nCumming On Pussy\n\nYour mom get Pregnant\n\nResult: Now You Have 1 More Younger Brother\nAnd His Father Name Is` @NeoMatrix90",
+        ]
 
         for i in animation_ttl:
 
@@ -1035,7 +913,7 @@ async def _(event):
             "            🍎 🍎",
             "        🍎 🍎 🍎",
             "    🍎 🍎 🍎 🍎",
-            "🍎 🍎 🍎 🍎 🍎"
+            "🍎 🍎 🍎 🍎 🍎",
         ]
         msg = ""
         for s in animation_chars:
@@ -1079,7 +957,8 @@ async def _(event):
             "`Durov: Yes Mam, There Is A Bug In Telegram v5.14.0.\nI Am Not Able To Fix It. If Possible, Please Help Fix The Bug.`",
             "`Me: Send Me The App On My Telegram Account, I Will Fix The Bug & Send You.`",
             "`Durov: Sure Mam \nTC Bye Bye :)`",
-            "`Private Call Disconnected.`"]
+            "`Private Call Disconnected.`",
+        ]
 
         for i in animation_ttl:
 
@@ -1134,7 +1013,6 @@ async def _(event):
         await event.edit(input_str)
 
         animation_chars = [
-
             "🔴⬛⬛⬜⬜\n⬜⬜⬜⬜⬜\n⬜⬜⬜⬜⬜",
             "⬜⬜⬛⬜⬜\n⬜⬛⬜⬜⬜\n🔴⬜⬜⬜⬜",
             "⬜⬜⬛⬜⬜\n⬜⬜⬛⬜⬜\n⬜⬜🔴⬜⬜",
@@ -1144,8 +1022,7 @@ async def _(event):
             "⬜⬜⬛⬜⬜\n⬜⬜⬛⬜⬜\n⬜⬜🔴⬜⬜",
             "⬜⬜⬛⬜⬜\n⬜⬛⬜⬜⬜\n🔴⬜⬜⬜⬜",
             "🔴⬛⬛⬜⬜\n⬜⬜⬜⬜⬜\n⬜⬜⬜⬜⬜",
-            "⬜⬜⬜⬜⬜\n⬜ [PEPEBOT](https://github.com/prono69/PepeBot/) ⬜\n⬜⬜⬜⬜⬜"
-
+            "⬜⬜⬜⬜⬜\n⬜ [PEPEBOT](https://github.com/prono69/PepeBot/) ⬜\n⬜⬜⬜⬜⬜",
         ]
 
         for i in animation_ttl:
@@ -1172,20 +1049,7 @@ async def _(event):
 
         await event.edit(input_str)
 
-        animation_chars = [
-
-            "🕙",
-            "🕘",
-            "🕗",
-            "🕖",
-            "🕕",
-            "🕔",
-            "🕓",
-            "🕒",
-            "🕑",
-            "🕐",
-            "🕛"
-        ]
+        animation_chars = ["🕙", "🕘", "🕗", "🕖", "🕕", "🕔", "🕓", "🕒", "🕑", "🕐", "🕛"]
 
         for i in animation_ttl:
 
@@ -1222,7 +1086,8 @@ async def _(event):
             "`Cracking... 84%\n█████████████████████▒▒▒▒ `",
             "`Cracked... 100%\n█████████Cracked ███████████ `",
             "`I'd :- *************@gmail.com\n\nPassword:-**********`",
-            "`Account Cracked ..\n\n Pay 9$ to @kirito6969 for I'd and Password`"]
+            "`Account Cracked ..\n\n Pay 9$ to @kirito6969 for I'd and Password`",
+        ]
 
         for i in animation_ttl:
 
@@ -1247,7 +1112,6 @@ async def _(event):
         await event.edit(input_str)
 
         animation_chars = [
-
             ";__",
             ";___",
             ";____",
@@ -1263,7 +1127,7 @@ async def _(event):
             ";____________________",
             ";______________________",
             ";________________________",
-            ";_________________________;"
+            ";_________________________;",
         ]
 
         for i in animation_ttl:
@@ -1289,27 +1153,16 @@ async def _(event):
         await event.edit(input_str)
 
         animation_chars = [
-
             "**===================**\n      **Server Details**  \n**===================**\n\n\n**=>>>   CPU   <<<=**\n\n    **🔹current_freq:** 2500.09MHz\n    **🔹total_usage:** 10%\n\n    ●○○○○○○○○○\n\n    **🔹cpu core**\n\n        **🔹core_usage:** 5.9%\n        **🔹current_freq:** 2500.09MHz\n        |██████████▉  |\n       \n**=>>>   RAM   <<<=**\n\n    **🔹free:** 8.13GB\n    **🔹used:** 33.77GB\n    **🔹total:** 60.0GB\n    \n    ●●●●●●●○○○\n\n\n**=>>>   DISK   <<<=**\n\n   **🔹free:** 224.12GB\n    **🔹used:** 131.84GB\n    **🔹total:** 375.02GB\n    **🔹usage:** 37.0%\n\n    |████▍        |\n\n\n**=>>>   NETWORK   <<<=**\n\n    **🔹sent:** 158.98GB\n    **🔹recv:** 146.27GB\n    **🔹sent_packets:** 84518799\n    **🔹recv_packets:** 159720314\n\n\n**===================**\n",
-
             "**===================**\n      **Server Details**  \n**===================**\n\n\n**=>>>   CPU   <<<=**\n\n    **🔹current_freq:** 2500.09MHz\n    **🔹total_usage:** 30%\n\n    ●●●○○○○○○○\n\n    **🔹cpu core**\n\n        **🔹core_usage:** 20.4%\n        **🔹current_freq:** 2500.09MHz\n        |██████████▉  |\n       \n**=>>>   RAM   <<<=**\n\n    **🔹free:** 7.18GB\n    **🔹used:** 28.26GB\n    **🔹total:** 60.0GB\n    \n    ●●●●●●●●●●\n\n\n**=>>>   DISK   <<<=**\n\n   **🔹free:** 224.12GB\n    **🔹used:** 131.84GB\n    **🔹total:** 375.02GB\n    **🔹usage:** 37.0%\n\n    |████▍        |\n\n\n**=>>>   NETWORK   <<<=**\n\n    **🔹sent:** 146.27GB\n    **🔹recv:** 124.33GB\n    **🔹sent_packets:** 54635686\n    **🔹recv_packets:** 143565654\n\n\n**===================**\n",
-
             "**===================**\n      **Server Details**  \n**===================**\n\n\n**=>>>   CPU   <<<=**\n\n    **🔹current_freq:** 2500.09MHz\n    **🔹total_usage:** 60%\n\n    ●●●●●●○○○○\n\n    **🔹cpu core**\n\n        **🔹core_usage:** 60.9%\n        **🔹current_freq:** 2500.09MHz\n        |██████████▉  |\n       \n**=>>>   RAM   <<<=**\n\n    **🔹free:** 6.52GB\n    **🔹used:** 35.78GB\n    **🔹total:** 60.0GB\n    \n    ●●●○○○○○○○\n\n\n**=>>>   DISK   <<<=**\n\n   **🔹free:** 224.12GB\n    **🔹used:** 131.84GB\n    **🔹total:** 375.02GB\n    **🔹usage:** 37.0%\n\n    |████▍        |\n\n\n**=>>>   NETWORK   <<<=**\n\n    **🔹sent:** 124.33GB\n    **🔹recv:** 162.48GB\n    **🔹sent_packets:** 25655655\n    **🔹recv_packets:** 165289456\n\n\n**===================**\n",
-
             "**===================**\n      **Server Details**  \n**===================**\n\n\n**=>>>   CPU   <<<=**\n\n    **🔹current_freq:** 2500.09MHz\n    **🔹total_usage:** 100%\n\n    ●●●●●●●●●●\n\n    **🔹cpu core**\n\n        **🔹core_usage:** 100.0%\n        **🔹current_freq:** 2500.09MHz\n        |██████████▉  |\n       \n**=>>>   RAM   <<<=**\n\n    **🔹free:** 9.81GB\n    **🔹used:** 30.11GB\n    **🔹total:** 60.0GB\n    \n    ●●●●●●●●●●\n\n\n**=>>>   DISK   <<<=**\n\n   **🔹free:** 224.12GB\n    **🔹used:** 131.84GB\n    **🔹total:** 375.02GB\n    **🔹usage:** 37.0%\n\n    |████▍        |\n\n\n**=>>>   NETWORK   <<<=**\n\n    **🔹sent:** 162.48GB\n    **🔹recv:** 175.75GB\n    **🔹sent_packets:** 56565435\n    **🔹recv_packets:** 135345655\n\n\n**===================**\n",
-
             "**===================**\n      **Server Details**  \n**===================**\n\n\n**=>>>   CPU   <<<=**\n\n    **🔹current_freq:** 2500.09MHz\n    **🔹total_usage:** 70%\n\n    ●●●●●●●○○○\n\n    **🔹cpu core**\n\n        **🔹core_usage:** 80.4%\n        **🔹current_freq:** 2500.09MHz\n        |██████████▉  |\n       \n**=>>>   RAM   <<<=**\n\n    **🔹free:** 5.76GB\n    **🔹used:** 29.35GB\n    **🔹total:** 60.0GB\n    \n    ●●●●●●●○○○\n\n\n**=>>>   DISK   <<<=**\n\n   **🔹free:** 224.12GB\n    **🔹used:** 131.84GB\n    **🔹total:** 375.02GB\n    **🔹usage:** 37.0%\n\n    |████▍        |\n\n\n**=>>>   NETWORK   <<<=**\n\n    **🔹sent:** 175.75GB\n    **🔹recv:** 118.55GB\n    **🔹sent_packets:** 36547698\n    **🔹recv_packets:** 185466554\n\n\n**===================**\n",
-
             "**===================**\n      **Server Details**  \n**===================**\n\n\n**=>>>   CPU   <<<=**\n\n    **🔹current_freq:** 2500.09MHz\n    **🔹total_usage:** 60%\n\n    ●●●●●●○○○○\n\n    **🔹cpu core**\n\n        **🔹core_usage:** 62.9%\n        **🔹current_freq:** 2500.09MHz\n        |██████████▉  |\n       \n**=>>>   RAM   <<<=**\n\n    **🔹free:** 8.23GB\n    **🔹used:** 33.32GB\n    **🔹total:** 60.0GB\n    \n    ●●●●●●○○○○\n\n\n**=>>>   DISK   <<<=**\n\n   **🔹free:** 224.12GB\n    **🔹used:** 131.84GB\n    **🔹total:** 375.02GB\n    **🔹usage:** 37.0%\n\n    |████▍        |\n\n\n**=>>>   NETWORK   <<<=**\n\n    **🔹sent:** 118.55GB\n    **🔹recv:** 168.65GB\n    **🔹sent_packets:** 24786554\n    **🔹recv_packets:** 156745865\n\n\n**===================**\n",
-
             "**===================**\n      **Server Details**  \n**===================**\n\n\n**=>>>   CPU   <<<=**\n\n    **🔹current_freq:** 2500.09MHz\n    **🔹total_usage:** 30%\n\n    ●●●○○○○○○○\n\n    **🔹cpu core**\n\n        **🔹core_usage:** 30.6%\n        **🔹current_freq:** 2500.09MHz\n        |██████████▉  |\n       \n**=>>>   RAM   <<<=**\n\n    **🔹free:** 9.75GB\n    **🔹used:** 36.54GB\n    **🔹total:** 60.0GB\n    \n    ●●●●●●●●●●\n\n\n**=>>>   DISK   <<<=**\n\n   **🔹free:** 224.12GB\n    **🔹used:** 131.84GB\n    **🔹total:** 375.02GB\n    **🔹usage:** 37.0%\n\n    |████▍        |\n\n\n**=>>>   NETWORK   <<<=**\n\n    **🔹sent:** 168.65GB\n    **🔹recv:** 128.35GB\n    **🔹sent_packets:** 56565435\n    **🔹recv_packets:** 1475823589\n\n\n**===================**\n",
-
             "**===================**\n      **Server Details**  \n**===================**\n\n\n**=>>>   CPU   <<<=**\n\n    **🔹current_freq:** 2500.09MHz\n    **🔹total_usage:** 10%\n\n    ●○○○○○○○○○\n\n    **🔹cpu core**\n\n        **🔹core_usage:** 10.2%\n        **🔹current_freq:** 2500.09MHz\n        |██████████▉  |\n       \n**=>>>   RAM   <<<=**\n\n    **🔹free:** 10.20GB\n    **🔹used:** 25.40GB\n    **🔹total:** 60.0GB\n    \n    ●●●●●●○○○○\n\n\n**=>>>   DISK   <<<=**\n\n   **🔹free:** 224.12GB\n    **🔹used:** 131.84GB\n    **🔹total:** 375.02GB\n    **🔹usage:** 37.0%\n\n    |████▍        |\n\n\n**=>>>   NETWORK   <<<=**\n\n    **🔹sent:** 128.35GB\n    **🔹recv:** 108.31GB\n    **🔹sent_packets:** 54635686\n    **🔹recv_packets:** 157865426\n\n\n**===================**\n",
-
             "**===================**\n      **Server Details**  \n**===================**\n\n\n**=>>>   CPU   <<<=**\n\n    **🔹current_freq:** 2500.09MHz\n    **🔹total_usage:** 100%\n\n    ●●●●●●●●●●\n\n    **🔹cpu core**\n\n        **🔹core_usage:** 100.0%\n        **🔹current_freq:** 2500.09MHz\n        |██████████▉  |\n       \n**=>>>   RAM   <<<=**\n\n    **🔹free:** 5.25GB\n    **🔹used:** 31.14GB\n    **🔹total:** 60.0GB\n    \n    ●●●●●●●●●●\n\n\n**=>>>   DISK   <<<=**\n\n   **🔹free:** 224.12GB\n    **🔹used:** 131.84GB\n    **🔹total:** 375.02GB\n    **🔹usage:** 37.0%\n\n    |████▍        |\n\n\n**=>>>   NETWORK   <<<=**\n\n    **🔹sent:** 108.31GB\n    **🔹recv:** 167.17GB\n    **🔹sent_packets:** 84518799\n    **🔹recv_packets:** 124575356\n\n\n**===================**\n",
-
             "**===================**\n      **Server Details**  \n**===================**\n\n\n**=>>>   CPU   <<<=**\n\n    **🔹current_freq:** 2500.09MHz\n    **🔹total_usage:** 70%\n\n    ●●●●●●●○○○\n\n    **🔹cpu core**\n\n        **🔹core_usage:** 76.2%\n        **🔹current_freq:** 2500.09MHz\n        |██████████▉  |\n       \n**=>>>   RAM   <<<=**\n\n    **🔹free:** 8.01GB\n    **🔹used:** 33.27GB\n    **🔹total:** 60.0GB\n    \n    ●●●○○○○○○○\n\n\n**=>>>   DISK   <<<=**\n\n   **🔹free:** 224.12GB\n    **🔹used:** 131.84GB\n    **🔹total:** 375.02GB\n    **🔹usage:** 37.0%\n\n    |████▍        |\n\n\n**=>>>   NETWORK   <<<=**\n\n    **🔹sent:** 167.17GB\n    **🔹recv:** 158.98GB\n    **🔹sent_packets:** 36547698\n    **🔹recv_packets:** 165455856\n\n\n**===================**\n",
-
         ]
 
         for i in animation_ttl:
