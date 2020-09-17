@@ -13,8 +13,8 @@ from telethon.tl.types import (
     MessageMediaPhoto,
 )
 
-from uniborg.util import admin_cmd
 from uniborg import SYNTAX
+from uniborg.util import admin_cmd
 
 KANGING_STR = [
     "Using Witchery to kang this sticker...",
@@ -202,7 +202,7 @@ async def kang(args):
                             f"Sticker added in a Different Pack !\
                             \nThis Pack is Newly created!\
                             \nYour pack can be found [here](t.me/addstickers/{packname}) and emoji of the sticker added is {emoji}",
-                            parse_mode="md"
+                            parse_mode="md",
                         )
                         return
                 if is_anim:
@@ -276,9 +276,7 @@ async def kang(args):
                 await conv.get_response()
                 # Ensure user doesn't get spamming notifications
                 await borg.send_read_acknowledge(conv.chat_id)
-        await args.edit(
-            f"**Kanged in moi [Collection](t.me/addstickers/{packname})!**"
-        )
+        await args.edit(f"**Kanged in moi [Collection](t.me/addstickers/{packname})!**")
 
 
 async def resize_photo(photo):
