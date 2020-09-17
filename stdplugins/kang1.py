@@ -14,6 +14,7 @@ from telethon.tl.types import (
 )
 
 from uniborg.util import admin_cmd
+from uniborg import SYNTAX
 
 KANGING_STR = [
     "Using Witchery to kang this sticker...",
@@ -40,7 +41,7 @@ async def kang(args):
             user.first_name.encode("utf-8").decode("ascii")
             user.username = user.first_name
         except UnicodeDecodeError:
-            user.username = user.id
+            user.username = f"cat_{user.id}"
     message = await args.get_reply_message()
     photo = None
     emojibypass = False
@@ -77,31 +78,33 @@ async def kang(args):
             await args.edit("`Unsupported File!`")
             return
     else:
-        await args.edit("`I can't kang that...U Gey Boii`")
+        await args.edit("`I can't kang that...`")
         return
     if photo:
         splat = args.text.split()
-        if not emojibypass:
-            emoji = "🤖"
+        if emojibypass:
+            emoji = emoji
+        else:
+            emoji = "🌚"
         pack = 1
         if len(splat) == 3:
             if char_is_emoji(splat[1]):
+                if char_is_emoji(splat[2]):
+                    return await args.edit("check `.help kang1`")
                 pack = splat[2]  # User sent both
                 emoji = splat[1]
             elif char_is_emoji(splat[2]):
                 pack = splat[1]  # User sent both
                 emoji = splat[2]
             else:
-                await args.edit("`Nikal Lawde`")
-                return
+                return await args.edit("check `.help kang1`")
         elif len(splat) == 2:
             if char_is_emoji(splat[1]):
                 emoji = splat[1]
             else:
                 pack = splat[1]
-
-        packname = f"faketexi_gengbeng69"
-        packnick = f"@{user.username}'s Layer"
+        packname = f"bang_bros_{pack}"
+        packnick = f"@{user.username}'s Secret Layer Vol.{pack}"
         cmd = "/newpack"
         file = io.BytesIO()
         if not is_anim:
@@ -131,12 +134,17 @@ async def kang(args):
                     "Whoa! That's probably enough stickers for one pack, give it a break"
                     in x.text
                 ):
-                    if pack.isnumeric():
-                        pack += 1
-                    else:
+                    try:
+                        val = int(pack)
+                        pack = val + 1
+                    except ValueError:
                         pack = 1
-                    packname = f"mommys_girl_{pack}"
-                    packnick = f"@{user.username}'s Layer Vol.{pack}"
+                    if not is_anim:
+                        packname = f"{user.username}_{pack}"
+                        packnick = f"@{user.username}'s Layer Vol.{pack}"
+                    else:
+                        packname = f"{user.username}_{pack}_anim"
+                        packnick = f"@{user.username}'s Layer Vol.{pack} (Animated)"
                     await args.edit(
                         "`Switching to Pack "
                         + str(pack)
@@ -160,7 +168,10 @@ async def kang(args):
                             file.seek(0)
                             await conv.send_file(file, force_document=True)
                         rsp = await conv.get_response()
-                        if "Sorry, the file type is invalid." in rsp.text:
+                        if (
+                            "You can list several emoji in one message, but I recommend using no more than two per sticker"
+                            not in rsp.text
+                        ):
                             await borg.send_read_acknowledge(conv.chat_id)
                             await args.edit(
                                 f"Failed to add sticker, use @Stickers bot to add the sticker manually.\n**error :**{rsp.txt}"
@@ -191,7 +202,7 @@ async def kang(args):
                             f"Sticker added in a Different Pack !\
                             \nThis Pack is Newly created!\
                             \nYour pack can be found [here](t.me/addstickers/{packname}) and emoji of the sticker added is {emoji}",
-                            parse_mode="md",
+                            parse_mode="md"
                         )
                         return
                 if is_anim:
@@ -241,7 +252,7 @@ async def kang(args):
                     not in rsp.text
                 ):
                     await args.edit(
-                        f"Failed to add sticker, use @Stickers bot to add the sticker manually.\n**error**:{rsp}"
+                        f"Failed to add sticker, use @Stickers bot to add the sticker manually.\n**error :**{rsp}"
                     )
                     return
                 await conv.send_message(emoji)
@@ -266,8 +277,7 @@ async def kang(args):
                 # Ensure user doesn't get spamming notifications
                 await borg.send_read_acknowledge(conv.chat_id)
         await args.edit(
-            f"**Kanged in moi [Collection](t.me/addstickers/{packname})!**",
-            parse_mode="md",
+            f"**Kanged in moi [Collection](t.me/addstickers/{packname})!**"
         )
 
 
@@ -292,7 +302,6 @@ async def resize_photo(photo):
         image = image.resize(sizenew)
     else:
         image.thumbnail(maxsize)
-
     return image
 
 
@@ -300,49 +309,59 @@ def char_is_emoji(character):
     return character in emoji.UNICODE_EMOJI
 
 
-@borg.on(admin_cmd(pattern="stkrinfo ?(.*)"))
+@borg.on(admin_cmd(pattern="stkrinfo$"))
 async def get_pack_info(event):
-    if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
-        if not event.is_reply:
-            await event.edit("`Reply to a sticker to get the pack details`")
-            return
-
-        rep_msg = await event.get_reply_message()
-        if not rep_msg.document:
-            await event.edit("`Reply to a sticker to get the pack details`")
-            return
-
-        try:
-            stickerset_attr = rep_msg.document.attributes[1]
-            await event.edit("`Fetching details of the sticker pack, please wait..`")
-        except BaseException:
-            await event.edit("`This is not a sticker. Reply to a sticker.`")
-            return
-
-        if not isinstance(stickerset_attr, DocumentAttributeSticker):
-            await event.edit("`This is not a sticker. Reply to a sticker.`")
-            return
-
-        get_stickerset = await borg(
-            GetStickerSetRequest(
-                InputStickerSetID(
-                    id=stickerset_attr.stickerset.id,
-                    access_hash=stickerset_attr.stickerset.access_hash,
-                )
+    if not event.is_reply:
+        await event.edit("`I can't fetch info from nothing, can I ?!`")
+        return
+    rep_msg = await event.get_reply_message()
+    if not rep_msg.document:
+        await event.edit("`Reply to a sticker to get the pack details`")
+        return
+    try:
+        stickerset_attr = rep_msg.document.attributes[1]
+        await event.edit("`Fetching details of the sticker pack, please wait..`")
+    except BaseException:
+        await event.edit("`This is not a sticker. Reply to a sticker.`")
+        return
+    if not isinstance(stickerset_attr, DocumentAttributeSticker):
+        await event.edit("`This is not a sticker. Reply to a sticker.`")
+        return
+    get_stickerset = await borg(
+        GetStickerSetRequest(
+            InputStickerSetID(
+                id=stickerset_attr.stickerset.id,
+                access_hash=stickerset_attr.stickerset.access_hash,
             )
         )
-        pack_emojis = []
-        for document_sticker in get_stickerset.packs:
-            if document_sticker.emoticon not in pack_emojis:
-                pack_emojis.append(document_sticker.emoticon)
+    )
+    pack_emojis = []
+    for document_sticker in get_stickerset.packs:
+        if document_sticker.emoticon not in pack_emojis:
+            pack_emojis.append(document_sticker.emoticon)
+    OUTPUT = (
+        f"**Sticker Title:** `{get_stickerset.set.title}\n`"
+        f"**Sticker Short Name:** `{get_stickerset.set.short_name}`\n"
+        f"**Official:** `{get_stickerset.set.official}`\n"
+        f"**Archived:** `{get_stickerset.set.archived}`\n"
+        f"**Stickers In Pack:** `{len(get_stickerset.packs)}`\n"
+        f"**Emojis In Pack:**\n{' '.join(pack_emojis)}"
+    )
+    await event.edit(OUTPUT)
 
-        OUTPUT = (
-            f"**Sticker Title:** `{get_stickerset.set.title}\n`"
-            f"**Sticker Short Name:** `{get_stickerset.set.short_name}`\n"
-            f"**Official:** `{get_stickerset.set.official}`\n"
-            f"**Archived:** `{get_stickerset.set.archived}`\n"
-            f"**Stickers In Pack:** `{len(get_stickerset.packs)}`\n"
-            f"**Emojis In Pack:**\n{' '.join(pack_emojis)}"
-        )
 
-        await event.edit(OUTPUT)
+SYNTAX.update(
+    {
+        "stickers": "**Plugins : **`stickers`\
+    \n\n**Syntax : **`.kang`\
+\n**Usage : **Reply .kang to a sticker or an image to kang it to your userbot pack.\
+\n\n**Syntax : **`.kang [emoji('s)]`\
+\n**Usage : **Works just like .kang but uses the emoji('s) you picked.\
+\n\n**Syntax : **`.kang [number]`\
+\n**Usage : **Kang's the sticker/image to the specified pack but uses 🤔 as emoji.\
+\n\n**Syntax : **`.kang [emoji('s)] [number]`\
+\n**Usage : **Kang's the sticker/image to the specified pack and uses the emoji('s) you picked.\
+\n\n**Syntax : **`.stkrinfo`\
+\n**Usage : **Gets info about the sticker pack."
+    }
+)
