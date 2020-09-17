@@ -2,12 +2,13 @@
 Syntax: `.eval {PythonCode}`
         `.exec `{LinuxCode}`
 """
+import asyncio
 import io
 import logging
 import sys
 import time
 import traceback
-import asyncio
+
 from uniborg.util import admin_cmd
 
 logging.basicConfig(
