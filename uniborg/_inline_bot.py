@@ -63,13 +63,18 @@ if Config.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
         builder = event.builder
         result = None
         query = event.text
-        if event.sender_id == borg.uid and query.startswith("@UniBorg"):
-            rev_text = query[::-1]
+        if event.sender_id == borg.uid and query.startswith("@UniBorg "):
+            try:
+                _, ko, pno = query.split(" ")
+                actual_text = borg._iiqsixfourstore[ko][pno]
+                del borg._iiqsixfourstore[ko]
+            except IndexError:
+                actual_text = query
             buttons = paginate_help(0, borg._plugins, "helpme")
             result = builder.article(
                 "© @UniBorg",
                 text="{}\nCurrently Loaded Plugins: {}".format(
-                    query, len(borg._plugins)
+                    actual_text, len(borg._plugins)
                 ),
                 buttons=buttons,
                 link_preview=True,

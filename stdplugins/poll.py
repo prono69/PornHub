@@ -17,7 +17,7 @@ async def pollcreator(catpoll):
     if not string:
         options = Build_Poll(["Yah sure 😊✌️", "Nah 😏😕", "Whatever die sur 🥱🙄"])
         try:
-            await bot.send_message(
+            await borg.send_message(
                 catpoll.chat_id,
                 file=InputMediaPoll(
                     poll=Poll(
@@ -35,14 +35,14 @@ async def pollcreator(catpoll):
             )
         except ForbiddenError:
             await edit_or_reply(catpoll, "`This chat has forbidden the polls`")
-        except exception as e:
+        except Exception as e:
             await edit_or_reply(catpoll, str(e))
     else:
         catinput = string.split(";")
         if len(catinput) > 2 and len(catinput) < 12:
             options = Build_Poll(catinput[1:])
             try:
-                await bot.send_message(
+                await borg.send_message(
                     catpoll.chat_id,
                     file=InputMediaPoll(
                         poll=Poll(
@@ -61,7 +61,7 @@ async def pollcreator(catpoll):
                 )
             except ForbiddenError:
                 await edit_or_reply(catpoll, "`This chat has forbidden the polls`")
-            except exception as e:
+            except Exception as e:
                 await edit_or_reply(catpoll, str(e))
         else:
             await edit_or_reply(

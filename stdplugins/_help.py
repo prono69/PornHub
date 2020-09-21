@@ -46,10 +46,16 @@ async def _(event):
 <b>Custom Repo</b>: https://github.com/prono69/PepeBot """.format(
         current_run_time, sys.version, __version__, check_sgnirts, total, used, free
     )
+    borg._iiqsixfourstore[str(event.chat_id)] = {}
+    borg._iiqsixfourstore[
+        str(event.chat_id)
+    ][
+        str(event.id)
+    ] = help_string + "\n\n" + s_help_string
     tgbotusername = Config.TG_BOT_USER_NAME_BF_HER
     if tgbotusername is not None:
         results = await borg.inline_query(
-            tgbotusername, help_string + "\n\n" + s_help_string
+            tgbotusername, f"@UniBorg {event.chat_id} {event.id}"
         )
         await results[0].click(
             event.chat_id, reply_to=event.reply_to_msg_id, hide_via=True
