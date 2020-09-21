@@ -2,7 +2,9 @@
 # Ported from Userge by Alfiananda P.A
 
 import os
+
 from PIL import Image, ImageOps
+
 from uniborg import SYNTAX
 from uniborg.util import admin_cmd
 from userbot import check_media
@@ -52,9 +54,9 @@ async def transform(event):
         elif cmd == "poster":
             IMG = ImageOps.posterize(im, 2)
         IMG.save(Converted, quality=95)
-        await event.client.send_file(event.chat_id,
-                                     Converted,
-                                     reply_to=event.reply_to_msg_id)
+        await event.client.send_file(
+            event.chat_id, Converted, reply_to=event.reply_to_msg_id
+        )
         await event.delete()
         os.remove(transform)
         os.remove(Converted)
@@ -97,9 +99,9 @@ async def rotate(event):
     im = Image.open(rotate).convert("RGB")
     IMG = im.rotate(value, expand=1)
     IMG.save(Converted, quality=95)
-    await event.client.send_file(event.chat_id,
-                                 Converted,
-                                 reply_to=event.reply_to_msg_id)
+    await event.client.send_file(
+        event.chat_id, Converted, reply_to=event.reply_to_msg_id
+    )
     await event.delete()
     os.remove(rotate)
     os.remove(Converted)

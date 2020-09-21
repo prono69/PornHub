@@ -36,7 +36,9 @@ REDIRECT_URI = "urn:ietf:wg:oauth:2.0:oob"
 #
 PHOTOS_BASE_URI = "https://photoslibrary.googleapis.com"
 
-TOKEN_FILE_NAME = os.path.join(Config.TMP_DOWNLOAD_DIRECTORY, "gPhoto_credentials_@LazyAF_Geng.json")
+TOKEN_FILE_NAME = os.path.join(
+    Config.TMP_DOWNLOAD_DIRECTORY, "gPhoto_credentials_@LazyAF_Geng.json"
+)
 
 
 @borg.on(admin_cmd(pattern="gphoto setup"))

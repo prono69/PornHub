@@ -47,11 +47,9 @@ async def _(event):
         current_run_time, sys.version, __version__, check_sgnirts, total, used, free
     )
     borg._iiqsixfourstore[str(event.chat_id)] = {}
-    borg._iiqsixfourstore[
-        str(event.chat_id)
-    ][
-        str(event.id)
-    ] = help_string + "\n\n" + s_help_string
+    borg._iiqsixfourstore[str(event.chat_id)][str(event.id)] = (
+        help_string + "\n\n" + s_help_string
+    )
     tgbotusername = Config.TG_BOT_USER_NAME_BF_HER
     if tgbotusername is not None:
         results = await borg.inline_query(

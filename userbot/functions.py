@@ -8,8 +8,7 @@ from typing import Optional, Tuple
 import requests
 from bs4 import BeautifulSoup
 from PIL import Image
-from telethon.tl.types import Channel
-from telethon.tl.types import ChannelParticipantAdmin, ChannelParticipantCreator, DocumentAttributeFilename
+from telethon.tl.types import Channel, DocumentAttributeFilename
 
 # gban
 
@@ -277,7 +276,7 @@ async def phcomment(text1, text2, text3):
     img.save("temp.jpg", "jpeg")
     return "temp.jpg"
 
-    
+
 async def check_media(reply_message):
     if reply_message and reply_message.media:
         if reply_message.photo:
@@ -300,8 +299,8 @@ async def check_media(reply_message):
             return False
     else:
         return False
- 
+
     if not data or data is None:
         return False
     else:
-        return data    
+        return data
