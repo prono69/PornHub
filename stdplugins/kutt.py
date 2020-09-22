@@ -36,11 +36,7 @@ async def kutt_it(e):
         resp = requests.post(API_ENDPOINT + "url/submit", json=payload, headers=headers)
 
         json = resp.json()
-        if resp.status_code == 200:
-            shortened[url] = json["shortUrl"]
-        else:
-            shortened[url] = None
-
+        shortened[url] = json["shortUrl"] if resp.status_code == 200 else None
     message = ""
     for item in shortened.items():
         message += f"Original URL: {item[0]} \nShortened URL: {item[1]} \n"

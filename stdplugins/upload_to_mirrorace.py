@@ -54,15 +54,16 @@ async def _(event):
             ms = (end - start).seconds
             required_file_name = downloaded_file_name
             await mone.edit(
-                "Downloaded to `{}` in {} seconds.".format(downloaded_file_name, ms)
+                "Downloaded to `{}` in {} seconds.".format(required_file_name, ms)
             )
+
     elif input_str:
         input_str = input_str.strip()
         if os.path.exists(input_str):
             end = datetime.now()
             ms = (end - start).seconds
             required_file_name = input_str
-            await mone.edit("Found `{}` in {} seconds.".format(input_str, ms))
+            await mone.edit("Found `{}` in {} seconds.".format(required_file_name, ms))
         else:
             await mone.edit("File Not found in local server. Give me a file path :((")
             return False
@@ -71,13 +72,13 @@ async def _(event):
         # required_file_name will have the full path
         file_name = os.path.basename(required_file_name)
         file_size = os.stat(required_file_name).st_size
-        # /* STEP 1: get upload_key */
-        step_one_url = "https://mirrorace.com/api/v1/file/upload"
         step_one_auth_params = {
             "api_key": Config.MIRROR_ACE_API_KEY,
             "api_token": Config.MIRROR_ACE_API_TOKEN,
         }
         async with aiohttp.ClientSession() as session:
+            # /* STEP 1: get upload_key */
+            step_one_url = "https://mirrorace.com/api/v1/file/upload"
             resp = await session.post(step_one_url, data=step_one_auth_params)
             # logger.info(resp.status)
             if resp.status == 200:

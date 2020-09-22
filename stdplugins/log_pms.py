@@ -49,14 +49,11 @@ async def monito_p_m_s(event):
         chat = await event.get_chat()
         if chat.id not in NO_PM_LOG_USERS and chat.id != borg.uid:
             try:
-                if Config.PM_LOGGR_BOT_API_ID:
-                    if event.message:
-                        e = await borg.get_entity(int(Config.PM_LOGGR_BOT_API_ID))
-                        fwd_message = await borg.forward_messages(
-                            e, event.message, silent=True
-                        )
-                    else:
-                        return
+                if Config.PM_LOGGR_BOT_API_ID and event.message:
+                    e = await borg.get_entity(int(Config.PM_LOGGR_BOT_API_ID))
+                    fwd_message = await borg.forward_messages(
+                        e, event.message, silent=True
+                    )
                 else:
                     return
             except Exception as e:
@@ -72,12 +69,11 @@ async def set_no_log_p_m(event):
     if Config.PM_LOGGR_BOT_API_ID is not None:
         event.pattern_match.group(1)
         chat = await event.get_chat()
-        if event.is_private:
-            if chat.id in NO_PM_LOG_USERS:
-                NO_PM_LOG_USERS.remove(chat.id)
-                await event.edit("`Will Log Messages from this Chat`")
-                await asyncio.sleep(2)
-                await event.delete()
+        if event.is_private and chat.id in NO_PM_LOG_USERS:
+            NO_PM_LOG_USERS.remove(chat.id)
+            await event.edit("`Will Log Messages from this Chat`")
+            await asyncio.sleep(2)
+            await event.delete()
 
 
 @borg.on(admin_cmd(pattern="nolog(?: |$)(.*)"))
@@ -85,12 +81,11 @@ async def set_no_log_p_m(event):
     if Config.PM_LOGGR_BOT_API_ID is not None:
         event.pattern_match.group(1)
         chat = await event.get_chat()
-        if event.is_private:
-            if chat.id not in NO_PM_LOG_USERS:
-                NO_PM_LOG_USERS.append(chat.id)
-                await event.edit("`Won't Log Messages from this chat`")
-                await asyncio.sleep(2)
-                await event.delete()
+        if event.is_private and chat.id not in NO_PM_LOG_USERS:
+            NO_PM_LOG_USERS.append(chat.id)
+            await event.edit("`Won't Log Messages from this chat`")
+            await asyncio.sleep(2)
+            await event.delete()
 
 
 SYNTAX.update(

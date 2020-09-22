@@ -1269,12 +1269,9 @@ async def action(event):
     while i != number_of_times:
         anime = random.choice(action_list)
         anime_list.append(anime + "\n")
-        i = i + 1
-    counter = 1
-    msg_str = []
-    for i in anime_list:
-        msg_str.append(str(counter) + ". " + i)
-        counter = counter + 1
+        i += 1
+    msg_str = [str(counter) + ". " + i for counter, i in enumerate(anime_list, start=1)]
+
     msg_str = str(msg_str)
     msg_str = msg_str.replace("['", "")
     msg_str = msg_str.replace(",", "")
@@ -1301,12 +1298,9 @@ async def action(event):
     while i != number_of_times:
         anime = random.choice(harem_list)
         anime_list.append(anime + "\n")
-        i = i + 1
-    counter = 1
-    msg_str = []
-    for i in anime_list:
-        msg_str.append(str(counter) + ". " + i)
-        counter = counter + 1
+        i += 1
+    msg_str = [str(counter) + ". " + i for counter, i in enumerate(anime_list, start=1)]
+
     msg_str = str(msg_str)
     msg_str = msg_str.replace("['", "")
     msg_str = msg_str.replace(",", "")
@@ -1333,12 +1327,9 @@ async def action(event):
     while i != number_of_times:
         anime = random.choice(mecha_list)
         anime_list.append(anime + "\n")
-        i = i + 1
-    counter = 1
-    msg_str = []
-    for i in anime_list:
-        msg_str.append(str(counter) + ". " + i)
-        counter = counter + 1
+        i += 1
+    msg_str = [str(counter) + ". " + i for counter, i in enumerate(anime_list, start=1)]
+
     msg_str = str(msg_str)
     msg_str = msg_str.replace("['", "")
     msg_str = msg_str.replace(",", "")
@@ -1365,12 +1356,9 @@ async def action(event):
     while i != number_of_times:
         anime = random.choice(romance_list)
         anime_list.append(anime + "\n")
-        i = i + 1
-    counter = 1
-    msg_str = []
-    for i in anime_list:
-        msg_str.append(str(counter) + ". " + i)
-        counter = counter + 1
+        i += 1
+    msg_str = [str(counter) + ". " + i for counter, i in enumerate(anime_list, start=1)]
+
     msg_str = str(msg_str)
     msg_str = msg_str.replace("['", "")
     msg_str = msg_str.replace(",", "")
@@ -1397,12 +1385,9 @@ async def action(event):
     while i != number_of_times:
         anime = random.choice(isekai_list)
         anime_list.append(anime + "\n")
-        i = i + 1
-    counter = 1
-    msg_str = []
-    for i in anime_list:
-        msg_str.append(str(counter) + ". " + i)
-        counter = counter + 1
+        i += 1
+    msg_str = [str(counter) + ". " + i for counter, i in enumerate(anime_list, start=1)]
+
     msg_str = str(msg_str)
     msg_str = msg_str.replace("['", "")
     msg_str = msg_str.replace(",", "")
@@ -1429,12 +1414,9 @@ async def action(event):
     while i != number_of_times:
         anime = random.choice(adventure_list)
         anime_list.append(anime + "\n")
-        i = i + 1
-    counter = 1
-    msg_str = []
-    for i in anime_list:
-        msg_str.append(str(counter) + ". " + i)
-        counter = counter + 1
+        i += 1
+    msg_str = [str(counter) + ". " + i for counter, i in enumerate(anime_list, start=1)]
+
     msg_str = str(msg_str)
     msg_str = msg_str.replace("['", "")
     msg_str = msg_str.replace(",", "")
@@ -1461,12 +1443,9 @@ async def action(event):
     while i != number_of_times:
         anime = random.choice(slice_of_life_list)
         anime_list.append(anime + "\n")
-        i = i + 1
-    counter = 1
-    msg_str = []
-    for i in anime_list:
-        msg_str.append(str(counter) + ". " + i)
-        counter = counter + 1
+        i += 1
+    msg_str = [str(counter) + ". " + i for counter, i in enumerate(anime_list, start=1)]
+
     msg_str = str(msg_str)
     msg_str = msg_str.replace("['", "")
     msg_str = msg_str.replace(",", "")

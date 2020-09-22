@@ -372,7 +372,7 @@ async def lol(lel):
 @borg.on(events.NewMessage(outgoing=True, pattern="^;_;$"))
 async def fun(e):
     t = ";__;"
-    for j in range(10):
+    for _ in range(10):
         t = t[:-1] + "_;"
         await e.edit(t)
 
@@ -394,121 +394,124 @@ async def cry(e):
 @borg.on(admin_cmd(pattern="cp(?: |$)(.*)", outgoing=True))
 async def copypasta(cp_e):
     """ Copypasta the famous meme """
-    if not cp_e.text[0].isalpha() and cp_e.text[0] not in ("/", "#", "@", "!"):
-        textx = await cp_e.get_reply_message()
-        message = cp_e.pattern_match.group(1)
+    if cp_e.text[0].isalpha() or cp_e.text[0] in ("/", "#", "@", "!"):
+        return
 
-        if message:
-            pass
-        elif textx:
-            message = textx.text
+    textx = await cp_e.get_reply_message()
+    message = cp_e.pattern_match.group(1)
+
+    if message:
+        pass
+    elif textx:
+        message = textx.text
+    else:
+        await cp_e.edit("`😂🅱️IvE👐sOME👅text👅for✌️Me👌tO👐MAkE👀iT💞funNy!💦`")
+        return
+
+    reply_text = random.choice(EMOJIS)
+    # choose a random character in the message to be substituted with 🅱️
+    b_char = random.choice(message).lower()
+    for owo in message:
+        if owo == " ":
+            reply_text += random.choice(EMOJIS)
+        elif owo in EMOJIS:
+            reply_text += owo
+            reply_text += random.choice(EMOJIS)
+        elif owo.lower() == b_char:
+            reply_text += "🅱️"
         else:
-            await cp_e.edit("`😂🅱️IvE👐sOME👅text👅for✌️Me👌tO👐MAkE👀iT💞funNy!💦`")
-            return
-
-        reply_text = random.choice(EMOJIS)
-        # choose a random character in the message to be substituted with 🅱️
-        b_char = random.choice(message).lower()
-        for owo in message:
-            if owo == " ":
-                reply_text += random.choice(EMOJIS)
-            elif owo in EMOJIS:
-                reply_text += owo
-                reply_text += random.choice(EMOJIS)
-            elif owo.lower() == b_char:
-                reply_text += "🅱️"
-            else:
-                if bool(random.getrandbits(1)):
-                    reply_text += owo.upper()
-                else:
-                    reply_text += owo.lower()
-        reply_text += random.choice(EMOJIS)
-        await cp_e.edit(reply_text)
+            reply_text += owo.upper() if bool(random.getrandbits(1)) else owo.lower()
+    reply_text += random.choice(EMOJIS)
+    await cp_e.edit(reply_text)
 
 
 @borg.on(admin_cmd(pattern="vapor(?: |$)(.*)", outgoing=True))
 async def vapor(vpr):
     """ Vaporize everything! """
-    if not vpr.text[0].isalpha() and vpr.text[0] not in ("/", "#", "@", "!"):
-        reply_text = []
-        textx = await vpr.get_reply_message()
-        message = vpr.pattern_match.group(1)
-        if message:
-            pass
-        elif textx:
-            message = textx.text
+    if vpr.text[0].isalpha() or vpr.text[0] in ("/", "#", "@", "!"):
+        return
+
+    reply_text = []
+    textx = await vpr.get_reply_message()
+    message = vpr.pattern_match.group(1)
+    if message:
+        pass
+    elif textx:
+        message = textx.text
+    else:
+        await vpr.edit("`Ｇｉｖｅ ｓｏｍｅ ｔｅｘｔ ｆｏｒ ｖａｐｏｒ！`")
+        return
+
+    for charac in message:
+        if 0x21 <= ord(charac) <= 0x7F:
+            reply_text.append(chr(ord(charac) + 0xFEE0))
+        elif ord(charac) == 0x20:
+            reply_text.append(chr(0x3000))
         else:
-            await vpr.edit("`Ｇｉｖｅ ｓｏｍｅ ｔｅｘｔ ｆｏｒ ｖａｐｏｒ！`")
-            return
+            reply_text.append(charac)
 
-        for charac in message:
-            if 0x21 <= ord(charac) <= 0x7F:
-                reply_text.append(chr(ord(charac) + 0xFEE0))
-            elif ord(charac) == 0x20:
-                reply_text.append(chr(0x3000))
-            else:
-                reply_text.append(charac)
-
-        await vpr.edit("".join(reply_text))
+    await vpr.edit("".join(reply_text))
 
 
 @borg.on(admin_cmd(pattern="str ?(.*)", outgoing=True))
 async def stretch(stret):
     """ Stretch it."""
-    if not stret.text[0].isalpha() and stret.text[0] not in ("/", "#", "@", "!"):
-        textx = await stret.get_reply_message()
-        message = stret.text
-        message = stret.pattern_match.group(1)
-        if message:
-            pass
-        elif textx:
-            message = textx.text
-        else:
-            await stret.edit("`GiiiiiiiB sooooooomeeeeeee teeeeeeext!`")
-            return
+    if stret.text[0].isalpha() or stret.text[0] in ("/", "#", "@", "!"):
+        return
 
-        count = random.randint(3, 10)
-        reply_text = re.sub(
-            r"([aeiouAEIOUａｅｉｏｕＡＥＩＯＵаеиоуюяыэё])", (r"\1" * count), message
-        )
-        await stret.edit(reply_text)
+    textx = await stret.get_reply_message()
+    message = stret.text
+    message = stret.pattern_match.group(1)
+    if message:
+        pass
+    elif textx:
+        message = textx.text
+    else:
+        await stret.edit("`GiiiiiiiB sooooooomeeeeeee teeeeeeext!`")
+        return
+
+    count = random.randint(3, 10)
+    reply_text = re.sub(r"([aeiouAEIOUａｅｉｏｕＡＥＩＯＵаеиоуюяыэё])", (r"\1" * count), message)
+    await stret.edit(reply_text)
 
 
 @borg.on(admin_cmd(pattern="zal(?: |$)(.*)", outgoing=True))
 async def izal(zgfy):
     """ Invoke the feeling of chaos. """
-    if not zgfy.text[0].isalpha() and zgfy.text[0] not in ("/", "#", "@", "!"):
-        reply_text = []
-        textx = await zgfy.get_reply_message()
-        message = zgfy.pattern_match.group(1)
-        if message:
-            pass
-        elif textx:
-            message = textx.text
-        else:
-            await zgfy.edit(
-                "`gͫ ̆ i̛ ̺ v͇̆ ȅͅ   a̢ͦ   s̴̪ c̸̢ ä̸ rͩͣ y͖͞   t̨͚ é̠ x̢͖  t͔͛`"
-            )
-            return
+    if zgfy.text[0].isalpha() or zgfy.text[0] in ("/", "#", "@", "!"):
+        return
 
-        for charac in message:
-            if not charac.isalpha():
-                reply_text.append(charac)
-                continue
+    reply_text = []
+    textx = await zgfy.get_reply_message()
+    message = zgfy.pattern_match.group(1)
+    if message:
+        pass
+    elif textx:
+        message = textx.text
+    else:
+        await zgfy.edit(
+            "`gͫ ̆ i̛ ̺ v͇̆ ȅͅ   a̢ͦ   s̴̪ c̸̢ ä̸ rͩͣ y͖͞   t̨͚ é̠ x̢͖  t͔͛`"
+        )
+        return
 
-            for _ in range(0, 3):
-                randint = random.randint(0, 2)
-
-                if randint == 0:
-                    charac = charac.strip() + random.choice(ZALG_LIST[0]).strip()
-                elif randint == 1:
-                    charac = charac.strip() + random.choice(ZALG_LIST[1]).strip()
-                else:
-                    charac = charac.strip() + random.choice(ZALG_LIST[2]).strip()
-
+    for charac in message:
+        if not charac.isalpha():
             reply_text.append(charac)
+            continue
 
-        await zgfy.edit("".join(reply_text))
+        for _ in range(3):
+            randint = random.randint(0, 2)
+
+            if randint == 0:
+                charac = charac.strip() + random.choice(ZALG_LIST[0]).strip()
+            elif randint == 1:
+                charac = charac.strip() + random.choice(ZALG_LIST[1]).strip()
+            else:
+                charac = charac.strip() + random.choice(ZALG_LIST[2]).strip()
+
+        reply_text.append(charac)
+
+    await zgfy.edit("".join(reply_text))
 
 
 @borg.on(admin_cmd(pattern="hi", outgoing=True))
@@ -528,25 +531,27 @@ async def irand(randi):
 @borg.on(admin_cmd(pattern="uwu(?: |$)(.*)", outgoing=True))
 async def faces(owo):
     """ UwU """
-    if not owo.text[0].isalpha() and owo.text[0] not in ("/", "#", "@", "!"):
-        textx = await owo.get_reply_message()
-        message = owo.pattern_match.group(1)
-        if message:
-            pass
-        elif textx:
-            message = textx.text
-        else:
-            await owo.edit("` UwU no text given! `")
-            return
+    if owo.text[0].isalpha() or owo.text[0] in ("/", "#", "@", "!"):
+        return
 
-        reply_text = re.sub(r"(r|l)", "w", message)
-        reply_text = re.sub(r"(R|L)", "W", reply_text)
-        reply_text = re.sub(r"n([aeiou])", r"ny\1", reply_text)
-        reply_text = re.sub(r"N([aeiouAEIOU])", r"Ny\1", reply_text)
-        reply_text = re.sub(r"\!+", " " + random.choice(UWUS), reply_text)
-        reply_text = reply_text.replace("ove", "uv")
-        reply_text += " " + random.choice(UWUS)
-        await owo.edit(reply_text)
+    textx = await owo.get_reply_message()
+    message = owo.pattern_match.group(1)
+    if message:
+        pass
+    elif textx:
+        message = textx.text
+    else:
+        await owo.edit("` UwU no text given! `")
+        return
+
+    reply_text = re.sub(r"(r|l)", "w", message)
+    reply_text = re.sub(r"(R|L)", "W", reply_text)
+    reply_text = re.sub(r"n([aeiou])", r"ny\1", reply_text)
+    reply_text = re.sub(r"N([aeiouAEIOU])", r"Ny\1", reply_text)
+    reply_text = re.sub(r"\!+", " " + random.choice(UWUS), reply_text)
+    reply_text = reply_text.replace("ove", "uv")
+    reply_text += " " + random.choice(UWUS)
+    await owo.edit(reply_text)
 
 
 @borg.on(admin_cmd(pattern="shrug", outgoing=True))
@@ -559,9 +564,12 @@ async def shrugger(shg):
 @borg.on(admin_cmd(pattern="roon", outgoing=True))
 async def runner_lol(roon):
     """ Run, run, RUNNN! """
-    if not DISABLE_ROON:
-        if not roon.text[0].isalpha() and roon.text[0] not in ("/", "#", "@", "!"):
-            await roon.edit(random.choice(RUN_REACTS))
+    if (
+        not DISABLE_ROON
+        and not roon.text[0].isalpha()
+        and roon.text[0] not in ("/", "#", "@", "!")
+    ):
+        await roon.edit(random.choice(RUN_REACTS))
 
 
 @borg.on(admin_cmd(pattern="disable roon", outgoing=True))
@@ -591,61 +599,68 @@ async def iqless(e):
 @borg.on(admin_cmd(pattern="mock(?: |$)(.*)", outgoing=True))
 async def spongemocktext(mock):
     """ Do it and find the real fun. """
-    if not mock.text[0].isalpha() and mock.text[0] not in ("/", "#", "@", "!"):
-        reply_text = []
-        textx = await mock.get_reply_message()
-        message = mock.pattern_match.group(1)
-        if message:
-            pass
-        elif textx:
-            message = textx.text
+    if mock.text[0].isalpha() or mock.text[0] in ("/", "#", "@", "!"):
+        return
+
+    reply_text = []
+    textx = await mock.get_reply_message()
+    message = mock.pattern_match.group(1)
+    if message:
+        pass
+    elif textx:
+        message = textx.text
+    else:
+        await mock.edit("`gIvE sOMEtHInG tO MoCk!`")
+        return
+
+    for charac in message:
+        if charac.isalpha() and random.randint(0, 1):
+            to_app = charac.upper() if charac.islower() else charac.lower()
+            reply_text.append(to_app)
         else:
-            await mock.edit("`gIvE sOMEtHInG tO MoCk!`")
-            return
+            reply_text.append(charac)
 
-        for charac in message:
-            if charac.isalpha() and random.randint(0, 1):
-                to_app = charac.upper() if charac.islower() else charac.lower()
-                reply_text.append(to_app)
-            else:
-                reply_text.append(charac)
-
-        await mock.edit("".join(reply_text))
+    await mock.edit("".join(reply_text))
 
 
 @borg.on(admin_cmd(pattern="clap(?: |$)(.*)", outgoing=True))
 async def claptext(memereview):
     """ Praise people! """
-    if not memereview.text[0].isalpha() and memereview.text[0] not in (
+    if memereview.text[0].isalpha() or memereview.text[0] in (
         "/",
         "#",
         "@",
         "!",
     ):
-        textx = await memereview.get_reply_message()
-        message = memereview.pattern_match.group(1)
-        if message:
-            pass
-        elif textx:
-            message = textx.text
-        else:
-            await memereview.edit("`Hah, I don't clap pointlessly!`")
-            return
-        reply_text = "👏 "
-        reply_text += message.replace(" ", " 👏 ")
-        reply_text += " 👏"
-        await memereview.edit(reply_text)
+        return
+
+    textx = await memereview.get_reply_message()
+    message = memereview.pattern_match.group(1)
+    if message:
+        pass
+    elif textx:
+        message = textx.text
+    else:
+        await memereview.edit("`Hah, I don't clap pointlessly!`")
+        return
+    reply_text = "👏 "
+    reply_text += message.replace(" ", " 👏 ")
+    reply_text += " 👏"
+    await memereview.edit(reply_text)
 
 
 @borg.on(admin_cmd(pattern="bt", outgoing=True))
 async def bluetext(bt_e):
     """ Believe me, you will find this useful. """
-    if not bt_e.text[0].isalpha() and bt_e.text[0] not in ("/", "#", "@", "!"):
-        if await bt_e.get_reply_message():
-            await bt_e.edit(
-                "`BLUETEXT MUST CLICK.`\n"
-                "`Are you a stupid animal which is attracted to colours?`"
-            )
+    if (
+        not bt_e.text[0].isalpha()
+        and bt_e.text[0] not in ("/", "#", "@", "!")
+        and await bt_e.get_reply_message()
+    ):
+        await bt_e.edit(
+            "`BLUETEXT MUST CLICK.`\n"
+            "`Are you a stupid animal which is attracted to colours?`"
+        )
 
 
 @borg.on(admin_cmd(pattern="smk (.*)", outgoing=True))
@@ -684,16 +699,18 @@ async def payf(e):
 
 @borg.on(admin_cmd(pattern="lgfy (.*)", outgoing=True))
 async def let_me_google_that_for_you(lmgtfy_q):
-    if not lmgtfy_q.text[0].isalpha() and lmgtfy_q.text[0] not in ("/", "#", "@", "!"):
-        textx = await lmgtfy_q.get_reply_message()
-        query = lmgtfy_q.text
-        if query[5:]:
-            query = str(query[5:])
-        elif textx:
-            query = textx
-            query = query.message
-        query_encoded = query.replace(" ", "+")
-        lfy_url = f"http://lmgtfy.com/?s=g&iie=1&q={query_encoded}"
-        payload = {"format": "json", "url": lfy_url}
-        r = requests.get("http://is.gd/create.php", params=payload)
-        await lmgtfy_q.edit(f"`Here is Your Search`[{query}]({r.json()['shorturl']})")
+    if lmgtfy_q.text[0].isalpha() or lmgtfy_q.text[0] in ("/", "#", "@", "!"):
+        return
+
+    textx = await lmgtfy_q.get_reply_message()
+    query = lmgtfy_q.text
+    if query[5:]:
+        query = str(query[5:])
+    elif textx:
+        query = textx
+        query = query.message
+    query_encoded = query.replace(" ", "+")
+    lfy_url = f"http://lmgtfy.com/?s=g&iie=1&q={query_encoded}"
+    payload = {"format": "json", "url": lfy_url}
+    r = requests.get("http://is.gd/create.php", params=payload)
+    await lmgtfy_q.edit(f"`Here is Your Search`[{query}]({r.json()['shorturl']})")

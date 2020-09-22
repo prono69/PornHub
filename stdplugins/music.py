@@ -16,10 +16,6 @@ async def _(event):
 
         return
 
-    animation_interval = 1.5
-
-    animation_ttl = range(0, 11)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "music":
@@ -39,6 +35,10 @@ async def _(event):
             "⬤⬤◯ 80% ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀`✖️`\n\n⠀⠀⠀⠀⠀[RAVANA Music Player](tg://user?id=689811472)\n\n⠀⠀⠀⠀**Now Playing:CHOOT VOLUME 1**\n\n**00:09** ▰▰▰▰▰▰▰▰▰▱ **00:10**\n\n⠀⠀⠀⠀⠀`🔂` `⏮️` `⏪️` `⏸️` `⏩️` `⏭️`\n\n**⠀Next Song:** __I Am Sexy And I Know It.__\n\n⠀⠀⠀⠀**⠀Device: Nokia 1100**",
             "⬤⬤◯ 80% ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀`✖️`\n\n⠀⠀⠀⠀⠀[RAVANA Music Player](tg://user?id=689811472)\n\n⠀⠀⠀⠀**Now Playing:CHOOT VOLUME 1**\n\n**00:10** ▰▰▰▰▰▰▰▰▰▰ **00:10**\n\n⠀⠀⠀⠀⠀`🔂` `⏮️` `⏪️` `⏺️` `⏩️` `⏭️`\n\n**⠀Next Song:** __I Am Sexy And I Know It.__\n\n⠀⠀⠀⠀**⠀Device: Nokia 1100**",
         ]
+
+        animation_interval = 1.5
+
+        animation_ttl = range(11)
 
         for i in animation_ttl:
 

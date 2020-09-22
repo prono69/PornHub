@@ -23,22 +23,15 @@ async def lst(event):
     if event.fwd_from:
         return
     cat = event.pattern_match.group(1)
-    if cat:
-        path = cat
-    else:
-        path = os.getcwd()
+    path = cat if cat else os.getcwd()
     if not exists(path):
         await event.edit(
             f"There is no such directory or file with the name `{cat}` check again"
         )
         return
     if isdir(path):
-        if cat:
-            msg = "**PATH**: `{}`\n\n".format(path)
-            lists = os.listdir(path)
-        else:
-            msg = "**PATH**: .\n\n"
-            lists = os.listdir(path)
+        msg = "**PATH**: `{}`\n\n".format(path) if cat else "**PATH**: .\n\n"
+        lists = os.listdir(path)
         files = ""
         folders = ""
         for contents in sorted(lists):
@@ -73,10 +66,7 @@ async def lst(event):
                     files += "📄 " + f"`{contents}`\n"
             else:
                 folders += f"📁`{contents}`\n"
-        if files or folders:
-            msg = msg + folders + files
-        else:
-            msg = msg + "`Empty Folder`"
+        msg = msg + folders + files if files or folders else msg + "`Empty Folder`"
     else:
         size = os.stat(path).st_size
         msg = f"The details of given file :\n\n"

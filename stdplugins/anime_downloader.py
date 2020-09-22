@@ -20,7 +20,7 @@ async def get_file_name(link):
     for c in new_link:
         if c == "?":
             break
-        l = l + c
+        l += c
     l = l.replace("/", "_")
     return l
 
@@ -69,13 +69,11 @@ async def anime_download(event):
     for url in urls:
         if "download.php?" in url:
             urls.pop(counter)
-        counter = counter + 1
+        counter += 1
 
-    counter = 0
-    for url in urls:
+    for counter, url in enumerate(urls):
         if "#" in url:
             urls.pop(counter)
-        counter = counter + 1
     await event.edit("Downloading Episodes...")
 
     for i in urls:

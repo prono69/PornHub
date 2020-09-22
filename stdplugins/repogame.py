@@ -18,10 +18,6 @@ async def _(event):
 
         return
 
-    animation_interval = 0.5
-
-    animation_ttl = range(0, 14)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "game":
@@ -44,6 +40,10 @@ async def _(event):
             "🎇🎆🎇🎆🎇🎆🎇\n🎆🎇🎆🎇🎆🎇🎆\n🎇🎆🎇🎆🎇🎆\n🎆🎇🎆🎇🎆🎇🎆\n🎇🎆🎇🎆🎇🎆🎇\n🎆🎇🎆🎇🎆🎇\n🎇🎆🎇🎆🎇🎆🎇",
             "**Game Over**" "**Now Phack Off**",
         ]
+
+        animation_interval = 0.5
+
+        animation_ttl = range(14)
 
         for i in animation_ttl:
 

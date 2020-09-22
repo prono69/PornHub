@@ -19,8 +19,6 @@ async def _(event):
 
         return
 
-    animation_ttl = range(0, 103)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "spem":
@@ -42,6 +40,8 @@ async def _(event):
             "M3vS8gluzCwTlyBfqCcdkxqoqtYFxfJrs51OyKxFcB4cczbtSfjwKaVN7QK32k4pBesE8OUIoLPornlmZbSsyXKgrEH0sFKaUYKZWdDVV5Nci0rajRr6pkiNjXGV78R4kptjPJaZ9JLTYEIDWW7ncoOeUhKKAFwXkRcoDBkLyKMDtXIKbcsNsxnAZq6xtKiudY2FIiM0QXSiMAYF3IAyD2CAsOJCqLupyNmYFW8X9Q3h5GnfLblJXAqk4Lvzgpw7ijtWb6Zq4a2uSOR1xkBTzKCiVqQrXkFusuQSLjfJptTgEDUdWVB1bDuvAIn9ci5ki5kLKshmg6ZeBlL6aL3wdKMSWux2axW91dnniTT7hcfZdPu2gCqv5Mxo1h3W8gp7NHM6yxT6n2U9NpkQNyoD2zR6MAvlTm4HVVoDjk5l3xeBZ8Mzbyq4PfCtVK7QVkJFBfgeuufhRTFggkNKGx6a4RxBRZM8HHPeSVdCnTVqZZRqzpFbu04Jd7oaRttS9TqiMC3tycHGEJqGFSBRAFLZHV3FVxZlZCUt8AmQeiPXM0nPKZeHoz0vxWzdempPK3WvBdN5OKVPu2cxNuz0U7aCSO0P6EH9GcjbGlQvp3X32G6B1Rg0EPHqOaA0AtCCE4X5RIdHQ4DFF8Jeo0jwhYKMa7IAfuU3hSq9pXCTECalB8Q39JtuRrCfzU6pkrIaNfb88MfMayRd30ludPgzRiVjWj3EC2GE4of5kGotcI62by3xfDvDlbrF1hIf086SrLuvrtODoPa8t3MXSZdd8JdoMAnG7pHynauU4KHk111ogPLYJpOOYeCmnNNzFUaEGYGWaJbaIhtY8oOFJZQXHXcwbrGdHm4pO4765yIsL2QpKwUkzJ6RbNZWM0VUkhjTJId2T0eYwL99DJcniKBeOLGG983PyytOFdTM2TheGlarZO2fUrDBwCZ65ZOG50SGahqK72zeYInfQRFkPvzBITp",
             "@admin : Spam Spotted",
         ]
+
+        animation_ttl = range(103)
 
         for i in animation_ttl:
 

@@ -6,11 +6,7 @@ from uniborg.util import admin_cmd
 @borg.on(admin_cmd(pattern="g_poll"))
 async def _(event):
     reply_message = await event.get_reply_message()
-    if reply_message.media is None:
-        await event.edit(
-            "Please reply to a media_type == @gPoll to view the questions and answers"
-        )
-    elif reply_message.media.poll is None:
+    if reply_message.media is None or reply_message.media.poll is None:
         await event.edit(
             "Please reply to a media_type == @gPoll to view the questions and answers"
         )
@@ -27,12 +23,10 @@ Answers: \n""".format(
         )
         if closed_status:
             results = media.results
-            i = 0
-            for result in results.results:
+            for i, result in enumerate(results.results):
                 edit_caption += "{}> {}    {}\n".format(
                     result.option, answers[i].text, result.voters
                 )
-                i += 1
             edit_caption += "Total Voters: {}".format(results.total_voters)
         else:
             for answer in answers:

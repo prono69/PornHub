@@ -10,8 +10,6 @@ from telethon import events
 async def _(event):
     if event.fwd_from:
         return
-    animation_interval = 5
-    animation_ttl = range(0, 11)
     input_str = event.pattern_match.group(1)
     if input_str == "chod":
         await event.edit(input_str)
@@ -29,6 +27,8 @@ async def _(event):
             "`Fucking Your Mom\n\n\nYour Mom's Pussy Get Red\nCumming On Pussy\n\nYour mom get Pregnant\n\nResult: Now You Have 1 More Younger Brother\nAnd His Father Name Is` @NeoMatrix90",
         ]
 
+        animation_interval = 5
+        animation_ttl = range(11)
         for i in animation_ttl:
             await asyncio.sleep(animation_interval)
             await event.edit(animation_chars[i % 11])

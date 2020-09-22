@@ -61,15 +61,13 @@ async def _(event):
     ]
     ends = ["!!!!", "!", ""]
     log_insults = ""
-    if args:
-        pass
-    else:
+    if not args:
         args = 5
     try:
         args = int(args)
     except Exception as error:
         await event.edit(error)
-    for insulting in range(args):
+    for _ in range(args):
         start = random.choice(starts)
         adjective_start = random.choice(adjectives_start)
         adjective_mid = random.choice(adjectives_mid)

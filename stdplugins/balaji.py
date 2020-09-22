@@ -12,10 +12,6 @@ async def _(event):
 
         return
 
-    animation_interval = 5
-
-    animation_ttl = range(0, 15)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "balaji":
@@ -37,6 +33,10 @@ async def _(event):
             "`Fork Deploying...`\n\n@UniBorg ( `Custom Built By` @kirito6969 ) \n`Verified Account:` ☑️\n`Official Website:` https://nehi hain koi website bhag bsdk\n\n`Python` `Loading...`\n[GCC 7.3.0]\n`Telethon` `Loading...`\n\n`Custom Built Fork:` `Loading...`",
             "`Fork Deployed...`\n\n@UniBorg ( `Custom Built By` @kirito6969 ) \n`Verified Account:` ✅\n`Official Website:` https://nehi hain koi website bhag bsdk\n\n`Python` 3.6.8 (default, Jan 29 2019, 19:35:16)\n[GCC 7.3.0]\n`Telethon` 1.8.0\n\n`Custom Built Fork:` https://github.com/prono69/PepeBot",
         ]
+
+        animation_interval = 5
+
+        animation_ttl = range(15)
 
         for i in animation_ttl:
 

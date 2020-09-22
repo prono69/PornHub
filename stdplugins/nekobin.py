@@ -51,7 +51,6 @@ async def _(event):
             message = previous_message.message
     else:
         await event.edit("What I am supposed to paste Niggar. Use `.npaste`")
-    py_file = ""
     name = "ok"
     if previous_message.media:
         name = await borg.download_media(
@@ -59,6 +58,7 @@ async def _(event):
         )
     downloaded_file_name = name
     if downloaded_file_name.endswith(".py"):
+        py_file = ""
         py_file += ".py"
         data = message
         key = (
@@ -69,10 +69,6 @@ async def _(event):
         )
         url = f"https://nekobin.com/{key}{py_file}"
         raw = f"https://nekobin.com/raw/{key}{py_file}"
-        reply_text = (
-            f"**Nekofied:**\n - **Link**: [URL]({url})\n - **Raw**: [URL]({raw})"
-        )
-        await event.edit(reply_text)
     else:
         data = message
         key = (
@@ -83,7 +79,6 @@ async def _(event):
         )
         url = f"https://nekobin.com/{key}"
         raw = f"https://nekobin.com/raw/{key}"
-        reply_text = (
-            f"**Nekofied:**\n - **Link**: [URL]({url})\n - **Raw**: [URL]({raw})"
-        )
-        await event.edit(reply_text)
+
+    reply_text = f"**Nekofied:**\n - **Link**: [URL]({url})\n - **Raw**: [URL]({raw})"
+    await event.edit(reply_text)

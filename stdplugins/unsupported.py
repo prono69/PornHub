@@ -10,7 +10,7 @@ async def _(event):
         return
     mentions = "**Link To The Custom Forked Repo:** https://github.com/prono69/PepeBot "
     chat = await event.get_input_chat()
-    async for x in borg.iter_participants(chat, filter=ChannelParticipantsAdmins):
+    async for _ in borg.iter_participants(chat, filter=ChannelParticipantsAdmins):
         mentions += f""
     reply_message = None
     if event.reply_to_msg_id:

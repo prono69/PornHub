@@ -46,10 +46,6 @@ async def _(event):
 
         return
 
-    animation_interval = 0.1
-
-    animation_ttl = range(0, 100)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "boii":
@@ -57,6 +53,10 @@ async def _(event):
         await event.edit(input_str)
 
         animation_chars = ["▮", "▯", "▬", "▭" "‎"]
+
+        animation_interval = 0.1
+
+        animation_ttl = range(100)
 
         for i in animation_ttl:
 
@@ -109,10 +109,6 @@ async def _(event):
 
         return
 
-    animation_interval = 0.1
-
-    animation_ttl = range(0, 100)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "square":
@@ -120,6 +116,10 @@ async def _(event):
         await event.edit(input_str)
 
         animation_chars = ["◧", "◨", "◧", "◨" "‎"]
+
+        animation_interval = 0.1
+
+        animation_ttl = range(100)
 
         for i in animation_ttl:
 
@@ -134,10 +134,6 @@ async def _(event):
     if event.fwd_from:
 
         return
-
-    animation_interval = 0.1
-
-    animation_ttl = range(0, 100)
 
     input_str = event.pattern_match.group(1)
 
@@ -147,6 +143,10 @@ async def _(event):
 
         animation_chars = ["╹", "╻", "╹", "╻" "‎"]
 
+        animation_interval = 0.1
+
+        animation_ttl = range(100)
+
         for i in animation_ttl:
 
             await asyncio.sleep(animation_interval)
@@ -160,10 +160,6 @@ async def _(event):
     if event.fwd_from:
 
         return
-
-    animation_interval = 0.1
-
-    animation_ttl = range(0, 100)
 
     input_str = event.pattern_match.group(1)
 
@@ -173,6 +169,10 @@ async def _(event):
 
         animation_chars = ["⚫", "⬤", "●", "∘" "‎"]
 
+        animation_interval = 0.1
+
+        animation_ttl = range(100)
+
         for i in animation_ttl:
 
             await asyncio.sleep(animation_interval)
@@ -186,10 +186,6 @@ async def _(event):
     if event.fwd_from:
 
         return
-
-    animation_interval = 0.1
-
-    animation_ttl = range(0, 100)
 
     input_str = event.pattern_match.group(1)
 
@@ -199,6 +195,10 @@ async def _(event):
 
         animation_chars = ["🖤", "❤️", "🖤", "❤️" "‎"]
 
+        animation_interval = 0.1
+
+        animation_ttl = range(100)
+
         for i in animation_ttl:
 
             await asyncio.sleep(animation_interval)
@@ -212,10 +212,6 @@ async def _(event):
     if event.fwd_from:
 
         return
-
-    animation_interval = 1
-
-    animation_ttl = range(0, 11)
 
     input_str = event.pattern_match.group(1)
 
@@ -237,6 +233,10 @@ async def _(event):
             "__**RePe GeNg Is BeHiNd You....Get Ready....**__",
         ]
 
+        animation_interval = 1
+
+        animation_ttl = range(11)
+
         for i in animation_ttl:
 
             await asyncio.sleep(animation_interval)
@@ -250,10 +250,6 @@ async def _(event):
     if event.fwd_from:
 
         return
-
-    animation_interval = 2
-
-    animation_ttl = range(0, 6)
 
     input_str = event.pattern_match.group(1)
 
@@ -270,6 +266,10 @@ async def _(event):
             "**Fair & Lovely GeNg Is BeHiNd You....**",
         ]
 
+        animation_interval = 2
+
+        animation_ttl = range(6)
+
         for i in animation_ttl:
 
             await asyncio.sleep(animation_interval)
@@ -283,10 +283,6 @@ async def _(event):
     if event.fwd_from:
 
         return
-
-    animation_interval = 2
-
-    animation_ttl = range(0, 6)
 
     input_str = event.pattern_match.group(1)
 
@@ -304,6 +300,10 @@ async def _(event):
             "**Harami GeNg Is BeHiNd You....**",
         ]
 
+        animation_interval = 2
+
+        animation_ttl = range(6)
+
         for i in animation_ttl:
 
             await asyncio.sleep(animation_interval)
@@ -317,10 +317,6 @@ async def _(event):
     if event.fwd_from:
 
         return
-
-    animation_interval = 2
-
-    animation_ttl = range(0, 11)
 
     input_str = event.pattern_match.group(1)
 
@@ -341,6 +337,10 @@ async def _(event):
             "**===================**\n      **Server Details**  \n**===================**\n\n\n**=>>>   CPU   <<<=**\n\n    **🔹current_freq:** 2500.09MHz\n    **🔹total_usage:** 68.8%\n\n    |████████▋    |\n\n    **🔹cpu core**\n\n        **🔹core_usage:** 86.9%\n        **🔹current_freq:** 2500.09MHz\n        |██████████▉  |\n       \n**=>>>   RAM   <<<=**\n\n    **🔹free:** 8.13GB\n    **🔹used:** 33.77GB\n    **🔹total:** 60.0GB\n    \n    |███████     |\n\n\n**=>>>   DISK   <<<=**\n\n   **🔹free:** 224.12GB\n    **🔹used:** 131.84GB\n    **🔹total:** 375.02GB\n    **🔹usage:** 37.0%\n\n    |████▍        |\n\n\n**=>>>   NETWORK   <<<=**\n\n    **🔹sent:** 158.98GB\n    **🔹recv:** 188.43GB\n    **🔹sent_packets:** 84518799\n    **🔹recv_packets:** 159720314\n\n\n**===================**\n",
         ]
 
+        animation_interval = 2
+
+        animation_ttl = range(11)
+
         for i in animation_ttl:
 
             await asyncio.sleep(animation_interval)
@@ -354,10 +354,6 @@ async def _(event):
     if event.fwd_from:
 
         return
-
-    animation_interval = 1
-
-    animation_ttl = range(0, 13)
 
     input_str = event.pattern_match.group(1)
 
@@ -381,6 +377,10 @@ async def _(event):
             "Link Generated: [G-Drive Link](https://drive.google.com/a/oxford.edu.in/uc?id=1hn_VuI6WdVlg6oZb3t1ch0dZ-qA&export=download)",
         ]
 
+        animation_interval = 1
+
+        animation_ttl = range(13)
+
         for i in animation_ttl:
 
             await asyncio.sleep(animation_interval)
@@ -394,10 +394,6 @@ async def _(event):
     if event.fwd_from:
 
         return
-
-    animation_interval = 1
-
-    animation_ttl = range(0, 20)
 
     input_str = event.pattern_match.group(1)
 
@@ -428,6 +424,10 @@ async def _(event):
             "**pRoMoTeD SuCcEsSfUlLy bY: @NeoMatrix90**",
         ]
 
+        animation_interval = 1
+
+        animation_ttl = range(20)
+
         for i in animation_ttl:
 
             await asyncio.sleep(animation_interval)
@@ -441,10 +441,6 @@ async def _(event):
     if event.fwd_from:
 
         return
-
-    animation_interval = 0.3
-
-    animation_ttl = range(0, 100)
 
     input_str = event.pattern_match.group(1)
 
@@ -465,6 +461,10 @@ async def _(event):
             "8=✊️==D💦💦💦",
         ]
 
+        animation_interval = 0.3
+
+        animation_ttl = range(100)
+
         for i in animation_ttl:
 
             await asyncio.sleep(animation_interval)
@@ -478,10 +478,6 @@ async def _(event):
     if event.fwd_from:
 
         return
-
-    animation_interval = 0.5
-
-    animation_ttl = range(0, 17)
 
     input_str = event.pattern_match.group(1)
 
@@ -509,6 +505,10 @@ async def _(event):
             "[🎁](https://github.com/prono69/PepeBot/)",
         ]
 
+        animation_interval = 0.5
+
+        animation_ttl = range(17)
+
         for i in animation_ttl:
 
             await asyncio.sleep(animation_interval)
@@ -522,10 +522,6 @@ async def _(event):
     if event.fwd_from:
 
         return
-
-    animation_interval = 1
-
-    animation_ttl = range(0, 19)
 
     input_str = event.pattern_match.group(1)
 
@@ -555,6 +551,10 @@ async def _(event):
             "**Jio Network Boosted....**",
         ]
 
+        animation_interval = 1
+
+        animation_ttl = range(19)
+
         for i in animation_ttl:
 
             await asyncio.sleep(animation_interval)
@@ -568,10 +568,6 @@ async def _(event):
     if event.fwd_from:
 
         return
-
-    animation_interval = 2
-
-    animation_ttl = range(0, 11)
 
     input_str = event.pattern_match.group(1)
 
@@ -593,6 +589,10 @@ async def _(event):
             "`Targeted Account Hacked...\n\nPay 999$ and a Plate of Biriyani To this Nigga @NeoMatrix90 To Remove This Hack`",
         ]
 
+        animation_interval = 2
+
+        animation_ttl = range(11)
+
         for i in animation_ttl:
 
             await asyncio.sleep(animation_interval)
@@ -607,10 +607,6 @@ async def _(event):
 
         return
 
-    animation_interval = 0.3
-
-    animation_ttl = range(0, 16)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "gaand":
@@ -618,6 +614,10 @@ async def _(event):
         await event.edit(input_str)
 
         animation_chars = ["me", "loge", "kya?", "gaand"]
+
+        animation_interval = 0.3
+
+        animation_ttl = range(16)
 
         for i in animation_ttl:
 
@@ -633,10 +633,6 @@ async def _(event):
 
         return
 
-    animation_interval = 0.1
-
-    animation_ttl = range(0, 89)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "ass":
@@ -644,6 +640,10 @@ async def _(event):
         await event.edit(input_str)
 
         animation_chars = ["🍆       🍑️", "🍆     🍑️", "🍆  🍑️", "🍆🍑️💦"]
+
+        animation_interval = 0.1
+
+        animation_ttl = range(89)
 
         for i in animation_ttl:
 
@@ -658,10 +658,6 @@ async def _(event):
     if event.fwd_from:
 
         return
-
-    animation_interval = 1
-
-    animation_ttl = range(0, 22)
 
     input_str = event.pattern_match.group(1)
 
@@ -696,6 +692,10 @@ async def _(event):
             "__Signal Lost....__",
         ]
 
+        animation_interval = 1
+
+        animation_ttl = range(22)
+
         for i in animation_ttl:
 
             await asyncio.sleep(animation_interval)
@@ -709,10 +709,6 @@ async def _(event):
     if event.fwd_from:
 
         return
-
-    animation_interval = 2
-
-    animation_ttl = range(0, 12)
 
     input_str = event.pattern_match.group(1)
 
@@ -735,6 +731,10 @@ async def _(event):
             "**Build Succeeded**",
         ]
 
+        animation_interval = 2
+
+        animation_ttl = range(12)
+
         for i in animation_ttl:
 
             await asyncio.sleep(animation_interval)
@@ -748,10 +748,6 @@ async def _(event):
     if event.fwd_from:
 
         return
-
-    animation_interval = 0.3
-
-    animation_ttl = range(0, 15)
 
     input_str = event.pattern_match.group(1)
 
@@ -777,6 +773,10 @@ async def _(event):
             "[👉🔴👈](t.me/kirito6969)",
         ]
 
+        animation_interval = 0.3
+
+        animation_ttl = range(15)
+
         for i in animation_ttl:
 
             await asyncio.sleep(animation_interval)
@@ -790,10 +790,6 @@ async def _(event):
     if event.fwd_from:
 
         return
-
-    animation_interval = 1
-
-    animation_ttl = range(0, 17)
 
     input_str = event.pattern_match.group(1)
 
@@ -819,6 +815,10 @@ async def _(event):
             "__Legend is leaving this chat.....!__ @admin __Goodbye aren't forever..__",
         ]
 
+        animation_interval = 1
+
+        animation_ttl = range(17)
+
         for i in animation_ttl:
 
             await asyncio.sleep(animation_interval)
@@ -832,10 +832,6 @@ async def _(event):
     if event.fwd_from:
 
         return
-
-    animation_interval = 2
-
-    animation_ttl = range(0, 10)
 
     input_str = event.pattern_match.group(1)
 
@@ -856,6 +852,10 @@ async def _(event):
             "👁👁\n  👄  =====> Hi All, How Are You Guys...",
         ]
 
+        animation_interval = 2
+
+        animation_ttl = range(10)
+
         for i in animation_ttl:
 
             await asyncio.sleep(animation_interval)
@@ -869,10 +869,6 @@ async def _(event):
     if event.fwd_from:
 
         return
-
-    animation_interval = 2
-
-    animation_ttl = range(0, 11)
 
     input_str = event.pattern_match.group(1)
 
@@ -893,6 +889,10 @@ async def _(event):
             "` Fucking Your Mom\n\n\nYour Mom's Pussy Get Red\n Spanking Your Mom's Ass\nCumming On Pussy\n\nAlmost Done... \n\nFucked Percentage... 100%\n█████████████████████████ `",
             "`Fucking Your Mom\n\n\nYour Mom's Pussy Get Red\nCumming On Pussy\n\nYour mom get Pregnant\n\nResult: Now You Have 1 More Younger Brother\nAnd His Father Name Is` @NeoMatrix90",
         ]
+
+        animation_interval = 2
+
+        animation_ttl = range(11)
 
         for i in animation_ttl:
 
@@ -929,10 +929,6 @@ async def _(event):
 
         return
 
-    animation_interval = 3
-
-    animation_ttl = range(0, 18)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "/cull":
@@ -959,6 +955,10 @@ async def _(event):
             "`Durov: Sure Mam \nTC Bye Bye :)`",
             "`Private Call Disconnected.`",
         ]
+
+        animation_interval = 3
+
+        animation_ttl = range(18)
 
         for i in animation_ttl:
 
@@ -1002,10 +1002,6 @@ async def _(event):
 
         return
 
-    animation_interval = 0.3
-
-    animation_ttl = range(0, 10)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "ding":
@@ -1025,6 +1021,10 @@ async def _(event):
             "⬜⬜⬜⬜⬜\n⬜ [PEPEBOT](https://github.com/prono69/PepeBot/) ⬜\n⬜⬜⬜⬜⬜",
         ]
 
+        animation_interval = 0.3
+
+        animation_ttl = range(10)
+
         for i in animation_ttl:
 
             await asyncio.sleep(animation_interval)
@@ -1039,10 +1039,6 @@ async def _(event):
 
         return
 
-    animation_interval = 0.1
-
-    animation_ttl = range(0, 11)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "sclock":
@@ -1050,6 +1046,10 @@ async def _(event):
         await event.edit(input_str)
 
         animation_chars = ["🕙", "🕘", "🕗", "🕖", "🕕", "🕔", "🕓", "🕒", "🕑", "🕐", "🕛"]
+
+        animation_interval = 0.1
+
+        animation_ttl = range(11)
 
         for i in animation_ttl:
 
@@ -1064,10 +1064,6 @@ async def _(event):
     if event.fwd_from:
 
         return
-
-    animation_interval = 2
-
-    animation_ttl = range(0, 11)
 
     input_str = event.pattern_match.group(1)
 
@@ -1089,6 +1085,10 @@ async def _(event):
             "`Account Cracked ..\n\n Pay 9$ to @kirito6969 for I'd and Password`",
         ]
 
+        animation_interval = 2
+
+        animation_ttl = range(11)
+
         for i in animation_ttl:
 
             await asyncio.sleep(animation_interval)
@@ -1102,8 +1102,6 @@ async def _(event):
     if event.fwd_from:
 
         return
-
-    animation_ttl = range(0, 17)
 
     input_str = event.pattern_match.group(1)
 
@@ -1130,6 +1128,8 @@ async def _(event):
             ";_________________________;",
         ]
 
+        animation_ttl = range(17)
+
         for i in animation_ttl:
 
             await event.edit(animation_chars[i % 17])
@@ -1141,10 +1141,6 @@ async def _(event):
     if event.fwd_from:
 
         return
-
-    animation_interval = 2
-
-    animation_ttl = range(0, 11)
 
     input_str = event.pattern_match.group(1)
 
@@ -1164,6 +1160,10 @@ async def _(event):
             "**===================**\n      **Server Details**  \n**===================**\n\n\n**=>>>   CPU   <<<=**\n\n    **🔹current_freq:** 2500.09MHz\n    **🔹total_usage:** 100%\n\n    ●●●●●●●●●●\n\n    **🔹cpu core**\n\n        **🔹core_usage:** 100.0%\n        **🔹current_freq:** 2500.09MHz\n        |██████████▉  |\n       \n**=>>>   RAM   <<<=**\n\n    **🔹free:** 5.25GB\n    **🔹used:** 31.14GB\n    **🔹total:** 60.0GB\n    \n    ●●●●●●●●●●\n\n\n**=>>>   DISK   <<<=**\n\n   **🔹free:** 224.12GB\n    **🔹used:** 131.84GB\n    **🔹total:** 375.02GB\n    **🔹usage:** 37.0%\n\n    |████▍        |\n\n\n**=>>>   NETWORK   <<<=**\n\n    **🔹sent:** 108.31GB\n    **🔹recv:** 167.17GB\n    **🔹sent_packets:** 84518799\n    **🔹recv_packets:** 124575356\n\n\n**===================**\n",
             "**===================**\n      **Server Details**  \n**===================**\n\n\n**=>>>   CPU   <<<=**\n\n    **🔹current_freq:** 2500.09MHz\n    **🔹total_usage:** 70%\n\n    ●●●●●●●○○○\n\n    **🔹cpu core**\n\n        **🔹core_usage:** 76.2%\n        **🔹current_freq:** 2500.09MHz\n        |██████████▉  |\n       \n**=>>>   RAM   <<<=**\n\n    **🔹free:** 8.01GB\n    **🔹used:** 33.27GB\n    **🔹total:** 60.0GB\n    \n    ●●●○○○○○○○\n\n\n**=>>>   DISK   <<<=**\n\n   **🔹free:** 224.12GB\n    **🔹used:** 131.84GB\n    **🔹total:** 375.02GB\n    **🔹usage:** 37.0%\n\n    |████▍        |\n\n\n**=>>>   NETWORK   <<<=**\n\n    **🔹sent:** 167.17GB\n    **🔹recv:** 158.98GB\n    **🔹sent_packets:** 36547698\n    **🔹recv_packets:** 165455856\n\n\n**===================**\n",
         ]
+
+        animation_interval = 2
+
+        animation_ttl = range(11)
 
         for i in animation_ttl:
 

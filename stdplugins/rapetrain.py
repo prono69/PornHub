@@ -18,10 +18,6 @@ async def _(event):
 
         return
 
-    animation_interval = 0.7
-
-    animation_ttl = range(0, 45)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "repe":
@@ -60,6 +56,10 @@ async def _(event):
             "🚃",
             "**rApEd**",
         ]
+
+        animation_interval = 0.7
+
+        animation_ttl = range(45)
 
         for i in animation_ttl:
 

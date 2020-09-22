@@ -16,10 +16,6 @@ async def _(event):
 
         return
 
-    animation_interval = 12
-
-    animation_ttl = range(0, 30)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "virus":
@@ -58,6 +54,10 @@ async def _(event):
             "◼️◼️\n◼️◼️",
             "◼️",
         ]
+
+        animation_interval = 12
+
+        animation_ttl = range(30)
 
         for i in animation_ttl:
 

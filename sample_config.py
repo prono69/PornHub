@@ -54,9 +54,10 @@ class Config:
     # TG API limit. A message can have maximum 4096 characters!
     MAX_MESSAGE_SIZE_LIMIT = 4095
     # set blacklist_chats where you do not want userbot's features
-    UB_BLACK_LIST_CHAT = set(
+    UB_BLACK_LIST_CHAT = {
         int(x) for x in os.environ.get("UB_BLACK_LIST_CHAT", "").split()
-    )
+    }
+
     # specify LOAD and NO_LOAD
     LOAD = []
     # Remove This To Make Them Work But Would Make Bot Unstable AF...⚡
@@ -93,7 +94,7 @@ class Config:
     # specify list of users allowed to use bot
     # WARNING: be careful who you grant access to your bot.
     # malicious users could do ".exec rm -rf /*"
-    SUDO_USERS = set(int(x) for x in os.environ.get("SUDO_USERS", "").split())
+    SUDO_USERS = {int(x) for x in os.environ.get("SUDO_USERS", "").split()}
     # Temp
     TEMP_DIR = os.environ.get("TEMP_DIR", None)
     CHANNEL_ID = os.environ.get("CHANNEL_ID", None)

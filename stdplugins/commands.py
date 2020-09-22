@@ -12,10 +12,6 @@ async def _(event):
 
         return
 
-    animation_interval = 0.8
-
-    animation_ttl = range(0, 1)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "cl":
@@ -27,6 +23,10 @@ async def _(event):
             "https://github.com/ravana69/UniBorg",
             "https://github.com/spechide/UniBorg",
         ]
+
+        animation_interval = 0.8
+
+        animation_ttl = range(1)
 
         for i in animation_ttl:
 

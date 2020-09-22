@@ -38,8 +38,6 @@ async def gsearch(q_event):
         except IndexError:
             break
 
-            i += 1
-
     await q_event.edit(
         "**Search Query:**\n`" + url + "`\n\n**Results:**\n" + msg, link_preview=False
     )

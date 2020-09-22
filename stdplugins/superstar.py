@@ -12,10 +12,6 @@ async def _(event):
 
         return
 
-    animation_interval = 2
-
-    animation_ttl = range(0, 11)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "star":
@@ -29,6 +25,10 @@ async def _(event):
             "I Fuck like a pornstar",
             "Baby I'm a superstar",
         ]
+
+        animation_interval = 2
+
+        animation_ttl = range(11)
 
         for i in animation_ttl:
 

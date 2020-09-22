@@ -72,8 +72,11 @@ async def walld(strin: str):
     if len(strin.split()) > 1:
         strin = "+".join(strin.split())
     url = "https://wall.alphacoders.com/search.php?search="
-    none_got = ["https://wall.alphacoders.com/finding_wallpapers.php"]
-    none_got.append("https://wall.alphacoders.com/search-no-results.php")
+    none_got = [
+        "https://wall.alphacoders.com/finding_wallpapers.php",
+        "https://wall.alphacoders.com/search-no-results.php",
+    ]
+
     page_link = "https://wall.alphacoders.com/search.php?search={}&page={}"
     resp = requests.get(f"{url}{strin}")
     if resp.url in none_got:
@@ -119,8 +122,8 @@ async def walld(strin: str):
     except Exception:
         pass
     del list_a_s
-    if len(tit_links) != 0:
-        tit_link = choice(tit_links)
-    else:
+    if not tit_links:
         return False
+    else:
+        tit_link = choice(tit_links)
     return tit_link

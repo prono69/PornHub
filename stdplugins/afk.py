@@ -90,7 +90,7 @@ async def on_afk(event):
             datime_since_afk = now - afk_time
             time = float(datime_since_afk.seconds)
             days = time // (24 * 3600)
-            time = time % (24 * 3600)
+            time %= 24 * 3600
             hours = time // 3600
             time %= 3600
             minutes = time // 60
@@ -143,8 +143,8 @@ async def _(event):
     afk_end = {}
     start_1 = datetime.now()
     afk_start = start_1.replace(microsecond=0)
-    reason = event.pattern_match.group(1)
     if not USER_AFK:
+        reason = event.pattern_match.group(1)
         last_seen_status = await borg(
             functions.account.GetPrivacyRequest(types.InputPrivacyKeyStatusTimestamp())
         )

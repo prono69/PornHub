@@ -9,7 +9,7 @@ packs = Config.PACKS_CONTENT
 async def _(event):
     if event.fwd_from:
         return
-    range(0, 16)
+    range(16)
     input_str = event.pattern_match.group(1)
     if input_str == "repo":
         await event.edit(

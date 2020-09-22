@@ -24,7 +24,7 @@ async def _(event):
     # logger.info(CHAT_FLOOD)
     if not CHAT_FLOOD:
         return
-    if not (str(event.chat_id) in CHAT_FLOOD):
+    if str(event.chat_id) not in CHAT_FLOOD:
         return
     # TODO: exempt admins from this
     should_ban = sql.update_flood(event.chat_id, event.message.from_id)

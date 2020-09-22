@@ -161,11 +161,10 @@ async def _(event):
                 )
             )
             await asyncio.sleep(3)
-            await event.delete()
         else:
             await event.edit("File Not Found {}".format(input_str))
             await asyncio.sleep()
-            await event.delete()
+        await event.delete()
     else:
         await event.edit("Syntax // .rnupload file.name as reply to a Telegram media")
 

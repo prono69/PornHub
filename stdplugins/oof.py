@@ -20,8 +20,6 @@ async def _(event):
 
         return
 
-    animation_ttl = range(0, 75)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "oof":
@@ -43,6 +41,8 @@ async def _(event):
             "ooooooooooooo",
             "oooooooooooooof",
         ]
+
+        animation_ttl = range(75)
 
         for i in animation_ttl:
 
