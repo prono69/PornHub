@@ -18,7 +18,6 @@ gitpython
 glitch_this
 google-api-python-client
 google_auth_oauthlib
-google_images_download==2.8.0
 googletrans
 gsearch>=1.6.0
 gtts

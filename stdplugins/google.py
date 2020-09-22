@@ -5,23 +5,14 @@ Available Commands:
 .grs"""
 
 import asyncio
+import aiohttp
 import os
-from datetime import datetime
-
-import requests
+import shutil
+import time
 from bs4 import BeautifulSoup
-from google_images_download import google_images_download
-
+from datetime import datetime
+from telethon.utils import guess_extension
 from uniborg.util import admin_cmd
-
-
-def progress(current, total):
-    logger.info(
-        "Downloaded {} of {}\nCompleted {}".format(
-            current, total, (current / total) * 100
-        )
-    )
-
 
 @borg.on(admin_cmd(pattern="gs (.*)"))
 async def _(event):
@@ -34,24 +25,22 @@ async def _(event):
     input_str = event.pattern_match.group(1)
     input_url = "https://bots.shrimadhavuk.me/search/?q={}".format(input_str)
     headers = {"USER-AGENT": "UniBorg"}
-    response = requests.get(input_url, headers=headers).json()
+    async with aiohttp.ClientSession() as requests:
+        reponse = await requests.get(input_url, headers=headers)
+        response = await reponse.json()
     output_str = " "
     for result in response["results"]:
         text = result.get("title")
         url = result.get("url")
-        result.get("description")
-        result.get("image")
+        description = result.get("description")
+        image = result.get("image")
         output_str += " 👉🏻  [{}]({}) \n\n".format(text, url)
     end = datetime.now()
     ms = (end - start).seconds
-    await event.edit(
-        "searched Google for {} in {} seconds. \n{}".format(input_str, ms, output_str),
-        link_preview=False,
-    )
+    await event.edit("Searched Google for {} in {} seconds. \n{}".format(input_str, ms, output_str), link_preview=False)
     await asyncio.sleep(5)
-    await event.edit(
-        "**Google: {}\n{}**".format(input_str, output_str), link_preview=False
-    )
+    await event.edit("**Google: {}\n\n{}**".format(input_str, output_str), link_preview=False)
+ 
 
 
 @borg.on(admin_cmd(pattern="gi (.*)"))
@@ -61,131 +50,87 @@ async def _(event):
     start = datetime.now()
     await event.edit("`Processing...`")
     input_str = event.pattern_match.group(1)
-    response = google_images_download.googleimagesdownload()
-    if not os.path.isdir(Config.TMP_DOWNLOAD_DIRECTORY):
-        os.makedirs(Config.TMP_DOWNLOAD_DIRECTORY)
-    arguments = {
-        "keywords": input_str,
-        "limit": Config.TG_GLOBAL_ALBUM_LIMIT,
-        "format": "jpg",
-        "delay": 1,
-        "safe_search": False,
-        "output_directory": Config.TMP_DOWNLOAD_DIRECTORY,
-    }
-    paths = response.download(arguments)
-    logger.info(paths)
-    lst = paths[0].get(input_str)
-    if len(lst) == 0:
-        await event.delete()
-        return
-    await borg.send_file(
-        event.chat_id,
-        lst,
-        caption=input_str,
-        reply_to=event.message.id,
-        progress_callback=progress,
+    work_dir = os.path.join(
+        Config.TMP_DOWNLOAD_DIRECTORY,
+        input_str
     )
-    logger.info(lst)
-    for each_file in lst:
+    if not os.path.isdir(work_dir):
+        os.makedirs(work_dir)
+    input_url = "https://bots.shrimadhavuk.me/search/?u={}".format(input_str)
+    headers = {"USER-AGENT": "UniBorg"}
+    async with aiohttp.ClientSession() as requests:
+        reponse = await requests.get(input_url, headers=headers)
+        response = await reponse.json()
+    url_lst = []
+    cap_lst = []
+    async with aiohttp.ClientSession() as requests:
+        for result in response["results"]:
+            caption = result.get("description")
+            image_url = result.get("url")
+            image_req_set = await requests.get(image_url)
+            image_file_name = str(time.time()) + "" + guess_extension(
+                image_req_set.headers.get("Content-Type")
+            )
+            image_save_path = os.path.join(
+                work_dir,
+                image_file_name
+            )
+            with open(image_save_path, "wb") as f_d:
+                f_d.write(await image_req_set.read())
+            url_lst.append(image_save_path)
+            cap_lst.append(caption)
+    if not url_lst:
+        await event.edit(f"No results found for **{input_str}**")
+        return
+    if len(url_lst) != len(cap_lst):
+        await event.edit("`Search api broken :(`")
+        return
+    await event.reply(
+        cap_lst,
+        file=url_lst,
+        parse_mode="html"
+    )
+    for each_file in url_lst:
         os.remove(each_file)
+    shutil.rmtree(work_dir, ignore_errors=True)
     end = datetime.now()
     ms = (end - start).seconds
     await event.edit(
-        "searched Google for {} in {} seconds.".format(input_str, ms),
-        link_preview=False,
+        f"Searched Google for **{input_str}** in `{ms}` seconds.",
+        link_preview=False
     )
     await asyncio.sleep(5)
     await event.delete()
-
+ 
 
 @borg.on(admin_cmd(pattern="grs"))
 async def _(event):
     if event.fwd_from:
         return
     start = datetime.now()
-    BASE_URL = "http://www.google.com"
     OUTPUT_STR = "Reply to an image to do Google Reverse Search"
-    if event.reply_to_msg_id:
-        await event.edit("`Pre Processing Media`")
-        previous_message = await event.get_reply_message()
-        previous_message_text = previous_message.message
-        if previous_message.media:
-            downloaded_file_name = await borg.download_media(
-                previous_message, Config.TMP_DOWNLOAD_DIRECTORY
-            )
-            SEARCH_URL = "{}/searchbyimage/upload".format(BASE_URL)
-            multipart = {
-                "encoded_image": (
-                    downloaded_file_name,
-                    open(downloaded_file_name, "rb"),
-                ),
-                "image_content": "",
-            }
-            # https://stackoverflow.com/a/28792943/4723940
-            google_rs_response = requests.post(
-                SEARCH_URL, files=multipart, allow_redirects=False
-            )
-            the_location = google_rs_response.headers.get("Location")
-            os.remove(downloaded_file_name)
-        else:
-            previous_message_text = previous_message.message
-            SEARCH_URL = "{}/searchbyimage?image_url={}"
-            request_url = SEARCH_URL.format(BASE_URL, previous_message_text)
-            google_rs_response = requests.get(request_url, allow_redirects=False)
-            the_location = google_rs_response.headers.get("Location")
-        await event.edit("Found Google Result. Pouring some soup on it!")
-        headers = {
-            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:58.0) Gecko/20100101 Firefox/58.0"
-        }
-        response = requests.get(the_location, headers=headers)
-        soup = BeautifulSoup(response.text, "html.parser")
-        # document.getElementsByClassName("r5a77d"): PRS
-        prs_div = soup.find_all("div", {"class": "r5a77d"})[0]
-        prs_anchor_element = prs_div.find("a")
-        prs_url = BASE_URL + prs_anchor_element.get("href")
-        prs_text = prs_anchor_element.text
-        # document.getElementById("jHnbRc")
-        img_size_div = soup.find(id="jHnbRc")
-        img_size = img_size_div.find_all("div")
-        end = datetime.now()
-        ms = (end - start).seconds
-        OUTPUT_STR = """{img_size}
-        
-<b>Possible Related Search:</b> <a href="{prs_url}">{prs_text}</a>
-<b>More Info:</b> Open This <a href="{the_location}">Link</a>
-
-<b>Time Taken:</b> {ms} seconds""".format(
-            **locals()
-        )
-    await event.edit(OUTPUT_STR, parse_mode="HTML", link_preview=False)
-
-
-@borg.on(admin_cmd(pattern="grd"))
-async def _(event):
-    if event.fwd_from:
+    if not event.reply_to_msg_id:
+        await event.edit("`Reply to any media, please -_-`")
         return
-    start = datetime.now()
-    BASE_URL = "http://www.google.com"
-    OUTPUT_STR = "Reply to an image to do Google Reverse Search"
-    if event.reply_to_msg_id:
-        await event.edit("Pre Processing Media")
-        previous_message = await event.get_reply_message()
-        previous_message_text = previous_message.message
+    await event.edit("`Pre Processing Media`")
+    previous_message = await event.get_reply_message()
+    previous_message_text = previous_message.message
+    async with aiohttp.ClientSession() as requests:
+        BASE_URL = "http://www.google.com"
         if previous_message.media:
-            downloaded_file_name = await borg.download_media(
-                previous_message, Config.TMP_DOWNLOAD_DIRECTORY
+            downloaded_file_name = await previous_message.download_media(
+                Config.TMP_DOWNLOAD_DIRECTORY
             )
             SEARCH_URL = "{}/searchbyimage/upload".format(BASE_URL)
             multipart = {
-                "encoded_image": (
-                    downloaded_file_name,
-                    open(downloaded_file_name, "rb"),
-                ),
-                "image_content": "",
+                "encoded_image": (downloaded_file_name, open(downloaded_file_name, "rb")),
+                "image_content": ""
             }
             # https://stackoverflow.com/a/28792943/4723940
-            google_rs_response = requests.post(
-                SEARCH_URL, files=multipart, allow_redirects=False
+            google_rs_response = await requests.post(
+                SEARCH_URL,
+                data=multipart,
+                allow_redirects=False
             )
             the_location = google_rs_response.headers.get("Location")
             os.remove(downloaded_file_name)
@@ -193,14 +138,17 @@ async def _(event):
             previous_message_text = previous_message.message
             SEARCH_URL = "{}/searchbyimage?image_url={}"
             request_url = SEARCH_URL.format(BASE_URL, previous_message_text)
-            google_rs_response = requests.get(request_url, allow_redirects=False)
+            google_rs_response = await requests.get(request_url, allow_redirects=False)
             the_location = google_rs_response.headers.get("Location")
         await event.edit("Found Google Result. Pouring some soup on it!")
         headers = {
             "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:58.0) Gecko/20100101 Firefox/58.0"
         }
-        response = requests.get(the_location, headers=headers)
-        soup = BeautifulSoup(response.text, "html.parser")
+        response = await requests.get(the_location, headers=headers)
+        soup = BeautifulSoup(
+            await response.text(),
+            "html.parser"
+        )
         # document.getElementsByClassName("r5a77d"): PRS
         prs_div = soup.find_all("div", {"class": "r5a77d"})[0]
         prs_anchor_element = prs_div.find("a")
@@ -211,10 +159,8 @@ async def _(event):
         img_size = img_size_div.find_all("div")
         end = datetime.now()
         ms = (end - start).seconds
-        OUTPUT_STR = """{img_size}
-**Possible Related Search**: [Dick](http://www.google.com/search?q=Dick&sa=X&ved=2ahUKEwiLyfLkppLnAhVRAp0JHalFBVQQvQ4oBHoECAcQKw)
-
-More Info: Open this [link](https://www.github.com/prono69/PepeBot) in {ms} seconds""".format(
-            **locals()
-        )
-    await event.edit(OUTPUT_STR, parse_mode="HTML", link_preview=False)
+        out_rts = f"{img_size}\n\n"
+        out_rts += f"<b>Possible Related Search:</b> <a href='{prs_url}'>{prs_text}</a>\n"
+        out_rts += f"<b>More Info:</b> Open this <a href='{the_location}''>Link</a>\n\n"
+        out_rts += f"<b>Time Taken:</b> {ms} seconds"
+        await event.edit(out_rts, parse_mode="HTML", link_preview=False)
