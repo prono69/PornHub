@@ -5,8 +5,6 @@ import os
 from distutils.util import strtobool as sb
 
 
-
-
 class Config:
     LOGGER = True
     # Get this value from my.telegram.org! Please do not steal
@@ -192,7 +190,6 @@ class Config:
     # for video trimming and screenshot plugins
     LT_QOAN_NOE_FF_MPEG_CTD = os.environ.get("LT_QOAN_NOE_FF_MPEG_CTD", None)
     LT_QOAN_NOE_FF_MPEG_URL = os.environ.get("LT_QOAN_NOE_FF_MPEG_URL", None)
-
 
 
 class Production(Config):

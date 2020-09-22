@@ -101,9 +101,7 @@ class TelegramDownloader:
 
     async def getMessages(self, peer_id):
         return [
-            m
-            for m in borg.iter_messages(peer_id, limit=None, wait_time=2)
-            if m.media
+            m for m in borg.iter_messages(peer_id, limit=None, wait_time=2) if m.media
         ]
 
     def getSizeByMessages(self, messages):

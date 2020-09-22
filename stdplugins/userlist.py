@@ -21,8 +21,8 @@ async def get_users(show):
         if show.pattern_match.group(1):
             searchq = show.pattern_match.group(1)
             async for user in show.client.iter_participants(
-                    show.chat_id, search=f"{searchq}"
-                ):
+                show.chat_id, search=f"{searchq}"
+            ):
                 if user.deleted:
                     mentions += f"\nDeleted Account `{user.id}`"
                 else:
@@ -42,9 +42,7 @@ async def get_users(show):
     try:
         await show.edit(mentions)
     except MessageTooLongError:
-        await show.edit(
-            "Damn, this is a huge group. Uploading users lists as file."
-        )
+        await show.edit("Damn, this is a huge group. Uploading users lists as file.")
         file = open("userslist.txt", "w+")
         file.write(mentions)
         file.close()

@@ -80,7 +80,5 @@ async def _(event):
         url = f"https://nekobin.com/{key}"
         raw = f"https://nekobin.com/raw/{key}"
 
-    reply_text = (
-        f"**Nekofied:**\n - **Link**: [URL]({url})\n - **Raw**: [URL]({raw})"
-    )
+    reply_text = f"**Nekofied:**\n - **Link**: [URL]({url})\n - **Raw**: [URL]({raw})"
     await event.edit(reply_text)

@@ -177,5 +177,7 @@ def indentitems(items, indent, level):
         else:
             islast = i == len(items) - 1
             # no new line character after the last rendered line
-            res += indentstr + item if level == 0 and islast else indentstr + item + "\n"
+            res += (
+                indentstr + item if level == 0 and islast else indentstr + item + "\n"
+            )
     return res

@@ -21,7 +21,7 @@ cur_version = sys.version_info
 if cur_version >= version:  # If the Current Version of Python is 3.0 or above
     import http.client
     import urllib.request
-    from http.client import BadStatusLine, IncompleteRead
+    from http.client import BadStatusLine
     from urllib.parse import quote
     from urllib.request import HTTPError, Request, URLError, urlopen
 
@@ -31,7 +31,7 @@ else:  # If the Current Version of Python is 2.x
 
     import httplib
     import urllib2
-    from httplib import BadStatusLine, IncompleteRead
+    from httplib import BadStatusLine
     from urllib2 import HTTPError, Request, URLError, urlopen
 
     httplib._MAXHEADERS = 1000
@@ -652,9 +652,7 @@ class googleimagesdownload:
             "image_height": main[2],
             "image_width": main[1],
             "image_link": main[0],
-            "image_format": main[0][
-                -1 * (len(main[0]) - main[0].rfind(".") - 1) :
-            ],
+            "image_format": main[0][-1 * (len(main[0]) - main[0].rfind(".") - 1) :],
             "image_description": info["2003"][3],
             "image_host": info["183836587"][0],
             "image_source": info["2003"][2],

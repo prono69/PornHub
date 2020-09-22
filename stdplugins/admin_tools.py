@@ -209,7 +209,6 @@ async def _(event):
 
     datetime.now()
     to_ban_id = None
-    input_cmd = "tmute"
     period = "time=" + event.pattern_match.group(1)
     if period == "time=":
         await event.edit("`Specify the time`")
@@ -260,7 +259,6 @@ async def _(event):
 
     datetime.now()
     to_ban_id = None
-    input_cmd = "tban"
     period = "time=" + event.pattern_match.group(1)
     if period == "time=":
         await event.edit("`Specify the time`")

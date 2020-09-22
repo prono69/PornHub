@@ -71,10 +71,7 @@ async def pollcreator(catpoll):
 
 
 def Build_Poll(options):
-    return [
-        PollAnswer(option, bytes(i))
-        for i, option in enumerate(options, start=1)
-    ]
+    return [PollAnswer(option, bytes(i)) for i, option in enumerate(options, start=1)]
 
 
 SYNTAX.update(

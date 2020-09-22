@@ -1270,10 +1270,7 @@ async def action(event):
         anime = random.choice(action_list)
         anime_list.append(anime + "\n")
         i += 1
-    msg_str = [
-        str(counter) + ". " + i
-        for counter, i in enumerate(anime_list, start=1)
-    ]
+    msg_str = [str(counter) + ". " + i for counter, i in enumerate(anime_list, start=1)]
 
     msg_str = str(msg_str)
     msg_str = msg_str.replace("['", "")
@@ -1302,10 +1299,7 @@ async def action(event):
         anime = random.choice(harem_list)
         anime_list.append(anime + "\n")
         i += 1
-    msg_str = [
-        str(counter) + ". " + i
-        for counter, i in enumerate(anime_list, start=1)
-    ]
+    msg_str = [str(counter) + ". " + i for counter, i in enumerate(anime_list, start=1)]
 
     msg_str = str(msg_str)
     msg_str = msg_str.replace("['", "")
@@ -1334,10 +1328,7 @@ async def action(event):
         anime = random.choice(mecha_list)
         anime_list.append(anime + "\n")
         i += 1
-    msg_str = [
-        str(counter) + ". " + i
-        for counter, i in enumerate(anime_list, start=1)
-    ]
+    msg_str = [str(counter) + ". " + i for counter, i in enumerate(anime_list, start=1)]
 
     msg_str = str(msg_str)
     msg_str = msg_str.replace("['", "")
@@ -1366,10 +1357,7 @@ async def action(event):
         anime = random.choice(romance_list)
         anime_list.append(anime + "\n")
         i += 1
-    msg_str = [
-        str(counter) + ". " + i
-        for counter, i in enumerate(anime_list, start=1)
-    ]
+    msg_str = [str(counter) + ". " + i for counter, i in enumerate(anime_list, start=1)]
 
     msg_str = str(msg_str)
     msg_str = msg_str.replace("['", "")
@@ -1398,10 +1386,7 @@ async def action(event):
         anime = random.choice(isekai_list)
         anime_list.append(anime + "\n")
         i += 1
-    msg_str = [
-        str(counter) + ". " + i
-        for counter, i in enumerate(anime_list, start=1)
-    ]
+    msg_str = [str(counter) + ". " + i for counter, i in enumerate(anime_list, start=1)]
 
     msg_str = str(msg_str)
     msg_str = msg_str.replace("['", "")
@@ -1430,10 +1415,7 @@ async def action(event):
         anime = random.choice(adventure_list)
         anime_list.append(anime + "\n")
         i += 1
-    msg_str = [
-        str(counter) + ". " + i
-        for counter, i in enumerate(anime_list, start=1)
-    ]
+    msg_str = [str(counter) + ". " + i for counter, i in enumerate(anime_list, start=1)]
 
     msg_str = str(msg_str)
     msg_str = msg_str.replace("['", "")
@@ -1462,10 +1444,7 @@ async def action(event):
         anime = random.choice(slice_of_life_list)
         anime_list.append(anime + "\n")
         i += 1
-    msg_str = [
-        str(counter) + ". " + i
-        for counter, i in enumerate(anime_list, start=1)
-    ]
+    msg_str = [str(counter) + ". " + i for counter, i in enumerate(anime_list, start=1)]
 
     msg_str = str(msg_str)
     msg_str = msg_str.replace("['", "")

@@ -36,9 +36,7 @@ async def _(event):
         chat = to_write_chat
     try:
         async for x in borg.iter_participants(chat, filter=ChannelParticipantsAdmins):
-            if not x.deleted and isinstance(
-                x.participant, ChannelParticipantCreator
-            ):
+            if not x.deleted and isinstance(x.participant, ChannelParticipantCreator):
                 mentions += "\n 👑 [{}](tg://user?id={}) `{}`".format(
                     x.first_name, x.id, x.id
                 )

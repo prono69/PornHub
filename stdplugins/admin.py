@@ -352,9 +352,7 @@ async def mute(eventMute):
         return
     self_user = await eventMute.client.get_me()
     if user.id == self_user.id:
-        await eventMute.edit(
-            "`Hands too short, can't duct tape myself...\n(ヘ･_･)ヘ┳━┳`"
-        )
+        await eventMute.edit("`Hands too short, can't duct tape myself...\n(ヘ･_･)ヘ┳━┳`")
         return
     if user.id == allocRAM():
         await eventDemote.edit(
@@ -588,9 +586,7 @@ async def rm_deletedacc(eventDeletedAccs):
     if not admin and not creator:
         await eventDeletedAccs.edit("`I am not an admin here!`")
         return
-    await eventDeletedAccs.edit(
-        "`Deleting deleted accounts...\nOh I can do that?!?!`"
-    )
+    await eventDeletedAccs.edit("`Deleting deleted accounts...\nOh I can do that?!?!`")
     del_u = 0
     del_a = 0
     async for user in eventDeletedAccs.client.iter_participants(
@@ -599,14 +595,10 @@ async def rm_deletedacc(eventDeletedAccs):
         if user.deleted:
             try:
                 await eventDeletedAccs.client(
-                    EditBannedRequest(
-                        eventDeletedAccs.chat_id, user.id, BANNED_RIGHTS
-                    )
+                    EditBannedRequest(eventDeletedAccs.chat_id, user.id, BANNED_RIGHTS)
                 )
             except ChatAdminRequiredError:
-                await eventDeletedAccs.edit(
-                    "`I don't have ban rights in this group`"
-                )
+                await eventDeletedAccs.edit("`I don't have ban rights in this group`")
                 return
             except UserAdminInvalidError:
                 del_u -= 1
@@ -780,9 +772,7 @@ async def kick(eventKickUser):
             eventKickUser.chat_id, user.id, ChatBannedRights(until_date=None)
         )
     )
-    await eventKickUser.edit(
-        f"`Kicked` [{user.first_name}](tg://user?id={user.id})`!`"
-    )
+    await eventKickUser.edit(f"`Kicked` [{user.first_name}](tg://user?id={user.id})`!`")
     if ENABLE_LOG:
         await eventKickUser.client.send_message(
             LOGGING_CHATID,
@@ -812,8 +802,8 @@ async def list_users(eventListUsers):
         if eventListUsers.pattern_match.group(1):
             searchq = eventListUsers.pattern_match.group(1)
             async for user in eventListUsers.client.iter_participants(
-                    eventListUsers.chat_id, search=f"{searchq}"
-                ):
+                eventListUsers.chat_id, search=f"{searchq}"
+            ):
                 if user.deleted:
                     mentions += f"\nDeleted Account `{user.id}`"
                 else:
@@ -822,8 +812,8 @@ async def list_users(eventListUsers):
                     )
         else:
             async for user in eventListUsers.client.iter_participants(
-                    eventListUsers.chat_id
-                ):
+                eventListUsers.chat_id
+            ):
                 if user.deleted:
                     mentions += f"\nDeleted Account `{user.id}`"
                 else:
