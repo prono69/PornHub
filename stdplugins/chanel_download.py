@@ -17,11 +17,10 @@ SLEEP_TIME = 5
 
 
 def getProgressBarString(percentage):
-    progress_bar_str = "[{0}{1}]\n".format(
+    return "[{0}{1}]\n".format(
         "".join(["▰" for i in range(math.floor(percentage / 5))]),
         "".join(["▱" for i in range(18 - math.floor(percentage / 5))]),
     )
-    return progress_bar_str
 
 
 def getProgressString(tg_obj):
@@ -101,11 +100,11 @@ class TelegramDownloader:
         return self.count
 
     async def getMessages(self, peer_id):
-        messages = []
-        async for m in borg.iter_messages(peer_id, limit=None, wait_time=2):
-            if m.media:
-                messages.append(m)
-        return messages
+        return [
+            m
+            for m in borg.iter_messages(peer_id, limit=None, wait_time=2)
+            if m.media
+        ]
 
     def getSizeByMessages(self, messages):
         size = 0

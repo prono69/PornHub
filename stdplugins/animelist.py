@@ -77,8 +77,6 @@ async def anime(event):
         trailer = anime.get("trailer_url")
         if trailer:
             bru = f"<a href='{trailer}'>Trailer</a>"
-        else:
-            pass
         url = anime.get("url")
     else:
         await event.edit("`No results Found!`")

@@ -17,10 +17,12 @@ async def admin_groups(cat):
     catgroups = []
     async for dialog in cat.client.iter_dialogs():
         entity = dialog.entity
-        if isinstance(entity, Channel):
-            if entity.megagroup:
-                if entity.creator or entity.admin_rights:
-                    catgroups.append(entity.id)
+        if (
+            isinstance(entity, Channel)
+            and entity.megagroup
+            and (entity.creator or entity.admin_rights)
+        ):
+            catgroups.append(entity.id)
     return catgroups
 
 

@@ -16,9 +16,7 @@ GENIUS = Config.GENIUS
 
 @borg.on(admin_cmd(pattern="lyrics ?(.*)"))
 async def lyrics(lyric):
-    if r"-" in lyric.text:
-        pass
-    else:
+    if r"-" not in lyric.text:
         await lyric.edit(
             "Please use '-' as divider for <artist> and <song>\n"
             "eg: `.lyrics Alan Walker - Lily`"

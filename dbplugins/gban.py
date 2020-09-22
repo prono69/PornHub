@@ -50,9 +50,7 @@ async def catgban(cat):
     await cat.edit("`Gbaning this gey...`")
     start = datetime.now()
     user, reason = await get_user_from_event(cat)
-    if user:
-        pass
-    else:
+    if not user:
         return
     if user.id == (await cat.client.get_me()).id:
         await cat.edit("`Why would i ban myself.. KEK`")
@@ -76,7 +74,7 @@ async def catgban(cat):
     await cat.edit(
         f"`Initiating Gban of the` [User](tg://user?id={user.id}) `in {len(san)} groups`"
     )
-    for i in range(0, sandy):
+    for i in range(sandy):
         try:
             await cat.client(EditBannedRequest(san[i], user.id, BANNED_RIGHTS))
             await asyncio.sleep(0.5)
@@ -105,13 +103,12 @@ async def catgban(cat):
             f"[{user.first_name}](tg://user?id={user.id}) was gbanned in `{count}` groups in `{cattaken} seconds`!!"
         )
 
-    if BOTLOG:
-        if count != 0:
-            await borg.send_message(
-                BOTLOG_CHATID,
-                f"#GBAN\nGlobal BAN\nUser: [{user.first_name}](tg://user?id={user.id})\nID: `{user.id}`\
+    if BOTLOG and count != 0:
+        await borg.send_message(
+            BOTLOG_CHATID,
+            f"#GBAN\nGlobal BAN\nUser: [{user.first_name}](tg://user?id={user.id})\nID: `{user.id}`\
                                                 \nReason: `{reason}`\nBanned in `{count}` groups\nTime taken = `{cattaken} seconds`",
-            )
+        )
 
 
 @borg.on(admin_cmd(pattern="ungban(?: |$)(.*)"))
@@ -119,9 +116,7 @@ async def catgban(cat):
     await cat.edit("`Ungbaning this Nibba...`")
     start = datetime.now()
     user, reason = await get_user_from_event(cat)
-    if user:
-        pass
-    else:
+    if not user:
         return
     if gban_sql.is_gbanned(user.id):
         gban_sql.catungban(user.id)
@@ -140,7 +135,7 @@ async def catgban(cat):
     await cat.edit(
         f"`Initiating Ungban of the` [user](tg://user?id={user.id}) `in {len(san)} groups`"
     )
-    for i in range(0, sandy):
+    for i in range(sandy):
         try:
             await cat.client(EditBannedRequest(san[i], user.id, UNBAN_RIGHTS))
             await asyncio.sleep(0.5)
@@ -161,13 +156,12 @@ async def catgban(cat):
             f"[{user.first_name}](tg://user?id={user.id}) was ungbanned in `{count}` groups in `{cattaken} seconds`!!"
         )
 
-    if BOTLOG:
-        if count != 0:
-            await borg.send_message(
-                BOTLOG_CHATID,
-                f"#UNGBAN\nGlobal UNBAN\nUser: [{user.first_name}](tg://user?id={user.id})\nID: {user.id}\
+    if BOTLOG and count != 0:
+        await borg.send_message(
+            BOTLOG_CHATID,
+            f"#UNGBAN\nGlobal UNBAN\nUser: [{user.first_name}](tg://user?id={user.id})\nID: {user.id}\
                                                 \nReason: `{reason}`\nUnbanned in `{count}` groups\nTime taken = `{cattaken} seconds`",
-            )
+        )
 
 
 @borg.on(admin_cmd(pattern="listgban$"))

@@ -10,7 +10,7 @@ async def _(event):
     if event.fwd_from:
         return
     input_str = event.pattern_match.group(1)
-    for i in range(int(input_str)):
+    for _ in range(int(input_str)):
         m = await event.respond("https://github.com/prono69/PepeBot")
         await m.delete()
     """if "|" in input_str:

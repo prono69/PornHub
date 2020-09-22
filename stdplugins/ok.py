@@ -13,8 +13,6 @@ from uniborg.util import admin_cmd
 async def _(event):
     if event.fwd_from:
         return
-    animation_interval = 0.00001
-    animation_ttl = range(0, 90)
     input_str = event.pattern_match.group(1)
     if input_str == "ok":
         await event.edit(input_str)
@@ -39,6 +37,8 @@ async def _(event):
             "Ok Sar 😇",
         ]
 
+        animation_interval = 0.00001
+        animation_ttl = range(90)
         for i in animation_ttl:
 
             await asyncio.sleep(animation_interval)

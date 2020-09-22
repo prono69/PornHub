@@ -110,9 +110,10 @@ async def download(dryb):
                 ms = (end - start).seconds
                 await dryb.edit(
                     "Downloaded to `{}` in {} seconds.\nNow Uploading to GDrive...".format(
-                        downloaded_file_name, ms
+                        required_file_name, ms
                     )
                 )
+
     if required_file_name:
         #
         if Config.G_DRIVE_AUTH_TOKEN_DATA is not None:
@@ -223,8 +224,7 @@ async def upload_file(http, file_path, file_name, mime_type, event):
     ).execute()
     # Define file instance and get url for download
     file = drive_service.files().get(fileId=response.get("id")).execute()
-    download_url = response.get("webContentLink")
-    return download_url
+    return response.get("webContentLink")
 
 
 @borg.on(admin_cmd(pattern="gfolder ?(.*)", allow_sudo=True))

@@ -248,7 +248,7 @@ async def dyno_manage(dyno):
             sleep += 1
         await dyno.respond(f"⬢**{HEROKU_APP_NAME}** `turned off...`")
         return await dyno.delete()
-    elif exe == "cancel deploy" or exe == "cancel build":
+    elif exe in ["cancel deploy", "cancel build"]:
         """ - Only cancel 1 recent builds from activity - """
         build_id = dyno.pattern_match.group(2)
         if build_id is None:

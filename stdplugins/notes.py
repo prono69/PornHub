@@ -101,23 +101,6 @@ async def kick_marie_notes(kick):
     if kick.is_private:
         await event.edit("`You cant do that in DMs`")
         return
-        bot_type = kick.pattern_match.group(1).lower()
-        if bot_type not in ["marie", "rose"]:
-            return await kick.edit("`That bot is not yet supported!`")
-            await kick.edit("```Will be kicking away all Notes!```")
-            time.sleep(3)
-            resp = await kick.get_reply_message()
-            filters = resp.text.split("-")[1:]
-            for i in filters:
-                if bot_type == "marie":
-                    await kick.reply("/clear %s" % (i.strip()))
-                if bot_type == "rose":
-                    i = i.replace("`", "")
-                    await kick.reply("/clear %s" % (i.strip()))
-                    time.sleep(0.3)
-                    await kick.respond(
-                        "```Successfully purged bots notes yaay!```\n Gimme cookies!"
-                    )
     if LOGGER:
         await kick.client.send_message(
             LOGGER, "I cleaned all Notes at " + str(kick.chat_id)

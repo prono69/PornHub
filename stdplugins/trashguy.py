@@ -68,11 +68,11 @@ class TrashGuy:
         self.wrap_monospace = wrap_monospace
 
     def __str__(self):
-        return "\n".join(frame for frame in self)
+        return "\n".join(iter(self))
 
     def __add(self, frames: list, frame):
-        wrapper = [Symbols.MONOSPACE_WRAPPER]
         if self.wrap_monospace:
+            wrapper = [Symbols.MONOSPACE_WRAPPER]
             frames.append("".join(wrapper + list(frame) + wrapper))
         else:
             frames.append("".join(list(frame)))

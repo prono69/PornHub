@@ -35,7 +35,7 @@ async def _(event):
         async for message in borg.iter_messages(
             event.chat_id, min_id=event.reply_to_msg_id, from_user=from_user
         ):
-            i = i + 1
+            i += 1
             msgs.append(message)
             if len(msgs) == 100:
                 await borg.delete_messages(event.chat_id, msgs, revoke=True)
@@ -58,7 +58,7 @@ async def purgeme(delme):
     async for message in delme.client.iter_messages(delme.chat_id, from_user="me"):
         if i > count + 1:
             break
-        i = i + 1
+        i += 1
         await message.delete()
 
     smsg = await delme.client.send_message(
@@ -97,7 +97,7 @@ async def fastpurger(purg):
     if purg.reply_to_msg_id is not None:
         async for msg in itermsg:
             msgs.append(msg)
-            count = count + 1
+            count += 1
             msgs.append(purg.reply_to_msg_id)
             if len(msgs) == 100:
                 await purg.client.delete_messages(chat, msgs)
@@ -126,7 +126,7 @@ async def yeetpurge(e):
         await e.edit("err \\\nNo reply")
         return
     if e.from_id not in _YEETPURGES[selfonly]:
-        _YEETPURGES[selfonly][e.from_id] = dict()
+        _YEETPURGES[selfonly][e.from_id] = {}
     cond = e.chat_id not in _YEETPURGES[selfonly][e.from_id]
     if cond:
         _YEETPURGES[selfonly][e.from_id][e.chat_id] = e

@@ -29,14 +29,11 @@ async def _(event):
                 m = f"/deepfry {level}"
                 msg_reply = await conv.send_message(m, reply_to=msg.id)
                 r = await conv.get_response()
-                response = await conv.get_response()
             elif reply_message.gif:
                 m = "/deepfry"
                 msg_reply = await conv.send_message(m, reply_to=msg.id)
                 r = await conv.get_response()
-                response = await conv.get_response()
-            else:
-                response = await conv.get_response()
+            response = await conv.get_response()
             """ Don't spam notification """
             await event.client.send_read_acknowledge(conv.chat_id)
         except YouBlockedUserError:

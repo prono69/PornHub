@@ -14,8 +14,7 @@ async def shout(args):
         messagestr = args.text
         messagestr = messagestr[7:]
         text = " ".join(messagestr)
-        result = []
-        result.append(" ".join([s for s in text]))
+        result = [" ".join([s for s in text])]
         for pos, symbol in enumerate(text[1:]):
             result.append(symbol + " " + "  " * pos + symbol)
         result = list("\n".join(result))

@@ -29,8 +29,6 @@ async def yt_search(video_q):
         else 10
     )
     result = ""
-    i = 1
-
     if Config.YOUTUBE_API_KEY is None:
         await video_q.edit(
             "`Error: YouTube API key missing!\
@@ -43,11 +41,9 @@ async def yt_search(video_q):
     full_response = youtube_search(query, resultamt=resultamt)
     videos_json = full_response[1]
 
-    for video in videos_json:
+    for i, video in enumerate(videos_json, start=1):
         result += f"{i}. [{unescape(video['snippet']['title'])}]\
 (https://www.youtube.com/watch?v={video['id']['videoId']})\n\n"
-
-        i += 1
 
     reply_text = f"**Search Query:**\n`{query}`\n\n**Result:**\n{result}"
 

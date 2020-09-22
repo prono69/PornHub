@@ -20,8 +20,8 @@ from telethon.tl import functions
 
 @borg.on(events.NewMessage(pattern=r"\.kapp", outgoing=True))
 async def carbon_api(e):
+    kpp = "karbonpp.png"
     while True:
-        kpp = "karbonpp.png"
         RED = random.randint(0, 256)
         GREEN = random.randint(0, 256)
         BLUE = random.randint(0, 256)

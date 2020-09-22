@@ -29,7 +29,6 @@ async def _(event):
     if not reply_message.media:
         await event.edit("```reply to a image/sticker/gif```")
         return
-    chat = "@MemeAutobot"
     reply_message.sender
     await borg.download_file(reply_message.media)
     if reply_message.sender.bot:
@@ -42,6 +41,7 @@ async def _(event):
         await asyncio.sleep(5)
 
     async with borg.conversation("@MemeAutobot") as bot_conv:
+        chat = "@MemeAutobot"
         try:
             memeVar = event.pattern_match.group(1)
             await silently_send_message(bot_conv, "/start")
@@ -119,10 +119,11 @@ def is_message_image(message):
     if message.media:
         if isinstance(message.media, MessageMediaPhoto):
             return True
-        if message.media.document:
-            if message.media.document.mime_type.split("/")[0] == "image":
-                return True
-        return False
+        return bool(
+            message.media.document
+            and message.media.document.mime_type.split("/")[0] == "image"
+        )
+
     return False
 
 

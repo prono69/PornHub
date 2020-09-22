@@ -16,10 +16,6 @@ async def _(event):
 
         return
 
-    animation_interval = 0.3
-
-    animation_ttl = range(0, 28)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "mc":
@@ -56,6 +52,10 @@ async def _(event):
             "◼️◼️◼️◼️◼️\n◼️◼️◼️◼️◼️\n◼️◼️◼️◼️◼️\n◼️◼️◼️◼️◼️\n◼️◼️◼️◼️◼️",
             "◼️◼️◼️◼️◼️\n◼️◻️◼️◻️◼️\n◼️◼️◼️◼️◼️\n◼️◻️◻️◻️◼️\n◼️◼️◼️◼️◼️",
         ]
+
+        animation_interval = 0.3
+
+        animation_ttl = range(28)
 
         for i in animation_ttl:
 

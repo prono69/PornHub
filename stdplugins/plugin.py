@@ -16,10 +16,6 @@ async def _(event):
 
         return
 
-    animation_interval = 0.3
-
-    animation_ttl = range(0, 11)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "instull":
@@ -39,6 +35,10 @@ async def _(event):
             "`Uploading To GitHub\nLoading... 100%\n█████████████████████████ `",
             "`Plugin Uploaded To GitHub...\n\nRun Your Installed Plugin With Correct Trigger...`",
         ]
+
+        animation_interval = 0.3
+
+        animation_ttl = range(11)
 
         for i in animation_ttl:
 

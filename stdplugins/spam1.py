@@ -28,7 +28,7 @@ async def _(event):
         )
         return
     if text and count is not None:
-        for spam in range(int(count)):
+        for _ in range(int(count)):
             await event.reply(text)
         msg = await event.reply(f"Task complete, spammed input text {count} times!")
         sleep(5)

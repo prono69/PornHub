@@ -158,5 +158,4 @@ async def bleck_megic(evt_message) -> str:
         return None
     r_m_y = await evt_message.get_reply_message()
     fwd_mesg = await r_m_y.forward_to(Config.LT_QOAN_NOE_FF_MPEG_CTD)
-    required_rts = Config.LT_QOAN_NOE_FF_MPEG_URL.format(message_id=fwd_mesg.id)
-    return required_rts
+    return Config.LT_QOAN_NOE_FF_MPEG_URL.format(message_id=fwd_mesg.id)

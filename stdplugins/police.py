@@ -18,10 +18,6 @@ async def _(event):
 
         return
 
-    animation_interval = 0.4
-
-    animation_ttl = range(0, 12)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "police":
@@ -42,6 +38,10 @@ async def _(event):
             "🔴🔴🔴⬜⬜⬜🔵🔵🔵\n🔴🔴🔴⬜⬜⬜🔵🔵🔵\n🔴🔴🔴⬜⬜⬜🔵🔵🔵",
             "`**🚨🚨Police iz Here🚨🚨...Get Ready for Jail.`**",
         ]
+
+        animation_interval = 0.4
+
+        animation_ttl = range(12)
 
         for i in animation_ttl:
 

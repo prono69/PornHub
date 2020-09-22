@@ -55,8 +55,8 @@ async def dva(event):
 
 @borg.on(admin_cmd(pattern="nsfw"))
 async def avatarlewd(event):
-    target = "nsfw_avatar"
     with open("temp.png", "wb") as f:
+        target = "nsfw_avatar"
         f.write(requests.get(nekos.img(target)).content)
     img = Image.open("temp.png")
     img.save("temp.webp", "webp")
@@ -90,8 +90,8 @@ async def _(event):
 
 @borg.on(admin_cmd(pattern="gasm"))
 async def gasm(event):
-    target = "gasm"
     with open("temp.png", "wb") as f:
+        target = "gasm"
         f.write(requests.get(nekos.img(target)).content)
     img = Image.open("temp.png")
     img.save("temp.webp", "webp")
@@ -101,8 +101,8 @@ async def gasm(event):
 
 @borg.on(admin_cmd(pattern="ifu"))
 async def waifu(event):
-    target = "waifu"
     with open("temp.png", "wb") as f:
+        target = "waifu"
         f.write(requests.get(nekos.img(target)).content)
     img = Image.open("temp.png")
     img.save("temp.webp", "webp")

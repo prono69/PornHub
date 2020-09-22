@@ -25,10 +25,6 @@ async def _(event):
 
         return
 
-    animation_interval = 9
-
-    animation_ttl = range(0, 15)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "wupload":
@@ -52,6 +48,10 @@ async def _(event):
             "UPLOADING FILE TO WHATSAPP GROUP COMPLETED!\nFILE VERIFIED: ✅",
             "API TERMINATED UNTIL FURTHER USAGE...",
         ]
+
+        animation_interval = 9
+
+        animation_ttl = range(15)
 
         for i in animation_ttl:
 

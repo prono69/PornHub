@@ -18,10 +18,6 @@ async def _(event):
 
         return
 
-    animation_interval = 0.2
-
-    animation_ttl = range(0, 27)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "rapecat":
@@ -58,6 +54,10 @@ async def _(event):
             "🐅",
             "**rApEd**",
         ]
+
+        animation_interval = 0.2
+
+        animation_ttl = range(27)
 
         for i in animation_ttl:
 

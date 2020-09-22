@@ -25,10 +25,6 @@ async def _(event):
 
         return
 
-    animation_interval = 2
-
-    animation_ttl = range(0, 15)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "wahack":
@@ -52,6 +48,10 @@ async def _(event):
             "Hacking complete!\nUploading file...",
             "Targeted Account Hacked...!\n\n ✅ File has been successfully uploaded to my server.\nWhatsApp Database:\n`./DOWNLOADS/msgstore.db.crypt12`",
         ]
+
+        animation_interval = 2
+
+        animation_ttl = range(15)
 
         for i in animation_ttl:
 

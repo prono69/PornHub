@@ -208,15 +208,8 @@ async def _(event):
         return
 
     datetime.now()
-    x = 1
     to_ban_id = None
     input_cmd = "tmute"
-    if input_cmd == "iban":
-        pass
-    elif input_cmd == "iunban":
-        pass
-    elif input_cmd == "tmute":
-        pass
     period = "time=" + event.pattern_match.group(1)
     if period == "time=":
         await event.edit("`Specify the time`")
@@ -232,6 +225,7 @@ async def _(event):
             time = str(period // 86400) + " " + "days"
         else:
             time = str(period) + " " + "seconds"
+        x = 1
         if x == 1:
             event.reply_to_msg_id
             r_mesg = await event.get_reply_message()
@@ -265,15 +259,8 @@ async def _(event):
         return
 
     datetime.now()
-    x = 1
     to_ban_id = None
     input_cmd = "tban"
-    if input_cmd == "iban":
-        pass
-    elif input_cmd == "iunban":
-        pass
-    elif input_cmd == "tban":
-        pass
     period = "time=" + event.pattern_match.group(1)
     if period == "time=":
         await event.edit("`Specify the time`")
@@ -289,6 +276,7 @@ async def _(event):
             time = str(period // 86400) + " " + "days"
         else:
             time = str(period) + " " + "seconds"
+        x = 1
         if x == 1:
             event.reply_to_msg_id
             r_mesg = await event.get_reply_message()
