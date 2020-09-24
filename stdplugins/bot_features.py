@@ -229,7 +229,7 @@ async def voicy(event):
             await event.edit(f"`{response.text}`")
 
 
-@borg.on(admin_cmd(pattern="mashup ?(.*)"))
+@borg.on(admin_cmd(pattern="mash ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -305,7 +305,7 @@ async def _(event):
 
 SYNTAX.update(
     {
-        "mashup": "`.mashup` <text> :\
+        "mashup": "`.mash` <text> :\
       \n**USAGE:** Send you the related video message of given text . "
     }
 )

@@ -15,7 +15,7 @@ from sample_config import Config
 from userbot.functions import *
 
 StartTime = time.time()
-pepe = "2.9.8"
+pepe = "2.9.9"
 
 CONSOLE_LOGGER_VERBOSE = sb(os.environ.get("CONSOLE_LOGGER_VERBOSE", "False"))
 

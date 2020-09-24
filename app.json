@@ -169,12 +169,12 @@
       "required": false
     },
     "CHROME_BIN": {
-      "description": "For Carbon.py",
+      "description": "Don't Edit this",
       "value": "/usr/bin/google-chrome",
       "required": false
     },
     "CHROME_DRIVER": {
-      "description": "For Carbon.py",
+      "description": "Don't edit this",
       "value": "/usr/bin/chromedriver",
       "required": false
     },
@@ -184,6 +184,7 @@
     },
     "GIT_REPO_NAME": {
       "description": "This is required for commit functionality to work.",
+      "value": "",
       "required": false
     },
     "TEMP_DIR": {

@@ -2,17 +2,17 @@
 Available Commands:
 .tts LanguageCode as reply to a message
 .tts LangaugeCode | text to speak"""
-
+ 
 import asyncio
 import os
-import subprocess
 from datetime import datetime
-
 from gtts import gTTS
-
-from uniborg.util import admin_cmd
-
-
+from uniborg.util import (
+    admin_cmd,
+    run_command
+)
+ 
+ 
 @borg.on(admin_cmd(pattern="tts ?(.*)"))
 async def _(event):
     if event.fwd_from:
@@ -22,11 +22,11 @@ async def _(event):
     if event.reply_to_msg_id:
         previous_message = await event.get_reply_message()
         text = previous_message.message
-        lan = input_str or "en"
+        lan = input_str
     elif "|" in input_str:
         lan, text = input_str.split("|")
     else:
-        await event.edit("`Invalid Syntax. Module Stopping.`")
+        await event.edit("`Invalid Syntax. Module stopping.`")
         return
     text = text.strip()
     lan = lan.strip()
@@ -34,10 +34,11 @@ async def _(event):
         os.makedirs(Config.TMP_DOWNLOAD_DIRECTORY)
     required_file_name = Config.TMP_DOWNLOAD_DIRECTORY + "voice.ogg"
     try:
-        tts = gTTS(text, lan=lan)
+        tts = gTTS(text, lang=lan)
         tts.save(required_file_name)
         command_to_execute = [
             "ffmpeg",
+            "-hide_banner",
             "-i",
             required_file_name,
             "-map",
@@ -48,14 +49,11 @@ async def _(event):
             "100k",
             "-vbr",
             "on",
-            required_file_name + ".opus",
+            required_file_name + ".opus"
         ]
-        try:
-            t_response = subprocess.check_output(
-                command_to_execute, stderr=subprocess.STDOUT
-            )
-        except (subprocess.CalledProcessError, NameError, FileNotFoundError) as exc:
-            await event.edit(str(exc))
+        await run_command(command_to_execute)
+        if not os.path.exists(required_file_name + ".opus"):
+            await event.edit("`Failed to convert`")
             # continue sending required_file_name
         else:
             os.remove(required_file_name)
@@ -68,11 +66,12 @@ async def _(event):
             # caption="Processed {} ({}) in {} seconds!".format(text[0:97], lan, ms),
             reply_to=event.message.reply_to_msg_id,
             allow_cache=False,
-            voice_note=True,
+            voice_note=True
         )
         os.remove(required_file_name)
         await event.edit("Processed {} ({}) in {} seconds!".format(text[0:97], lan, ms))
-        await asyncio.sleep(3)
+        await asyncio.sleep(5)
         await event.delete()
     except Exception as e:
         await event.edit(str(e))
+ 

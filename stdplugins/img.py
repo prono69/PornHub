@@ -15,7 +15,7 @@ from userbot.utils.google_images_download import googleimagesdownload
 
 @borg.on(admin_cmd(pattern=r"img ?(\d+)? ?(.*)?"))
 async def img_sampler(event):
-    await event.edit("`Processing Bsdk..`")
+    await event.edit("`Processing...`")
     reply = await event.get_reply_message()
     if event.pattern_match.group(2):
         query = event.pattern_match.group(2)
@@ -26,7 +26,11 @@ async def img_sampler(event):
         return
 
     lim = findall(r"lim=\d+", query)
-    lim = event.pattern_match.group(1) or 5
+    lim = (
+        int(event.pattern_match.group(1))
+        if event.pattern_match.group(1) is not None
+        else 5
+    )
     try:
         lim = lim[0]
         lim = lim.replace("lim=", "")

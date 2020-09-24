@@ -6,6 +6,7 @@ from os.path import basename
 from typing import Optional, Tuple
 
 import requests
+from selenium import webdriver
 from bs4 import BeautifulSoup
 from PIL import Image
 from telethon.tl.types import Channel, DocumentAttributeFilename
@@ -67,66 +68,81 @@ async def runcmd(cmd: str) -> Tuple[str, str, int, int]:
 # for getmusic
 
 
-async def catmusic(cat, QUALITY):
+async def catmusic(cat, QUALITY, hello):
     search = cat
-    headers = {
-        "User-Agent": "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
-    }
-    html = requests.get(
-        "https://www.youtube.com/results?search_query=" + search, headers=headers
-    ).text
-    soup = BeautifulSoup(html, "html.parser")
-    for link in soup.find_all("a"):
-        if "/watch?v=" in link.get("href"):
-            # May change when Youtube Website may get updated in the future.
-            video_link = link.get("href")
-            break
-    video_link = "http://www.youtube.com/" + video_link
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument("--ignore-certificate-errors")
+    chrome_options.add_argument("--test-type")
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.binary_location = Config.CHROME_BIN
+    driver = webdriver.Chrome(chrome_options=chrome_options)
+    driver.get("https://www.youtube.com/results?search_query=" + search)
+    user_data = driver.find_elements_by_xpath('//*[@id="video-title"]')
+    for i in user_data:
+        video_link = i.get_attribute("href")
+        break
     if not os.path.isdir("./temp/"):
         os.makedirs("./temp/")
-    command = (
-        'youtube-dl -o "./temp/%(title)s.%(ext)s" --extract-audio --audio-format mp3 --audio-quality '
-        + QUALITY
-        + " "
-        + video_link
-    )
-    os.system(command)
-    thumb = (
-        'youtube-dl -o "./temp/%(title)s.%(ext)s" --write-thumbnail --skip-download '
-        + video_link
-    )
-    os.system(thumb)
+    if not video_link:
+        await hello.edit(f"Sorry. I can't find that song `{search}`")
+        return
+    try:
+        command = (
+            'youtube-dl -o "./temp/%(title)s.%(ext)s" --extract-audio --audio-format mp3 --audio-quality '
+            + QUALITY
+            + " "
+            + video_link
+        )
+        os.system(command)
+    except Exception as e:
+        return await hello.edit(f"`Error:\n {e}`")
+    try:
+        thumb = (
+            'youtube-dl -o "./temp/%(title)s.%(ext)s" --write-thumbnail --skip-download '
+            + video_link
+        )
+        os.system(thumb)
+    except Exception as e:
+        return await hello.edit(f"`Error:\n {e}`")
 
 
-async def catmusicvideo(cat):
+async def catmusicvideo(cat, hello):
     search = cat
-    headers = {
-        "User-Agent": "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
-    }
-    html = requests.get(
-        "https://www.youtube.com/results?search_query=" + search, headers=headers
-    ).text
-    soup = BeautifulSoup(html, "html.parser")
-    for link in soup.find_all("a"):
-        if "/watch?v=" in link.get("href"):
-            # May change when Youtube Website may get updated in the future.
-            video_link = link.get("href")
-            break
-    video_link = "http://www.youtube.com/" + video_link
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument("--ignore-certificate-errors")
+    chrome_options.add_argument("--test-type")
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.binary_location = Config.CHROME_BIN
+    driver = webdriver.Chrome(chrome_options=chrome_options)
+    driver.get("https://www.youtube.com/results?search_query=" + search)
+    user_data = driver.find_elements_by_xpath('//*[@id="video-title"]')
+    for i in user_data:
+        video_link = i.get_attribute("href")
+        break
     if not os.path.isdir("./temp/"):
         os.makedirs("./temp/")
-    command = (
-        'youtube-dl -o "./temp/%(title)s.%(ext)s" -f "[filesize<20M]" ' + video_link
-    )
-    os.system(command)
-    thumb = (
-        'youtube-dl -o "./temp/%(title)s.%(ext)s" --write-thumbnail --skip-download '
-        + video_link
-    )
-    os.system(thumb)
-
-
-# https://github.com/pokurt/LyndaRobot/blob/7556ca0efafd357008131fa88401a8bb8057006f/lynda/modules/helper_funcs/string_handling.py#L238
+    if not video_link:
+        await hello.edit(f"Sorry. I can't find that song `{search}`")
+        return
+    try:
+        command = (
+            'youtube-dl -o "./temp/%(title)s.%(ext)s" -f "[filesize<20M]" ' + video_link
+        )
+        os.system(command)
+    except Exception as e:
+        return await hello.edit(f"`Error:\n {e}`")
+    try:
+        thumb = (
+            'youtube-dl -o "./temp/%(title)s.%(ext)s" --write-thumbnail --skip-download '
+            + video_link
+        )
+        os.system(thumb)
+    except Exception as e:
+        return await hello.edit(f"`Error:\n {e}`")
 
 
 async def extract_time(cat, time_val):
@@ -306,3 +322,4 @@ async def check_media(reply_message):
         return False
     else:
         return data
+  

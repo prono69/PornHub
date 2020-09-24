@@ -69,6 +69,8 @@ async def _(event):
     cap_lst = []
     async with aiohttp.ClientSession() as requests:
         for result in response["results"]:
+        	if len(url_lst) > Config.TG_GLOBAL_ALBUM_LIMIT:
+                break
             caption = result.get("description")
             image_url = result.get("url")
             image_req_set = await requests.get(image_url)

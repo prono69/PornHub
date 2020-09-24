@@ -5,6 +5,8 @@
 import math
 import os
 import re
+import asyncio
+from typing import List
 import time
 from re import findall, match
 from typing import List
@@ -191,3 +193,69 @@ async def edit_or_reply(event, text):
             return await event.reply(text)
     else:
         return await event.edit(text)
+
+async def run_command(command: List[str]) -> (str, str):
+    process = await asyncio.create_subprocess_exec(
+        *command,
+        # stdout must a pipe to be accessible as process.stdout
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE,
+    )
+    # Wait for the subprocess to finish
+    stdout, stderr = await process.communicate()
+    e_response = stderr.decode().strip()
+    t_response = stdout.decode().strip()
+    return t_response, e_response
+
+
+async def take_screen_shot(video_file, output_directory, ttl):
+    # https://stackoverflow.com/a/13891070/4723940
+    out_put_file_name = output_directory + \
+        "/" + str(time.time()) + ".jpg"
+    file_genertor_command = [
+        "ffmpeg",
+        "-ss",
+        str(ttl),
+        "-i",
+        video_file,
+        "-vframes",
+        "1",
+        out_put_file_name
+    ]
+    # width = "90"
+    t_response, e_response = await run_command(file_genertor_command)
+    if os.path.lexists(out_put_file_name):
+        return out_put_file_name
+    else:
+        logger.info(e_response)
+        logger.info(t_response)
+        return None
+
+# https://github.com/Nekmo/telegram-upload/blob/master/telegram_upload/video.py#L26
+
+async def cult_small_video(video_file, output_directory, start_time, end_time):
+    # https://stackoverflow.com/a/13891070/4723940
+    out_put_file_name = output_directory + \
+        "/" + str(round(time.time())) + ".mp4"
+    file_genertor_command = [
+        "ffmpeg",
+        "-i",
+        video_file,
+        "-ss",
+        start_time,
+        "-to",
+        end_time,
+        "-async",
+        "1",
+        "-strict",
+        "-2",
+        out_put_file_name
+    ]
+    t_response, e_response = await run_command(file_genertor_command)
+    if os.path.lexists(out_put_file_name):
+        return out_put_file_name
+    else:
+        logger.info(e_response)
+        logger.info(t_response)
+        return None
+        
