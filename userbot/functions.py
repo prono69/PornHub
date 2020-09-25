@@ -6,9 +6,8 @@ from os.path import basename
 from typing import Optional, Tuple
 
 import requests
-from selenium import webdriver
-from bs4 import BeautifulSoup
 from PIL import Image
+from selenium import webdriver
 from telethon.tl.types import Channel, DocumentAttributeFilename
 
 # gban
@@ -322,4 +321,3 @@ async def check_media(reply_message):
         return False
     else:
         return data
-  

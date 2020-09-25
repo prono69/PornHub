@@ -17,11 +17,7 @@ from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
 from telethon.tl.types import DocumentAttributeAudio, DocumentAttributeVideo
 
-from uniborg.util import (
-    progress,
-    admin_cmd,
-    take_screen_shot
-)
+from uniborg.util import admin_cmd, progress, take_screen_shot
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.WARN
@@ -205,7 +201,7 @@ async def _(event):
         height = 0
         if metadata:
             if metadata.has("duration"):
-                duration = metadata.get('duration').seconds
+                duration = metadata.get("duration").seconds
             if os.path.exists(thumb_image_path):
                 metadata = extractMetadata(createParser(thumb_image_path))
                 if metadata.has("width"):
@@ -216,9 +212,7 @@ async def _(event):
             thumb = thumb_image_path
         else:
             thumb = await take_screen_shot(
-                file_name,
-                Config.TMP_DOWNLOAD_DIRECTORY,
-                duration // 2
+                file_name, Config.TMP_DOWNLOAD_DIRECTORY, duration // 2
             )
         # Telegram only works with MP4 files
         # this is good, since with MKV files sent as streamable Telegram responds,

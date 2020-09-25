@@ -7,7 +7,6 @@ Audio and video downloader using Youtube-dl
 """
 import asyncio
 import logging
-import math
 import os
 import re
 import shutil
@@ -29,7 +28,7 @@ from youtube_dl.utils import (
 )
 
 from sample_config import Config
-from uniborg.util import admin_cmd, humanbytes, progress, time_formatter
+from uniborg.util import admin_cmd, progress
 
 logging.basicConfig(
     format="[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s", level=logging.WARNING
@@ -37,6 +36,7 @@ logging.basicConfig(
 
 
 DELETE_TIMEOUT = 5
+
 
 @borg.on(admin_cmd(pattern="playlist(a|v) ?(.*)"))
 async def download_video(v_url):

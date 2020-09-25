@@ -2,17 +2,16 @@
 Available Commands:
 .tts LanguageCode as reply to a message
 .tts LangaugeCode | text to speak"""
- 
+
 import asyncio
 import os
 from datetime import datetime
+
 from gtts import gTTS
-from uniborg.util import (
-    admin_cmd,
-    run_command
-)
- 
- 
+
+from uniborg.util import admin_cmd, run_command
+
+
 @borg.on(admin_cmd(pattern="tts ?(.*)"))
 async def _(event):
     if event.fwd_from:
@@ -49,7 +48,7 @@ async def _(event):
             "100k",
             "-vbr",
             "on",
-            required_file_name + ".opus"
+            required_file_name + ".opus",
         ]
         await run_command(command_to_execute)
         if not os.path.exists(required_file_name + ".opus"):
@@ -66,7 +65,7 @@ async def _(event):
             # caption="Processed {} ({}) in {} seconds!".format(text[0:97], lan, ms),
             reply_to=event.message.reply_to_msg_id,
             allow_cache=False,
-            voice_note=True
+            voice_note=True,
         )
         os.remove(required_file_name)
         await event.edit("Processed {} ({}) in {} seconds!".format(text[0:97], lan, ms))
@@ -74,4 +73,3 @@ async def _(event):
         await event.delete()
     except Exception as e:
         await event.edit(str(e))
- 

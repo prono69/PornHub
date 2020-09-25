@@ -7,28 +7,35 @@ Audio and video downloader using Youtube-dl
 """
 import asyncio
 import logging
-import math
 import os
 import re
 import shutil
 import time
 
 from telethon.tl.types import DocumentAttributeAudio
+from youtube_dl import YoutubeDL
+from youtube_dl.utils import (
+    ContentTooShortError,
+    DownloadError,
+    ExtractorError,
+    GeoRestrictedError,
+    MaxDownloadsReached,
+    PostProcessingError,
+    UnavailableVideoError,
+    XAttrMetadataError,
+)
 
 from sample_config import Config
-from uniborg.util import admin_cmd, progress, humanbytes, time_formatter
-from youtube_dl import YoutubeDL
-from youtube_dl.utils import (ContentTooShortError, DownloadError,
-                              ExtractorError, GeoRestrictedError,
-                              MaxDownloadsReached, PostProcessingError,
-                              UnavailableVideoError, XAttrMetadataError)
+from uniborg.util import admin_cmd, progress
 
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
+logging.basicConfig(
+    format="[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s", level=logging.WARNING
+)
 logger = logging.getLogger(__name__)
 
 
 DELETE_TIMEOUT = 3
+
 
 @borg.on(admin_cmd(pattern="yt(a|v) ?(.*)"))
 async def download_video(v_url):
@@ -55,47 +62,48 @@ async def download_video(v_url):
 
     if type == "a":
         opts = {
-            'format': 'bestaudio',
-            'addmetadata': True,
-            'key': 'FFmpegMetadata',
-            'writethumbnail': True,
-            'embedthumbnail': True,
-            'audioquality': 0,
-            'audioformat': 'mp3',
-            'prefer_ffmpeg': True,
-            'geo_bypass': True,
-            'nocheckcertificate': True,
-            'postprocessors': [{
-                'key': 'FFmpegExtractAudio',
-                'preferredcodec': 'mp3',
-                'preferredquality': '320',
-            }],
-            'outtmpl': out_folder+'%(title)s.mp3',
-            'quiet': True,
-            'logtostderr': False
+            "format": "bestaudio",
+            "addmetadata": True,
+            "key": "FFmpegMetadata",
+            "writethumbnail": True,
+            "embedthumbnail": True,
+            "audioquality": 0,
+            "audioformat": "mp3",
+            "prefer_ffmpeg": True,
+            "geo_bypass": True,
+            "nocheckcertificate": True,
+            "postprocessors": [
+                {
+                    "key": "FFmpegExtractAudio",
+                    "preferredcodec": "mp3",
+                    "preferredquality": "320",
+                }
+            ],
+            "outtmpl": out_folder + "%(title)s.mp3",
+            "quiet": True,
+            "logtostderr": False,
         }
         video = False
         song = True
 
     elif type == "v":
         opts = {
-            'format': 'best',
-            'addmetadata': True,
-            'key': 'FFmpegMetadata',
-            'writethumbnail': True,
-            'write_all_thumbnails': True,
-            'embedthumbnail': True,
-            'prefer_ffmpeg': True,
-            'hls_prefer_native': True,
-            'geo_bypass': True,
-            'nocheckcertificate': True,
-            'postprocessors': [{
-                'key': 'FFmpegVideoConvertor',
-                'preferedformat': 'mp4'
-            }],
-            'outtmpl': out_folder+'%(title)s.mp4',
-            'logtostderr': False,
-            'quiet': True
+            "format": "best",
+            "addmetadata": True,
+            "key": "FFmpegMetadata",
+            "writethumbnail": True,
+            "write_all_thumbnails": True,
+            "embedthumbnail": True,
+            "prefer_ffmpeg": True,
+            "hls_prefer_native": True,
+            "geo_bypass": True,
+            "nocheckcertificate": True,
+            "postprocessors": [
+                {"key": "FFmpegVideoConvertor", "preferedformat": "mp4"}
+            ],
+            "outtmpl": out_folder + "%(title)s.mp4",
+            "logtostderr": False,
+            "quiet": True,
         }
         song = False
         video = True
@@ -104,7 +112,7 @@ async def download_video(v_url):
         await v_url.edit("`Fetching data, please wait...`")
         with YoutubeDL(opts) as ytdl:
             ytdl_data = ytdl.extract_info(url)
-        filename = sorted(get_lst_of_files(out_folder, []))
+        sorted(get_lst_of_files(out_folder, []))
     except DownloadError as DE:
         await v_url.edit(f"`{str(DE)}`")
         return
@@ -147,34 +155,46 @@ async def download_video(v_url):
     if song:
         relevant_path = f"./{Config.TMP_DOWNLOAD_DIRECTORY}/youtubedl"
         included_extensions = ["mp3"]
-        file_names = [fn for fn in os.listdir(relevant_path)
-                      if any(fn.endswith(ext) for ext in included_extensions)]
+        file_names = [
+            fn
+            for fn in os.listdir(relevant_path)
+            if any(fn.endswith(ext) for ext in included_extensions)
+        ]
         img_extensions = ["webp", "jpg", "jpeg"]
-        img_filenames = [fn_img for fn_img in os.listdir(relevant_path) if any(
-            fn_img.endswith(ext_img) for ext_img in img_extensions)]
+        img_filenames = [
+            fn_img
+            for fn_img in os.listdir(relevant_path)
+            if any(fn_img.endswith(ext_img) for ext_img in img_extensions)
+        ]
         thumb_image = out_folder + img_filenames[0]
 
         # thumb = out_folder + "cover.jpg"
         file_path = out_folder + file_names[0]
         song_size = file_size(file_path)
-        j = await v_url.edit(f"`Preparing to upload song:`\
+        j = await v_url.edit(
+            f"`Preparing to upload song:`\
         \n**{ytdl_data['title']}**\
-        \nby *{ytdl_data['uploader']}*")
+        \nby *{ytdl_data['uploader']}*"
+        )
         await v_url.client.send_file(
             v_url.chat_id,
             file_path,
-            caption=ytdl_data['title'] + "\n" + f"`{song_size}`",
+            caption=ytdl_data["title"] + "\n" + f"`{song_size}`",
             supports_streaming=True,
             thumb=thumb_image,
             attributes=[
-                DocumentAttributeAudio(duration=int(ytdl_data['duration']),
-                                       title=str(ytdl_data['title']),
-                                       performer=str(ytdl_data['uploader']))
+                DocumentAttributeAudio(
+                    duration=int(ytdl_data["duration"]),
+                    title=str(ytdl_data["title"]),
+                    performer=str(ytdl_data["uploader"]),
+                )
             ],
-            progress_callback=lambda d, t: asyncio.get_event_loop(
-            ).create_task(
-                progress(d, t, v_url, c_time, "Uploading..",
-                         f"{ytdl_data['title']}.mp3")))
+            progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
+                progress(
+                    d, t, v_url, c_time, "Uploading..", f"{ytdl_data['title']}.mp3"
+                )
+            ),
+        )
         # os.remove(file_path)
         await asyncio.sleep(DELETE_TIMEOUT)
         os.remove(thumb_image)
@@ -183,30 +203,40 @@ async def download_video(v_url):
     elif video:
         relevant_path = f"./{Config.TMP_DOWNLOAD_DIRECTORY}/youtubedl"
         included_extensions = ["mp4"]
-        file_names = [fn for fn in os.listdir(relevant_path)
-                      if any(fn.endswith(ext) for ext in included_extensions)]
+        file_names = [
+            fn
+            for fn in os.listdir(relevant_path)
+            if any(fn.endswith(ext) for ext in included_extensions)
+        ]
         img_extensions = ["webp", "jpg", "jpeg"]
-        img_filenames = [fn_img for fn_img in os.listdir(relevant_path) if any(
-            fn_img.endswith(ext_img) for ext_img in img_extensions)]
+        img_filenames = [
+            fn_img
+            for fn_img in os.listdir(relevant_path)
+            if any(fn_img.endswith(ext_img) for ext_img in img_extensions)
+        ]
         thumb_image = out_folder + img_filenames[0]
 
         file_path = out_folder + file_names[0]
         video_size = file_size(file_path)
         # thumb = out_folder + "cover.jpg"
 
-        j = await v_url.edit(f"`Preparing to upload video:`\
+        j = await v_url.edit(
+            f"`Preparing to upload video:`\
         \n**{ytdl_data['title']}**\
-        \nby *{ytdl_data['uploader']}*")
+        \nby *{ytdl_data['uploader']}*"
+        )
         await v_url.client.send_file(
             v_url.chat_id,
             file_path,
             supports_streaming=True,
-            caption=ytdl_data['title'] + "\n" + f"`{video_size}`",
+            caption=ytdl_data["title"] + "\n" + f"`{video_size}`",
             thumb=thumb_image,
-            progress_callback=lambda d, t: asyncio.get_event_loop(
-            ).create_task(
-                progress(d, t, v_url, c_time, "Uploading..",
-                         f"{ytdl_data['title']}.mp4")))
+            progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
+                progress(
+                    d, t, v_url, c_time, "Uploading..", f"{ytdl_data['title']}.mp4"
+                )
+            ),
+        )
         os.remove(file_path)
         await asyncio.sleep(DELETE_TIMEOUT)
         os.remove(thumb_image)
@@ -229,7 +259,7 @@ def convert_bytes(num):
     """
     this function will convert bytes to MB.... GB... etc
     """
-    for x in ['bytes', 'KB', 'MB', 'GB', 'TB']:
+    for x in ["bytes", "KB", "MB", "GB", "TB"]:
         if num < 1024.0:
             return "%3.1f %s" % (num, x)
         num /= 1024.0

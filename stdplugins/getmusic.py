@@ -4,12 +4,14 @@ syntax :- `.song {song name}`
 `.vsong {song name}`
      
 """
-import os, subprocess, glob
-from telethon import events
+import glob
+import os
+
 from uniborg.util import admin_cmd
 from userbot import catmusic, catmusicvideo
 
-DEFAULTUSER='𠘨 工 长 工 丅 卂'
+DEFAULTUSER = "𠘨 工 长 工 丅 卂"
+
 
 @borg.on(admin_cmd(pattern="song( (.*)|$)", allow_sudo=True))
 async def _(event):
@@ -47,14 +49,14 @@ async def _(event):
         caption=f"➥ __**Song :- {query}**__\n__**➥ Uploaded by :-**__ {DEFAULTUSER}",
         thumb=catthumb,
         supports_streaming=True,
-        reply_to=reply_to_id
+        reply_to=reply_to_id,
     )
     await a.delete()
     os.system("rm -rf ./temp/*.mp3")
     os.system("rm -rf ./temp/*.jpg")
     os.system("rm -rf ./temp/*.webp")
-    
-    
+
+
 @borg.on(admin_cmd(pattern="vsong( (.*)|$)", allow_sudo=True))
 async def _(event):
     reply_to_id = event.message.id
@@ -95,4 +97,3 @@ async def _(event):
     os.system("rm -rf ./temp/*.mp4")
     os.system("rm -rf ./temp/*.jpg")
     os.system("rm -rf ./temp/*.webp")
-     

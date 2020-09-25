@@ -6,9 +6,10 @@ from telethon.tl.types import (
     ChannelParticipantsAdmins,
     ChannelParticipantsBots,
 )
+from telethon.utils import pack_bot_file_id
 
 from uniborg.util import admin_cmd, edit_or_reply
-from telethon.utils import pack_bot_file_id
+
 
 @borg.on(admin_cmd(pattern="g_ad?(m)in ?(.*)"))
 async def _(event):
@@ -61,6 +62,7 @@ async def _(event):
     else:
         await edit_or_reply(event, mentions)
 
+
 @borg.on(admin_cmd(pattern="g_bot ?(.*)"))
 async def _(event):
     if event.fwd_from:
@@ -81,13 +83,18 @@ async def _(event):
     try:
         async for x in borg.iter_participants(chat, filter=ChannelParticipantsBots):
             if isinstance(x.participant, ChannelParticipantAdmin):
-                mentions += "\n 👑 [{}](tg://user?id={}) `{}`".format(x.first_name, x.id, x.id)
+                mentions += "\n 👑 [{}](tg://user?id={}) `{}`".format(
+                    x.first_name, x.id, x.id
+                )
             else:
-                mentions += "\n [{}](tg://user?id={}) `{}`".format(x.first_name, x.id, x.id)
+                mentions += "\n [{}](tg://user?id={}) `{}`".format(
+                    x.first_name, x.id, x.id
+                )
     except Exception as e:
         mentions += " " + str(e) + "\n"
     await event.edit(mentions)
-         
+
+
 @borg.on(admin_cmd(pattern="ids"))
 async def _(event):
     if event.fwd_from:
@@ -99,7 +106,10 @@ async def _(event):
             bot_api_file_id = pack_bot_file_id(r_msg.media)
             await event.edit(
                 "👥 **Chat ID**: `{}`\n💬 **Message Id**: `{}`\n🙋‍♂️ **From User ID**: `{}`\n📄 **File ID**: `{}`".format(
-                    str(event.chat_id), str(r_msg.id), str(r_msg.from_id), bot_api_file_id
+                    str(event.chat_id),
+                    str(r_msg.id),
+                    str(r_msg.from_id),
+                    bot_api_file_id,
                 )
             )
         else:
@@ -109,4 +119,4 @@ async def _(event):
                 )
             )
     else:
-        await event.edit("👥 **Chat ID**: `{}`".format(str(event.chat_id)))    
+        await event.edit("👥 **Chat ID**: `{}`".format(str(event.chat_id)))

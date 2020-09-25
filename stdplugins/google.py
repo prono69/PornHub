@@ -40,13 +40,12 @@ async def _(event):
             caption = result.get("description")
             image_url = result.get("url")
             image_req_set = await requests.get(image_url)
-            image_file_name = str(time.time()) + "" + guess_extension(
-                image_req_set.headers.get("Content-Type")
+            image_file_name = (
+                str(time.time())
+                + ""
+                + guess_extension(image_req_set.headers.get("Content-Type"))
             )
-            image_save_path = os.path.join(
-                work_dir,
-                image_file_name
-            )
+            image_save_path = os.path.join(work_dir, image_file_name)
             with open(image_save_path, "wb") as f_d:
                 f_d.write(await image_req_set.read())
             url_lst.append(image_save_path)
@@ -57,19 +56,14 @@ async def _(event):
     if len(url_lst) != len(cap_lst):
         await event.edit("search api broken :(")
         return
-    await event.reply(
-        cap_lst,
-        file=url_lst,
-        parse_mode="html"
-    )
+    await event.reply(cap_lst, file=url_lst, parse_mode="html")
     for each_file in url_lst:
         os.remove(each_file)
     shutil.rmtree(work_dir, ignore_errors=True)
     end = datetime.now()
     ms = (end - start).seconds
     await event.edit(
-        f"Searched Google for `{input_str}` in `{ms}` seconds.",
-        link_preview=False
+        f"Searched Google for `{input_str}` in `{ms}` seconds.", link_preview=False
     )
     await asyncio.sleep(5)
     await event.delete()
@@ -94,13 +88,12 @@ async def _(event):
             caption = result.get("description")
             image_url = result.get("url")
             image_req_set = await requests.get(image_url)
-            image_file_name = str(time.time()) + "" + guess_extension(
-                image_req_set.headers.get("Content-Type")
+            image_file_name = (
+                str(time.time())
+                + ""
+                + guess_extension(image_req_set.headers.get("Content-Type"))
             )
-            image_save_path = os.path.join(
-                work_dir,
-                image_file_name
-            )
+            image_save_path = os.path.join(work_dir, image_file_name)
             with open(image_save_path, "wb") as f_d:
                 f_d.write(await image_req_set.read())
             url_lst.append(image_save_path)
@@ -111,19 +104,14 @@ async def _(event):
     if len(url_lst) != len(cap_lst):
         await event.edit("search api broken :(")
         return
-    await event.reply(
-        cap_lst,
-        file=url_lst,
-        parse_mode="html"
-    )
+    await event.reply(cap_lst, file=url_lst, parse_mode="html")
     for each_file in url_lst:
         os.remove(each_file)
     shutil.rmtree(work_dir, ignore_errors=True)
     end = datetime.now()
     ms = (end - start).seconds
     await event.edit(
-        f"Searched Google for `{input_str}` in `{ms}` seconds.",
-        link_preview=False
+        f"Searched Google for `{input_str}` in `{ms}` seconds.", link_preview=False
     )
     await asyncio.sleep(5)
     await event.delete()
