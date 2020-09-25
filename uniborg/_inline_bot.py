@@ -208,7 +208,7 @@ if Config.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
                             [custom.Button.inline("video", data=cb_string_video)]
                         )
                     result = builder.article(
-                        "YouTube © @kirito6969",
+                        "YouTube © @UniBorg",
                         text=f"{ytdl_url} powered by @LazyAF_Pepe",
                         buttons=inline_keyboard,
                         link_preview=True,

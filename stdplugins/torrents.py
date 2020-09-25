@@ -1,7 +1,7 @@
 """
 Torrent Search Plugin for Userbot.
 CMD:
-`.tsearch` <query>\n
+`.tt` <query>\n
 `.ts` <query or reply>\n
 `.movie torrentz2.eu|idop.se` <query>
 
@@ -32,7 +32,7 @@ def dogbin(magnets):
     return urls
 
 
-@borg.on(admin_cmd(pattern="tsearch ?(.*)", allow_sudo=True))
+@borg.on(admin_cmd(pattern="tt ?(.*)", allow_sudo=True))
 async def tor_search(event):
     if event.fwd_from:
         return

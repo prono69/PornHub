@@ -6,13 +6,14 @@ from platform import python_version
 from telethon import version
 from telethon.tl.types import MessageEntityMentionName
 
-from uniborg.util import admin_cmd
+from uniborg.util import admin_cmd, edit_or_reply
 
 """Type:
 \n`.permalink`
 `.userid`
 `.pip`
 `.on`
+`.pm`
 """
 plugs = len(borg._plugins)
 
@@ -155,3 +156,19 @@ async def amireallyalive(alive):
         f"Plugins: {plugs}"
         "`"
     )
+
+@borg.on(admin_cmd(pattern="pm ?(.*)"))
+async def _(cat):
+	kk = cat.pattern_match.group(1)
+	await edit_or_reply(cat, "`Sending Message...`")
+	replied = await cat.get_reply_message()
+	query = kk
+	if replied:
+	       text = replied.message
+	       username = query
+	elif "|" in query:
+	       text, username = query.split("|")
+	       
+	await borg.send_message(f"{username}", f"{text}")
+	await cat.delete()
+		
