@@ -1,3 +1,3 @@
 from userbot import *
 
-from .uniborg import *
+from uniborg import *
