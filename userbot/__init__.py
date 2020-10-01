@@ -13,9 +13,10 @@ from pySmartDL import SmartDL
 
 from sample_config import Config
 from userbot.functions import *
+from userbot.fonts import *
 
 StartTime = time.time()
-pepe = "2.9.9"
+pepe = "3.0.0"
 
 CONSOLE_LOGGER_VERBOSE = sb(os.environ.get("CONSOLE_LOGGER_VERBOSE", "False"))
 

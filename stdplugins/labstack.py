@@ -1,9 +1,9 @@
-"""Upload images to Labstack
+"""Upload files to Labstack
 .labstack <path_to_image>
 .labstack as reply to media
 \n\nCreated By @s_n_a_p_s
  Ported by © [Eyepatch](http://t.me/NeoMatrix90)
- Helping hands @r4v4n4 @amnd33p
+ Helping hands: @r4v4n4 @amnd33p
 """
 import json
 import os
@@ -68,5 +68,5 @@ async def labstack(event):
             r2json["code"]
         )
     await event.edit(
-        t_response_arry + "\nMax Days:" + str(max_days), link_preview=False
+        t_response_arry + "\n**Max Days: **" + str(max_days), link_preview=False
     )

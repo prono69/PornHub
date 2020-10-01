@@ -1,5 +1,5 @@
 """Cmds:
-`.sg`\n`.fakemail`\n`.mailid`\n`.ub`\n`.gid`\n`.urban`\n`.voicy`\n`.mashup`\n`.ascii`"""
+`.purl`\n`.sg`\n`.fakemail`\n`.mailid`\n`.ub`\n`.gid`\n`.urban`\n`.voicy`\n`.mashup`\n`.iascii`\n`.recognize`"""
 import asyncio
 
 from telethon import events
@@ -7,6 +7,29 @@ from telethon.errors.rpcerrorlist import YouBlockedUserError
 
 from uniborg import SYNTAX
 from uniborg.util import admin_cmd
+
+
+@borg.on(admin_cmd(pattern="purl ?(.*)", allow_sudo=True))
+async def _(event):
+    if event.fwd_from:
+        return 
+    if not event.reply_to_msg_id:
+       await event.reply("**Reply to any document.**")
+       return
+    reply_message = await event.get_reply_message() 
+    chat = "@FiletolinkTGbot"
+    sender = reply_message.sender
+    await event.reply("**Making public url...**")
+    async with event.client.conversation(chat) as conv:
+          try:     
+              response = conv.wait_event(events.NewMessage(incoming=True,from_users=1011636686))
+              await event.client.forward_messages(chat, reply_message)
+              response = await response 
+          except YouBlockedUserError: 
+              await a.edit("```Please unblock me (@FiletolinkTGbot) u Nigga```")
+              return
+          await event.delete()
+          await event.client.send_message(event.chat_id, response.message, reply_to=reply_message)
 
 
 @borg.on(admin_cmd(pattern="sg ?(.*)", allow_sudo=True))
@@ -263,7 +286,7 @@ async def _(event):
             )
 
 
-@borg.on(admin_cmd(pattern="ascii"))
+@borg.on(admin_cmd(pattern="iascii"))
 async def _(event):
     if event.fwd_from:
         return
@@ -302,6 +325,45 @@ async def _(event):
             await event.edit("**Error:** `unblock` @asciiart_bot `and retry!`")
             await event.delete()
 
+@borg.on(admin_cmd(pattern="recognize ?(.*)"))
+async def _(event):
+    if event.fwd_from:
+        return
+    if not event.reply_to_msg_id:
+        await event.edit("Reply to any user's media message.")
+        return
+    reply_message = await event.get_reply_message()
+    if not reply_message.media:
+        await event.edit("reply to media file")
+        return
+    chat = "@Rekognition_Bot"
+    reply_message.sender
+    if reply_message.sender.bot:
+        await event.edit("Reply to actual users message.")
+        return
+    cat = await event.edit("`Recognizeing this Media...`")
+    async with event.client.conversation(chat) as conv:
+        try:
+            response = conv.wait_event(
+                events.NewMessage(incoming=True, from_users=461083923)
+            )
+            await event.client.forward_messages(chat, reply_message)
+            response = await response
+        except YouBlockedUserError:
+            await event.reply("unblock @Rekognition_Bot and try again")
+            await cat.delete()
+            return
+        if response.text.startswith("See next message."):
+            response = conv.wait_event(
+                events.NewMessage(incoming=True, from_users=461083923)
+            )
+            response = await response
+            cat = response.message.message
+            await event.edit(cat)
+
+        else:
+            await event.edit("sorry, I couldnt find it")
+            
 
 SYNTAX.update(
     {

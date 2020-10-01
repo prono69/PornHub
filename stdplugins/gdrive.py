@@ -473,9 +473,9 @@ async def gdrive_search(http, search_query):
                 file_title = file.get("title")
                 file_id = file.get("id")
                 if file.get("mimeType") == G_DRIVE_DIR_MIME_TYPE:
-                    msg += f"🗃️ <a href='https://drive.google.com/drive/folders/{file_id}'>{file_title}</a>"
+                    msg += f"📁️ <a href='https://drive.google.com/drive/folders/{file_id}'>{file_title}</a>"
                 else:
-                    msg += f"👉 <a href='https://drive.google.com/uc?id={file_id}&export=download'>{file_title}</a>"
+                    msg += f"📜 <a href='https://drive.google.com/uc?id={file_id}&export=download'>{file_title}</a>"
                 msg += f" <code>{file_id}</code>\n"
             page_token = response.get("nextPageToken", None)
             if page_token is None:

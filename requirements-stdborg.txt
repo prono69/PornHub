@@ -51,6 +51,7 @@ pymongo
 python-barcode
 python-magic
 pytube3
+pygments
 pytuneteller
 qrcode
 random_cli

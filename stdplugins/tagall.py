@@ -10,7 +10,7 @@ async def tag(event):
     if event.pattern_match.group(1):
         mentions = event.pattern_match.group(1)
     else:
-        mentions = "Helu, How do u do!"
+        mentions = "`Helo, How do u do!`"
     chat = await event.get_input_chat()
     async for x in borg.iter_participants(chat, 50000):
         mentions += f"[\u2063](tg://user?id={x.id})"

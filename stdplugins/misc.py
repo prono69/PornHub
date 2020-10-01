@@ -3,7 +3,7 @@ from asyncio.subprocess import PIPE as asyncPIPE
 from os import remove
 from platform import python_version
 
-from telethon import version
+from telethon import events, version
 from telethon.tl.types import MessageEntityMentionName
 
 from uniborg.util import admin_cmd, edit_or_reply
@@ -172,3 +172,34 @@ async def _(cat):
 
     await borg.send_message(f"{username}", f"{text}")
     await cat.delete()
+
+@borg.on(admin_cmd(pattern=r"reveal", allow_sudo=True))
+async def _(event):
+    b = await event.client.download_media(await event.get_reply_message())
+    a = open(b, 'r')
+    c = a.read()
+    a.close()
+    a = await event.reply("**Reading file...**")
+    if len(c) > 4095:
+    	await a.edit('`The Total words in this file is more than telegram limits.`')
+    else:
+    	await event.client.send_message(event.chat_id, f"```{c}```")
+    	await a.delete()
+    remove(b)
+    
+
+@borg.on(events.NewMessage(pattern=r"\.gstat ", outgoing=True))
+async def get_stats(event):
+    chat = event.text.split(' ', 1)[1]
+    try:
+        stats = await borg.get_stats(chat)
+    except:
+        await event.reply('Failed to get stats for the current chat, Make sure you are admin and chat has more than 500 members.')
+        return
+    min_time = stats.period.min_date.strftime('From %d/%m/%Y, %H:%M:%S')
+    max_time = stats.period.max_date.strftime('To %d/%m/%Y, %H:%M:%S')
+    member_count = int(stats.members.current) - int(stats.members.previous)
+    message_count = int(stats.messages.current) - int(stats.messages.previous)
+    msg = f"Group stats:\n{min_time} {max_time}\nMembers count increased by {member_count}\nMessage count increased by {message_count}"
+    await event.reply(msg)
+     

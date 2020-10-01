@@ -7,6 +7,7 @@ from typing import Optional, Tuple
 
 import requests
 from PIL import Image
+from sample_config import Config
 from selenium import webdriver
 from telethon.tl.types import Channel, DocumentAttributeFilename
 

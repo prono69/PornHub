@@ -4,6 +4,7 @@ import asyncio
 import glob
 import os
 import subprocess
+import logging
 
 from telethon import events
 from telethon.errors.rpcerrorlist import YouBlockedUserError
@@ -12,43 +13,12 @@ from uniborg import MODULE, SYNTAX
 from uniborg.util import admin_cmd
 
 MODULE.append("song")
-try:
-    import subprocess
-except BaseException:
-    os.system("pip install instantmusic")
 
+logging.basicConfig(
+    format="[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s", level=logging.WARNING
+)
+logger = logging.getLogger(__name__)
 
-os.system("rm -rf *.mp3")
-
-
-def bruh(name):
-
-    os.system("instantmusic -q -s " + name)
-
-
-@borg.on(admin_cmd(pattern="song(?: |$)(.*)"))
-async def _(event):
-    if event.fwd_from:
-        return
-    cmd = event.pattern_match.group(1)
-    reply_to_id = event.message.id
-    if event.reply_to_msg_id:
-        reply_to_id = event.reply_to_msg_id
-    await event.edit("searching song..please wait")
-    bruh(str(cmd))
-    l = glob.glob("*.mp3")
-    loa = l[0]
-    await event.edit("sending song")
-    await event.client.send_file(
-        event.chat_id,
-        loa,
-        force_document=True,
-        allow_cache=False,
-        caption=cmd,
-        reply_to=reply_to_id,
-    )
-    os.system("rm -rf *.mp3")
-    subprocess.check_output("rm -rf *.mp3", shell=True)
 
 
 @borg.on(admin_cmd(pattern="spd(?: |$)(.*)"))
@@ -131,6 +101,154 @@ async def DeezLoader(event):
         # [msg_start.id, response.id, r.id, msg.id, details.id, song.id])
         await event.delete()
 
+        
+@borg.on(admin_cmd(pattern="gaana ?(.*)"))  # pylint:disable=E0602
+async def music_find(event):
+    if event.fwd_from:
+        return
+
+    music_name = event.pattern_match.group(1)
+    msg = await event.get_reply_message()
+    if music_name:
+        await event.delete()
+        song_result = await event.client.inline_query("deezermusicbot", music_name)
+
+        await song_result[0].click(
+            event.chat_id, reply_to=event.reply_to_msg_id, hide_via=True
+        )
+    elif msg:
+        await event.delete()
+        song_result = await event.client.inline_query("deezermusicbot", msg.message)
+
+        await song_result[0].click(
+            event.chat_id, reply_to=event.reply_to_msg_id, hide_via=True
+        )
+
+
+@borg.on(admin_cmd(pattern="spotbot ?(.*)"))  # pylint:disable=E0602
+async def _(event):
+    if event.fwd_from:
+        return
+    msg = await event.get_reply_message()
+    await event.delete()
+
+    music_name = event.pattern_match.group(1)
+    msg = await event.get_reply_message()
+    if music_name:
+        await event.delete()
+        song_result = await event.client.inline_query("spotify_to_mp3_bot", music_name)
+
+        for item_ in song_result:
+
+            if "(FLAC)" in item_.title:
+
+                j = await item_.click(
+                    event.chat_id,
+                    reply_to=event.reply_to_msg_id,
+                    hide_via=True,
+                )
+
+                k = await event.respond(j)
+                await j.delete()
+                await k.edit("`Error Sar`")
+
+            elif "(MP3_320)" in item_.title:
+
+                j = await item_.click(
+                    event.chat_id,
+                    reply_to=event.reply_to_msg_id,
+                    hide_via=True,
+                )
+
+                k = await event.respond(j)
+                await j.delete()
+                await k.edit("`Error Sar`")
+
+            elif "(MP3_128)" in item_.title:
+
+                j = await item_.click(
+                    event.chat_id,
+                    reply_to=event.reply_to_msg_id,
+                    hide_via=True,
+                )
+
+                k = await event.respond(j)
+                await j.delete()
+                await k.edit("`Error Sar`")
+
+    elif msg:
+
+        await event.delete()
+        song_result = await event.client.inline_query("spotify_to_mp3_bot", msg.message)
+        for item in song_result:
+
+            if "(FLAC)" in item.title:
+
+                j = await item.click(
+                    event.chat_id,
+                    reply_to=event.reply_to_msg_id,
+                    hide_via=True,
+                )
+
+                k = await event.respond(j)
+                await j.delete()
+                await k.edit("`Error Sar`")
+
+            elif "(MP3_320)" in item.title:
+
+                j = await item.click(
+                    event.chat_id,
+                    reply_to=event.reply_to_msg_id,
+                    hide_via=True,
+                )
+
+                k = await event.respond(j)
+                await j.delete()
+                await k.edit("`Error Sar`")
+
+            elif "(MP3_128)" in item.title:
+
+                j = await item.click(
+                    event.chat_id,
+                    reply_to=event.reply_to_msg_id,
+                    hide_via=True,
+                )
+
+                k = await event.respond(j)
+                await j.delete()
+                await k.edit("`Error Sar`")
+
+
+@borg.on(admin_cmd(pattern="ad ?(.*)"))
+async def _(event):
+    if event.fwd_from:
+        return
+    if not event.reply_to_msg_id:
+        await event.edit("```Reply to any user message.```")
+        return
+    reply_message = await event.get_reply_message()
+    if not reply_message.media:
+        await event.edit("```reply to media message```")
+        return
+    chat = "@audiotubebot"
+    reply_message.sender
+    if reply_message.sender.bot:
+        await event.edit("```Reply to actual users message.```")
+        return
+    await event.edit("```Processing```")
+    async with event.client.conversation(chat) as conv:
+        try:
+            response = conv.wait_event(
+                events.NewMessage(incoming=True, from_users=507379365)
+            )
+            await event.client.send_message(chat, reply_message)
+            response = await response
+        except YouBlockedUserError:
+            await event.reply("```Please unblock @AudioTubeBot and try again```")
+            return
+        await event.delete()
+        await event.client.send_file(event.chat_id, response.message.media)
+        
 
 SYNTAX.update(
     {
@@ -141,6 +259,9 @@ SYNTAX.update(
             \n\n`.netease` <Artist - Song Title>\
             \nUsage:Download music with @WooMaiBot\
             \n\n`.dzd` <Spotify/Deezer Link>\
-            \nUsage:Download music from Spotify or Deezer."
+            \nUsage:Download music from Spotify or Deezer.\
+            \n\n`.gaana` <Query>\
+            \n\n`.spotbot` <query>\
+            \n\n`.ad`"
     }
 )

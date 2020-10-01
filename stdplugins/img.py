@@ -26,11 +26,7 @@ async def img_sampler(event):
         return
 
     lim = findall(r"lim=\d+", query)
-    lim = (
-        int(event.pattern_match.group(1))
-        if event.pattern_match.group(1) is not None
-        else 5
-    )
+    lim = event.pattern_match.group(1)
     try:
         lim = lim[0]
         lim = lim.replace("lim=", "")
