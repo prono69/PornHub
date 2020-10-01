@@ -5,8 +5,8 @@ Userbot plugin for PepeBot
 """
 import emoji
 
-from uniborg.util import admin_cmd, edit_or_reply
 from uniborg import SYNTAX
+from uniborg.util import admin_cmd, edit_or_reply
 from userbot import fonts as emojify
 
 

@@ -9,7 +9,7 @@ import sys
 import time
 import traceback
 
-from uniborg.util import admin_cmd, parse_pre, yaml_format
+from uniborg.util import admin_cmd, yaml_format
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.WARN
@@ -73,10 +73,13 @@ async def _(event):
 
 
 async def aexec(code, event):
-	p = lambda _x: print(yaml_format(_x))
-	reply = await event.get_reply_message()
-	exec(f"async def __aexec(event, reply, client, p): " + "".join(f"\n {l}" for l in code.split("\n")))
-	return await locals()["__aexec"](event, reply, event.client, p)
+    p = lambda _x: print(yaml_format(_x))
+    reply = await event.get_reply_message()
+    exec(
+        f"async def __aexec(event, reply, client, p): "
+        + "".join(f"\n {l}" for l in code.split("\n"))
+    )
+    return await locals()["__aexec"](event, reply, event.client, p)
 
 
 @borg.on(admin_cmd(pattern="exec ?(.*)"))

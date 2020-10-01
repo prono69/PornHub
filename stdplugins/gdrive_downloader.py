@@ -5,38 +5,38 @@ By: @Zero_cool7870
  
 """
 import requests
- 
+
 from uniborg import SYNTAX
 from uniborg.util import admin_cmd
- 
- 
+
+
 async def download_file_from_google_drive(id):
     URL = "https://docs.google.com/uc?export=download"
- 
+
     session = requests.Session()
- 
+
     response = session.get(URL, params={"id": id}, stream=True)
     token = await get_confirm_token(response)
     if token:
         params = {"id": id, "confirm": token}
         response = session.get(URL, params=params, stream=True)
- 
+
     headers = response.headers
     content = headers["Content-Disposition"]
     destination = await get_file_name(content)
- 
+
     file_name = await save_response_content(response, destination)
     return file_name
- 
- 
+
+
 async def get_confirm_token(response):
     for key, value in response.cookies.items():
         if key.startswith("download_warning"):
             return value
- 
+
     return None
- 
- 
+
+
 async def save_response_content(response, destination):
     CHUNK_SIZE = 32768
     with open(destination, "wb") as f:
@@ -44,8 +44,8 @@ async def save_response_content(response, destination):
             if chunk:  # filter out keep-alive new chunks
                 f.write(chunk)
     return destination
- 
- 
+
+
 async def get_id(link):  # Extract File Id from G-Drive Link
     file_id = ""
     c_append = False
@@ -66,8 +66,8 @@ async def get_id(link):  # Extract File Id from G-Drive Link
             file_id = file_id + c
     file_id = file_id[1:]
     return file_id
- 
- 
+
+
 async def get_file_name(content):
     file_name = ""
     c_append = False
@@ -81,8 +81,8 @@ async def get_file_name(content):
     file_name = file_name.replace('"', "")
     print("File Name: " + str(file_name))
     return file_name
- 
- 
+
+
 @borg.on(admin_cmd(pattern=f"gdl (.*)", outgoing=True))
 async def g_download(event):
     if event.fwd_from:
@@ -92,12 +92,11 @@ async def g_download(event):
     await event.edit("`Downloading Requested File from G-Drive...`")
     file_name = await download_file_from_google_drive(file_id)
     await event.edit("File Downloaded.\nName: `" + str(file_name) + "`")
- 
- 
+
+
 SYNTAX.update(
     {
         "gdrive_download": ".gdl <gdrive File-Link>\
     \nUsage:G-Drive File Downloader Plugin For Userbot."
     }
 )
- 

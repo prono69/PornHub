@@ -304,47 +304,44 @@ def androidfilehost(url: str) -> str:
     """AFH direct links generator"""
 
     try:
-        link = re.findall(r'\bhttps?://.*androidfilehost.*fid.*\S+', url)[0]
+        link = re.findall(r"\bhttps?://.*androidfilehost.*fid.*\S+", url)[0]
     except IndexError:
         reply = "`No AFH links found`\n"
         return reply
 
-    fid = re.findall(r'\?fid=(.*)', link)[0]
+    fid = re.findall(r"\?fid=(.*)", link)[0]
     session = requests.Session()
     user_agent = useragent()
 
-    headers = {'user-agent': user_agent}
+    headers = {"user-agent": user_agent}
     res = session.get(link, headers=headers, allow_redirects=True)
     headers = {
-        'origin': 'https://androidfilehost.com',
-        'accept-encoding': 'gzip, deflate, br',
-        'accept-language': 'en-US,en;q=0.9',
-        'user-agent': user_agent,
-        'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'x-mod-sbb-ctype': 'xhr',
-        'accept': '*/*',
-        'referer': f'https://androidfilehost.com/?fid={fid}',
-        'authority': 'androidfilehost.com',
-        'x-requested-with': 'XMLHttpRequest',
+        "origin": "https://androidfilehost.com",
+        "accept-encoding": "gzip, deflate, br",
+        "accept-language": "en-US,en;q=0.9",
+        "user-agent": user_agent,
+        "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+        "x-mod-sbb-ctype": "xhr",
+        "accept": "*/*",
+        "referer": f"https://androidfilehost.com/?fid={fid}",
+        "authority": "androidfilehost.com",
+        "x-requested-with": "XMLHttpRequest",
     }
 
-    data = {
-        'submit': 'submit',
-        'action': 'getdownloadmirrors',
-        'fid': f'{fid}'
-    }
+    data = {"submit": "submit", "action": "getdownloadmirrors", "fid": f"{fid}"}
 
     mirrors = None
-    reply = ''
+    reply = ""
     error = "`Error: Can't find Mirrors for the link`\n"
 
     try:
         req = session.post(
-            'https://androidfilehost.com/libs/otf/mirrors.otf.php',
+            "https://androidfilehost.com/libs/otf/mirrors.otf.php",
             headers=headers,
             data=data,
-            cookies=res.cookies)
-        mirrors = req.json()['MIRRORS']
+            cookies=res.cookies,
+        )
+        mirrors = req.json()["MIRRORS"]
     except (json.decoder.JSONDecodeError, TypeError):
         reply += error
 
@@ -353,9 +350,9 @@ def androidfilehost(url: str) -> str:
         return reply
 
     for item in mirrors:
-        name = item['name']
-        dl_url = item['url']
-        reply += f'[{name}]({dl_url}) '
+        name = item["name"]
+        dl_url = item["url"]
+        reply += f"[{name}]({dl_url}) "
 
     return reply
 
@@ -365,9 +362,11 @@ def useragent():
 
     useragents = BeautifulSoup(
         requests.get(
-            'https://developers.whatismybrowser.com/'
-            'useragents/explore/operating_system_name/android/').content,
-        'lxml').findAll('td', {'class': 'useragent'})
+            "https://developers.whatismybrowser.com/"
+            "useragents/explore/operating_system_name/android/"
+        ).content,
+        "lxml",
+    ).findAll("td", {"class": "useragent"})
 
     user_agent = choice(useragents)
 

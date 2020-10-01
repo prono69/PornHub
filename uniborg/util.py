@@ -3,22 +3,24 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import asyncio
+import datetime
 import math
 import os
 import re
 import time
 from re import findall, match
 from typing import List
-from telethon.utils import add_surrogate
 
 from telethon import events
 from telethon.tl.functions.channels import GetParticipantRequest
 from telethon.tl.functions.messages import GetPeerDialogsRequest
-from telethon.tl.types import ChannelParticipantAdmin, ChannelParticipantCreator
-from telethon.tl.types import MessageEntityPre, DocumentAttributeFilename
 from telethon.tl.tlobject import TLObject
-from telethon.errors import MessageTooLongError
-import datetime
+from telethon.tl.types import (
+    ChannelParticipantAdmin,
+    ChannelParticipantCreator,
+    MessageEntityPre,
+)
+from telethon.utils import add_surrogate
 
 # the secret configuration specific things
 ENV = bool(os.environ.get("ENV", False))
@@ -135,12 +137,7 @@ def time_formatter(seconds: int) -> str:
     result = ""
     v_m = 0
     remainder = seconds
-    r_ange_s = {
-        "days": (24 * 60 * 60),
-        "hours": (60 * 60),
-        "minutes": 60,
-        "seconds": 1
-    }
+    r_ange_s = {"days": (24 * 60 * 60), "hours": (60 * 60), "minutes": 60, "seconds": 1}
     for age in r_ange_s:
         divisor = r_ange_s[age]
         v_m, remainder = divmod(remainder, divisor)
@@ -148,7 +145,7 @@ def time_formatter(seconds: int) -> str:
         if v_m != 0:
             result += f" {v_m} {age} "
     return result
- 
+
 
 def parse_arguments(message: str, valid: List[str]) -> (dict, str):
     options = {}
@@ -271,14 +268,16 @@ async def cult_small_video(video_file, output_directory, start_time, end_time):
         logger.info(t_response)
         return None
 
+
 # these two functions are stolen from
 # https://github.com/udf/uniborg/blob/kate/stdplugins/info.py
+
 
 def parse_pre(text):
     text = text.strip()
     return (
         text,
-        [MessageEntityPre(offset=0, length=len(add_surrogate(text)), language='')]
+        [MessageEntityPre(offset=0, length=len(add_surrogate(text)), language="")],
     )
 
 
@@ -293,26 +292,26 @@ def yaml_format(obj, indent=0, max_str_len=256, max_byte_len=64):
 
     if isinstance(obj, dict):
         if not obj:
-            return 'dict:'
+            return "dict:"
         items = obj.items()
         has_items = len(items) > 1
         has_multiple_items = len(items) > 2
-        result.append(obj.get('_', 'dict') + (':' if has_items else ''))
+        result.append(obj.get("_", "dict") + (":" if has_items else ""))
         if has_multiple_items:
-            result.append('\n')
+            result.append("\n")
             indent += 2
         for k, v in items:
-            if k == '_' or v is None:
+            if k == "_" or v is None:
                 continue
             formatted = yaml_format(v, indent)
             if not formatted.strip():
                 continue
-            result.append(' ' * (indent if has_multiple_items else 1))
-            result.append(f'{k}:')
+            result.append(" " * (indent if has_multiple_items else 1))
+            result.append(f"{k}:")
             if not formatted[0].isspace():
-                result.append(' ')
-            result.append(f'{formatted}')
-            result.append('\n')
+                result.append(" ")
+            result.append(f"{formatted}")
+            result.append("\n")
         if has_items:
             result.pop()
         if has_multiple_items:
@@ -321,30 +320,29 @@ def yaml_format(obj, indent=0, max_str_len=256, max_byte_len=64):
         # truncate long strings and display elipsis
         result = repr(obj[:max_str_len])
         if len(obj) > max_str_len:
-            result += '…'
+            result += "…"
         return result
     elif isinstance(obj, bytes):
         # repr() bytes if it's printable, hex like "FF EE BB" otherwise
-        if all(0x20 <= c < 0x7f for c in obj):
+        if all(0x20 <= c < 0x7F for c in obj):
             return repr(obj)
         else:
-            return ('<…>' if len(obj) > max_byte_len else
-                    ' '.join(f'{b:02X}' for b in obj))
+            return (
+                "<…>" if len(obj) > max_byte_len else " ".join(f"{b:02X}" for b in obj)
+            )
     elif isinstance(obj, datetime.datetime):
         # ISO-8601 without timezone offset (telethon dates are always UTC)
-        return obj.strftime('%Y-%m-%d %H:%M:%S')
-    elif hasattr(obj, '__iter__'):
+        return obj.strftime("%Y-%m-%d %H:%M:%S")
+    elif hasattr(obj, "__iter__"):
         # display iterables one after another at the base indentation level
-        result.append('\n')
+        result.append("\n")
         indent += 2
         for x in obj:
             result.append(f"{' ' * indent}- {yaml_format(x, indent + 2)}")
-            result.append('\n')
+            result.append("\n")
         result.pop()
         indent -= 2
     else:
         return repr(obj)
 
-    return ''.join(result)
-
-        
+    return "".join(result)

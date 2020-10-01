@@ -14,6 +14,7 @@ DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else "𠘨 工 长 工 丅 卂"
 IMG = Config.ALIVE_PIC
 MODULE.append("alive")
 
+
 @borg.on(admin_cmd(pattern="alive", allow_sudo=True))
 async def amireallyalive(alive):
     reply_to_id = alive.message

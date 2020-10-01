@@ -1,9 +1,6 @@
 """PepeBot Module for Finding Songs"""
 
 import asyncio
-import glob
-import os
-import subprocess
 import logging
 
 from telethon import events
@@ -18,7 +15,6 @@ logging.basicConfig(
     format="[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s", level=logging.WARNING
 )
 logger = logging.getLogger(__name__)
-
 
 
 @borg.on(admin_cmd(pattern="spd(?: |$)(.*)"))
@@ -101,7 +97,7 @@ async def DeezLoader(event):
         # [msg_start.id, response.id, r.id, msg.id, details.id, song.id])
         await event.delete()
 
-        
+
 @borg.on(admin_cmd(pattern="gaana ?(.*)"))  # pylint:disable=E0602
 async def music_find(event):
     if event.fwd_from:
@@ -248,7 +244,7 @@ async def _(event):
             return
         await event.delete()
         await event.client.send_file(event.chat_id, response.message.media)
-        
+
 
 SYNTAX.update(
     {

@@ -34,9 +34,12 @@ async def figlet(event):
         cmd = None
         text = input_str
     else:
-        await edit_or_reply(event, "**Do You think this is Funny?**\n\n"
+        await edit_or_reply(
+            event,
+            "**Do You think this is Funny?**\n\n"
             "__Try this Blek Mejik:__\n\n"
-            "```.help figlet```")
+            "```.help figlet```",
+        )
         return
     if cmd is not None:
         try:

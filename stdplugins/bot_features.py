@@ -12,24 +12,28 @@ from uniborg.util import admin_cmd
 @borg.on(admin_cmd(pattern="purl ?(.*)", allow_sudo=True))
 async def _(event):
     if event.fwd_from:
-        return 
+        return
     if not event.reply_to_msg_id:
-       await event.reply("**Reply to any document.**")
-       return
-    reply_message = await event.get_reply_message() 
+        await event.reply("**Reply to any document.**")
+        return
+    reply_message = await event.get_reply_message()
     chat = "@FiletolinkTGbot"
-    sender = reply_message.sender
+    reply_message.sender
     await event.reply("**Making public url...**")
     async with event.client.conversation(chat) as conv:
-          try:     
-              response = conv.wait_event(events.NewMessage(incoming=True,from_users=1011636686))
-              await event.client.forward_messages(chat, reply_message)
-              response = await response 
-          except YouBlockedUserError: 
-              await a.edit("```Please unblock me (@FiletolinkTGbot) u Nigga```")
-              return
-          await event.delete()
-          await event.client.send_message(event.chat_id, response.message, reply_to=reply_message)
+        try:
+            response = conv.wait_event(
+                events.NewMessage(incoming=True, from_users=1011636686)
+            )
+            await event.client.forward_messages(chat, reply_message)
+            response = await response
+        except YouBlockedUserError:
+            await a.edit("```Please unblock me (@FiletolinkTGbot) u Nigga```")
+            return
+        await event.delete()
+        await event.client.send_message(
+            event.chat_id, response.message, reply_to=reply_message
+        )
 
 
 @borg.on(admin_cmd(pattern="sg ?(.*)", allow_sudo=True))
@@ -325,6 +329,7 @@ async def _(event):
             await event.edit("**Error:** `unblock` @asciiart_bot `and retry!`")
             await event.delete()
 
+
 @borg.on(admin_cmd(pattern="recognize ?(.*)"))
 async def _(event):
     if event.fwd_from:
@@ -363,7 +368,7 @@ async def _(event):
 
         else:
             await event.edit("sorry, I couldnt find it")
-            
+
 
 SYNTAX.update(
     {

@@ -4,18 +4,17 @@
 # Theid file is stolen from https://github.com/udf/uniborg/blob/kate/stdplugins/info.py
 """Get Detailed info about any message
 Syntax: .json"""
-from telethon import events
 import io
+
 from uniborg.util import admin_cmd, parse_pre, yaml_format
- 
- 
+
+
 @borg.on(admin_cmd(pattern="json"))
 async def _(event):
     if event.fwd_from:
         return
     await event.delete()
     the_real_message = None
-    reply_to_id = None
     if event.reply_to_msg_id:
         event = await event.get_reply_message()
     the_real_message = yaml_format(event)
@@ -28,8 +27,4 @@ async def _(event):
             )
             # await event.delete()
     else:
-        await event.reply(
-            the_real_message,
-            parse_mode=parse_pre
-        )
- 
+        await event.reply(the_real_message, parse_mode=parse_pre)
