@@ -74,12 +74,9 @@ async def _(event):
 
 async def aexec(code, event):
 	p = lambda _x: print(yaml_format(_x))
-    reply = await event.get_reply_message()
-    exec(
-        f"async def __aexec(event, reply, client, p): "
-        + "".join(f"\n {l}" for l in code.split("\n"))
-    )
-    return await locals()["__aexec"](event, reply, event.client, p)
+	reply = await event.get_reply_message()
+	exec(f"async def __aexec(event, reply, client, p): " + "".join(f"\n {l}" for l in code.split("\n")))
+	return await locals()["__aexec"](event, reply, event.client, p)
 
 
 @borg.on(admin_cmd(pattern="exec ?(.*)"))
