@@ -12,42 +12,9 @@ from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
 from PIL import Image
 
-from uniborg.util import admin_cmd
+from uniborg.util import admin_cmd, take_screen_shot
 
 thumb_image_path = Config.TMP_DOWNLOAD_DIRECTORY + "/thumb_image.jpg"
-
-
-async def get_video_thumb(video_file, output_directory=None, width=320):
-    # https://stackoverflow.com/a/13891070/4723940
-    out_put_file_name = output_directory + "/" + str(time.time()) + ".jpg"
-    metadata = extractMetadata(createParser(video_file))
-    ttl = 0
-    if metadata and metadata.has("duration"):
-        ttl = metadata.get("duration").seconds / 2
-    file_genertor_command = [
-        "ffmpeg",
-        "-ss",
-        str(ttl),
-        "-i",
-        video_file,
-        "-vframes",
-        "1",
-        out_put_file_name,
-    ]
-    # width = "90"
-    process = await asyncio.create_subprocess_exec(
-        *file_genertor_command,
-        # stdout must a pipe to be accessible as process.stdout
-        stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE,
-    )
-    # Wait for the subprocess to finish
-    stdout, stderr = await process.communicate()
-    stderr.decode().strip()
-    stdout.decode().strip()
-    if os.path.lexists(out_put_file_name):
-        return out_put_file_name
-
 
 @borg.on(admin_cmd(pattern="savethumbnail"))
 async def _(event):
@@ -60,9 +27,15 @@ async def _(event):
         downloaded_file_name = await event.client.download_media(
             await event.get_reply_message(), Config.TMP_DOWNLOAD_DIRECTORY
         )
-        if downloaded_file_name.endswith(".mp4"):
-            downloaded_file_name = await get_video_thumb(
-                downloaded_file_name, Config.TMP_DOWNLOAD_DIRECTORY
+        if downloaded_file_name.lower().endswith(".mp4"):
+            metadata = extractMetadata(createParser(downloaded_file_name))
+            ttl = 0
+            if metadata and metadata.has("duration"):
+                ttl = metadata.get("duration").seconds / 2
+            downloaded_file_name = await take_screen_shot(
+                downloaded_file_name,
+                Config.TMP_DOWNLOAD_DIRECTORY,
+                ttl
             )
         # https://stackoverflow.com/a/21669827/4723940
         Image.open(downloaded_file_name).convert("RGB").save(thumb_image_path, "JPEG")
@@ -73,7 +46,7 @@ async def _(event):
             + "This image will be used in the upload, till `.clearthumbnail`."
         )
     else:
-        await event.edit("Reply to a photo to save custom thumbnail")
+        await event.edit("`Reply to a photo to save custom thumbnail`")
 
 
 @borg.on(admin_cmd(pattern="clearthumbnail"))
@@ -109,7 +82,7 @@ async def _(event):
         except Exception as e:
             await event.edit(str(e))
     elif os.path.exists(thumb_image_path):
-        caption_str = "Currently Saved Thumbnail. Clear with `.clearthumbnail`"
+        caption_str = "This is Currently Saved Thumbnail. Clear with `.clearthumbnail`"
         await event.client.send_file(
             event.chat_id,
             thumb_image_path,

@@ -25,7 +25,7 @@ async def coder_print(event):
     pygments.highlight(
         f"{coder}",
         Python3Lexer(),
-        ImageFormatter(font_name="DejaVu Sans Mono", line_numbers=True),
+        ImageFormatter(font_name="LiberationMono-Regular.ttf", line_numbers=True),
         "out.png",
     )
     await event.client.send_file(event.chat_id, "out.png", force_document=False)

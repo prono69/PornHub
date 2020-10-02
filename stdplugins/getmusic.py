@@ -27,11 +27,12 @@ async def _(event):
     else:
         await event.reply("`What I am Supposed to find `")
         return
+    await event.delete()    
     a = await event.reply("`wi8..! I am finding your song....`")
     await catmusic(str(query), "320k", event)
     l = glob.glob("./temp/*.mp3")
     if l:
-        await a.edit("yeah..! i found something wi8..🥰")
+        await a.edit("`yeah..! i found something wi8..🥰`")
     else:
         await a.edit(f"Sorry..! i can't find anything with `{query}`")
         return

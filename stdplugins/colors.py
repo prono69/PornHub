@@ -12,7 +12,7 @@ logging.basicConfig(
 )
 
 
-@borg.on(admin_cmd(pattern="color (.*)"))
+@borg.on(admin_cmd(pattern="color ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -28,16 +28,16 @@ async def _(event):
             return False
         else:
             im = Image.new(mode="RGB", size=(1280, 720), color=usercolor)
-            im.save("UniBorg.png", "PNG")
+            im.save("PepeBot.png", "PNG")
             input_str = input_str.replace("#", "#COLOR_")
             await borg.send_file(
                 event.chat_id,
-                "UniBorg.png",
+                "PepeBot.png",
                 force_document=False,
                 caption=input_str,
                 reply_to=message_id,
             )
-            os.remove("UniBorg.png")
+            os.remove("PepeBot.png")
             await event.delete()
     else:
         await event.edit("Syntax: `.color <color_code>`")

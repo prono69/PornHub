@@ -17,7 +17,7 @@ from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
 from telethon.tl.types import DocumentAttributeAudio, DocumentAttributeVideo
 
-from uniborg.util import admin_cmd, progress, take_screen_shot
+from uniborg.util import admin_cmd, progress, take_screen_shot, edit_or_reply
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.WARN
@@ -27,25 +27,28 @@ thumb_image_path = Config.TMP_DOWNLOAD_DIRECTORY + "/thumb_image.jpg"
 
 
 def get_lst_of_files(input_directory, output_lst):
-    for root, dirs, files in os.walk(input_directory):
-        for file_name in files:
-            output_lst.append(os.path.join(root, file_name))
+    filesinfolder = os.listdir(input_directory)
+    for file_name in filesinfolder:
+        current_file_name = os.path.join(input_directory, file_name)
+        if os.path.isdir(current_file_name):
+            output_lst = get_lst_of_files(current_file_name, output_lst)
+        if os.path.isfile(current_file_name):
+            output_lst.append(current_file_name)
     return output_lst
 
-
-@borg.on(admin_cmd(pattern="uploadir (.*)"))
+@borg.on(admin_cmd(pattern="uploadir (.*)", allow_sudo=True))
 async def _(event):
     if event.fwd_from:
         return
     input_str = event.pattern_match.group(1)
+    mone = await edit_or_reply(event, "`Processing...`")
     if os.path.exists(input_str):
         start = datetime.now()
-        # await event.edit("Processing ...")
         lst_of_files = sorted(get_lst_of_files(input_str, []))
         logger.info(lst_of_files)
         u = 0
-        await event.edit(
-            "Found {} files. ".format(len(lst_of_files))
+        await mone.edit(
+            "Found `{}` files. ".format(len(lst_of_files))
             + "Uploading will start soon. "
             + "Please wait!"
         )
@@ -136,16 +139,21 @@ async def _(event):
                 await asyncio.sleep(5)
         end = datetime.now()
         ms = (end - start).seconds
-        await event.edit("Uploaded {} files in {} seconds.".format(u, ms))
+        a = await mone.edit("Uploaded `{}` files in `{}` seconds.".format(u, ms))
+        await asyncio.sleep(5)
+        await a.delete()
     else:
-        await event.edit("404: Directory Not Found")
+        t = await mone.edit("404: `Directory Not Found`")
+        await asyncio.sleep(5)
+        await t.delete()
+        
 
 
 @borg.on(admin_cmd(pattern="upload (.*)", allow_sudo=True))
 async def _(event):
     if event.fwd_from:
         return
-    mone = await event.reply("Processing ...")
+    mone = await edit_or_reply(event, "`Processing...`")
     input_str = event.pattern_match.group(1)
     thumb = None
     if os.path.exists(thumb_image_path):
@@ -175,14 +183,14 @@ async def _(event):
         await asyncio.sleep(4)
         await a.delete()
     else:
-        await mone.edit("404: File Not Found")
+        await mone.edit("`404: File Not Found`")    
 
 
 @borg.on(admin_cmd(pattern="uploadasstream (.*)", allow_sudo=True))
 async def _(event):
     if event.fwd_from:
         return
-    mone = await event.reply("Processing ...")
+    mone = await edit_or_reply(event, "`Processing...`")
     input_str = event.pattern_match.group(1)
     thumb = None
     file_name = input_str
@@ -246,6 +254,10 @@ async def _(event):
             end = datetime.now()
             os.remove(input_str)
             ms = (end - start).seconds
-            await mone.edit("Uploaded in {} seconds.".format(ms))
+            a=await mone.edit("Uploaded in `{}` seconds.".format(ms))
+            await asyncio.sleep(5)
+            await a.delete()
     else:
-        await mone.edit("404: File Not Found")
+        r=await mone.edit("404: `File Not Found`")
+        await asyncio.sleep(5)
+        await r.delete()

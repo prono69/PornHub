@@ -117,4 +117,4 @@ async def imdb(e):
             parse_mode="HTML",
         )
     except IndexError:
-        await e.edit("Plox Enter **Valid movie name** KthxBye")
+        await e.edit("Bruh Plox Enter **Valid movie name** KthxBye")

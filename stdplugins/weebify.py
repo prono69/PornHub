@@ -5,66 +5,9 @@
 from telethon import events
 
 from uniborg import MODULE, SYNTAX
+from userbot import fonts as op
 
 MODULE.append("weebify")
-
-normiefont = [
-    "a",
-    "b",
-    "c",
-    "d",
-    "e",
-    "f",
-    "g",
-    "h",
-    "i",
-    "j",
-    "k",
-    "l",
-    "m",
-    "n",
-    "o",
-    "p",
-    "q",
-    "r",
-    "s",
-    "t",
-    "u",
-    "v",
-    "w",
-    "x",
-    "y",
-    "z",
-]
-weebyfont = [
-    "卂",
-    "乃",
-    "匚",
-    "刀",
-    "乇",
-    "下",
-    "厶",
-    "卄",
-    "工",
-    "丁",
-    "长",
-    "乚",
-    "从",
-    "𠘨",
-    "口",
-    "尸",
-    "㔿",
-    "尺",
-    "丂",
-    "丅",
-    "凵",
-    "リ",
-    "山",
-    "乂",
-    "丫",
-    "乙",
-]
-
 
 @borg.on(events.NewMessage(pattern="^.weeb(?: |$)(.*)"))
 async def weebify(event):
@@ -78,8 +21,8 @@ async def weebify(event):
         return
     string = " ".join(args).lower()
     for normiecharacter in string:
-        if normiecharacter in normiefont:
-            weebycharacter = weebyfont[normiefont.index(normiecharacter)]
+        if normiecharacter in op.normiefont:
+            weebycharacter = op.weebyfont[op.normiefont.index(normiecharacter)]
             string = string.replace(normiecharacter, weebycharacter)
     await event.edit(string)
 

@@ -25,6 +25,5 @@ async def _(event):
                 file=out_file,
                 force_document=True,
             )
-            # await event.delete()
     else:
         await event.reply(the_real_message, parse_mode=parse_pre)

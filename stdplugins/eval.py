@@ -52,7 +52,7 @@ async def _(event):
     else:
         evaluation = "Success"
 
-    final_output = "⬤ **EVAL**: `{}` \n\n⬤ **Result**: \n`{}` \n".format(
+    final_output = "⬤ **EVAL**: `{}` \n\n⬤ **RESULT**: \n`{}` \n".format(
         cmd, evaluation
     )
 
@@ -102,11 +102,11 @@ async def _(event):
         e = "No Error"
     o = stdout.decode()
     if not o:
-        o = "**Tip**: \n`Please don't import your Brain`"
+        o = "`No Result Returned/False`"
     else:
         _o = o.split("\n")
         o = "`\n".join(_o)
-    OUTPUT = f"**QUERY**\n\n**Command:**\n`{cmd}`\n__PID:__\n`{process.pid}`\n\n**Stderr:**\n`{e}`\n**Output:**\n{o}"
+    OUTPUT = f"**INPUT:**\n`{cmd}`\n__PID:__\n`{process.pid}`\n\n**ERROR:**\n`{e}`\n**OUTPUT:**\n{o}"
     if len(OUTPUT) > Config.MAX_MESSAGE_SIZE_LIMIT:
         with io.BytesIO(str.encode(OUTPUT)) as out_file:
             out_file.name = "exec.txt"

@@ -34,22 +34,21 @@ async def _(event):
     used = humanbytes(used)
     free = humanbytes(free)
 
-    help_string = """@UniBorg
-✅ <b>UpTime</b> <code>{}</code>
-✅ <b>Python</b> <code>{}</code>
-✅ <b>Telethon</b> <code>{}</code>
-{} <b>Database</b>
-<b>Total Disk Space</b>: <code>{}</code>
-<b>Used Disk Space</b>: <code>{}</code>
-<b>Free Disk Space</b>: <code>{}</code>
-
-<b>Custom Repo</b>: https://github.com/prono69/PepeBot """.format(
-        current_run_time, sys.version, __version__, check_sgnirts, total, used, free
-    )
+    help_string = "@UniBorg\n"
+    help_string += f"✅ <b>UpTime</b> <code>{current_run_time}</code>\n"
+    help_string += f"✅ <b>Python</b> <code>{sys.version}</code>\n"
+    help_string += f"✅ <b>Telethon</b> <code>{__version__}</code>\n"
+    help_string += f"{check_sgnirts} <b>Database</b>\n"
+    help_string += f"<b>Total Disk Space</b>: <code>{total}</code>\n"
+    help_string += f"<b>Used Disk Space</b>: <code>{used}</code>\n"
+    help_string += f"<b>Free Disk Space</b>: <code>{free}</code>\n\n"
+    help_string += f"<b>Custom Repo</b>: https://github.com/udf/uniborg"
     borg._iiqsixfourstore[str(event.chat_id)] = {}
-    borg._iiqsixfourstore[str(event.chat_id)][str(event.id)] = (
-        help_string + "\n\n" + s_help_string
-    )
+    borg._iiqsixfourstore[
+        str(event.chat_id)
+    ][
+        str(event.id)
+    ] = help_string + "\n\n" + s_help_string
     tgbotusername = Config.TG_BOT_USER_NAME_BF_HER
     if tgbotusername is not None:
         results = await borg.inline_query(

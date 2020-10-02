@@ -73,7 +73,7 @@ async def _(event):
     await event.edit(
         "`Welcome Note Cleared.` "
         + "[THIS](https://t.me/c/{}/{}) `Was Your Previous Welcome Message.`".format(
-            str(Config.PRIVATE_CHANNEL_BOT_API_ID)[4:], cws.f_mesg_id
+            str(Config.PRIVATE_CHANNEL_BOT_API_ID)[4:], int(cws.f_mesg_id)
         )
     )
 

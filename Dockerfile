@@ -60,7 +60,7 @@ RUN apt -qq install -y --no-install-recommends \
     mkvtoolnix \
     p7zip rar unrar zip \
     # miscellaneous helpers
-    megatools mediainfo && \
+    megatools && \
     # clean up the container "layer", after we are done
     rm -rf /var/lib/apt/lists /var/cache/apt/archives /tmp
  

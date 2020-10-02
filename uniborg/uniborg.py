@@ -7,13 +7,15 @@ import logging
 import os
 import time
 from pathlib import Path
-
+from userbot import bot
 import telethon.events
 import telethon.utils
 from pymongo import MongoClient
 from telethon import TelegramClient
 
-from . import hacks
+class ReverseList(list):
+    def __iter__(self):
+        return reversed(self)
 
 
 class Uniborg(TelegramClient):
@@ -47,17 +49,19 @@ class Uniborg(TelegramClient):
 
         self.tgbot = None
         if api_config.TG_BOT_USER_NAME_BF_HER is not None:
+        	self._logger.info("Initiating Inline Bot")
             # ForTheGreatrerGood of beautification
             self.tgbot = TelegramClient(
                 "TG_BOT_TOKEN", api_id=api_config.APP_ID, api_hash=api_config.API_HASH
             ).start(bot_token=api_config.TG_BOT_TOKEN_BF_HER)
+            self._logger.info("Initialisation finished with no errors")
 
         super().__init__(session, **kwargs)
 
         # This is a hack, please avert your eyes
         # We want this in order for the most recently added handler to take
         # precedence
-        self._event_builders = hacks.ReverseList()
+        self._event_builders = ReverseList()
 
         self.loop.run_until_complete(self._async_init(bot_token=bot_token))
 
@@ -103,19 +107,21 @@ class Uniborg(TelegramClient):
     def load_plugin_from_file(self, path):
         path = Path(path)
         shortname = path.stem
-        name = f"_UniborgPlugins.{self._name}.{shortname}"
+        name = f"{self._name}.{shortname}"
 
         spec = importlib.util.spec_from_file_location(name, path)
         mod = importlib.util.module_from_spec(spec)
         mod.mongo_client = self.mongo
 
         mod.borg = self
+        mod.borg = self.bot
         mod.logger = logging.getLogger(shortname)
         # declare Config and tgbot to be accessible by all modules
         mod.Config = self.config
         if self.config.TG_BOT_USER_NAME_BF_HER is not None:
             mod.tgbot = self.tgbot
         mod.BOT_START_TIME = time.time()
+        
 
         spec.loader.exec_module(mod)
         self._plugins[shortname] = mod
@@ -131,6 +137,7 @@ class Uniborg(TelegramClient):
 
         del self._plugins[shortname]
         self._logger.info(f"Removed plugin {shortname}")
+        self._logger.info("Userbot Startup Completed")
 
     def await_event(self, event_matcher, filter=None):
         fut = asyncio.Future()

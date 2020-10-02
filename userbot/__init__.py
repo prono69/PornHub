@@ -14,9 +14,23 @@ from pySmartDL import SmartDL
 from sample_config import Config
 from userbot.fonts import *
 from userbot.functions import *
+from telethon import TelegramClient
+from telethon.sessions import StringSession
 
 StartTime = time.time()
 pepe = "3.0.0"
+
+if Config.HU_STRING_SESSION:
+    session_name = str(Config.HU_STRING_SESSION)
+    if session_name.endswith("="):
+        bot = TelegramClient(StringSession(session_name), Config.APP_ID, Config.API_HASH)
+    else:
+        bot = TelegramClient(
+            "TG_BOT_TOKEN", api_id=Config.APP_ID, api_hash=Config.API_HASH
+        ).start(bot_token=Config.HU_STRING_SESSION)
+else:
+    session_name = "startup"
+    bot = TelegramClient(session_name, Config.APP_ID, Config.API_HASH)
 
 CONSOLE_LOGGER_VERBOSE = sb(os.environ.get("CONSOLE_LOGGER_VERBOSE", "False"))
 
