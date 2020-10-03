@@ -53,7 +53,7 @@ RUN apt -qq install -y --no-install-recommends \
     # miscellaneous
     neofetch python3-dev \
     # install extraction tools
-    p7zip rar unrar zip \
+    p7zip zip \
     # miscellaneous helpers
     megatools && \
     # clean up the container "layer", after we are done
