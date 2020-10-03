@@ -17,7 +17,7 @@ from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
 from telethon.tl.types import DocumentAttributeAudio, DocumentAttributeVideo
 
-from uniborg.util import admin_cmd, progress, take_screen_shot, edit_or_reply
+from uniborg.util import admin_cmd, edit_or_reply, progress, take_screen_shot
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.WARN
@@ -35,6 +35,7 @@ def get_lst_of_files(input_directory, output_lst):
         if os.path.isfile(current_file_name):
             output_lst.append(current_file_name)
     return output_lst
+
 
 @borg.on(admin_cmd(pattern="uploadir (.*)", allow_sudo=True))
 async def _(event):
@@ -146,7 +147,6 @@ async def _(event):
         t = await mone.edit("404: `Directory Not Found`")
         await asyncio.sleep(5)
         await t.delete()
-        
 
 
 @borg.on(admin_cmd(pattern="upload (.*)", allow_sudo=True))
@@ -183,7 +183,7 @@ async def _(event):
         await asyncio.sleep(4)
         await a.delete()
     else:
-        await mone.edit("`404: File Not Found`")    
+        await mone.edit("`404: File Not Found`")
 
 
 @borg.on(admin_cmd(pattern="uploadasstream (.*)", allow_sudo=True))
@@ -254,10 +254,10 @@ async def _(event):
             end = datetime.now()
             os.remove(input_str)
             ms = (end - start).seconds
-            a=await mone.edit("Uploaded in `{}` seconds.".format(ms))
+            a = await mone.edit("Uploaded in `{}` seconds.".format(ms))
             await asyncio.sleep(5)
             await a.delete()
     else:
-        r=await mone.edit("404: `File Not Found`")
+        r = await mone.edit("404: `File Not Found`")
         await asyncio.sleep(5)
         await r.delete()

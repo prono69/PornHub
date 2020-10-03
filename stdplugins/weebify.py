@@ -9,6 +9,7 @@ from userbot import fonts as op
 
 MODULE.append("weebify")
 
+
 @borg.on(events.NewMessage(pattern="^.weeb(?: |$)(.*)"))
 async def weebify(event):
 

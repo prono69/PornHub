@@ -27,7 +27,7 @@ async def _(event):
     else:
         await event.reply("`What I am Supposed to find `")
         return
-    await event.delete()    
+    await event.delete()
     a = await event.reply("`wi8..! I am finding your song....`")
     await catmusic(str(query), "320k", event)
     l = glob.glob("./temp/*.mp3")

@@ -13,6 +13,7 @@
          """
 
 from cowpy import cow
+
 from uniborg.util import admin_cmd, edit_or_reply
 
 
@@ -28,7 +29,7 @@ async def univsaye(event):
     if arg == "cow":
         arg = "default"
     if arg not in cow.COWACTERS:
-        return await edit_or_reply(event, '`This Character is not Supported`')
+        return await edit_or_reply(event, "`This Character is not Supported`")
     cheese = cow.get_cow(arg)
     cheese = cheese()
 

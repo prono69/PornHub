@@ -7,11 +7,12 @@ import logging
 import os
 import time
 from pathlib import Path
-from userbot import bot
+
 import telethon.events
 import telethon.utils
 from pymongo import MongoClient
 from telethon import TelegramClient
+
 
 class ReverseList(list):
     def __iter__(self):
@@ -121,7 +122,6 @@ class Uniborg(TelegramClient):
         if self.config.TG_BOT_USER_NAME_BF_HER is not None:
             mod.tgbot = self.tgbot
         mod.BOT_START_TIME = time.time()
-        
 
         spec.loader.exec_module(mod)
         self._plugins[shortname] = mod

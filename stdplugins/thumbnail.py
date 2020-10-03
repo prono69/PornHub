@@ -4,9 +4,7 @@ Available Commands:
 .clearthumbnail
 .getthumbnail"""
 
-import asyncio
 import os
-import time
 
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
@@ -15,6 +13,7 @@ from PIL import Image
 from uniborg.util import admin_cmd, take_screen_shot
 
 thumb_image_path = Config.TMP_DOWNLOAD_DIRECTORY + "/thumb_image.jpg"
+
 
 @borg.on(admin_cmd(pattern="savethumbnail"))
 async def _(event):
@@ -33,9 +32,7 @@ async def _(event):
             if metadata and metadata.has("duration"):
                 ttl = metadata.get("duration").seconds / 2
             downloaded_file_name = await take_screen_shot(
-                downloaded_file_name,
-                Config.TMP_DOWNLOAD_DIRECTORY,
-                ttl
+                downloaded_file_name, Config.TMP_DOWNLOAD_DIRECTORY, ttl
             )
         # https://stackoverflow.com/a/21669827/4723940
         Image.open(downloaded_file_name).convert("RGB").save(thumb_image_path, "JPEG")
