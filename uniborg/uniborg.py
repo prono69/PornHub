@@ -13,8 +13,6 @@ import telethon.utils
 from pymongo import MongoClient
 from telethon import TelegramClient
 
-from userbot import *
-
 
 class ReverseList(list):
     def __iter__(self):
