@@ -49,7 +49,7 @@ class Uniborg(TelegramClient):
 
         self.tgbot = None
         if api_config.TG_BOT_USER_NAME_BF_HER is not None:
-        	self._logger.info("Initiating Inline Bot")
+            self._logger.info("Initiating Inline Bot")
             # ForTheGreatrerGood of beautification
             self.tgbot = TelegramClient(
                 "TG_BOT_TOKEN", api_id=api_config.APP_ID, api_hash=api_config.API_HASH
