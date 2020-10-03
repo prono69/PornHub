@@ -15,11 +15,7 @@ RUN apt -qq install -y --no-install-recommends \
     gnupg2 \
     unzip \
     wget
-# add required files to sources.list
-RUN wget -q -O - https://mkvtoolnix.download/gpg-pub-moritzbunkus.txt | apt-key add - && \
-    wget -qO - https://ftp-master.debian.org/keys/archive-key-10.asc | apt-key add -
-RUN sh -c 'echo "deb https://mkvtoolnix.download/debian/ buster main" >> /etc/apt/sources.list.d/bunkus.org.list' && \
-    sh -c 'echo deb http://deb.debian.org/debian buster main contrib non-free | tee -a /etc/apt/sources.list'
+
 # to resynchronize the package index files from their sources.
 RUN apt -qq update
 # http://bugs.python.org/issue19846
@@ -53,11 +49,10 @@ RUN apt -qq install -y --no-install-recommends \
     # install coreutils
     coreutils aria2 jq pv gcc g++ \
     # install encoding tools
-    ffmpeg mediainfo rclone \
+    ffmpeg mediainfo \
     # miscellaneous
     neofetch python3-dev \
     # install extraction tools
-    mkvtoolnix \
     p7zip rar unrar zip \
     # miscellaneous helpers
     megatools && \
