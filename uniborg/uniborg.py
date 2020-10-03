@@ -40,7 +40,6 @@ class Uniborg(TelegramClient):
         self.db_plugin_path = db_plugin_path
         self.config = api_config
         self.mongo = MongoClient(os.environ.get("MONGO_URI", None))
-        self.bot = bot
 
         kwargs = {
             "api_id": 6,
@@ -118,7 +117,7 @@ class Uniborg(TelegramClient):
         mod.mongo_client = self.mongo
 
         mod.borg = self
-        mod.borg = bot
+        mod.bot = self
         mod.logger = logging.getLogger(shortname)
         # declare Config and tgbot to be accessible by all modules
         mod.Config = self.config
