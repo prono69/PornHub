@@ -33,11 +33,11 @@ async def coder_print(event):
     )
     await event.client.send_file(event.chat_id, "out.png", force_document=False)
     await event.delete()
-    os.remove("out.png"
+    os.remove("out.png")
 
     
-@borg.on(admin_cmd(pattern=r"ncode$", allow_sudo=True))
-async def coder_print(event):
+@borg.on(admin_cmd(pattern=r"ncode", allow_sudo=True))
+async def mkc(event):
 	a = await event.client.download_media(await event.get_reply_message(), Config.TMP_DOWNLOAD_DIRECTORY)
 	s = open(a, 'r')
 	c = s.read()

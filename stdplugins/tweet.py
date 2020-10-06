@@ -193,7 +193,7 @@ async def trumptweet(event):
     if not meow:
         return await event.edit("`Carryminati not found. He iz Busy :)`")
     await event.edit("`Carry Minati is Tweeting for You` 😎")
-    await event.client.send_file
+    await event.client.send_file(
         event.chat_id, file=meow, reply_to=event.reply_to_msg_id
     )
     await sleep(2)
