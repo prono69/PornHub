@@ -16,6 +16,7 @@ from telethon.sessions import StringSession
 from sample_config import Config
 from userbot.fonts import *
 from userbot.functions import *
+from userbot.cpro import *
 
 StartTime = time.time()
 pepe = "3.1.0"
@@ -151,10 +152,6 @@ with open(thumb_image_path, "wb") as f:
     f.write(requests.get(Config.THUMB_IMG).content)
 
 
-class CancelProcess(Exception):
-    """
-    Cancel Process
-    """
 
 
 # Gdrive
