@@ -28,7 +28,7 @@ OAUTH_SCOPE = "https://www.googleapis.com/auth/drive.file"
 # Redirect URI for installed apps, can be left as is
 REDIRECT_URI = "urn:ietf:wg:oauth:2.0:oob"
 # global variable to set Folder ID to upload to
-parent_id = Config.GDRIVE_FOLDER_ID
+parent_id = Config.G_DRIVE_FOLDER_ID
 
 
 @borg.on(admin_cmd(pattern="glink ?(.*)", allow_sudo=True))
