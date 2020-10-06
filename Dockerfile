@@ -11,6 +11,7 @@ RUN apt -qq update
 # base required pre-requisites before proceeding ...
 RUN apt -qq install -y --no-install-recommends \
     curl \
+    sudo \
     git \
     gnupg2 \
     unzip \
@@ -23,7 +24,7 @@ RUN apt -qq update
 ENV LANG C.UTF-8
  
 # we don't have an interactive xTerm
-ENV DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
  
 # install google chrome
 RUN mkdir -p /tmp/ && \
@@ -51,9 +52,9 @@ RUN apt -qq install -y --no-install-recommends \
     # install encoding tools
     ffmpeg mediainfo \
     # miscellaneous
-    neofetch python3-dev \
+    neofetch \
     # install extraction tools
-    p7zip zip \
+    p7zip-full zip \
     # miscellaneous helpers
     megatools && \
     # clean up the container "layer", after we are done
