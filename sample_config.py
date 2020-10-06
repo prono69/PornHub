@@ -106,8 +106,9 @@ class Config:
     # Google Drive ()
     G_DRIVE_CLIENT_ID = os.environ.get("G_DRIVE_CLIENT_ID", None)
     G_DRIVE_CLIENT_SECRET = os.environ.get("G_DRIVE_CLIENT_SECRET", None)
-    GDRIVE_FOLDER_ID = os.environ.get("GDRIVE_FOLDER_ID", None)
+    G_DRIVE_FOLDER_ID = os.environ.get("G_DRIVE_FOLDER_ID", None)
     G_DRIVE_AUTH_TOKEN_DATA = os.environ.get("G_DRIVE_AUTH_TOKEN_DATA", None)
+    G_DRIVE_DATA = os.environ.get("G_DRIVE_DATA", None)
     # Google Photos ()
     G_PHOTOS_CLIENT_ID = os.environ.get("G_PHOTOS_CLIENT_ID", None)
     G_PHOTOS_CLIENT_SECRET = os.environ.get("G_PHOTOS_CLIENT_SECRET", None)
@@ -195,6 +196,8 @@ class Config:
     # for video trimming and screenshot plugins
     LT_QOAN_NOE_FF_MPEG_CTD = os.environ.get("LT_QOAN_NOE_FF_MPEG_CTD", None)
     LT_QOAN_NOE_FF_MPEG_URL = os.environ.get("LT_QOAN_NOE_FF_MPEG_URL", None)
+    #Deep AI
+    DEEP_AI = os.environ.get("DEEP_AI", None)
 
 
 class Production(Config):

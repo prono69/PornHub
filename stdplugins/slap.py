@@ -87,7 +87,7 @@ async def who(event):
         await event.edit(caption)
 
     except BaseException:
-        await event.edit("`Can't slap this nibba !!`")
+        await event.edit("`Can't slap this nibba, Need to fetch some sticks and stones !!`")
 
 
 async def get_user(event):
@@ -116,7 +116,7 @@ async def get_user(event):
             replied_user = await event.client(GetFullUserRequest(user_object.id))
 
         except (TypeError, ValueError):
-            await event.edit("`I don't slap strangers !!`")
+            await event.edit("`I don't slap aliens, they ugly AF !!`")
             return None
 
     return replied_user

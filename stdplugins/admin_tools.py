@@ -1,302 +1,228 @@
-"""Restrict Users\n
-Available Commands: `.ban`, `.unban`, `.imute`, `.iunmute`, `.tmute`, `.tban`"""
+# Made by @mrconfused
 
-import re
-from datetime import datetime, timedelta
-from typing import Tuple, Union
 
+from telethon.errors import BadRequestError
+from telethon.errors.rpcerrorlist import UserIdInvalidError
 from telethon.tl.functions.channels import EditBannedRequest
-from telethon.tl.types import ChatBannedRights
+from telethon.tl.types import ChatBannedRights, MessageEntityMentionName
 
-from uniborg.util import admin_cmd
+from uniborg.util import admin_cmd, edit_or_reply
+from uniborg import SYNTAX, extract_time
 
-regexp = re.compile(r"(\d+)(w|d|h|m|s)?")
-adminregexp = re.compile(r"\d+(?:w|d|h|m|s)?")
+# =================== CONSTANT ===================
+NO_ADMIN = "`I am not an admin nub nibba!`"
+NO_PERM = "`I don't have sufficient permissions! This is so sed. Alexa play despacito`"
+BOTLOG = Config.BOTLOG
 
-
-async def amount_to_secs(amount: tuple) -> int:
-
-    num, unit = amount
-
-    num = int(num)
-    if not unit:
-        unit = "s"
-
-    if unit == "s":
-        return num
-    elif unit == "m":
-        return num * 60
-    elif unit == "h":
-        return num * 60 * 60
-    elif unit == "d":
-        return num * 60 * 60 * 24
-    elif unit == "w":
-        return num * 60 * 60 * 24 * 7
-    else:
-        return 0
-
-
-async def string_to_secs(string: str) -> int:
-
-    values = regexp.findall(string)
-
-    totalValues = len(values)
-
-    if totalValues == 1:
-        return await amount_to_secs(values[0])
-    else:
-        total = 0
-        for amount in values:
-            total += await amount_to_secs(amount)
-        return total
-
-
-async def split_extra_string(string: str) -> Tuple[Union[str, None], Union[int, None]]:
-    reason = string
-    time = adminregexp.findall(string)
-    for u in time:
-        reason = reason.replace(u, "").strip()
-
-    total_time = await string_to_secs("".join(time))
-
-    return reason or None, total_time or None
-
-
-muted_rights = ChatBannedRights(
-    until_date=None,
-    view_messages=None,
-    send_messages=True,
-    send_media=True,
-    send_stickers=True,
-    send_gifs=True,
-    send_games=True,
-    send_inline=True,
-    embed_links=True,
-)
-banned_rights = ChatBannedRights(
-    until_date=None,
-    view_messages=True,
-    send_messages=True,
-    send_media=True,
-    send_stickers=True,
-    send_gifs=True,
-    send_games=True,
-    send_inline=True,
-    embed_links=True,
-)
-unbanned_rights = ChatBannedRights(
-    until_date=None,
-    view_messages=None,
-    send_messages=None,
-    send_media=None,
-    send_stickers=None,
-    send_gifs=None,
-    send_games=None,
-    send_inline=None,
-    embed_links=None,
-)
-unmuted_rights = ChatBannedRights(
-    until_date=None,
-    view_messages=None,
-    send_messages=False,
-    send_media=False,
-    send_stickers=False,
-    send_gifs=False,
-    send_games=False,
-    send_inline=False,
-    embed_links=False,
-)
-
-
-@borg.on(admin_cmd(pattern="(iban|iunban) ?(.*)"))
-async def _(event):
-    # Space weirdness in regex required because argument is optional and other
-    # commands start with ".unban"
-    if event.fwd_from:
+@borg.on(admin_cmd(pattern=r"tmute(?: |$)(.*)", allow_sudo=True))
+async def tmuter(catty):
+    chat = await catty.get_chat()
+    admin = chat.admin_rights
+    creator = chat.creator
+    # If not admin and not creator, return
+    if not admin and not creator:
+        await edit_or_reply(catty, NO_ADMIN)
         return
-    datetime.now()
-    to_ban_id = None
-    rights = None
-    input_cmd = event.pattern_match.group(1)
-    if input_cmd == "iban":
-        rights = banned_rights
-    elif input_cmd == "iunban":
-        rights = unbanned_rights
-
-    input_str = event.pattern_match.group(2)
-    reply_msg_id = event.reply_to_msg_id
-    if reply_msg_id:
-        r_mesg = await event.get_reply_message()
-        to_ban_id = r_mesg.from_id
-    elif input_str and "all" not in input_str:
-        to_ban_id = int(input_str)
+    catevent = await edit_or_reply(catty, "`Muteing this Nibba!...`")
+    user, reason = await get_user_from_event(catty)
+    if not user:
+        return
+    if reason:
+        reason = reason.split(" ", 1)
+        hmm = len(reason)
+        cattime = reason[0]
+        reason = reason[1] if hmm == 2 else None
     else:
-        return False
+        await catevent.edit("you havent mentioned time check `.help tadmin`")
+        return
+    self_user = await catty.client.get_me()
+    ctime = await extract_time(catty, cattime)
+    if not ctime:
+        await catevent.edit(
+            f"Invalid time type specified. Expected m , h , d or w not as {cattime}"
+        )
+        return
+    if user.id == self_user.id:
+        await catevent.edit(f"`Sorry, I can't mute my self`")
+        return
     try:
-        await borg(EditBannedRequest(event.chat_id, to_ban_id, rights))
-    except (Exception) as exc:
-        await event.edit(str(exc))
-    else:
-        await event.edit(f"`{input_cmd}ed Successfully this gei`")
-
-
-@borg.on(admin_cmd(pattern="imute ?(.*)"))
-async def _(event):
-    if event.fwd_from:
-        return
-    datetime.now()
-    to_ban_id = None
-    rights = None
-    input_cmd = "imute"
-    if input_cmd == "iban":
-        rights = 1
-    elif input_cmd == "iunban":
-        rights = 2
-    elif input_cmd == "imute":
-        rights = muted_rights
-    input_str = event.pattern_match.group(1)
-    reply_msg_id = event.reply_to_msg_id
-    if reply_msg_id:
-        r_mesg = await event.get_reply_message()
-        to_ban_id = r_mesg.from_id
-    elif input_str and "all" not in input_str:
-        to_ban_id = int(input_str)
-    else:
-        return False
-    try:
-        await borg(EditBannedRequest(event.chat_id, to_ban_id, rights))
-    except (Exception) as exc:
-        await event.edit(str(exc))
-    else:
-        await event.edit("**Muted**")
-
-
-@borg.on(admin_cmd(pattern="iunmute ?(.*)"))
-async def _(event):
-    if event.fwd_from:
-        return
-    datetime.now()
-    to_ban_id = None
-    rights = None
-    input_cmd = "iunmute"
-    if input_cmd == "iban":
-        rights = 1
-    elif input_cmd == "iunban":
-        rights = 2
-    elif input_cmd == "iunmute":
-        rights = unmuted_rights
-    input_str = event.pattern_match.group(1)
-    reply_msg_id = event.reply_to_msg_id
-    if reply_msg_id:
-        r_mesg = await event.get_reply_message()
-        to_ban_id = r_mesg.from_id
-    elif input_str and "all" not in input_str:
-        to_ban_id = int(input_str)
-    else:
-        return False
-    try:
-        await borg(EditBannedRequest(event.chat_id, to_ban_id, rights))
-    except (Exception) as exc:
-        await event.edit(str(exc))
-    else:
-        await event.edit("**Unmuted**")
-
-
-@borg.on(admin_cmd(pattern="tmute ?(.*)"))
-async def _(event):
-    if event.fwd_from:
-        return
-
-    datetime.now()
-    to_ban_id = None
-    period = "time=" + event.pattern_match.group(1)
-    if period == "time=":
-        await event.edit("`Specify the time`")
-    else:
-        period = await string_to_secs(period)
-        if 60 <= period < 3600:
-            time = str(period // 60) + " " + "minutes"
-        # nit = "minutes"
-        elif 3600 <= period < 86400:
-            time = str(period // 3600) + " " + "hours"
-        # unit = "hours"
-        elif period >= 86400:
-            time = str(period // 86400) + " " + "days"
-        else:
-            time = str(period) + " " + "seconds"
-        x = 1
-        if x == 1:
-            event.reply_to_msg_id
-            r_mesg = await event.get_reply_message()
-            if not r_mesg:
-                await event.edit("`Reply to a user message`")
-            else:
-                to_ban_id = r_mesg.from_id
-                await borg(
-                    EditBannedRequest(
-                        event.chat_id,
-                        to_ban_id,
-                        ChatBannedRights(
-                            until_date=timedelta(seconds=period),
-                            view_messages=None,
-                            send_messages=True,
-                            send_media=True,
-                            send_stickers=True,
-                            send_gifs=True,
-                            send_games=True,
-                            send_inline=True,
-                            embed_links=True,
-                        ),
-                    )
+        await catevent.client(
+            EditBannedRequest(
+                catty.chat_id,
+                user.id,
+                ChatBannedRights(until_date=ctime, send_messages=True),
+            )
+        )
+        # Announce that the function is done
+        if reason:
+            await catevent.edit(
+                f"{user.first_name} was muted in {catty.chat.title}\n"
+                f"**Mutted for : **{cattime}\n"
+                f"**Reason : **__{reason}__"
+            )
+            if BOTLOG:
+                await catty.client.send_message(
+                    BOTLOG,
+                    "#TMUTE\n"
+                    f"**User : **[{user.first_name}](tg://user?id={user.id})\n"
+                    f"**Chat : **{catty.chat.title}(`{catty.chat_id}`)\n"
+                    f"**Mutted for : **`{cattime}`\n"
+                    f"**Reason : **`{reason}``",
                 )
-                await event.edit(f"**Muted for {time}**")
-
-
-@borg.on(admin_cmd(pattern="tban ?(.*)"))
-async def _(event):
-    if event.fwd_from:
-        return
-
-    datetime.now()
-    to_ban_id = None
-    period = "time=" + event.pattern_match.group(1)
-    if period == "time=":
-        await event.edit("`Specify the time`")
-    else:
-        period = await string_to_secs(period)
-        if 60 <= period < 3600:
-            time = str(period // 60) + " " + "minutes"
-        # nit = "minutes"
-        elif 3600 <= period < 86400:
-            time = str(period // 3600) + " " + "hours"
-        # unit = "hours"
-        elif period >= 86400:
-            time = str(period // 86400) + " " + "days"
         else:
-            time = str(period) + " " + "seconds"
-        x = 1
-        if x == 1:
-            event.reply_to_msg_id
-            r_mesg = await event.get_reply_message()
-            if not r_mesg:
-                await event.edit("`Reply to a user message`")
-            else:
-                to_ban_id = r_mesg.from_id
-                await borg(
-                    EditBannedRequest(
-                        event.chat_id,
-                        to_ban_id,
-                        ChatBannedRights(
-                            until_date=timedelta(seconds=period),
-                            view_messages=True,
-                            send_messages=True,
-                            send_media=True,
-                            send_stickers=True,
-                            send_gifs=True,
-                            send_games=True,
-                            send_inline=True,
-                            embed_links=True,
-                        ),
-                    )
+            await catevent.edit(
+                f"{user.first_name} was muted in {catty.chat.title}\n"
+                f"Mutted for {cattime}\n"
+            )
+            if BOTLOG:
+                await catty.client.send_message(
+                    BOTLOG,
+                    "#TMUTE\n"
+                    f"**User : **[{user.first_name}](tg://user?id={user.id})\n"
+                    f"**Chat : **{catty.chat.title}(`{catty.chat_id}`)\n"
+                    f"**Mutted for : **`{cattime}`",
                 )
-                await event.edit(f"**Banned for {time}**")
+        # Announce to logging group
+    except UserIdInvalidError:
+        return await catevent.edit("`Uh oh my mute logic broke!`")
+
+
+@borg.on(admin_cmd(pattern="tban(?: |$)(.*)", allow_sudo=True))
+async def ban(catty):
+    chat = await catty.get_chat()
+    admin = chat.admin_rights
+    creator = chat.creator
+    # If not admin and not creator, return
+    if not admin and not creator:
+        await edit_or_reply(catty, NO_ADMIN)
+        return
+    catevent = await edit_or_reply(catty, "`Baning this Nibba!...`")
+    user, reason = await get_user_from_event(catty)
+    if not user:
+        return
+    if reason:
+        reason = reason.split(" ", 1)
+        hmm = len(reason)
+        cattime = reason[0]
+        reason = reason[1] if hmm == 2 else None
+    else:
+        await catevent.edit("you havent mentioned time check `.help tadmin`")
+        return
+    self_user = await catty.client.get_me()
+    ctime = await extract_time(catty, cattime)
+    if not ctime:
+        await catevent.edit(
+            f"Invalid time type specified. Expected m , h , d or w not as {cattime}"
+        )
+        return
+    if user.id == self_user.id:
+        await catevent.edit(f"`Sorry, I can't ban my self`")
+        return
+    await catevent.edit("`Whacking the pest!`")
+    try:
+        await catty.client(
+            EditBannedRequest(
+                catty.chat_id,
+                user.id,
+                ChatBannedRights(until_date=ctime, view_messages=True),
+            )
+        )
+    except BadRequestError:
+        await catevent.edit(NO_PERM)
+        return
+    # Helps ban group join spammers more easily
+    try:
+        reply = await catty.get_reply_message()
+        if reply:
+            await reply.delete()
+    except BadRequestError:
+        await catevent.edit(
+            "`I dont have message nuking rights! But still he was banned!`"
+        )
+        return
+    # Delete message and then tell that the command
+    # is done gracefully
+    # Shout out the ID, so that fedadmins can fban later
+    if reason:
+        await catevent.edit(
+            f"{user.first_name} was banned in {catty.chat.title}\n"
+            f"banned for {cattime}\n"
+            f"Reason:`{reason}`"
+        )
+        if BOTLOG:
+            await catty.client.send_message(
+                BOTLOG,
+                "#TBAN\n"
+                f"**User : **[{user.first_name}](tg://user?id={user.id})\n"
+                f"**Chat : **{catty.chat.title}(`{catty.chat_id}`)\n"
+                f"**Banned untill : **`{cattime}`\n"
+                f"**Reason : **__{reason}__",
+            )
+    else:
+        await catevent.edit(
+            f"{user.first_name} was banned in {catty.chat.title}\n"
+            f"banned for {cattime}\n"
+        )
+        if BOTLOG:
+            await catty.client.send_message(
+                BOTLOG,
+                "#TBAN\n"
+                f"**User : **[{user.first_name}](tg://user?id={user.id})\n"
+                f"**Chat : **{catty.chat.title}(`{catty.chat_id}`)\n"
+                f"**Banned untill : **`{cattime}`",
+            )
+
+
+async def get_user_from_event(event):
+    """ Get the user from argument or replied message. """
+    args = event.pattern_match.group(1).split(" ", 1)
+    extra = None
+    if event.reply_to_msg_id:
+        previous_message = await event.get_reply_message()
+        user_obj = await event.client.get_entity(previous_message.from_id)
+        extra = event.pattern_match.group(1)
+    elif args:
+        user = args[0]
+        if len(args) == 2:
+            extra = args[1]
+        if user.isnumeric():
+            user = int(user)
+        if not user:
+            await event.edit("`Pass the user's username, id or reply!`")
+            return
+        if event.message.entities:
+            probable_user_mention_entity = event.message.entities[0]
+            if isinstance(probable_user_mention_entity, MessageEntityMentionName):
+                user_id = probable_user_mention_entity.user_id
+                user_obj = await event.client.get_entity(user_id)
+                return user_obj
+        try:
+            user_obj = await event.client.get_entity(user)
+        except (TypeError, ValueError):
+            await event.edit("Could not fetch info of that user.")
+            return None
+    return user_obj, extra
+
+
+async def get_user_from_id(user, event):
+    if isinstance(user, str):
+        user = int(user)
+    try:
+        user_obj = await event.client.get_entity(user)
+    except (TypeError, ValueError) as err:
+        await event.edit(str(err))
+        return None
+    return user_obj
+
+
+SYNTAX.update(
+    {
+        "tadmin": "**Plugin :** `tadmin`\
+      \n\n**Syntax : **`.tmute <reply/username/userid> <time> <reason>`\
+      \n**Usage : **Temporary mutes the user for given time.\
+      \n\n**Syntax : **`.tban <reply/username/userid> <time> <reason>`\
+      \n**Usage : **Temporary bans the user for given time.\
+      \n\n**Time units : ** (2m = 2 minutes) ,(3h = 3hours)  ,(4d = 4 days) ,(5w = 5 weeks)\
+      This times are example u can use anything with thoose untis "
+    }
+)

@@ -26,7 +26,7 @@ import requests
 from PIL import Image
 
 from uniborg import MODULE
-from uniborg.util import admin_cmd
+from uniborg.util import admin_cmd, edit_or_reply
 
 MODULE.append("nekos")
 
@@ -62,14 +62,15 @@ async def avatarlewd(event):
     img.save("temp.webp", "webp")
     await event.client.send_file(event.chat_id, file=open("temp.webp", "rb"))
     os.remove("temp.webp")
+    await event.delete()
 
 
 @borg.on(admin_cmd(pattern="cat"))
 async def _(event):
     target = nekos.cat()
     await event.edit("Finding ur ket...🌚")
-    await event.delete()
     await event.client.send_file(event.chat_id, file=target)
+    await event.delete()
 
 
 @borg.on(admin_cmd(pattern="lewdn"))

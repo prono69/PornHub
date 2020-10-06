@@ -2,7 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-"""Cmd= `.zombie`
+"""Cmd= `.zombies`
 Usage: Searches for deleted accounts in a groups and channels.
 Use .zombies clean to remove deleted accounts from the groups and channels.
 \nPorted by ©[NIKITA](t.me/kirito6969) and ©[EYEPATCH](t.me/NeoMatrix90)"""
@@ -61,7 +61,7 @@ async def rm_deletedacc(show):
                 del_u += 1
                 await sleep(1)
         if del_u > 0:
-            del_status = f"`Found` ☠️ **{del_u}** `ghost/deleted/zombie account(s) in this group,\
+            del_status = f"`Found` ☠️ **{del_u}** `Ghost/Deleted/Zombie account(s) in this group,\
             \nclean them by using .zombies clean`"
         await show.edit(del_status)
         return
@@ -106,9 +106,9 @@ async def rm_deletedacc(show):
     await sleep(2)
     await show.delete()
 
-    if Config.G_BAN_LOGGER_GROUP is not None:
+    if Config.BOTLOG is not None:
         await show.client.send_message(
-            Config.G_BAN_LOGGER_GROUP,
+            Config.BOTLOG,
             "#CLEANUP\n"
             f"Cleaned **{del_u}** deleted account(s) !!\
             \nCHAT: {show.chat.title}(`{show.chat_id}`)",

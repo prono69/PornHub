@@ -18,7 +18,7 @@ Syntax: .rbg as reply to a media"""
 import io
 import os
 from datetime import datetime
-
+import asyncio
 import requests
 
 from uniborg.util import admin_cmd
@@ -62,7 +62,7 @@ async def _(event):
     contentType = output_file_name.headers.get("content-type")
     if "image" in contentType:
         with io.BytesIO(output_file_name.content) as remove_bg_image:
-            remove_bg_image.name = "@PepeBot_ReMove.png"
+            remove_bg_image.name = "PepeBot_ReMove.png"
             await borg.send_file(
                 event.chat_id,
                 remove_bg_image,
@@ -73,11 +73,13 @@ async def _(event):
             )
         end = datetime.now()
         ms = (end - start).seconds
-        await event.edit(
+        a = await event.edit(
             "Background Removed in {} seconds using ReMove.BG API, powered by @PepeBot".format(
                 ms
             )
         )
+        await asyncio.sleep(2)
+        await a.delete()
     else:
         await event.edit(
             "ReMove.BG API returned Errors. Please report to @UniBorg\n`{}".format(

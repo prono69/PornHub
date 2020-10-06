@@ -70,8 +70,8 @@ async def thicc(bolded):
         return
     string = "".join(args).lower()
     for normiecharacter in string:
-        if normiecharacter in normiefont:
-            boldcharacter = boldfont[normiefont.index(normiecharacter)]
+        if normiecharacter in op.normiefont:
+            boldcharacter = boldfont[op.normiefont.index(normiecharacter)]
             string = string.replace(normiecharacter, boldcharacter)
     await bolded.edit(string)
 
@@ -118,8 +118,8 @@ async def mediv(medievalx):
         return
     string = "".join(args).lower()
     for normiecharacter in string:
-        if normiecharacter in normiefont:
-            medievalcharacter = medievalbold[normiefont.index(normiecharacter)]
+        if normiecharacter in op.normiefont:
+            medievalcharacter = medievalbold[op.normiefont.index(normiecharacter)]
             string = string.replace(normiecharacter, medievalcharacter)
     await medievalx.edit(string)
 
@@ -166,8 +166,8 @@ async def doublex(doublestrucktx):
         return
     string = "".join(args).lower()
     for normiecharacter in string:
-        if normiecharacter in normiefont:
-            strucktcharacter = doublestruckt[normiefont.index(normiecharacter)]
+        if normiecharacter in op.normiefont:
+            strucktcharacter = doublestruckt[op.normiefont.index(normiecharacter)]
             string = string.replace(normiecharacter, strucktcharacter)
     await doublestrucktx.edit(string)
 
@@ -214,8 +214,8 @@ async def cursive2(cursivebolded):
         return
     string = "".join(args).lower()
     for normiecharacter in string:
-        if normiecharacter in normiefont:
-            cursiveboldcharacter = cursiveboldx[normiefont.index(normiecharacter)]
+        if normiecharacter in op.normiefont:
+            cursiveboldcharacter = cursiveboldx[op.normiefont.index(normiecharacter)]
             string = string.replace(normiecharacter, cursiveboldcharacter)
     await cursivebolded.edit(string)
 
@@ -262,8 +262,8 @@ async def medival22(medivallite):
         return
     string = "".join(args).lower()
     for normiecharacter in string:
-        if normiecharacter in normiefont:
-            medivalxxcharacter = medival2[normiefont.index(normiecharacter)]
+        if normiecharacter in op.normiefont:
+            medivalxxcharacter = medival2[op.normiefont.index(normiecharacter)]
             string = string.replace(normiecharacter, medivalxxcharacter)
     await medivallite.edit(string)
 
@@ -310,8 +310,8 @@ async def xcursive(cursivelite):
         return
     string = "".join(args).lower()
     for normiecharacter in string:
-        if normiecharacter in normiefont:
-            cursivecharacter = cursive[normiefont.index(normiecharacter)]
+        if normiecharacter in op.normiefont:
+            cursivecharacter = cursive[op.normiefont.index(normiecharacter)]
             string = string.replace(normiecharacter, cursivecharacter)
     await cursivelite.edit(string)
 
@@ -358,8 +358,8 @@ async def xmusical(musical):
         return
     string = "".join(args).lower()
     for normiecharacter in string:
-        if normiecharacter in normiefont:
-            musicalstyle = musicalfont[normiefont.index(normiecharacter)]
+        if normiecharacter in op.normiefont:
+            musicalstyle = musicalfont[op.normiefont.index(normiecharacter)]
             string = string.replace(normiecharacter, musicalstyle)
     await musical.edit(string)
 

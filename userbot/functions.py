@@ -4,13 +4,17 @@ import shlex
 import time
 from os.path import basename
 from typing import Optional, Tuple
-
+import hashlib
+import math
+import re
 import requests
 from PIL import Image
 from selenium import webdriver
 from telethon.tl.types import Channel, DocumentAttributeFilename
-
+from uniborg.util import humanbytes, time_formatter
+from userbot import CancelProcess
 from sample_config import Config
+from validators.url import url
 
 # gban
 
@@ -69,7 +73,7 @@ async def runcmd(cmd: str) -> Tuple[str, str, int, int]:
 # for getmusic
 
 
-async def catmusic(cat, QUALITY, hello):
+async def yt_search(cat):
     search = cat
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--ignore-certificate-errors")
@@ -84,66 +88,13 @@ async def catmusic(cat, QUALITY, hello):
     for i in user_data:
         video_link = i.get_attribute("href")
         break
-    if not os.path.isdir("./temp/"):
-        os.makedirs("./temp/")
-    if not video_link:
-        await hello.edit(f"Sorry. I can't find that song `{search}`")
-        return
-    try:
-        command = (
-            'youtube-dl -o "./temp/%(title)s.%(ext)s" --extract-audio --audio-format mp3 --audio-quality '
-            + QUALITY
-            + " "
-            + video_link
-        )
-        os.system(command)
-    except Exception as e:
-        return await hello.edit(f"`Error:\n {e}`")
-    try:
-        thumb = (
-            'youtube-dl -o "./temp/%(title)s.%(ext)s" --write-thumbnail --skip-download '
-            + video_link
-        )
-        os.system(thumb)
-    except Exception as e:
-        return await hello.edit(f"`Error:\n {e}`")
+    return video_link if video_link else "Couldnt fetch results"
 
-
-async def catmusicvideo(cat, hello):
-    search = cat
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument("--ignore-certificate-errors")
-    chrome_options.add_argument("--test-type")
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.binary_location = Config.CHROME_BIN
-    driver = webdriver.Chrome(chrome_options=chrome_options)
-    driver.get("https://www.youtube.com/results?search_query=" + search)
-    user_data = driver.find_elements_by_xpath('//*[@id="video-title"]')
-    for i in user_data:
-        video_link = i.get_attribute("href")
-        break
-    if not os.path.isdir("./temp/"):
-        os.makedirs("./temp/")
-    if not video_link:
-        await hello.edit(f"Sorry. I can't find that song `{search}`")
-        return
-    try:
-        command = (
-            'youtube-dl -o "./temp/%(title)s.%(ext)s" -f "[filesize<20M]" ' + video_link
-        )
-        os.system(command)
-    except Exception as e:
-        return await hello.edit(f"`Error:\n {e}`")
-    try:
-        thumb = (
-            'youtube-dl -o "./temp/%(title)s.%(ext)s" --write-thumbnail --skip-download '
-            + video_link
-        )
-        os.system(thumb)
-    except Exception as e:
-        return await hello.edit(f"`Error:\n {e}`")
+    
+song_dl = "youtube-dl -o './temp/%(title)s.%(ext)s' --extract-audio --audio-format mp3 --audio-quality {QUALITY} {video_link}"
+thumb_dl = "youtube-dl -o './temp/%(title)s.%(ext)s' --write-thumbnail --skip-download {video_link}"
+video_dl = "youtube-dl -o './temp/%(title)s.%(ext)s' -f '[filesize<20M]' {video_link}"
+name_dl = "youtube-dl --get-filename -o './temp/%(title)s.%(ext)s' {video_link}"
 
 
 async def extract_time(cat, time_val):
@@ -280,20 +231,19 @@ async def trap(text1, text2, text3):
     return "temp.jpg"
 
 
-async def phcomment(text1, text2, text3):
-    r = requests.get(
-        f"https://nekobot.xyz/api/imagegen?type=phcomment&image={text1}&text={text2}&username={text3}"
+async def phss(uplded, input, name):
+    web = requests.get(
+        f"https://nekobot.xyz/api/imagegen?type=phcomment&image={uplded}&text={input}&username={name}"
     ).json()
-    sandy = r.get("message")
-    if not sandy:
+    alf = web.get("message")
+    uri = url(alf)
+    if not uri:
         return "check syntax once more"
-    with open("temp.png", "wb") as f:
-        f.write(requests.get(sandy).content)
-    img = Image.open("temp.png")
-    if img.mode != "RGB":
-        img = img.convert("RGB")
-    img.save("temp.jpg", "jpeg")
-    return "temp.jpg"
+    with open("alf.png", "wb") as f:
+        f.write(requests.get(alf).content)
+    img = Image.open("alf.png").convert("RGB")
+    img.save("alf.jpg", "jpeg")
+    return "alf.jpg"
 
 
 async def check_media(reply_message):
@@ -323,3 +273,46 @@ async def check_media(reply_message):
         return False
     else:
         return data
+
+        
+async def md5(fname: str) -> str:
+    hash_md5 = hashlib.md5()
+    with open(fname, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
+    return hash_md5.hexdigest()
+
+async def progress(
+    current, total, gdrive, start, prog_type, file_name=None, is_cancelled=False
+):
+    now = time.time()
+    diff = now - start
+    if is_cancelled is True:
+        raise CancelProcess
+
+    if round(diff % 10.00) == 0 or current == total:
+        percentage = current * 100 / total
+        speed = current / diff
+        elapsed_time = round(diff)
+        eta = round((total - current) / speed)
+        if "upload" in prog_type.lower():
+            status = "Uploading"
+        elif "download" in prog_type.lower():
+            status = "Downloading"
+        else:
+            status = "Unknown"
+        progress_str = "`{0}` | [{1}{2}] `{3}%`".format(
+            status,
+            "".join(["▰" for i in range(math.floor(percentage / 10))]),
+            "".join(["▱" for i in range(10 - math.floor(percentage / 10))]),
+            round(percentage, 2),
+        )
+        tmp = (
+            f"{progress_str}\n"
+            f"`{humanbytes(current)} of {humanbytes(total)}"
+            f" @ {humanbytes(speed)}`\n"
+            f"**ETA :**` {time_formatter(eta)}`\n"
+            f"**Duration :** `{time_formatter(elapsed_time)}`"
+        )
+        await gdrive.edit(f"**{prog_type}**\n\n" f"**Status**\n{tmp}")
+        

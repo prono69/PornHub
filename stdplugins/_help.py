@@ -42,7 +42,7 @@ async def _(event):
     help_string += f"<b>Total Disk Space</b>: <code>{total}</code>\n"
     help_string += f"<b>Used Disk Space</b>: <code>{used}</code>\n"
     help_string += f"<b>Free Disk Space</b>: <code>{free}</code>\n\n"
-    help_string += f"<b>Custom Repo</b>: https://github.com/udf/uniborg"
+    help_string += f"<b>Custom Repo</b>: https://github.com/prono69/PepeBot"
     borg._iiqsixfourstore[str(event.chat_id)] = {}
     borg._iiqsixfourstore[str(event.chat_id)][str(event.id)] = (
         help_string + "\n\n" + s_help_string

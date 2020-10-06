@@ -1,134 +1,353 @@
-# base by: @r4v4n4
-# created by: @A_Dark_Princ3
-# if you change these, you gay
-
-"""Reply to an image/sticker/gif with .mmf` 'text on top' ; 'text on bottom
-"""
+# Copyright (C) 2020 MoveAngel and MinaProject
+#
+# Licensed under the Raphielscape Public License, Version 1.d (the "License");
+# you may not use this file except in compliance with the License.
+#
+""" Based code + improve from AdekMaulana and aidilaryanto """
 
 import asyncio
 import os
-
-from telethon.errors.rpcerrorlist import YouBlockedUserError
-from telethon.tl.types import MessageMediaPhoto
-
+import textwrap
+from telethon.tl.types import DocumentAttributeFilename
+from PIL import Image, ImageDraw, ImageFont
+from hachoir.metadata import extractMetadata
+from hachoir.parser import createParser
 from uniborg.util import admin_cmd
 
-thumb_image_path = Config.TMP_DOWNLOAD_DIRECTORY + "/thumb_image.jpg"
+THUMB_IMAGE_PATH = "./thumb_image.jpg"
+TEMP_DOWNLOAD_DIRECTORY = Config.TMP_DOWNLOAD_DIRECTORY
 
-
-@borg.on(admin_cmd(pattern="mmf ?(.*)"))
-async def _(event):
-    if event.fwd_from:
-        return
+@bot.on(admin_cmd(pattern=r"mms(?: |$)(.*)"))
+async def mim(event):
     if not event.reply_to_msg_id:
         await event.edit(
-            "`Syntax: reply to an image with .mms` 'text on top' ; 'text on bottom' "
+            "`Syntax: reply to an image with .mmf` 'text on top' ; 'text on bottom' "
         )
         return
     reply_message = await event.get_reply_message()
     if not reply_message.media:
-        await event.edit("```reply to a image/sticker/gif```")
+        await event.edit("```Reply to a image/sticker/gif```")
         return
-    reply_message.sender
-    await borg.download_file(reply_message.media)
-    if reply_message.sender.bot:
-        await event.edit("```Reply to actual users message.```")
-        return
+    await event.edit("`Downloading Media..`")
+    if reply_message.photo:
+        dls_loc = await bot.download_media(
+            reply_message,
+            "meme.png",
+        )
+    elif (
+        DocumentAttributeFilename(file_name="AnimatedSticker.tgs")
+        in reply_message.media.document.attributes
+    ):
+        await bot.download_media(
+            reply_message,
+            "meme.tgs",
+        )
+        os.system("lottie_convert.py meme.tgs meme.png")
+        dls_loc = "meme.png"
+    elif reply_message.video:
+        video = await bot.download_media(
+            reply_message,
+            "meme.mp4",
+        )
+        extractMetadata(createParser(video))
+        os.system("ffmpeg -i meme.mp4 -vframes 1 -an -s 480x360 -ss 1 meme.png")
+        dls_loc = "meme.png"
     else:
+        dls_loc = await bot.download_media(
+            reply_message,
+            "meme.png",
+        )
+    await event.edit(
+        "```Transfiguration Time! Mwahaha Memifying this image! (」ﾟﾛﾟ)｣ ```"
+    )
+    await asyncio.sleep(3)
+    text = event.pattern_match.group(1)
+    webp_file = await draw_meme_text(dls_loc, text)
+    await event.client.send_file(
+        event.chat_id, webp_file, reply_to=event.reply_to_msg_id
+    )
+    await event.delete()
+    os.system("rm -rf *.tgs")
+    os.system("rm -rf *.mp4")
+    os.system("rm -rf *.png")
+    os.remove(webp_file)
+
+
+async def draw_meme_text(image_path, text):
+    img = Image.open(image_path)
+    os.remove(image_path)
+    i_width, i_height = img.size
+    if os.name == "nt":
+    	fnt = "MutantAcademyStyle.ttf"
+    else:
+    	fnt = "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf"
+    m_font = ImageFont.truetype(
+        fnt, int((70 / 640) * i_width)
+    )
+    if ";" in text:
+        upper_text, lower_text = text.split(";")
+    else:
+        upper_text = text
+        lower_text = ""
+    draw = ImageDraw.Draw(img)
+    current_h, pad = 10, 5
+    if upper_text:
+        for u_text in textwrap.wrap(upper_text, width=15):
+            u_width, u_height = draw.textsize(u_text, font=m_font)
+
+            draw.text(
+                xy=(((i_width - u_width) / 2) - 1, int((current_h / 640) * i_width)),
+                text=u_text,
+                font=m_font,
+                fill=(0, 0, 0),
+            )
+            draw.text(
+                xy=(((i_width - u_width) / 2) + 1, int((current_h / 640) * i_width)),
+                text=u_text,
+                font=m_font,
+                fill=(0, 0, 0),
+            )
+            draw.text(
+                xy=((i_width - u_width) / 2, int(((current_h / 640) * i_width)) - 1),
+                text=u_text,
+                font=m_font,
+                fill=(0, 0, 0),
+            )
+            draw.text(
+                xy=(((i_width - u_width) / 2), int(((current_h / 640) * i_width)) + 1),
+                text=u_text,
+                font=m_font,
+                fill=(0, 0, 0),
+            )
+
+            draw.text(
+                xy=((i_width - u_width) / 2, int((current_h / 640) * i_width)),
+                text=u_text,
+                font=m_font,
+                fill=(255, 255, 255),
+            )
+            current_h += u_height + pad
+    if lower_text:
+        for l_text in textwrap.wrap(lower_text, width=15):
+            u_width, u_height = draw.textsize(l_text, font=m_font)
+
+            draw.text(
+                xy=(
+                    ((i_width - u_width) / 2) - 1,
+                    i_height - u_height - int((20 / 640) * i_width),
+                ),
+                text=l_text,
+                font=m_font,
+                fill=(0, 0, 0),
+            )
+            draw.text(
+                xy=(
+                    ((i_width - u_width) / 2) + 1,
+                    i_height - u_height - int((20 / 640) * i_width),
+                ),
+                text=l_text,
+                font=m_font,
+                fill=(0, 0, 0),
+            )
+            draw.text(
+                xy=(
+                    (i_width - u_width) / 2,
+                    (i_height - u_height - int((20 / 640) * i_width)) - 1,
+                ),
+                text=l_text,
+                font=m_font,
+                fill=(0, 0, 0),
+            )
+            draw.text(
+                xy=(
+                    (i_width - u_width) / 2,
+                    (i_height - u_height - int((20 / 640) * i_width)) + 1,
+                ),
+                text=l_text,
+                font=m_font,
+                fill=(0, 0, 0),
+            )
+
+            draw.text(
+                xy=(
+                    (i_width - u_width) / 2,
+                    i_height - u_height - int((20 / 640) * i_width),
+                ),
+                text=l_text,
+                font=m_font,
+                fill=(255, 255, 255),
+            )
+            current_h += u_height + pad
+
+    image_name = "memify.webp"
+    webp_file = os.path.join(TEMP_DOWNLOAD_DIRECTORY, image_name)
+    img.save(webp_file, "webp")
+    return webp_file
+
+
+@bot.on(admin_cmd(pattern=r"mmf(?: |$)(.*)"))
+async def mim(event):
+    if not event.reply_to_msg_id:
         await event.edit(
-            "```Transfiguration Time! Mwahaha Memifying this image! (」ﾟﾛﾟ)｣ ```"
+            "`Syntax: reply to an image with .mmf` 'text on top' ; 'text on bottom' "
         )
-        await asyncio.sleep(5)
-
-    async with borg.conversation("@MemeAutobot") as bot_conv:
-        chat = "@MemeAutobot"
-        try:
-            memeVar = event.pattern_match.group(1)
-            await silently_send_message(bot_conv, "/start")
-            await asyncio.sleep(1)
-            await silently_send_message(bot_conv, memeVar)
-            await borg.send_file(chat, reply_message.media)
-            response = await bot_conv.get_response()
-        except YouBlockedUserError:
-            await event.reply("```Please unblock @MemeAutobot and try again```")
-            return
-        if response.text.startswith("Forward"):
-            await event.edit(
-                "```can you kindly disable your forward privacy settings for good, Nibba?```"
-            )
-        if "Okay..." in response.text:
-            await event.edit(
-                "```🛑 🤨 NANI?! This is not an image! This will take sum tym to convert to image... UwU 🧐 🛑```"
-            )
-            thumb = None
-            if os.path.exists(thumb_image_path):
-                thumb = thumb_image_path
-            input_str = event.pattern_match.group(1)
-            if not os.path.isdir(Config.TMP_DOWNLOAD_DIRECTORY):
-                os.makedirs(Config.TMP_DOWNLOAD_DIRECTORY)
-            if event.reply_to_msg_id:
-                file_name = "meme.png"
-                reply_message = await event.get_reply_message()
-                to_download_directory = Config.TMP_DOWNLOAD_DIRECTORY
-                downloaded_file_name = os.path.join(to_download_directory, file_name)
-                downloaded_file_name = await borg.download_media(
-                    reply_message,
-                    downloaded_file_name,
-                )
-                if os.path.exists(downloaded_file_name):
-                    await borg.send_file(
-                        chat,
-                        downloaded_file_name,
-                        force_document=False,
-                        supports_streaming=False,
-                        allow_cache=False,
-                        thumb=thumb,
-                    )
-                    os.remove(downloaded_file_name)
-                else:
-                    await event.edit("File Not Found {}".format(input_str))
-            response = await bot_conv.get_response()
-            the_download_directory = Config.TMP_DOWNLOAD_DIRECTORY
-            files_name = "memes.webp"
-            download_file_name = os.path.join(the_download_directory, files_name)
-            await borg.download_media(
-                response.media,
-                download_file_name,
-            )
-            requires_file_name = Config.TMP_DOWNLOAD_DIRECTORY + "memes.webp"
-            await borg.send_file(  # pylint:disable=E0602
-                event.chat_id,
-                requires_file_name,
-                supports_streaming=False,
-                caption="Userbot: Pepe iz Lobe (PepeBot)",
-                # Courtesy: @A_Dark_Princ3
-            )
-            await event.delete()
-        # await borg.send_message(event.chat_id, "`☠️☠️Ah Shit... Here we go
-        # Again!🔥🔥`")
-        elif not is_message_image(reply_message):
-            await event.edit(
-                "Invalid message type. Plz choose right message type u NIBBA."
-            )
-            return
-        else:
-            await borg.send_file(event.chat_id, response.media)
-
-
-def is_message_image(message):
-    if message.media:
-        if isinstance(message.media, MessageMediaPhoto):
-            return True
-        return bool(
-            message.media.document
-            and message.media.document.mime_type.split("/")[0] == "image"
+        return
+    reply_message = await event.get_reply_message()
+    if not reply_message.media:
+        await event.edit("```Reply to a image/sticker/gif```")
+        return
+    await event.edit("`Downloading Media..`")
+    if reply_message.photo:
+        dls_loc = await bot.download_media(
+            reply_message,
+            "meme.png",
         )
+    elif (
+        DocumentAttributeFilename(file_name="AnimatedSticker.tgs")
+        in reply_message.media.document.attributes
+    ):
+        await bot.download_media(
+            reply_message,
+            "meme.tgs",
+        )
+        os.system("lottie_convert.py meme.tgs meme.png")
+        dls_loc = "meme.png"
+    elif reply_message.video:
+        video = await bot.download_media(
+            reply_message,
+            "meme.mp4",
+        )
+        extractMetadata(createParser(video))
+        os.system("ffmpeg -i meme.mp4 -vframes 1 -an -s 480x360 -ss 1 meme.png")
+        dls_loc = "meme.png"
+    else:
+        dls_loc = await bot.download_media(
+            reply_message,
+            "meme.png",
+        )
+    await event.edit(
+        "```Transfiguration Time! Mwahaha Memifying this image! (」ﾟﾛﾟ)｣ ```"
+    )
+    await asyncio.sleep(5)
+    text = event.pattern_match.group(1)
+    photo = await draw_meme(dls_loc, text)
+    await event.client.send_file(
+        event.chat_id, photo, reply_to=event.reply_to_msg_id
+    )
+    await event.delete()
+    os.system("rm -rf *.tgs")
+    os.system("rm -rf *.mp4")
+    os.system("rm -rf *.png")
+    os.remove(photo)
 
-    return False
 
+async def draw_meme(image_path, text):
+    img = Image.open(image_path)
+    os.remove(image_path)
+    i_width, i_height = img.size
+    if os.name == "nt":
+    	fnt = "impact.ttf"
+    else:
+    	fnt = "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf"
+    m_font = ImageFont.truetype(
+        fnt, int((70 / 640) * i_width)
+    )
+    if ";" in text:
+        upper_text, lower_text = text.split(";")
+    else:
+        upper_text = text
+        lower_text = ""
+    draw = ImageDraw.Draw(img)
+    current_h, pad = 10, 9
+    if upper_text:
+        for u_text in textwrap.wrap(upper_text, width=15):
+            u_width, u_height = draw.textsize(u_text, font=m_font)
 
-async def silently_send_message(conv, text):
-    await conv.send_message(text)
-    response = await conv.get_response()
-    await conv.mark_read(message=response)
-    return response
+            draw.text(
+                xy=(((i_width - u_width) / 2) - 1, int((current_h / 640) * i_width)),
+                text=u_text,
+                font=m_font,
+                fill=(0, 0, 0),
+            )
+            draw.text(
+                xy=(((i_width - u_width) / 2) + 1, int((current_h / 640) * i_width)),
+                text=u_text,
+                font=m_font,
+                fill=(0, 0, 0),
+            )
+            draw.text(
+                xy=((i_width - u_width) / 2, int(((current_h / 640) * i_width)) - 1),
+                text=u_text,
+                font=m_font,
+                fill=(0, 0, 0),
+            )
+            draw.text(
+                xy=(((i_width - u_width) / 2), int(((current_h / 640) * i_width)) + 1),
+                text=u_text,
+                font=m_font,
+                fill=(0, 0, 0),
+            )
+
+            draw.text(
+                xy=((i_width - u_width) / 2, int((current_h / 640) * i_width)),
+                text=u_text,
+                font=m_font,
+                fill=(255, 255, 255),
+            )
+            current_h += u_height + pad
+    if lower_text:
+        for l_text in textwrap.wrap(lower_text, width=20):
+            u_width, u_height = draw.textsize(l_text, font=m_font)
+
+            draw.text(
+                xy=(
+                    ((i_width - u_width) / 2) - 1,
+                    i_height - u_height - int((20 / 640) * i_width),
+                ),
+                text=l_text,
+                font=m_font,
+                fill=(0, 0, 0),
+            )
+            draw.text(
+                xy=(
+                    ((i_width - u_width) / 2) + 1,
+                    i_height - u_height - int((20 / 640) * i_width),
+                ),
+                text=l_text,
+                font=m_font,
+                fill=(0, 0, 0),
+            )
+            draw.text(
+                xy=(
+                    (i_width - u_width) / 2,
+                    (i_height - u_height - int((20 / 640) * i_width)) - 1,
+                ),
+                text=l_text,
+                font=m_font,
+                fill=(0, 0, 0),
+            )
+            draw.text(
+                xy=(
+                    (i_width - u_width) / 2,
+                    (i_height - u_height - int((20 / 640) * i_width)) + 1,
+                ),
+                text=l_text,
+                font=m_font,
+                fill=(0, 0, 0),
+            )
+
+            draw.text(
+                xy=(
+                    (i_width - u_width) / 2,
+                    i_height - u_height - int((20 / 640) * i_width),
+                ),
+                text=l_text,
+                font=m_font,
+                fill=(255, 255, 255),
+            )
+            current_h += u_height + pad
+
+    photu = "memify.png"
+    photo = os.path.join(TEMP_DOWNLOAD_DIRECTORY, photu)
+    img.save(photo, "png")
+    return photo

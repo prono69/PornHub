@@ -1,6 +1,5 @@
 aiofiles
 aiohttp
-aria2p
 beautifulsoup4
 cfscrape
 coffeehouse
@@ -8,6 +7,7 @@ covid
 cowpy
 cryptg
 csvfaker
+colour
 dadjokes-cli
 deezloader
 dnspython
@@ -66,6 +66,7 @@ spotify_token
 sqlalchemy
 telegraph
 urbandict
+validators
 wget
 wheel
 wikipedia

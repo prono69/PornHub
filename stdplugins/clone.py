@@ -12,11 +12,12 @@ from telethon.tl.functions.users import GetFullUserRequest
 from telethon.tl.types import MessageEntityMentionName
 
 from uniborg.util import admin_cmd
+from uniborg import SYNTAX
 
 DEFAULTUSER = "꧁🐉 пιĸιтa 🐉"
 LAST = " #F_Society #CatGang #LazyAF_Geng"
 DEFAULTUSERBIO = "Bio hi padhna tha to science le lete... Expected an intented Block"
-BOTLOG_CHATID = Config.PM_LOGGR_BOT_API_ID
+BOTLOG_CHATID = Config.BOTLOG
 BOTLOG = True
 
 
@@ -138,3 +139,14 @@ async def get_full_user(event):
         return replied_user, None
     except Exception as e:
         return None, e
+
+        
+SYNTAX.update(
+    {
+        "clone": "**SYNTAX :** `.clone`<reply to user who you want to clone\
+    \n**USAGE : **clone the replied user account\
+    \n\n**SYNTAX : **`.revert`\
+    \n**USAGE : **Reverts back to your profile which you have set in heroku for  AUTONAME,DEFAULT_BIO\
+    "
+    }
+)        

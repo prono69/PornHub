@@ -18,7 +18,9 @@ from userbot.fonts import *
 from userbot.functions import *
 
 StartTime = time.time()
-pepe = "3.0.0"
+pepe = "3.1.0"
+
+# The madafucking 'bot' variable :)
 
 if Config.HU_STRING_SESSION:
     session_name = str(Config.HU_STRING_SESSION)
@@ -147,3 +149,15 @@ thumb_image_path = Config.TMP_DOWNLOAD_DIRECTORY + "thumb_image.jpg"
 # thumb image
 with open(thumb_image_path, "wb") as f:
     f.write(requests.get(Config.THUMB_IMG).content)
+
+    
+class CancelProcess(Exception):
+    """
+    Cancel Process
+    """
+
+# Gdrive
+G_DRIVE_CLIENT_ID = Config.G_DRIVE_CLIENT_ID
+G_DRIVE_CLIENT_SECRET = Config.G_DRIVE_CLIENT_SECRET
+G_DRIVE_DATA = Config.G_DRIVE_DATA
+G_DRIVE_FOLDER_ID = Config.G_DRIVE_FOLDER_ID    

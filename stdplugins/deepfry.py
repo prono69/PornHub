@@ -1,6 +1,6 @@
 # Copyright (C) 2019 The Raphielscape Company LLC.
 #
-# Licensed under the Raphielscape Public License, Version 1.c (the "License");
+# Licensed under the Raphielscape Public License, Version 1.d (the "License");
 # you may not use this file except in compliance with the License.
 #
 
@@ -9,37 +9,22 @@
 
 # MIT License
 #
-# Copyright (c) 2017 Ovyerus
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
+# Ported from Xtra-telegram by @heyworld
+
 """ Userbot module for frying stuff. ported by @NeoMatrix90 """
 
 import io
+import os
 from random import randint, uniform
-
+from hachoir.metadata import extractMetadata
+from hachoir.parser import createParser
 from PIL import Image, ImageEnhance, ImageOps
 from telethon.tl.types import DocumentAttributeFilename
 
 from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd(pattern="deep(?: |$)(.*)", outgoing=True))
+@bot.on(admin_cmd(pattern=r"deep(?: |$)(.*)", outgoing=True, allow_sudo=True))
 async def deepfryer(event):
     try:
         frycount = int(event.pattern_match.group(1))
@@ -47,28 +32,41 @@ async def deepfryer(event):
             raise ValueError
     except ValueError:
         frycount = 1
-
-    if event.is_reply:
-        reply_message = await event.get_reply_message()
-        data = await check_media(reply_message)
-
-        if isinstance(data, bool):
-            await event.edit(
-                "`I can't deep fry that!...\nCause U faking Nibba Gib Me Some Good Things to Fry...`"
-            )
-            return
-    else:
-        await event.edit("`Reply to an image or sticker to deep fry it!`")
-        return
-
-    # download last photo (highres) as byte array
-    await event.edit("`Downloading Some Good Things to Fry...`")
+    reply_message = await event.get_reply_message()
     image = io.BytesIO()
-    await event.client.download_media(data, image)
+    await event.edit("`Downloading Some Good Things to Fry...`")
+    if reply_message.photo:
+        image = await bot.download_media(
+            reply_message,
+            "df.png",
+        )
+    elif (
+        DocumentAttributeFilename(file_name="AnimatedSticker.tgs")
+        in reply_message.media.document.attributes
+    ):
+        await bot.download_media(
+            reply_message,
+            "df.tgs",
+        )
+        os.system("lottie_convert.py df.tgs df.png")
+        image = "df.png"
+    elif reply_message.video:
+        video = await bot.download_media(
+            reply_message,
+            "df.mp4",
+        )
+        extractMetadata(createParser(video))
+        os.system("ffmpeg -i df.mp4 -vframes 1 -an -s 480x360 -ss 1 df.png")
+        image = "df.png"
+    else:
+        image = await bot.download_media(
+            reply_message,
+            "df.png",
+        )
     image = Image.open(image)
 
     # fry the image
-    await event.edit("`Petrol dal ke Phook Rela Hoon....\nWait...`")
+    await event.edit("`Petrol dal ke Phook rela Hoon...\nWait...`")
     for _ in range(frycount):
         image = await deepfry(image)
 
@@ -78,6 +76,10 @@ async def deepfryer(event):
     fried_io.seek(0)
 
     await event.reply(file=fried_io)
+    os.system("rm -rf *.mp4")
+    os.system("rm -rf *.tgs")
+    os.system("rm -rf *.png")
+    await event.delete()
 
 
 async def deepfry(img: Image) -> Image:
@@ -114,36 +116,7 @@ async def deepfry(img: Image) -> Image:
     overlay = ImageOps.colorize(overlay, colours[0], colours[1])
 
     # Overlay red and yellow onto main image and sharpen the hell out of it
-    img = Image.blend(img, overlay, uniform(0.1, 0.4))
+    img = Image.blend(img, overlay, uniform(0.5, 0.9))
     img = ImageEnhance.Sharpness(img).enhance(randint(5, 300))
 
     return img
-
-
-async def check_media(reply_message):
-    if reply_message and reply_message.media:
-        if reply_message.photo:
-            data = reply_message.photo
-        elif reply_message.document:
-            if (
-                DocumentAttributeFilename(file_name="AnimatedSticker.tgs")
-                in reply_message.media.document.attributes
-            ):
-                return False
-            if (
-                reply_message.gif
-                or reply_message.video
-                or reply_message.audio
-                or reply_message.voice
-            ):
-                return False
-            data = reply_message.media.document
-        else:
-            return False
-    else:
-        return False
-
-    if not data or data is None:
-        return False
-    else:
-        return data

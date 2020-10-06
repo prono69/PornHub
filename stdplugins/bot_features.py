@@ -4,7 +4,7 @@ import asyncio
 
 from telethon import events
 from telethon.errors.rpcerrorlist import YouBlockedUserError
-
+from datetime import datetime
 from uniborg import SYNTAX
 from uniborg.util import admin_cmd
 
@@ -308,7 +308,7 @@ async def _(event):
         await event.edit("Reply to actual users message.")
         return
     downloaded_file_name = await borg.download_media(
-        reply_message, Var.TEMP_DOWNLOAD_DIRECTORY
+        reply_message, Config.TMP_DOWNLOAD_DIRECTORY
     )
     end = datetime.now()
     ms = (end - start).seconds

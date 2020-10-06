@@ -50,18 +50,18 @@ async def sticklet(event):
     fontsize = 230
 
     if input_cmd == "ara":
-        FONT_FILE = "MaterLang_Fonts/NotoNaskhArabic-Regular.ttf"
+        FONT_FILE = "NotoNaskhArabic-Regular.ttf"
     elif input_cmd == "ben":
-        FONT_FILE = "MaterLang_Fonts/NotoSansBengaliUI-SemiBold.ttf"
+        FONT_FILE = "NotoSansBengaliUI-SemiBold.ttf"
 
     elif input_cmd == "guj":
-        FONT_FILE = "MaterLang_Fonts/NotoSansGujarati-Regular.ttf"
+        FONT_FILE = "NotoSansGujarati-Regular.ttf"
     elif input_cmd == "hi":
-        FONT_FILE = "MaterLang_Fonts/NotoSerifDevanagari-Bold.ttf"
+        FONT_FILE = "NotoSerifDevanagari-Bold.ttf"
     elif input_cmd == "mal":
-        FONT_FILE = "MaterLang_Fonts/NotoSansMalayalam-Regular.ttf"
+        FONT_FILE = "NotoSansMalayalam-Regular.ttf"
     elif input_cmd == "ur":
-        FONT_FILE = "MaterLang_Fonts/NotoNastaliqUrdu-Regular.ttf"
+        FONT_FILE = "NotoNastaliqUrdu-Regular.ttf"
     font = ImageFont.truetype(FONT_FILE, size=fontsize)
 
     while draw.multiline_textsize(sticktext, font=font) > (512, 512):

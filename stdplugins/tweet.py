@@ -6,19 +6,35 @@
 `.kanna`
 `.mind`
 `.tweet`
-`.carry`"""
+`.carry`
+`.ph`"""
 
 from asyncio import sleep
-
+import os
 import requests
 from PIL import Image
-
-from uniborg import MODULE
-from uniborg.util import admin_cmd
-from userbot import deEmojify
+from html_telegraph_poster.upload_images import upload_image
+from telegraph import exceptions
+from telegraph import upload_file
+from uniborg import MODULE, deEmojify, phss
+from uniborg.util import admin_cmd, edit_or_reply
 
 MODULE.append("tweet")
 
+async def get_user_from_event(event):
+    if event.reply_to_msg_id:
+        previous_message = await event.get_reply_message()
+        user_obj = await event.client.get_entity(previous_message.from_id)
+    return user_obj
+
+    
+async def purge():
+    try:
+        os.system("rm -rf *.png")
+        os.system("rm -rf *.webp")
+    except OSError:
+        pass
+    
 
 @borg.on(admin_cmd(pattern="dtrump ?(.*)"))
 async def trumptweet(event):
@@ -177,8 +193,59 @@ async def trumptweet(event):
     if not meow:
         return await event.edit("`Carryminati not found. He iz Busy :)`")
     await event.edit("`Carry Minati is Tweeting for You` 😎")
-    await event.client.send_file(
+    await event.client.send_file
         event.chat_id, file=meow, reply_to=event.reply_to_msg_id
     )
     await sleep(2)
     await event.delete()
+
+    
+@borg.on(admin_cmd(pattern=r"ph(?: |$)(.*)", allow_sudo=True))
+async def phcomment(event):
+    try:
+        a = await edit_or_reply(event, "`Proccessing..`")
+        text = event.pattern_match.group(1)
+        reply = await event.get_reply_message()
+        if reply:
+            user = await get_user_from_event(event)
+            if user.last_name:
+                name = user.first_name + " " + user.last_name
+            else:
+                name = user.first_name
+            text = text if text else str(reply.message)
+        elif text:
+            user = await bot.get_me()
+            if user.last_name:
+                name = user.first_name + " " + user.last_name
+            else:
+                name = user.first_name
+            text = text
+        else:
+            return await a.edit("`Gib text Bish!`")
+        try:
+            photo = await event.client.download_profile_photo(
+                user.id,
+                str(user.id) + ".png",
+                download_big=False,
+            )
+            uplded = upload_image(photo)
+        except BaseException:
+            uplded = "https://telegra.ph/file/7d110cd944d54f72bcc84.jpg"
+    except BaseException as e:
+        await purge()
+        return await a.edit(f"Error: `{e}`")
+    img = await phss(uplded, text, name)
+    try:
+        await event.client.send_file(
+            event.chat_id,
+            img,
+            reply_to=event.reply_to_msg_id,
+        )
+    except BaseException:
+        await purge()
+        return await a.edit("`Reply message has no text!`")
+    await event.delete()
+    await purge()
+    
+    
+    
