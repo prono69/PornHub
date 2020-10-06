@@ -14,9 +14,9 @@ from telethon import TelegramClient
 from telethon.sessions import StringSession
 
 from sample_config import Config
+from userbot.cpro import *
 from userbot.fonts import *
 from userbot.functions import *
-from userbot.cpro import *
 
 StartTime = time.time()
 pepe = "3.1.0"
@@ -150,8 +150,6 @@ thumb_image_path = Config.TMP_DOWNLOAD_DIRECTORY + "thumb_image.jpg"
 # thumb image
 with open(thumb_image_path, "wb") as f:
     f.write(requests.get(Config.THUMB_IMG).content)
-
-
 
 
 # Gdrive
