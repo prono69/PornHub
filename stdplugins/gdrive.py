@@ -36,19 +36,19 @@ from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 from telethon import events
 
-from uniborg.util import admin_cmd, edit_or_reply, humanbytes, time_formatter
+from sql_helpers import google_drive_sql as helper
 from uniborg import (
-    SYNTAX,
-    MODULE,
     G_DRIVE_CLIENT_ID,
     G_DRIVE_CLIENT_SECRET,
     G_DRIVE_DATA,
     G_DRIVE_FOLDER_ID,
     LOGS,
+    MODULE,
+    SYNTAX,
     CancelProcess,
     progress,
 )
-from sql_helpers import google_drive_sql as helper
+from uniborg.util import admin_cmd, edit_or_reply, humanbytes, time_formatter
 
 MODULE.append("gdrive")
 BOTLOG_CHATID = Config.PRIVATE_GROUP_BOT_API_ID
@@ -768,7 +768,13 @@ async def lists(gdrive):
     return
 
 
-@bot.on(admin_cmd(pattern=r"glist(?: |$)(-l \d+)?(?: |$)?(.*)?(?: |$)", outgoing=True, allow_sudo=True))
+@bot.on(
+    admin_cmd(
+        pattern=r"glist(?: |$)(-l \d+)?(?: |$)?(.*)?(?: |$)",
+        outgoing=True,
+        allow_sudo=True,
+    )
+)
 async def catlists(gdrive):
     await lists(gdrive)
 
@@ -1122,9 +1128,11 @@ async def google_drive(gdrive):
             link_preview=False,
         )
     return
-    
 
-@bot.on(admin_cmd(pattern="(gdfset|gdfclear)(?: |$)(.*)", outgoing=True, allow_sudo=True))
+
+@bot.on(
+    admin_cmd(pattern="(gdfset|gdfclear)(?: |$)(.*)", outgoing=True, allow_sudo=True)
+)
 async def set_upload_folder(gdrive):
     """ - Set parents dir for upload/check/makedir/remove - """
     global parent_Id
