@@ -7,7 +7,9 @@ import logging
 import os
 import traceback
 from datetime import datetime
+
 from telethon.tl.types import InputMessagesFilterDocument
+
 from uniborg import util
 
 thumb_image_path = Config.TMP_DOWNLOAD_DIRECTORY + "/thumb_image.jpg"
@@ -109,12 +111,15 @@ async def install_plug_in(event):
     await asyncio.sleep(DELETE_TIMEOUT)
     await event.delete()
 
-    
+
 os.system("mkdir fonts")
-	
+
+
 async def fonts():
     username = "@BlueTextMustClick"
-    plug = await bot.get_messages(username, None , filter=InputMessagesFilterDocument) ; total = int(plug.total) ; total_doxx = range(0, total)
+    plug = await bot.get_messages(username, None, filter=InputMessagesFilterDocument)
+    total = int(plug.total)
+    total_doxx = range(0, total)
     g = Config.COMMAND_HAND_LER
     e = Config.BOTLOG
     abc = f"**Extracted fonts successfully. Now Do** `{g}ping`"
@@ -122,8 +127,10 @@ async def fonts():
     await bot.send_message(e, "**Downloaded fonts successfully. Now extracting...**")
     await bot.send_message(e, abc)
     for ixo in total_doxx:
-        mxo = plug[ixo].id ; await bot.download_media(await bot.get_messages(username, ids=mxo), "fonts")
+        mxo = plug[ixo].id
+        await bot.download_media(await bot.get_messages(username, ids=mxo), "fonts")
+
+
 bot.loop.run_until_complete(fonts())
 
 os.system("cd fonts && 7z e fonts.7z && rm -rf fonts.7z")
-    

@@ -8,14 +8,17 @@
 import asyncio
 import os
 import textwrap
-from telethon.tl.types import DocumentAttributeFilename
-from PIL import Image, ImageDraw, ImageFont
+
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
+from PIL import Image, ImageDraw, ImageFont
+from telethon.tl.types import DocumentAttributeFilename
+
 from uniborg.util import admin_cmd
 
 THUMB_IMAGE_PATH = "./thumb_image.jpg"
 TEMP_DOWNLOAD_DIRECTORY = Config.TMP_DOWNLOAD_DIRECTORY
+
 
 @bot.on(admin_cmd(pattern=r"mms(?: |$)(.*)"))
 async def mim(event):
@@ -78,12 +81,10 @@ async def draw_meme_text(image_path, text):
     os.remove(image_path)
     i_width, i_height = img.size
     if os.name == "nt":
-    	fnt = "MutantAcademyStyle.ttf"
+        fnt = "MutantAcademyStyle.ttf"
     else:
-    	fnt = "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf"
-    m_font = ImageFont.truetype(
-        fnt, int((70 / 640) * i_width)
-    )
+        fnt = "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf"
+    m_font = ImageFont.truetype(fnt, int((70 / 640) * i_width))
     if ";" in text:
         upper_text, lower_text = text.split(";")
     else:
@@ -231,9 +232,7 @@ async def mim(event):
     await asyncio.sleep(5)
     text = event.pattern_match.group(1)
     photo = await draw_meme(dls_loc, text)
-    await event.client.send_file(
-        event.chat_id, photo, reply_to=event.reply_to_msg_id
-    )
+    await event.client.send_file(event.chat_id, photo, reply_to=event.reply_to_msg_id)
     await event.delete()
     os.system("rm -rf *.tgs")
     os.system("rm -rf *.mp4")
@@ -246,12 +245,10 @@ async def draw_meme(image_path, text):
     os.remove(image_path)
     i_width, i_height = img.size
     if os.name == "nt":
-    	fnt = "impact.ttf"
+        fnt = "impact.ttf"
     else:
-    	fnt = "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf"
-    m_font = ImageFont.truetype(
-        fnt, int((70 / 640) * i_width)
-    )
+        fnt = "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf"
+    m_font = ImageFont.truetype(fnt, int((70 / 640) * i_width))
     if ";" in text:
         upper_text, lower_text = text.split(";")
     else:

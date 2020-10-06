@@ -1176,8 +1176,7 @@ async def _(event):
 
             await event.edit(animation_chars[i % 11])
 
-            
-            
+
 @borg.on(events.NewMessage(pattern=r"\.meme", outgoing=True))
 async def meme(event):
 
@@ -1331,8 +1330,7 @@ async def meme(event):
     )
     await event.edit(pay)
 
-    
-    
+
 @borg.on(events.NewMessage(pattern=r"\.mememe", outgoing=True))
 async def meme(event):
     if event.fwd_from:
@@ -1357,9 +1355,6 @@ async def meme(event):
     await event.edit(memeVar + "-------------")
     await event.edit(memeVar)
     await asyncio.sleep(sleepValue)
-
-
-
 
 
 @borg.on(events.NewMessage(pattern=r"\.flower", outgoing=True))
@@ -1405,4 +1400,3 @@ async def meme(event):
         + flower
     )
     await asyncio.sleep(sleepValue)
-    

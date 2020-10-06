@@ -6,13 +6,13 @@ by  @sandy1709 ( https://t.me/mrconfused  )
 import os
 from pathlib import Path
 
-from telethon import events
 from validators.url import url
 
-from uniborg.util import admin_cmd, edit_or_reply
 from uniborg import SYNTAX, name_dl, runcmd, song_dl, thumb_dl, video_dl, yt_search
+from uniborg.util import admin_cmd, edit_or_reply
 
 DEFAULTUSER = "𠘨 工 长 工 丅 卂"
+
 
 @borg.on(admin_cmd(pattern="(song|song32)($| (.*))", allow_sudo=True))
 async def _(event):
@@ -142,6 +142,7 @@ async def _(event):
     for files in (catthumb, vsong_file):
         if files and os.path.exists(files):
             os.remove(files)
+
 
 SYNTAX.update(
     {

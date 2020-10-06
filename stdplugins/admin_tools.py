@@ -6,13 +6,14 @@ from telethon.errors.rpcerrorlist import UserIdInvalidError
 from telethon.tl.functions.channels import EditBannedRequest
 from telethon.tl.types import ChatBannedRights, MessageEntityMentionName
 
-from uniborg.util import admin_cmd, edit_or_reply
 from uniborg import SYNTAX, extract_time
+from uniborg.util import admin_cmd, edit_or_reply
 
 # =================== CONSTANT ===================
 NO_ADMIN = "`I am not an admin nub nibba!`"
 NO_PERM = "`I don't have sufficient permissions! This is so sed. Alexa play despacito`"
 BOTLOG = Config.BOTLOG
+
 
 @borg.on(admin_cmd(pattern=r"tmute(?: |$)(.*)", allow_sudo=True))
 async def tmuter(catty):

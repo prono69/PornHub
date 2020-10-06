@@ -1,20 +1,21 @@
 import asyncio
+import hashlib
+import math
 import os
 import shlex
 import time
 from os.path import basename
 from typing import Optional, Tuple
-import hashlib
-import math
-import re
+
 import requests
 from PIL import Image
 from selenium import webdriver
 from telethon.tl.types import Channel, DocumentAttributeFilename
+from validators.url import url
+
+from sample_config import Config
 from uniborg.util import humanbytes, time_formatter
 from userbot import CancelProcess
-from sample_config import Config
-from validators.url import url
 
 # gban
 
@@ -90,7 +91,7 @@ async def yt_search(cat):
         break
     return video_link if video_link else "Couldnt fetch results"
 
-    
+
 song_dl = "youtube-dl -o './temp/%(title)s.%(ext)s' --extract-audio --audio-format mp3 --audio-quality {QUALITY} {video_link}"
 thumb_dl = "youtube-dl -o './temp/%(title)s.%(ext)s' --write-thumbnail --skip-download {video_link}"
 video_dl = "youtube-dl -o './temp/%(title)s.%(ext)s' -f '[filesize<20M]' {video_link}"
@@ -274,13 +275,14 @@ async def check_media(reply_message):
     else:
         return data
 
-        
+
 async def md5(fname: str) -> str:
     hash_md5 = hashlib.md5()
     with open(fname, "rb") as f:
         for chunk in iter(lambda: f.read(4096), b""):
             hash_md5.update(chunk)
     return hash_md5.hexdigest()
+
 
 async def progress(
     current, total, gdrive, start, prog_type, file_name=None, is_cancelled=False
@@ -315,4 +317,3 @@ async def progress(
             f"**Duration :** `{time_formatter(elapsed_time)}`"
         )
         await gdrive.edit(f"**{prog_type}**\n\n" f"**Status**\n{tmp}")
-        

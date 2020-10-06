@@ -87,7 +87,9 @@ async def who(event):
         await event.edit(caption)
 
     except BaseException:
-        await event.edit("`Can't slap this nibba, Need to fetch some sticks and stones !!`")
+        await event.edit(
+            "`Can't slap this nibba, Need to fetch some sticks and stones !!`"
+        )
 
 
 async def get_user(event):

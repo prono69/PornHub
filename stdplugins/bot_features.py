@@ -1,10 +1,11 @@
 """Cmds:
 `.purl`\n`.sg`\n`.fakemail`\n`.mailid`\n`.ub`\n`.gid`\n`.urban`\n`.voicy`\n`.mashup`\n`.iascii`\n`.recognize`"""
 import asyncio
+from datetime import datetime
 
 from telethon import events
 from telethon.errors.rpcerrorlist import YouBlockedUserError
-from datetime import datetime
+
 from uniborg import SYNTAX
 from uniborg.util import admin_cmd
 

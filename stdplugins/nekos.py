@@ -26,7 +26,7 @@ import requests
 from PIL import Image
 
 from uniborg import MODULE
-from uniborg.util import admin_cmd, edit_or_reply
+from uniborg.util import admin_cmd
 
 MODULE.append("nekos")
 

@@ -11,8 +11,8 @@ from telethon.tl import functions
 from telethon.tl.functions.users import GetFullUserRequest
 from telethon.tl.types import MessageEntityMentionName
 
-from uniborg.util import admin_cmd
 from uniborg import SYNTAX
+from uniborg.util import admin_cmd
 
 DEFAULTUSER = "꧁🐉 пιĸιтa 🐉"
 LAST = " #F_Society #CatGang #LazyAF_Geng"
@@ -140,7 +140,7 @@ async def get_full_user(event):
     except Exception as e:
         return None, e
 
-        
+
 SYNTAX.update(
     {
         "clone": "**SYNTAX :** `.clone`<reply to user who you want to clone\
@@ -149,4 +149,4 @@ SYNTAX.update(
     \n**USAGE : **Reverts back to your profile which you have set in heroku for  AUTONAME,DEFAULT_BIO\
     "
     }
-)        
+)

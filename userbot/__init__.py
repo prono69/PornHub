@@ -150,14 +150,15 @@ thumb_image_path = Config.TMP_DOWNLOAD_DIRECTORY + "thumb_image.jpg"
 with open(thumb_image_path, "wb") as f:
     f.write(requests.get(Config.THUMB_IMG).content)
 
-    
+
 class CancelProcess(Exception):
     """
     Cancel Process
     """
 
+
 # Gdrive
 G_DRIVE_CLIENT_ID = Config.G_DRIVE_CLIENT_ID
 G_DRIVE_CLIENT_SECRET = Config.G_DRIVE_CLIENT_SECRET
 G_DRIVE_DATA = Config.G_DRIVE_DATA
-G_DRIVE_FOLDER_ID = Config.G_DRIVE_FOLDER_ID    
+G_DRIVE_FOLDER_ID = Config.G_DRIVE_FOLDER_ID

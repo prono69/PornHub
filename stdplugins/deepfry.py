@@ -16,6 +16,7 @@
 import io
 import os
 from random import randint, uniform
+
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
 from PIL import Image, ImageEnhance, ImageOps

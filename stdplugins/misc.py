@@ -1,4 +1,5 @@
-from asyncio import create_subprocess_shell as asyncrunapp, sleep
+from asyncio import create_subprocess_shell as asyncrunapp
+from asyncio import sleep
 from asyncio.subprocess import PIPE as asyncPIPE
 from os import remove
 from platform import python_version
@@ -161,7 +162,7 @@ async def amireallyalive(alive):
 @borg.on(admin_cmd(pattern="pm ?(.*)", allow_sudo=True))
 async def _(cat):
     kk = cat.pattern_match.group(1)
-    a=await edit_or_reply(cat, "`Sending Message...`")
+    a = await edit_or_reply(cat, "`Sending Message...`")
     replied = await cat.get_reply_message()
     query = kk
     if replied:
@@ -171,7 +172,7 @@ async def _(cat):
         text, username = query.split("|")
 
     await borg.send_message(f"{username}", f"{text}")
-    await a.edit('`Done`')
+    await a.edit("`Done`")
     await sleep(2)
     await a.delete()
 

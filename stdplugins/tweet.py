@@ -9,17 +9,18 @@
 `.carry`
 `.ph`"""
 
-from asyncio import sleep
 import os
+from asyncio import sleep
+
 import requests
-from PIL import Image
 from html_telegraph_poster.upload_images import upload_image
-from telegraph import exceptions
-from telegraph import upload_file
+from PIL import Image
+
 from uniborg import MODULE, deEmojify, phss
 from uniborg.util import admin_cmd, edit_or_reply
 
 MODULE.append("tweet")
+
 
 async def get_user_from_event(event):
     if event.reply_to_msg_id:
@@ -27,14 +28,14 @@ async def get_user_from_event(event):
         user_obj = await event.client.get_entity(previous_message.from_id)
     return user_obj
 
-    
+
 async def purge():
     try:
         os.system("rm -rf *.png")
         os.system("rm -rf *.webp")
     except OSError:
         pass
-    
+
 
 @borg.on(admin_cmd(pattern="dtrump ?(.*)"))
 async def trumptweet(event):
@@ -199,7 +200,7 @@ async def trumptweet(event):
     await sleep(2)
     await event.delete()
 
-    
+
 @borg.on(admin_cmd(pattern=r"ph(?: |$)(.*)", allow_sudo=True))
 async def phcomment(event):
     try:
@@ -246,6 +247,3 @@ async def phcomment(event):
         return await a.edit("`Reply message has no text!`")
     await event.delete()
     await purge()
-    
-    
-    
