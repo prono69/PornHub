@@ -42,7 +42,7 @@ async def mediainfo(message):
     <h2>DETAILS</h2>
     <code>{out}</code>
     """
-    link = await post_to_telegraph(f"{X_MEDIA}", body_text)
+    link = post_to_telegraph(f"{X_MEDIA}", body_text)
 
     await message.edit(
         f"ℹ️  <b>MEDIA INFO:  <a href ='{link}' > {X_MEDIA}</a></b>",
