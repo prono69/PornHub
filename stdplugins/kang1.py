@@ -1,19 +1,17 @@
 import asyncio
-import datetime
+import io
+import math
 import os
+import random
+import urllib.request
 import zipfile
 from collections import defaultdict
 
-import io
-import math
-import random
-import urllib.request
-
 import emoji
 from PIL import Image
-from telethon.tl.functions.messages import GetStickerSetRequest
-from telethon.errors.rpcerrorlist import StickersetInvalidError
 from telethon.errors import MessageNotModifiedError
+from telethon.errors.rpcerrorlist import StickersetInvalidError
+from telethon.tl.functions.messages import GetStickerSetRequest
 from telethon.tl.types import (
     DocumentAttributeFilename,
     DocumentAttributeSticker,
@@ -517,8 +515,8 @@ def zipdir(path, ziph):
         for file in files:
             ziph.write(os.path.join(root, file))
             os.remove(os.path.join(root, file))
-    
-    
+
+
 SYNTAX.update(
     {
         "stickers": "**Plugins : **`stickers`\

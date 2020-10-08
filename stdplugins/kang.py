@@ -3,25 +3,16 @@ Available Commands:
 .kang [Optional Emoji]
 .packinfo
 .loda {for get stickers in a zip file}"""
-import asyncio
 import datetime
 import math
 import os
 import random
-import zipfile
-from collections import defaultdict
 from io import BytesIO
 
 from PIL import Image
-from telethon.errors import MessageNotModifiedError
 from telethon.errors.rpcerrorlist import StickersetInvalidError
 from telethon.tl.functions.messages import GetStickerSetRequest
-from telethon.tl.types import (
-    DocumentAttributeSticker,
-    InputStickerSetID,
-    InputStickerSetShortName,
-    MessageMediaPhoto,
-)
+from telethon.tl.types import InputStickerSetShortName, MessageMediaPhoto
 
 from uniborg.util import admin_cmd
 
@@ -137,8 +128,8 @@ async def _(event):
     await event.edit(
         f"`This Sticker Is Raped! Plox Help this Sticker by Clicking` [HERE](t.me/addstickers/{packshortname})"
     )
-    
-    
+
+
 # Helpers
 
 

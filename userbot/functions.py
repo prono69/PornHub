@@ -7,9 +7,9 @@ import time
 from os.path import basename
 from typing import Optional, Tuple
 
+import PIL.ImageOps
 import requests
 from PIL import Image
-import PIL.ImageOps
 from selenium import webdriver
 from telethon.tl.types import Channel, DocumentAttributeFilename
 from validators.url import url
@@ -319,8 +319,7 @@ async def progress(
         )
         await gdrive.edit(f"**{prog_type}**\n\n" f"**Status**\n{tmp}")
 
-        
-        
+
 # http://effbot.org/imagingbook/imageops.html
 # https://stackoverflow.com/questions/2498875/how-to-invert-colors-of-image-with-pil-python-imaging/38378828
 
@@ -365,4 +364,3 @@ async def crop(imagefile, endname, x):
     image = Image.open(imagefile)
     inverted_image = PIL.ImageOps.crop(image, border=x)
     inverted_image.save(endname)
-        

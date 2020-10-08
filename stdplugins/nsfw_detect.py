@@ -57,5 +57,11 @@ async def detect_(message):
             name = parts["name"]
             confidence = int(float(parts["confidence"]) * 100)
             result += f"• {name}:\n   <code>{confidence} %</code>\n"
-    await bot.send_message(chat, result, link_preview=False, parse_mode="HTML", reply_to=message.reply_to_msg_id)
+    await bot.send_message(
+        chat,
+        result,
+        link_preview=False,
+        parse_mode="HTML",
+        reply_to=message.reply_to_msg_id,
+    )
     await a.delete()

@@ -1,10 +1,6 @@
-import asyncio
-import os
-import shlex
 from os import getcwd
-from os.path import basename, join
+from os.path import join
 from textwrap import wrap
-from typing import Optional, Tuple
 
 from PIL import Image, ImageDraw, ImageFont
 from wand.color import Color
@@ -87,4 +83,3 @@ async def cat_meeme(upper_text, lower_text, picture_name, endname):
         )
     text_draw(main_image)
     main_image.save(filename=endname)
-

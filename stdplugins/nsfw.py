@@ -8,11 +8,11 @@ This module can search images in danbooru and send in to the chat!
 Search images from Danbooru.
 """
 
+import os
+import urllib
 from asyncio import sleep
 
 import requests
-import urllib
-import os
 
 from uniborg import MODULE, SYNTAX
 from uniborg.util import admin_cmd

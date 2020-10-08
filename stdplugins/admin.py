@@ -130,7 +130,7 @@ async def setgrouppic(eventPic):
             except ImageProcessFailedError:
                 await eventPic.edit("`Failure while processing the image`")
             except Exception as e:
-            	await eventPic.edit(f"**Error :** `{str(e)}`")
+                await eventPic.edit(f"**Error :** `{str(e)}`")
     else:
         await eventPic.edit(
             "`Reply .setgrouppic to an Image to set it as group's icon.`"
@@ -156,7 +156,7 @@ async def promote(eventPromote):
     await eventPromote.edit("`Promoting this Gei...`")
     user, rank = await get_user_from_event(eventPromote)
     if not rank:
-    	rank = "Admin"
+        rank = "Admin"
     if not user:
         return
     newAdminRights = ChatAdminRights(
