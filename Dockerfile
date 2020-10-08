@@ -52,7 +52,7 @@ RUN apt -qq install -y --no-install-recommends \
     # install encoding tools
     ffmpeg mediainfo \
     # miscellaneous
-    neofetch \
+    neofetch libmagickwand-dev \
     # install extraction tools
     p7zip-full zip \
     # miscellaneous helpers
