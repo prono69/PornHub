@@ -119,7 +119,7 @@ async def upstream(ups):
     changelog = await gen_chlog(repo, f"HEAD..upstream/{ac_br}")
 
     if not changelog and not force_updateme:
-        await ups.edit(f"\n**Your BOT is up-to-date with {ac_br}**\n")
+        await ups.edit(f"\n**PepeBot is updated AF 🤟🤘 with {ac_br}**\n")
         repo.__del__()
         return
 
@@ -174,7 +174,7 @@ async def upstream(ups):
             return
         await ups.edit(
             "「**PEPE**」\
-                        \n`Userbot dyno build in progress, please wait for 8-10min it to complete.`"
+                        \n`Userbot dyno build in progress, please wait for 5-7min it to complete.`"
         )
         ups_rem.fetch(ac_br)
         repo.git.reset("--hard", "FETCH_HEAD")

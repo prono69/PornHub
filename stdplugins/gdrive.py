@@ -118,7 +118,7 @@ async def generate_credentials(gdrive):
     """ - Only generate once for long run - """
     hmm = bot.uid
     if helper.get_credentials(str(hmm)) is not None:
-        await edit_or_reply(gdrive, "`You already authorized token...`")
+        await edit_or_reply(gdrive, "`You already authorized token.`")
         await asyncio.sleep(1.5)
         await gdrive.delete()
         return False
@@ -172,7 +172,7 @@ async def generate_credentials(gdrive):
         await gdrive.client.delete_messages(BOTLOG_CHATID, [url_msg.id, r.id])
         """ - Unpack credential objects into strings - """
         creds = base64.b64encode(pickle.dumps(creds)).decode()
-        await gdrive.edit("`Credentials created...`")
+        await gdrive.edit("`Credentials created. Now enjoy Nigga!`")
     helper.save_credentials(str(gdrive.from_id), creds)
     await gdrive.delete()
     return
@@ -206,7 +206,7 @@ async def reset_credentials(gdrive):
     hmm = bot.uid
     gdrive = await edit_or_reply(gdrive, "`Resetting information...`")
     helper.clear_credentials(str(hmm))
-    await gdrive.edit("`Done...`")
+    await gdrive.edit("`Done`")
     await asyncio.sleep(1)
     await gdrive.delete()
     return

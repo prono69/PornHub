@@ -122,11 +122,15 @@ async def setgrouppic(eventPic):
                     )
                 )
                 await eventPic.edit("`Chat Picture Changed`")
+                await sleep(3)
+                await eventPic.delete()
 
             except PhotoCropSizeSmallError:
                 await eventPic.edit("`The image is too small`")
             except ImageProcessFailedError:
                 await eventPic.edit("`Failure while processing the image`")
+            except Exception as e:
+            	await eventPic.edit(f"**Error :** `{str(e)}`")
     else:
         await eventPic.edit(
             "`Reply .setgrouppic to an Image to set it as group's icon.`"
@@ -150,7 +154,9 @@ async def promote(eventPromote):
         await eventPromote.edit("`I am not an admin!`")
         return
     await eventPromote.edit("`Promoting this Gei...`")
-    user = await get_user_from_event(eventPromote)
+    user, rank = await get_user_from_event(eventPromote)
+    if not rank:
+    	rank = "Admin"
     if not user:
         return
     newAdminRights = ChatAdminRights(
@@ -172,9 +178,11 @@ async def promote(eventPromote):
         )
     try:
         await eventPromote.client(
-            EditAdminRequest(eventPromote.chat_id, user.id, newAdminRights, rank="")
+            EditAdminRequest(eventPromote.chat_id, user.id, newAdminRights, rank)
         )
-        await eventPromote.edit("`Promoted Successfully!`")
+        await eventPromote.edit("`OwO Promoted Successfully!`")
+        await sleep(3)
+        await eventPromote.delete()
     except BadRequestError:
         await eventPromote.edit("`I don't have sufficient permissions!`")
         return
@@ -187,8 +195,8 @@ async def promote(eventPromote):
         )
 
 
-@borg.on(admin_cmd(pattern=f"{borg.me.id}idemote(?: |$)(.*)", allow_sudo=True))
-@borg.on(events.NewMessage(outgoing=True, pattern="^.idemote(?: |$)(.*)"))
+@borg.on(admin_cmd(pattern=f"{borg.me.id}demote(?: |$)(.*)", allow_sudo=True))
+@borg.on(events.NewMessage(outgoing=True, pattern="^.demote(?: |$)(.*)"))
 async def demote(eventDemote):
     if eventDemote.text[0].isalpha() or eventDemote.text[0] in (
         "/",
@@ -229,7 +237,9 @@ async def demote(eventDemote):
     except BadRequestError:
         await eventDemote.edit("`I don't have sufficient permissions!`")
         return
-    await eventDemote.edit("`Demoted Successfully!`")
+    await eventDemote.edit("`Demoted Successfully Bish!`")
+    await sleep(3)
+    await eventDemote.delete()
     if ENABLE_LOG:
         await eventDemote.client.send_message(
             LOGGING_CHATID,
@@ -720,6 +730,8 @@ async def pinmessage(eventPinMessage):
         await eventPinMessage.edit("`I don't have sufficient permissions!`")
         return
     await eventPinMessage.edit("`Pinned Successfully!`")
+    await sleep(2)
+    await eventPinMessage.delete()
     user = await get_user_from_id(eventPinMessage.from_id, eventPinMessage)
     if ENABLE_LOG:
         await eventPinMessage.client.send_message(
@@ -872,17 +884,22 @@ async def _(event):
 
 
 async def get_user_from_event(event):
+    args = event.pattern_match.group(1).split(" ", 1)
+    extra = None
     if event.reply_to_msg_id:
         previous_message = await event.get_reply_message()
         user_obj = await event.client.get_entity(previous_message.from_id)
-    else:
-        user = event.pattern_match.group(1)
+        extra = event.pattern_match.group(1)
+    elif args:
+        user = args[0]
+        if len(args) == 2:
+            extra = args[1]
         if user.isnumeric():
             user = int(user)
         if not user:
             await event.edit("`Pass the user's username, id or reply!`")
             return
-        if event.message.entities is not None:
+        if event.message.entities:
             probable_user_mention_entity = event.message.entities[0]
 
             if isinstance(probable_user_mention_entity, MessageEntityMentionName):
@@ -891,10 +908,10 @@ async def get_user_from_event(event):
                 return user_obj
         try:
             user_obj = await event.client.get_entity(user)
-        except (TypeError, ValueError) as err:
-            await event.edit(str(err))
+        except (TypeError, ValueError):
+            await event.edit("Could not fetch info of that user.")
             return None
-    return user_obj
+    return user_obj, extra
 
 
 async def get_user_from_id(user, event):

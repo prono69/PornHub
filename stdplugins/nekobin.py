@@ -21,7 +21,7 @@ def progress(current, total):
     )
 
 
-@borg.on(admin_cmd(pattern="npaste ?(.*)"))
+@borg.on(admin_cmd(pattern="neko ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return

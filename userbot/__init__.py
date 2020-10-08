@@ -17,9 +17,10 @@ from sample_config import Config
 from userbot.cpro import *
 from userbot.fonts import *
 from userbot.functions import *
+from userbot.memifyhelper import *
 
 StartTime = time.time()
-pepe = "3.1.0"
+pepe = "3.1.1"
 
 # The madafucking 'bot' variable :)
 

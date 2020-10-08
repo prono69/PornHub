@@ -9,7 +9,7 @@ from asyncio import sleep
 
 import requests
 
-from uniborg.util import admin_cmd
+from uniborg.util import admin_cmd, edit_or_reply
 
 
 @bot.on(admin_cmd(pattern="detect ?(.*)"))
@@ -19,15 +19,16 @@ async def detect_(message):
         await message.get_reply_message(),
     )
     chat = message.chat_id
+    a = await edit_or_reply(message, "`Detecting NSFW limit...`")
     if not reply:
-        await message.edit("`Reply to media !`")
+        await a.edit("`Reply to media !`")
         await sleep(2)
-        await message.delete()
+        await a.delete()
         return
     if Config.DEEP_AI is None:
-        await message.edit("Add VAR `DEEP_AI` get Api Key from https://deepai.org/")
+        await a.edit("Add VAR `DEEP_AI` get Api Key from https://deepai.org/")
         await sleep(2)
-        await message.delete()
+        await a.delete()
         return
     api_key = Config.DEEP_AI
     photo = reply
@@ -40,22 +41,21 @@ async def detect_(message):
     )
     os.remove(photo)
     if "status" in r.json():
-        await message.edit(r.json()["status"])
+        await a.edit(r.json()["status"])
         await sleep(2)
-        await message.delete()
+        await a.delete()
         return
     r_json = r.json()["output"]
     pic_id = r.json()["id"]
     percentage = r_json["nsfw_score"] * 100
     detections = r_json["detections"]
-    result = "<b><u>Detected Nudity</u> :</b>\n[>>>](https://api.deepai.org/job-view-file/{}/inputs/image.jpg) <code>{:.3f} %</code>\n\n".format(
-        pic_id, percentage
-    )
+    link = f"https://api.deepai.org/job-view-file/{pic_id}/inputs/image.jpg"
+    result = f"<b><u>Detected Nudity</u> :</b>\n<a href='{link}'>>>></a> <code>{percentage:.3f}%</code>\n\n"
 
     if detections:
         for parts in detections:
             name = parts["name"]
             confidence = int(float(parts["confidence"]) * 100)
             result += f"• {name}:\n   <code>{confidence} %</code>\n"
-    await bot.send_message(chat, result, link_preview=False, parse_mode="HTML")
-    await message.delete()
+    await bot.send_message(chat, result, link_preview=False, parse_mode="HTML", reply_to=message.reply_to_msg_id)
+    await a.delete()

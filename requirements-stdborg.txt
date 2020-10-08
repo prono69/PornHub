@@ -21,6 +21,7 @@ google_auth_oauthlib
 googletrans
 gsearch>=1.6.0
 gtts
+git+https://github.com/bisoncorps/search-engine-parser
 hachoir
 heroku3
 html_telegraph_poster
@@ -58,7 +59,6 @@ random_cli
 regex
 remotezip
 requests
-search-engine-parser>=0.4.2
 selenium
 spamwatch
 speedtest-cli

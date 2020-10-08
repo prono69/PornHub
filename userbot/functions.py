@@ -9,6 +9,7 @@ from typing import Optional, Tuple
 
 import requests
 from PIL import Image
+import PIL.ImageOps
 from selenium import webdriver
 from telethon.tl.types import Channel, DocumentAttributeFilename
 from validators.url import url
@@ -317,3 +318,51 @@ async def progress(
             f"**Duration :** `{time_formatter(elapsed_time)}`"
         )
         await gdrive.edit(f"**{prog_type}**\n\n" f"**Status**\n{tmp}")
+
+        
+        
+# http://effbot.org/imagingbook/imageops.html
+# https://stackoverflow.com/questions/2498875/how-to-invert-colors-of-image-with-pil-python-imaging/38378828
+
+
+async def invert_colors(imagefile, endname):
+    image = Image.open(imagefile)
+    inverted_image = PIL.ImageOps.invert(image)
+    inverted_image.save(endname)
+
+
+async def flip_image(imagefile, endname):
+    image = Image.open(imagefile)
+    inverted_image = PIL.ImageOps.flip(image)
+    inverted_image.save(endname)
+
+
+async def grayscale(imagefile, endname):
+    image = Image.open(imagefile)
+    inverted_image = PIL.ImageOps.grayscale(image)
+    inverted_image.save(endname)
+
+
+async def mirror_file(imagefile, endname):
+    image = Image.open(imagefile)
+    inverted_image = PIL.ImageOps.mirror(image)
+    inverted_image.save(endname)
+
+
+async def solarize(imagefile, endname):
+    image = Image.open(imagefile)
+    inverted_image = PIL.ImageOps.solarize(image, threshold=128)
+    inverted_image.save(endname)
+
+
+async def add_frame(imagefile, endname, x, color):
+    image = Image.open(imagefile)
+    inverted_image = PIL.ImageOps.expand(image, border=x, fill=color)
+    inverted_image.save(endname)
+
+
+async def crop(imagefile, endname, x):
+    image = Image.open(imagefile)
+    inverted_image = PIL.ImageOps.crop(image, border=x)
+    inverted_image.save(endname)
+        

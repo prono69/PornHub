@@ -273,7 +273,7 @@ async def _(event):
 
 SYNTAX.update(
     {
-        "music": "`.song` <search title>\
+        "song": "`.song` <search title>\
             \nUsage: For searching songs.\
             \n\n`.spd`<Artist - Song Title>\
             \nUsage:For searching songs from Spotify.\

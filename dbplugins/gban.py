@@ -10,8 +10,7 @@ from telethon.tl.types import ChatBannedRights, MessageEntityMentionName
 import sql_helpers.gban_sql_helper as gban_sql
 from uniborg import MODULE, SYNTAX
 from uniborg.util import admin_cmd
-from userbot import PEPE_ID
-from userbot.functions import admin_groups
+from userbot import PEPE_ID, admin_groups
 
 MODULE.append("gban")
 
@@ -72,7 +71,7 @@ async def catgban(cat):
         await cat.edit("`You are not admin of atleast one group.. USELESS`")
         return
     await cat.edit(
-        f"`Initiating Gban of the` [User](tg://user?id={user.id}) `in {len(san)} groups`"
+        f"`Initiating Gban of the` [User](tg://user?id={user.id}) `in {len(san)}` groups"
     )
     for i in range(sandy):
         try:

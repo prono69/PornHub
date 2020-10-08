@@ -47,7 +47,7 @@ async def mkc(event):
     pygments.highlight(
         f"{c}",
         Python3Lexer(),
-        ImageFormatter(font_name="fonts/DejaVuSansMono.ttf", line_numbers=True),
+        ImageFormatter(font_name="LiberationMono-Regular.ttf", line_numbers=True),
         "out.png",
     )
     res = await event.client.send_message(

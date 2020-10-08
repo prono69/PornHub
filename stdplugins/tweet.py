@@ -245,5 +245,5 @@ async def phcomment(event):
     except BaseException:
         await purge()
         return await a.edit("`Reply message has no text!`")
-    await event.delete()
+    await a.delete()
     await purge()

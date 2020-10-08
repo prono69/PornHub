@@ -56,6 +56,16 @@
       "value": "./pepe/",
       "required": true
     },
+    "HEROKU_API_KEY": {
+      "description": "Your heorku api key, This is required for .update cmd",
+      "value": "",
+      "required": false
+    },
+    "HEROKU_APP_NAME": {
+      "description": "Your Heroku app name, This is required for .update cmd",
+      "value": "",
+      "required": false
+    },
     "IBM_WATSON_CRED_URL": {
       "description": "This is required for the speech to text module. Get your USERNAME from https://console.bluemix.net/docs/services/speech-to-text/getting-started.html",
       "required": false
@@ -83,10 +93,10 @@
       "description": "Get an API Key from http://OCR.Space",
       "required": false
     },
-    "G_BAN_LOGGER_GROUP": {
-      "description": "Send .g_id in any group with all your administration bots (added)",
+    "BOTLOG": {
+      "description": "Send .g_id in any group. This is required for many things",
       "value": "-100",
-      "required": false
+      "required": true
     },
     "TG_GLOBAL_ALBUM_LIMIT": {
       "description": "How many media should appear when you do a .google image search? (setting a low value is preferred)",
@@ -138,14 +148,6 @@
       "value": "Asia/Kolkata",
       "required": false
     },
-    "VERY_STREAM_LOGIN": {
-      "description": "Get your API key from https://verystream.com",
-      "required": false
-    },
-    "VERY_STREAM_KEY": {
-      "description": "Get your API key from https://verystream.com",
-      "required": false
-   },
     "G_DRIVE_CLIENT_ID": {
       "description": "Get your credentials from https://da.gd/so63O",
       "required": false
@@ -154,7 +156,7 @@
       "description": "Get your credentials from https://da.gd/so63O",
       "required": false
       },
-      "GDRIVE_FOLDER_ID": {
+      "G_DRIVE_FOLDER_ID": {
       "description": "Get your gdrive folder link in which you want to save file.",
       "required": false
     },

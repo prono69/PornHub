@@ -1,3 +1,9 @@
+import asyncio
+import datetime
+import os
+import zipfile
+from collections import defaultdict
+
 import io
 import math
 import random
@@ -6,6 +12,8 @@ import urllib.request
 import emoji
 from PIL import Image
 from telethon.tl.functions.messages import GetStickerSetRequest
+from telethon.errors.rpcerrorlist import StickersetInvalidError
+from telethon.errors import MessageNotModifiedError
 from telethon.tl.types import (
     DocumentAttributeFilename,
     DocumentAttributeSticker,
@@ -345,6 +353,172 @@ async def get_pack_info(event):
     await event.edit(OUTPUT)
 
 
+@borg.on(admin_cmd(pattern="loda ?(.*)"))
+async def _(event):
+    if event.fwd_from:
+        return
+    event.pattern_match.group(1)
+    if not os.path.isdir(Config.TMP_DOWNLOAD_DIRECTORY):
+        os.makedirs(Config.TMP_DOWNLOAD_DIRECTORY)
+    if event.reply_to_msg_id:
+        reply_message = await event.get_reply_message()
+        # https://gist.github.com/udf/e4e3dbb2e831c8b580d8fddd312714f7
+        if not reply_message.sticker:
+            return
+        sticker = reply_message.sticker
+        sticker_attrib = find_instance(sticker.attributes, DocumentAttributeSticker)
+        if not sticker_attrib.stickerset:
+            await event.reply("This sticker is not part of a pack")
+            return
+        is_a_s = is_it_animated_sticker(reply_message)
+        file_ext_ns_ion = "webp"
+        file_caption = "`You are my Nigga`"
+        if is_a_s:
+            file_ext_ns_ion = "tgs"
+            file_caption = "Forward the ZIP file to @AnimatedStickersRoBot to get lottIE JSON containing the vector information."
+        sticker_set = await borg(GetStickerSetRequest(sticker_attrib.stickerset))
+        pack_file = os.path.join(
+            Config.TMP_DOWNLOAD_DIRECTORY, sticker_set.set.short_name, "pack.txt"
+        )
+        if os.path.isfile(pack_file):
+            os.remove(pack_file)
+        # Sticker emojis are retrieved as a mapping of
+        # <emoji>: <list of document ids that have this emoji>
+        # So we need to build a mapping of <document id>: <list of emoji>
+        # Thanks, Durov
+        emojis = defaultdict(str)
+        for pack in sticker_set.packs:
+            for document_id in pack.documents:
+                emojis[document_id] += pack.emoticon
+
+        async def download(sticker, emojis, path, file):
+            await borg.download_media(sticker, file=os.path.join(path, file))
+            with open(pack_file, "a") as f:
+                f.write(f"{{'image_file': '{file}','emojis':{emojis[sticker.id]}}},")
+
+        pending_tasks = [
+            asyncio.ensure_future(
+                download(
+                    document,
+                    emojis,
+                    Config.TMP_DOWNLOAD_DIRECTORY + sticker_set.set.short_name,
+                    f"{i:03d}.{file_ext_ns_ion}",
+                )
+            )
+            for i, document in enumerate(sticker_set.documents)
+        ]
+        await event.edit(
+            f"Downloading {sticker_set.set.count} sticker(s) to .{Config.TMP_DOWNLOAD_DIRECTORY}{sticker_set.set.short_name}..."
+        )
+        num_tasks = len(pending_tasks)
+        while True:
+            done, pending_tasks = await asyncio.wait(
+                pending_tasks, timeout=2.5, return_when=asyncio.FIRST_COMPLETED
+            )
+            try:
+                await event.edit(
+                    f"Downloaded {num_tasks - len(pending_tasks)}/{sticker_set.set.count}"
+                )
+            except MessageNotModifiedError:
+                pass
+            if not pending_tasks:
+                break
+        await event.edit("Downloading to my local completed")
+        # https://gist.github.com/udf/e4e3dbb2e831c8b580d8fddd312714f7
+        directory_name = Config.TMP_DOWNLOAD_DIRECTORY + sticker_set.set.short_name
+        zipf = zipfile.ZipFile(directory_name + ".zip", "w", zipfile.ZIP_DEFLATED)
+        zipdir(directory_name, zipf)
+        zipf.close()
+        await borg.send_file(
+            event.chat_id,
+            directory_name + ".zip",
+            caption=file_caption,
+            force_document=True,
+            allow_cache=False,
+            reply_to=event.message.id,
+            progress_callback=progress,
+        )
+        try:
+            os.remove(directory_name + ".zip")
+            os.remove(directory_name)
+        except BaseException:
+            pass
+        await event.edit("`Task Completed`")
+        await asyncio.sleep(1)
+        await event.delete()
+    else:
+        await event.edit("**TODO :** Not Implemented")
+
+
+# Helpers
+
+
+def is_it_animated_sticker(message):
+    try:
+        if message.media and message.media.document:
+            mime_type = message.media.document.mime_type
+            return "tgsticker" in mime_type
+        else:
+            return False
+    except BaseException:
+        return False
+
+
+def is_message_image(message):
+    if message.media:
+        if isinstance(message.media, MessageMediaPhoto):
+            return True
+        return bool(
+            message.media.document
+            and message.media.document.mime_type.split("/")[0] == "image"
+        )
+
+    return False
+
+
+async def silently_send_message(conv, text):
+    await conv.send_message(text)
+    response = await conv.get_response()
+    await conv.mark_read(message=response)
+    return response
+
+
+async def stickerset_exists(conv, setname):
+    try:
+        await borg(GetStickerSetRequest(InputStickerSetShortName(setname)))
+        response = await silently_send_message(conv, "/addsticker")
+        if response.text == "Invalid pack selected.":
+            await silently_send_message(conv, "/cancel")
+            return False
+        await silently_send_message(conv, "/cancel")
+        return True
+    except StickersetInvalidError:
+        return False
+
+
+def progress(current, total):
+    logger.info(
+        "Uploaded: {} of {}\nCompleted {}".format(
+            current, total, (current / total) * 100
+        )
+    )
+
+
+def find_instance(items, class_or_tuple):
+    for item in items:
+        if isinstance(item, class_or_tuple):
+            return item
+    return None
+
+
+def zipdir(path, ziph):
+    # ziph is zipfile handle
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            ziph.write(os.path.join(root, file))
+            os.remove(os.path.join(root, file))
+    
+    
 SYNTAX.update(
     {
         "stickers": "**Plugins : **`stickers`\
@@ -357,6 +531,8 @@ SYNTAX.update(
 \n\n**Syntax : **`.kang [emoji('s)] [number]`\
 \n**Usage : **Kang's the sticker/image to the specified pack and uses the emoji('s) you picked.\
 \n\n**Syntax : **`.stkrinfo`\
-\n**Usage : **Gets info about the sticker pack."
+\n**Usage : **Gets info about the sticker pack.
+\n\n**Syntax : ** `.loda`
+\n*Usage : ** Downloadand upload whole pack in zip file"
     }
 )

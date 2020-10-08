@@ -34,7 +34,7 @@ async def anime(event):
         query = reply.text
     else:
         await event.edit("`Brah.. What I am supposed to search ?`")
-        await asyncio.sleep(6)
+        await asyncio.sleep(4)
         await event.delete()
         return
     # res = ""

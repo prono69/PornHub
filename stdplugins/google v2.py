@@ -1,6 +1,6 @@
 from re import findall
 
-from search_engine_parser import GoogleSearch
+from search_engine_parser.core.engines.google import Search as GoogleSearch
 
 from uniborg.util import admin_cmd
 

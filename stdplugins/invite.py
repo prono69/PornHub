@@ -38,5 +38,6 @@ async def _(event):
                         )
                     )
                     await ed.edit("`Invited Successfully`")
+                    await ed.delete()
                 except Exception as e:
                     await ed.edit(str(e))

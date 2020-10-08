@@ -22,11 +22,42 @@ async def _(event):
     if event.fwd_from:
         return
     start = datetime.now()
-    await event.edit("Ruk Ja Betichod, Google Se Bolta Hoon Tera IP Ban Kare ...")
+    await event.edit("`Processing AF...`")
     # SHOW_DESCRIPTION = False
-    # + " -inurl:(htm|html|php|pls|txt) intitle:index.of \"last modified\" (mkv|mp4|avi|epub|pdf|mp3)"
-    input_str = event.pattern_match.group(1)
+    input_str = event.pattern_match.group(1) # + " -inurl:(htm|html|php|pls|txt) intitle:index.of \"last modified\" (mkv|mp4|avi|epub|pdf|mp3)"
     input_url = "https://bots.shrimadhavuk.me/search/?q={}".format(input_str)
+    headers = {"USER-AGENT": "UniBorg"}
+    async with aiohttp.ClientSession() as requests:
+        reponse = await requests.get(input_url, headers=headers)
+        response = await reponse.json()
+    output_str = " "
+    for result in response["results"]:
+        text = result.get("title")
+        url = result.get("url")
+        description = result.get("description")
+        image = result.get("image")
+        output_str += " 👉🏻 [{}]({}) \n\n".format(text, url)
+    end = datetime.now()
+    ms = (end - start).seconds
+    await event.edit("searched Google for {} in {} seconds. \n{}".format(input_str, ms, output_str), link_preview=False)
+    await asyncio.sleep(2)
+    await event.edit("**Google :** `{}`\n{}".format(input_str, output_str), link_preview=False)
+ 
+
+@borg.on(admin_cmd(pattern="gi (.*)"))
+async def _(event):
+    if event.fwd_from:
+        return
+    start = datetime.now()
+    await event.edit("`Processing...`")
+    input_str = event.pattern_match.group(1)
+    work_dir = os.path.join(
+        Config.TMP_DOWNLOAD_DIRECTORY,
+        input_str
+    )
+    if not os.path.isdir(work_dir):
+        os.makedirs(work_dir)
+    input_url = "https://bots.shrimadhavuk.me/search/?u={}".format(input_str)
     headers = {"USER-AGENT": "UniBorg"}
     async with aiohttp.ClientSession() as requests:
         reponse = await requests.get(input_url, headers=headers)
@@ -40,82 +71,40 @@ async def _(event):
             caption = result.get("description")
             image_url = result.get("url")
             image_req_set = await requests.get(image_url)
-            image_file_name = (
-                str(time.time())
-                + ""
-                + guess_extension(image_req_set.headers.get("Content-Type"))
+            image_file_name = str(time.time()) + "" + guess_extension(
+                image_req_set.headers.get("Content-Type")
             )
-            image_save_path = os.path.join(work_dir, image_file_name)
+            image_save_path = os.path.join(
+                work_dir,
+                image_file_name
+            )
             with open(image_save_path, "wb") as f_d:
                 f_d.write(await image_req_set.read())
             url_lst.append(image_save_path)
             cap_lst.append(caption)
     if not url_lst:
-        await event.edit(f"No results found for `{input_str}`")
+        await event.edit(f"No results found for **{input_str}**")
         return
     if len(url_lst) != len(cap_lst):
-        await event.edit("search api broken :(")
+        await event.edit("`Search api broken AF :(`")
         return
-    await event.reply(cap_lst, file=url_lst, parse_mode="html")
+    await event.reply(
+        cap_lst,
+        file=url_lst,
+        parse_mode="html"
+    )
     for each_file in url_lst:
         os.remove(each_file)
     shutil.rmtree(work_dir, ignore_errors=True)
     end = datetime.now()
     ms = (end - start).seconds
     await event.edit(
-        f"Searched Google for `{input_str}` in `{ms}` seconds.", link_preview=False
+        f"Searched Google for **{input_str}** in `{ms}` seconds.",
+        link_preview=False
     )
-    await asyncio.sleep(5)
+    await asyncio.sleep(3)
     await event.delete()
-
-
-@borg.on(admin_cmd(pattern="gi (.*)"))
-async def _(event):
-    if event.fwd_from:
-        return
-    start = datetime.now()
-    await event.edit("`Processing...`")
-    input_str = event.pattern_match.group(1)
-    work_dir = os.path.join(Config.TMP_DOWNLOAD_DIRECTORY, input_str)
-    if not os.path.isdir(work_dir):
-        os.makedirs(work_dir)
-    input_url = "https://bots.shrimadhavuk.me/search/?u={}".format(input_str)
-    headers = {"USER-AGENT": "UniBorg"}
-    async with aiohttp.ClientSession() as requests:
-        for result in response["results"]:
-            if len(url_lst) > Config.TG_GLOBAL_ALBUM_LIMIT:
-                break
-            caption = result.get("description")
-            image_url = result.get("url")
-            image_req_set = await requests.get(image_url)
-            image_file_name = (
-                str(time.time())
-                + ""
-                + guess_extension(image_req_set.headers.get("Content-Type"))
-            )
-            image_save_path = os.path.join(work_dir, image_file_name)
-            with open(image_save_path, "wb") as f_d:
-                f_d.write(await image_req_set.read())
-            url_lst.append(image_save_path)
-            cap_lst.append(caption)
-    if not url_lst:
-        await event.edit(f"No results found for `{input_str}`")
-        return
-    if len(url_lst) != len(cap_lst):
-        await event.edit("search api broken :(")
-        return
-    await event.reply(cap_lst, file=url_lst, parse_mode="html")
-    for each_file in url_lst:
-        os.remove(each_file)
-    shutil.rmtree(work_dir, ignore_errors=True)
-    end = datetime.now()
-    ms = (end - start).seconds
-    await event.edit(
-        f"Searched Google for `{input_str}` in `{ms}` seconds.", link_preview=False
-    )
-    await asyncio.sleep(5)
-    await event.delete()
-
+ 
 
 @borg.on(admin_cmd(pattern="grs"))
 async def _(event):

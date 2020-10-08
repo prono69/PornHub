@@ -11,6 +11,8 @@ Search images from Danbooru.
 from asyncio import sleep
 
 import requests
+import urllib
+import os
 
 from uniborg import MODULE, SYNTAX
 from uniborg.util import admin_cmd
@@ -76,7 +78,7 @@ async def danbooru(message):
 @borg.on(admin_cmd(pattern="boobs(?: |$)(.*)"))
 async def boobs(e):
     await e.edit("`Finding some big boobs...`")
-    await sleep(3)
+    await sleep(1)
     await e.edit("`Sending some big boobs...`")
     nsfw = requests.get("http://api.oboobs.ru/noise/1").json()[0]["preview"]
     urllib.request.urlretrieve("http://media.oboobs.ru/{}".format(nsfw), "*.jpg")
@@ -89,7 +91,7 @@ async def boobs(e):
 @borg.on(admin_cmd(pattern="butts(?: |$)(.*)"))
 async def butts(e):
     await e.edit("`Finding some beautiful butts...`")
-    await sleep(3)
+    await sleep(1)
     await e.edit("`Sending some beautiful butts...`")
     nsfw = requests.get("http://api.obutts.ru/noise/1").json()[0]["preview"]
     urllib.request.urlretrieve("http://media.obutts.ru/{}".format(nsfw), "*.jpg")
