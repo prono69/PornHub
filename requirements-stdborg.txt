@@ -69,5 +69,6 @@ urbandict
 validators
 wget
 wheel
+wand
 wikipedia
 youtube-dl
