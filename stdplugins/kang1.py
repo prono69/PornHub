@@ -531,8 +531,8 @@ SYNTAX.update(
 \n\n**Syntax : **`.kang [emoji('s)] [number]`\
 \n**Usage : **Kang's the sticker/image to the specified pack and uses the emoji('s) you picked.\
 \n\n**Syntax : **`.stkrinfo`\
-\n**Usage : **Gets info about the sticker pack.
-\n\n**Syntax : ** `.loda`
+\n**Usage : **Gets info about the sticker pack.\
+\n\n**Syntax : ** `.loda`\
 \n*Usage : ** Downloadand upload whole pack in zip file"
     }
 )
