@@ -1,8 +1,9 @@
 """Count Number of Files in a Chat
 Original Module Credits: https://t.me/UniBorg/127"""
 
-from uniborg.util import admin_cmd, humanbytes, yaml_format, parse_pre
- 
+from uniborg.util import admin_cmd, humanbytes, parse_pre, yaml_format
+
+
 @borg.on(admin_cmd(pattern="conftc ?(.*)"))
 async def _(event):
     if event.fwd_from:
@@ -16,12 +17,8 @@ async def _(event):
         "depending on the number of messages "
         "in the chat ..."
     )
-    mus = 0
     hmm = {}
-    async for message in event.client.iter_messages(
-        entity=entity,
-        limit=None
-    ):
+    async for message in event.client.iter_messages(entity=entity, limit=None):
         if message and message.file:
             if message.file.mime_type not in hmm:
                 hmm[message.file.mime_type] = 0
@@ -29,10 +26,5 @@ async def _(event):
     hnm = {}
     for key in hmm:
         hnm[key] = humanbytes(hmm[key])
-    await status_message.edit(
-        yaml_format(hnm),
-        parse_mode=parse_pre
-    )
+    await status_message.edit(yaml_format(hnm), parse_mode=parse_pre)
     await event.delete()
- 
- 

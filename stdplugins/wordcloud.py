@@ -3,7 +3,7 @@
 # Licensed under the General Public License, Version 3.0;
 # you may not use this file except in compliance with the License.
 #
-#Kamged from Nitesh Raj
+# Kamged from Nitesh Raj
 
 import os
 
@@ -93,5 +93,4 @@ async def _(event):
         return await event.edit(str(e))
 
 
-SYNTAX.update({"wordcloud": ">`.wc`\n"
-                 "Usage: create wordcloud art from media\n\n"})
+SYNTAX.update({"wordcloud": ">`.wc`\n" "Usage: create wordcloud art from media\n\n"})

@@ -13,11 +13,12 @@
 
 import logging
 import secrets
-from telethon import TelegramClient
+
 from alchemysession import AlchemySessionContainer
+from telethon import TelegramClient
 from telethon.errors.rpcerrorlist import (
+    PhoneCodeInvalidError,
     SessionPasswordNeededError,
-    PhoneCodeInvalidError
 )
 
 
@@ -26,7 +27,10 @@ async def bleck_megick(event, config_jbo):
         return
     bot_me = await event.client.get_me()
     print(bot_me.stringify())
-    if bot_me.username.lower() == config_jbo.TG_BOT_USER_NAME_BF_HER.lower() and int(event.chat_id) in config_jbo.SUDO_USERS:
+    if (
+        bot_me.username.lower() == config_jbo.TG_BOT_USER_NAME_BF_HER.lower()
+        and int(event.chat_id) in config_jbo.SUDO_USERS
+    ):
         # force int for Type checks
         # 🤣🤣 validations
         async with event.client.conversation(event.chat_id) as conv:
@@ -50,7 +54,7 @@ async def bleck_megick(event, config_jbo):
                 api_hash=config_jbo.API_HASH,
                 device_model="GNU/Linux nonUI",
                 app_version="@UniBorg 2.0",
-                lang_code="ml"
+                lang_code="ml",
             )
             await current_client.connect()
             sent = await current_client.send_code_request(phone)
@@ -77,15 +81,10 @@ async def bleck_megick(event, config_jbo):
 
             try:
                 await current_client.sign_in(
-                    phone,
-                    code=received_code,
-                    password=received_tfa_code
+                    phone, code=received_code, password=received_tfa_code
                 )
             except PhoneCodeInvalidError:
-                await conv.send_message(
-                    "Invalid Code Received. "
-                    "Please re /start"
-                )
+                await conv.send_message("Invalid Code Received. " "Please re /start")
                 return
             except SessionPasswordNeededError:
                 await conv.send_message(
@@ -110,9 +109,7 @@ async def bleck_megick(event, config_jbo):
             # any Telegram object with the "stringify" method:
             logging.info(current_client_me.stringify())
 
-            string_session_messeg = await conv.send_message(
-                f"{session_id}"
-            )
+            string_session_messeg = await conv.send_message(f"{session_id}")
             await string_session_messeg.reply(
                 "now, "
                 "please turn of the application "
@@ -122,6 +119,5 @@ async def bleck_megick(event, config_jbo):
             )
     else:
         await event.reply(
-            "un authorized -_- user(s) "
-            "please get your own: https://t.me/UniBorg/108"
+            "un authorized -_- user(s) " "please get your own: https://t.me/UniBorg/108"
         )
