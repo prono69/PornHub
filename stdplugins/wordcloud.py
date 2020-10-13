@@ -19,7 +19,7 @@ from uniborg import SYNTAX
 from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd(pattern=pattern=r"(wc)$"))
+@borg.on(admin_cmd(pattern=r"wc"))
 async def _(event):
     if not event.reply_to_msg_id:
         await event.edit("`Are you mad Bish! Reply to Any media..`")
