@@ -24,19 +24,6 @@ pepe = "3.1.1"
 
 # The madafucking 'bot' variable :)
 
-if Config.HU_STRING_SESSION:
-    session_name = str(Config.HU_STRING_SESSION)
-    if session_name.endswith("="):
-        bot = TelegramClient(
-            StringSession(session_name), Config.APP_ID, Config.API_HASH
-        )
-    else:
-        bot = TelegramClient(
-            "TG_BOT_TOKEN", api_id=Config.APP_ID, api_hash=Config.API_HASH
-        ).start(bot_token=Config.HU_STRING_SESSION)
-else:
-    session_name = "startup"
-    bot = TelegramClient(session_name, Config.APP_ID, Config.API_HASH)
 
 CONSOLE_LOGGER_VERBOSE = sb(os.environ.get("CONSOLE_LOGGER_VERBOSE", "False"))
 
