@@ -971,7 +971,7 @@ async def google_drive(gdrive):
         return None
     service = await create_app(gdrive)
     event = gdrive
-    gdrive = await edit_or_reply(gdrive, "Uploading...")
+    gdrive = await edit_or_reply(gdrive, "`Uploading...`")
     if service is False:
         return None
     if isfile(value):

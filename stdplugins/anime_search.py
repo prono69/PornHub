@@ -108,6 +108,7 @@ async def get_anime(message):
 **🔞 Rating:** `{rating}`
 
 [🎬 Trailer]({trailer_link})
+
 [📖 Synopsis]({synopsis_link})
 [📚 More Info]({mal_dir_link})
 

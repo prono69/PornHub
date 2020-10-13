@@ -64,11 +64,13 @@ spamwatch
 speedtest-cli
 spotify_token
 sqlalchemy
+scipy
 telegraph
 urbandict
 validators
 wget
 wheel
 wand
+wordcloud
 wikipedia
 youtube-dl
