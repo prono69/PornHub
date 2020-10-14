@@ -95,7 +95,7 @@ class Config:
     # specify list of users allowed to use bot
     # WARNING: be careful who you grant access to your bot.
     # malicious users could do ".exec rm -rf /*"
-    SUDO_USERS = list(set(int(x) for x in os.environ.get("SUDO_USERS", "").split()))
+    SUDO_USERS = set(int(x) for x in os.environ.get("SUDO_USERS", "").split())
     # Temp
     TEMP_DIR = os.environ.get("TEMP_DIR", None)
     CHANNEL_ID = os.environ.get("CHANNEL_ID", None)

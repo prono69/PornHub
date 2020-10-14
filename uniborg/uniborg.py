@@ -40,6 +40,8 @@ class Uniborg(TelegramClient):
         self.mongo = MongoClient(os.environ.get("MONGO_URI", None))
 
         kwargs = {
+            "api_id": 6,
+            "api_hash": "eb06d4abfb49dc3eeb1aeb98ae0f581e",
             "device_model": "Kali Linux nonUI",
             "app_version": "@PepeBot 7.0",
             "lang_code": "en",

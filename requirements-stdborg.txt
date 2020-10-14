@@ -8,6 +8,7 @@ cowpy
 cryptg
 csvfaker
 colour
+cairosvg
 dadjokes-cli
 deezloader
 dnspython

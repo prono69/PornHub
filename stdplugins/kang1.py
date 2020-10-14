@@ -310,7 +310,7 @@ def char_is_emoji(character):
     return character in emoji.UNICODE_EMOJI
 
 
-@borg.on(admin_cmd(pattern="stkrinfo$"))
+@borg.on(admin_cmd(pattern="pakinfo$"))
 async def get_pack_info(event):
     if not event.is_reply:
         await event.edit("`I can't fetch info from nothing, can I ?!`")
@@ -528,7 +528,7 @@ SYNTAX.update(
 \n**Usage : **Kang's the sticker/image to the specified pack but uses 🤔 as emoji.\
 \n\n**Syntax : **`.kang [emoji('s)] [number]`\
 \n**Usage : **Kang's the sticker/image to the specified pack and uses the emoji('s) you picked.\
-\n\n**Syntax : **`.stkrinfo`\
+\n\n**Syntax : **`.pakinfo`\
 \n**Usage : **Gets info about the sticker pack.\
 \n\n**Syntax : ** `.loda`\
 \n*Usage : ** Downloadand upload whole pack in zip file"
