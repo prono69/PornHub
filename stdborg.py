@@ -1,17 +1,17 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
- 
+
 import logging
 import os
 import sys
- 
+
 from telethon.sessions import StringSession
- 
+
 from uniborg import Uniborg
- 
+
 logging.basicConfig(level=logging.INFO)
- 
+
 # the secret configuration specific things
 ENV = bool(os.environ.get("ENV", False))
 if ENV:
@@ -22,18 +22,19 @@ else:
     else:
         logging.warning("No sample_config.py Found!")
         logging.info(
-            "Please run the command, again, after creating config.py similar to README.md")
+            "Please run the command, again, after creating config.py similar to README.md"
+        )
         sys.exit(1)
- 
- 
+
+
 if Config.DB_URI is None:
     logging.warning("No DB_URI Found!")
- 
- 
+
+
 if len(Config.SUDO_USERS) >= 0:
     Config.SUDO_USERS.add("me")
- 
- 
+
+
 if Config.HU_STRING_SESSION is not None:
     # for Running on Heroku
     session_name = str(Config.HU_STRING_SESSION)
@@ -43,7 +44,7 @@ if Config.HU_STRING_SESSION is not None:
         db_plugin_path="dbplugins/",
         api_config=Config,
         api_id=Config.APP_ID,
-        api_hash=Config.API_HASH
+        api_hash=Config.API_HASH,
     )
     borg.run_until_disconnected()
 elif len(sys.argv) == 2:
@@ -56,13 +57,14 @@ elif len(sys.argv) == 2:
         connection_retries=None,
         api_config=Config,
         api_id=Config.APP_ID,
-        api_hash=Config.API_HASH
+        api_hash=Config.API_HASH,
     )
     borg.run_until_disconnected()
 else:
     # throw error
-    logging.error("USAGE EXAMPLE:\n"
-                  "python3 -m stdborg <SESSION_NAME>"
-                  "\n 👆👆 Please follow the above format to run your userbot."
-                  "\n Bot quitting.")
- 
+    logging.error(
+        "USAGE EXAMPLE:\n"
+        "python3 -m stdborg <SESSION_NAME>"
+        "\n 👆👆 Please follow the above format to run your userbot."
+        "\n Bot quitting."
+    )
