@@ -2,14 +2,14 @@ import asyncio
 import io
 import math
 import os
-import requests
-from bs4 import BeautifulSoup as bs
 import random
 import urllib.request
 import zipfile
 from collections import defaultdict
 
 import emoji
+import requests
+from bs4 import BeautifulSoup as bs
 from PIL import Image
 from telethon.errors import MessageNotModifiedError
 from telethon.errors.rpcerrorlist import StickersetInvalidError
@@ -22,7 +22,7 @@ from telethon.tl.types import (
 )
 
 from uniborg import SYNTAX
-from uniborg.util import admin_cmd, edit_or_reply, edit_delete
+from uniborg.util import admin_cmd, edit_delete, edit_or_reply
 
 KANGING_STR = [
     "Using Witchery to kang this sticker...",
@@ -473,8 +473,8 @@ async def cb_sticker(event):
             packid = (pack.button).get("data-popup")
             reply += f"\n **• ID: **`{packid}`\n [{packtitle}]({packlink})"
     await catevent.edit(reply)
-        
-        
+
+
 # Helpers
 
 

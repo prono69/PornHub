@@ -115,7 +115,8 @@ class Config:
     TELE_GRAM_2FA_CODE = os.environ.get("TELE_GRAM_2FA_CODE", None)
     #
     GROUP_REG_SED_EX_BOT_S = os.environ.get(
-        "GROUP_REG_SED_EX_BOT_S", r"(reg?(e)x|moku|BananaButler_|rgx|l4mR|Telethonian|pcre)bot"
+        "GROUP_REG_SED_EX_BOT_S",
+        r"(reg?(e)x|moku|BananaButler_|rgx|l4mR|Telethonian|pcre)bot",
     )
     # Google Chrome Selenium Stuff
     # taken from

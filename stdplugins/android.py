@@ -43,15 +43,15 @@ async def magisk(message):
             data["uninstaller"]["link"] = (
                 magisk_repo + "canary/" + data["uninstaller"]["link"]
             )
- 
+
         releases += (
             f'{name}: [ZIP v{data["magisk"]["version"]}]({data["magisk"]["link"]}) | '
             f'[APK v{data["app"]["version"]}]({data["app"]["link"]}) | '
             f'[Uninstaller]({data["uninstaller"]["link"]})\n'
         )
- 
-    await message.edit(releases, parse_mode='html', link_preview=False)
- 
+
+    await message.edit(releases, parse_mode="html", link_preview=False)
+
 
 @borg.on(admin_cmd(pattern=r"device(?: |$)(\S*)"))
 async def device_info(request):

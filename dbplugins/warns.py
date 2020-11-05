@@ -53,7 +53,9 @@ async def _(event):
                 limit, reply_message.sender_id
             )
             await borg(
-                EditBannedRequest(event.chat_id, reply_message.sender_id, unbanned_rights)
+                EditBannedRequest(
+                    event.chat_id, reply_message.sender_id, unbanned_rights
+                )
             )
         else:
             await borg(

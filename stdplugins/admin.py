@@ -360,7 +360,7 @@ async def mute(eventMute):
     user = await get_user_from_event(eventMute)
     if not user:
         return
-    self_user = await eventMute.client.get_me()
+    await eventMute.client.get_me()
     if user.id == bot.uid:
         await eventMute.edit("`Hands too short, can't duct tape myself...\n(ヘ･_･)ヘ┳━┳`")
         return

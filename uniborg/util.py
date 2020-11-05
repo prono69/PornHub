@@ -203,7 +203,7 @@ async def edit_or_reply(event, text, parse_mode=None, link_preview=None):
         return await event.reply(text, parse_mode=parse_mode, link_preview=link_preview)
     return await event.edit(text, parse_mode=parse_mode, link_preview=link_preview)
 
-    
+
 async def edit_delete(event, text, time=None, parse_mode=None, link_preview=None):
     parse_mode = parse_mode or "md"
     link_preview = link_preview or False
@@ -223,7 +223,7 @@ async def edit_delete(event, text, time=None, parse_mode=None, link_preview=None
         )
     await asyncio.sleep(time)
     return await catevent.delete()
-        
+
 
 async def run_command(command: List[str]) -> (str, str):
     process = await asyncio.create_subprocess_exec(

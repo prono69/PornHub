@@ -7,8 +7,8 @@ Userbot plugin fot CatUserbot
 
 import asyncio
 
-from uniborg.util import admin_cmd, edit_or_reply
 from uniborg import SYNTAX
+from uniborg.util import admin_cmd, edit_or_reply
 
 DEFAULTUSER = str(Config.ALIVE_NAME) if Config.ALIVE_NAME else "pepe"
 
@@ -142,4 +142,3 @@ SYNTAX.update(
 \n**USAGE   ➥  **Find imposter only text."
     }
 )
- 
