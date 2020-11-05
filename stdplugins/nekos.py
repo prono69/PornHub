@@ -2,7 +2,7 @@
 
 """NEKOS MODULE FOR PEPEBOT
 \nPlugin Made by [NIKITA](https://t.me/kirito6969)
-Cmds = `.nk <argument from POSSIBLE list>`
+\nCmds = `.n <argument from POSSIBLE list>`
 \nPOSSIBLE = [
         'feet', 'yuri', 'trap', 'futanari', 'hololewd', 'lewdkemo',
         'solog', 'feetg', 'cum', 'erokemo', 'les', 'wallpaper', 'lewdk',
@@ -31,13 +31,13 @@ from uniborg.util import admin_cmd
 MODULE.append("nekos")
 
 
-@borg.on(admin_cmd(pattern="nk ?(.*)"))
+@borg.on(admin_cmd(pattern="n ?(.*)"))
 async def _(event):
     hmm = event.pattern_match.group(1)
     if not hmm:
         await event.edit("`Bruh.. What I am supposed to do!`")
         return
-    await event.edit("`Processing...Nekos`")
+    await event.edit("`Processing Nekos...`")
     await event.delete()
     target = nekos.img(f"{hmm}")
     await event.client.send_file(event.chat_id, file=target, caption=f"{hmm}")
@@ -51,6 +51,7 @@ async def dva(event):
         await event.edit("`uuuf.. No URL found from the API`")
         return
     await event.client.send_file(event.chat_id, file=url)
+    await event.delete()
 
 
 @borg.on(admin_cmd(pattern="nsfw"))
@@ -81,6 +82,7 @@ async def dva(event):
         await event.edit("`uuuf.. No NEKO found from the API`")
         return
     await event.client.send_file(event.chat_id, file=url)
+    await event.delete()
 
 
 @borg.on(admin_cmd(pattern="why"))
@@ -98,6 +100,7 @@ async def gasm(event):
     img.save("temp.webp", "webp")
     await event.client.send_file(event.chat_id, file=open("temp.webp", "rb"))
     os.remove("temp.webp")
+    await event.delete()
 
 
 @borg.on(admin_cmd(pattern="ifu"))
@@ -109,6 +112,7 @@ async def waifu(event):
     img.save("temp.webp", "webp")
     await event.client.send_file(event.chat_id, file=open("temp.webp", "rb"))
     os.remove("temp.webp")
+    await event.delete()
 
 
 @borg.on(admin_cmd(pattern="fact"))

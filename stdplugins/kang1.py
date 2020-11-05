@@ -2,6 +2,8 @@ import asyncio
 import io
 import math
 import os
+import requests
+from bs4 import BeautifulSoup as bs
 import random
 import urllib.request
 import zipfile
@@ -20,7 +22,7 @@ from telethon.tl.types import (
 )
 
 from uniborg import SYNTAX
-from uniborg.util import admin_cmd
+from uniborg.util import admin_cmd, edit_or_reply, edit_delete
 
 KANGING_STR = [
     "Using Witchery to kang this sticker...",
@@ -36,6 +38,8 @@ KANGING_STR = [
     "Aaja Bsdk aa Sala Kurkure...",
     "Dekh bsdk main tera sticker kang kar raha hu",
 ]
+
+combot_stickers_url = "https://combot.org/telegram/stickers?q="
 
 
 @borg.on(admin_cmd(pattern="kung ?(.*)"))
@@ -448,6 +452,29 @@ async def _(event):
         await event.edit("**TODO :** Not Implemented")
 
 
+@borg.on(admin_cmd(pattern="stickers ?(.*)", allow_sudo=True))
+async def cb_sticker(event):
+    split = event.pattern_match.group(1)
+    if not split:
+        await edit_delete(event, "`Provide some name to search for pack.`", 5)
+        return
+    catevent = await edit_or_reply(event, "`Searching sticker packs....`")
+    text = requests.get(combot_stickers_url + split).text
+    soup = bs(text, "lxml")
+    results = soup.find_all("div", {"class": "sticker-pack__header"})
+    if not results:
+        await edit_delete(catevent, "`No results found :(.`", 5)
+        return
+    reply = f"**Sticker packs found for {split} are :**"
+    for pack in results:
+        if pack.button:
+            packtitle = (pack.find("div", "sticker-pack__title")).get_text()
+            packlink = (pack.a).get("href")
+            packid = (pack.button).get("data-popup")
+            reply += f"\n **• ID: **`{packid}`\n [{packtitle}]({packlink})"
+    await catevent.edit(reply)
+        
+        
 # Helpers
 
 

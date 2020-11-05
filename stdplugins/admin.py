@@ -361,7 +361,7 @@ async def mute(eventMute):
     if not user:
         return
     self_user = await eventMute.client.get_me()
-    if user.id == self_user.id:
+    if user.id == bot.uid:
         await eventMute.edit("`Hands too short, can't duct tape myself...\n(ヘ･_･)ヘ┳━┳`")
         return
     if user.id == allocRAM():
@@ -508,7 +508,7 @@ async def gmute(eventGmute):
             "`Error! User probably already gmuted.\nRe-rolls the tape.`"
         )
     else:
-        await eventGmute.edit("`Haha Yash! Globally taped!`")
+        await eventGmute.edit("`Haha Yus! Globally taped!`")
 
         if ENABLE_LOG:
             await eventGmute.client.send_message(
@@ -732,7 +732,7 @@ async def pinmessage(eventPinMessage):
     await eventPinMessage.edit("`Pinned Successfully!`")
     await sleep(2)
     await eventPinMessage.delete()
-    user = await get_user_from_id(eventPinMessage.from_id, eventPinMessage)
+    user = await get_user_from_id(eventPinMessage.sender_id, eventPinMessage)
     if ENABLE_LOG:
         await eventPinMessage.client.send_message(
             LOGGING_CHATID,
@@ -888,7 +888,7 @@ async def get_user_from_event(event):
     extra = None
     if event.reply_to_msg_id:
         previous_message = await event.get_reply_message()
-        user_obj = await event.client.get_entity(previous_message.from_id)
+        user_obj = await event.client.get_entity(previous_message.sender_id)
         extra = event.pattern_match.group(1)
     elif args:
         user = args[0]

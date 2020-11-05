@@ -37,34 +37,34 @@ async def _(event):
         return
     warn_reason = event.pattern_match.group(1)
     reply_message = await event.get_reply_message()
-    if await is_admin(event.client, event.chat_id, reply_message.from_id):
+    if await is_admin(event.client, event.chat_id, reply_message.sender_id):
         return
     limit, soft_warn = sql.get_warn_setting(event.chat_id)
     num_warns, reasons = sql.warn_user(
-        reply_message.from_id, event.chat_id, warn_reason
+        reply_message.sender_id, event.chat_id, warn_reason
     )
     if num_warns >= limit:
-        sql.reset_warns(reply_message.from_id, event.chat_id)
+        sql.reset_warns(reply_message.sender_id, event.chat_id)
         if soft_warn:
             await borg(
-                EditBannedRequest(event.chat_id, reply_message.from_id, banned_rights)
+                EditBannedRequest(event.chat_id, reply_message.sender_id, banned_rights)
             )
             reply = "{} warnings, <u><a href='tg://user?id={}'>user</a></u> has been kicked!".format(
-                limit, reply_message.from_id
+                limit, reply_message.sender_id
             )
             await borg(
-                EditBannedRequest(event.chat_id, reply_message.from_id, unbanned_rights)
+                EditBannedRequest(event.chat_id, reply_message.sender_id, unbanned_rights)
             )
         else:
             await borg(
-                EditBannedRequest(event.chat_id, reply_message.from_id, banned_rights)
+                EditBannedRequest(event.chat_id, reply_message.sender_id, banned_rights)
             )
             reply = "{} warnings, <u><a href='tg://user?id={}'>user</a></u> has been banned!".format(
-                limit, reply_message.from_id
+                limit, reply_message.sender_id
             )
     else:
         reply = "<u><a href='tg://user?id={}'>user</a></u> has {}/{} warnings... watch out!".format(
-            reply_message.from_id, num_warns, limit
+            reply_message.sender_id, num_warns, limit
         )
         if warn_reason:
             reply += "\nReason for last warn:\n{}".format(html.escape(warn_reason))
@@ -77,7 +77,7 @@ async def _(event):
     if event.fwd_from:
         return
     reply_message = await event.get_reply_message()
-    result = sql.get_warns(reply_message.from_id, event.chat_id)
+    result = sql.get_warns(reply_message.sender_id, event.chat_id)
     if result and result[0] != 0:
         num_warns, reasons = result
         limit, soft_warn = sql.get_warn_setting(event.chat_id)
@@ -103,5 +103,5 @@ async def _(event):
     if event.fwd_from:
         return
     reply_message = await event.get_reply_message()
-    sql.reset_warns(reply_message.from_id, event.chat_id)
+    sql.reset_warns(reply_message.sender_id, event.chat_id)
     await event.edit("Warnings have been reset!")

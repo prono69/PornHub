@@ -26,23 +26,32 @@ DEVICES_DATA = (
 
 
 @borg.on(admin_cmd(pattern="magisk ?(.*)"))
-async def magisk(request):
-    """ magisk latest releases """
+async def magisk(message):
+    """ Latest Magisk Releases """
+    magisk_repo = "https://raw.githubusercontent.com/topjohnwu/magisk_files/"
     magisk_dict = {
-        "Stable": "https://raw.githubusercontent.com/topjohnwu/magisk_files/master/stable.json",
-        "Beta": "https://raw.githubusercontent.com/topjohnwu/magisk_files/master/beta.json",
-        "Canary": "https://raw.githubusercontent.com/topjohnwu/magisk_files/canary/debug.json",
+        "⦁ 𝗦𝘁𝗮𝗯𝗹𝗲": magisk_repo + "master/stable.json",
+        "⦁ 𝗕𝗲𝘁𝗮": magisk_repo + "master/beta.json",
+        "⦁ 𝗖𝗮𝗻𝗮𝗿𝘆": magisk_repo + "canary/canary.json",
     }
-    releases = "__**Latest Magisk Releases:**__\n\n"
+    releases = "<code><i>𝗟𝗮𝘁𝗲𝘀𝘁 𝗠𝗮𝗴𝗶𝘀𝗸 𝗥𝗲𝗹𝗲𝗮𝘀𝗲:</i></code>\n\n"
     for name, release_url in magisk_dict.items():
         data = get(release_url).json()
+        if "canary" in release_url:
+            data["app"]["link"] = magisk_repo + "canary/" + data["app"]["link"]
+            data["magisk"]["link"] = magisk_repo + "canary/" + data["magisk"]["link"]
+            data["uninstaller"]["link"] = (
+                magisk_repo + "canary/" + data["uninstaller"]["link"]
+            )
+ 
         releases += (
-            f'**{name} :** [ZIP v{data["magisk"]["version"]}]({data["magisk"]["link"]}) | '
+            f'{name}: [ZIP v{data["magisk"]["version"]}]({data["magisk"]["link"]}) | '
             f'[APK v{data["app"]["version"]}]({data["app"]["link"]}) | '
             f'[Uninstaller]({data["uninstaller"]["link"]})\n'
         )
-    await request.edit(releases)
-
+ 
+    await message.edit(releases, parse_mode='html', link_preview=False)
+ 
 
 @borg.on(admin_cmd(pattern=r"device(?: |$)(\S*)"))
 async def device_info(request):
@@ -190,7 +199,7 @@ async def twrp(request):
     elif textx:
         device = textx.text.split(" ")[0]
     else:
-        await request.edit("`Usage: .twrp <codename>`")
+        await request.edit("```Provide device codename !!```")
         return
     url = get(f"https://dl.twrp.me/{device}/")
     if url.status_code == 404:

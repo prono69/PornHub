@@ -60,7 +60,7 @@ async def get_user(event):
     """ Get the user from argument or replied message. """
     if event.reply_to_msg_id and not event.pattern_match.group(1):
         previous_message = await event.get_reply_message()
-        replied_user = await event.client(GetFullUserRequest(previous_message.from_id))
+        replied_user = await event.client(GetFullUserRequest(previous_message.sender_id))
     else:
         user = event.pattern_match.group(1)
 
@@ -110,7 +110,7 @@ async def fetch_info(replied_user, event):
     if user_id != (await event.client.get_me()).id:
         common_chat = replied_user.common_chats_count
     else:
-        common_chat = "It's me U gey boi"
+        common_chat = "Me is U gey boi"
     username = replied_user.user.username
     user_bio = replied_user.about
     is_bot = replied_user.user.bot
@@ -136,7 +136,7 @@ async def fetch_info(replied_user, event):
     caption += (
         f"<b>🖼 Profile Photos:</b> <code>{replied_user_profile_photos_count}</code>\n"
     )
-    caption += f"<b>👥 Common Chats:</b> <code>{common_chat}</code>\n"
+    caption += f"<b>👥 Common Groups:</b> <code>{common_chat}</code>\n"
     caption += f"<b>📝 Bio:</b> <code>{user_bio}</code>\n\n"
     caption += f"<b>🔗 Permanent Link To Profile:</b> "
     caption += f'<a href="tg://user?id={user_id}">{first_name}</a>'

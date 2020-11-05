@@ -74,7 +74,7 @@ async def areverse(e):
             f'&token={urlencode(js0["tokenthumb"])}'
         )
         async with session.get(url) as raw_resp1:
-            file = memory_file("preview.gif", await raw_resp1.read())
+            file = memory_file("preview.mp4", await raw_resp1.read())
         try:
             await e.reply(ctext, file=file, parse_mode="html")
         except FilePartsInvalidError:

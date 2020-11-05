@@ -108,14 +108,14 @@ async def _(event):
                 "👥 **Chat ID**: `{}`\n💬 **Message Id**: `{}`\n🙋‍♂️ **From User ID**: `{}`\n📄 **File ID**: `{}`".format(
                     str(event.chat_id),
                     str(r_msg.id),
-                    str(r_msg.from_id),
+                    str(r_msg.sender_id),
                     bot_api_file_id,
                 )
             )
         else:
             await event.edit(
                 "👥 **Chat ID**: `{}`\n💬 **Message Id**: `{}`\n🙋‍♂️ **From User ID**: `{}`".format(
-                    str(event.chat_id), str(r_msg.id), str(r_msg.from_id)
+                    str(event.chat_id), str(r_msg.id), str(r_msg.sender_id)
                 )
             )
     else:
