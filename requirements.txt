@@ -1,4 +1,4 @@
 #####git+https://github.com/LonamiWebs/Telethon
-telethon >1.15.0, <=1.17.0
+telethon >1.17.0, <=1.17.5
 -r ./requirements-stdborg.txt
 ##telethon-session-sqlalchemy
