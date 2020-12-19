@@ -9,7 +9,7 @@ cryptg
 csvfaker
 colour
 cairosvg
-ciffi
+cffi
 dadjokes-cli
 deezloader
 dnspython
