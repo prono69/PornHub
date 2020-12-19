@@ -19,7 +19,7 @@ gitpython
 glitch_this
 google-api-python-client
 google_auth_oauthlib
-googletrans
+googletrans==3.1.0a0
 gsearch>=1.6.0
 gtts
 git+https://github.com/bisoncorps/search-engine-parser

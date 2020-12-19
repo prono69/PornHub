@@ -31,7 +31,7 @@ from uniborg.util import admin_cmd
 MODULE.append("nekos")
 
 
-@borg.on(admin_cmd(pattern="n ?(.*)"))
+@borg.on(admin_cmd(pattern="nn ?(.*)"))
 async def _(event):
     hmm = event.pattern_match.group(1)
     if not hmm:

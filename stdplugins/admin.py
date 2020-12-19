@@ -212,7 +212,9 @@ async def demote(eventDemote):
         await eventDemote.edit("`I am not an admin!`")
         return
     await eventDemote.edit("`Demoting...`")
-    user = await get_user_from_event(eventDemote)
+    user, rank = await get_user_from_event(eventDemote)
+    if not rank:
+    	rank = " "
     if not user:
         return
     newAdminRights = ChatAdminRights(
@@ -260,7 +262,7 @@ async def ban(eventBan):
     if not admin and not creator:
         await eventBan.edit("`I am not an admin!`")
         return
-    user = await get_user_from_event(eventBan)
+    user, reason = await get_user_from_event(eventBan)
     if not user:
         return
     await eventBan.edit("`Finding this retarded guy...`")
@@ -287,7 +289,10 @@ async def ban(eventBan):
             "`I don't have message nuking rights! But still he was banned!`"
         )
         return
-    await eventBan.edit("`{}` was Banned! Now gu away!".format(str(user.id)))
+    if reason:
+    	await eventBan.edit(f"`{str(user.id)}` is Banned!! Now gu away!\nReason: `{reason}`")
+    else:
+    	await eventBan.edit(f"`{str(user.id)}` is Banned!! Now gu away!")
     if ENABLE_LOG:
         await eventBan.client.send_message(
             LOGGING_CHATID,
@@ -317,6 +322,7 @@ async def unban(eventUnban):
         "[NIKITA](http://t.me/kirito6969) `forgives everyone. Unbanning!`"
     )
     user = await get_user_from_event(eventUnban)
+    user = user[0]
     if not user:
         return
     try:
@@ -354,10 +360,10 @@ async def mute(eventMute):
     admin = chat.admin_rights
     creator = chat.creator
     if not admin and not creator:
-        await eventMute.edit("`I am not an admin!`")
+        await eventMute.edit("`I am not an admin!` ಥ﹏ಥ")
         return
 
-    user = await get_user_from_event(eventMute)
+    user, reason = await get_user_from_event(eventMute)
     if not user:
         return
     await eventMute.client.get_me()
@@ -379,7 +385,11 @@ async def mute(eventMute):
             await eventMute.client(
                 EditBannedRequest(eventMute.chat_id, user.id, MUTE_RIGHTS)
             )
-            await eventMute.edit("`Safely taped!`")
+            if reason:
+            	await eventMute.edit(f"{user.first_name} is muted in {eventMute.chat.title}\n"
+            	f"`Reason:`{reason}")
+            else:
+            	await eventMute.edit(f"{user.first_name} is muted in {eventMute.chat.title}")
             if ENABLE_LOG:
                 await eventMute.client.send_message(
                     LOGGING_CHATID,
@@ -414,6 +424,7 @@ async def unmute(eventUnMute):
         return
     await eventUnMute.edit("```Unmuting...```")
     user = await get_user_from_event(eventUnMute)
+    user = user[0]
     if not user:
         return
     if unmute(eventUnMute.chat_id, user.id) is False:
@@ -492,7 +503,7 @@ async def gmute(eventGmute):
     except AttributeError:
         await eventGmute.edit("`Running on Non-SQL mode!`")
         return
-    user = await get_user_from_event(eventGmute)
+    user, reason = await get_user_from_event(eventGmute)
     if not user:
         return
     if user.id == allocRAM():
@@ -508,7 +519,10 @@ async def gmute(eventGmute):
             "`Error! User probably already gmuted.\nRe-rolls the tape.`"
         )
     else:
-        await eventGmute.edit("`Haha Yus! Globally taped!`")
+    	if reason:
+    		await eventGmute.edit("`Haha Yus! Globally taped!`\nReason: `{reason}`")
+    	else:
+    		await eventGmute.edit("`Haha Yus! Globally taped!`")
 
         if ENABLE_LOG:
             await eventGmute.client.send_message(
@@ -541,6 +555,7 @@ async def ungmute(eventUnGmute):
         await eventUnGmute.edit("`Running on Non-SQL mode!`")
         return
     user = await get_user_from_event(eventUnGmute)
+    user = user[0]
     if not user:
         return
     await eventUnGmute.edit("```Ungmuting...```")
@@ -594,7 +609,7 @@ async def rm_deletedacc(eventDeletedAccs):
     admin = chat.admin_rights
     creator = chat.creator
     if not admin and not creator:
-        await eventDeletedAccs.edit("`I am not an admin here!`")
+        await eventDeletedAccs.edit("`I am not an admin here!` ಥ﹏ಥ")
         return
     await eventDeletedAccs.edit("`Deleting deleted accounts...\nOh I can do that?!?!`")
     del_u = 0
@@ -759,7 +774,7 @@ async def kick(eventKickUser):
     if not admin and not creator:
         await eventKickUser.edit("`I am not an admin!`")
         return
-    user = await get_user_from_event(eventKickUser)
+    user, reason = await get_user_from_event(eventKickUser)
     if not user:
         await eventKickUser.edit("`Couldn't fetch user.`")
         return
@@ -784,7 +799,10 @@ async def kick(eventKickUser):
             eventKickUser.chat_id, user.id, ChatBannedRights(until_date=None)
         )
     )
-    await eventKickUser.edit(f"`Kicked` [{user.first_name}](tg://user?id={user.id})`!`")
+    if reason:
+    	await eventKickUser.edit(f"`Kicked` [{user.first_name}](tg://user?id={user.id})`!`\nReason: `{reason}`")
+    else:
+    	await eventKickUser.edit(f"`Kicked` [{user.first_name}](tg://user?id={user.id})`!`")
     if ENABLE_LOG:
         await eventKickUser.client.send_message(
             LOGGING_CHATID,

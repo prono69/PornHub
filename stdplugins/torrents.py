@@ -4,17 +4,18 @@ CMD:
 `.tt` <query>\n
 `.ts` <query or reply>\n
 `.movie torrentz2.eu|idop.se` <query>
+`.piracy (TR|TMV|TB|TGY)`
 
 """
 import asyncio
 from datetime import datetime
-
+import aiohttp
 import cfscrape  # https://github.com/Anorov/cloudflare-scrape
 import requests
 from bs4 import BeautifulSoup as bs
 
 from uniborg import MODULE
-from uniborg.util import admin_cmd, humanbytes
+from uniborg.util import admin_cmd, humanbytes, edit_or_reply
 
 MODULE.append("torrents")
 
@@ -264,3 +265,49 @@ def search_torrentz_eu(search_query):
             except BaseException:
                 pass
     return r
+    
+    
+@borg.on(admin_cmd(pattern="piracy (TR|TMV|TB|TGY) (.*)", allow_sudo=True))
+async def _(event):
+    if event.fwd_from:
+        return
+    start = datetime.now()
+    s_m_s = await edit_or_reply(event, "...")
+    type_of_search = event.pattern_match.group(1)
+    # no copyright infringement is intended by the use of this plugin
+    # all below informations are available publicly available on the Internet
+    # if you need to take-down any links, please contact the HOSTers Sites, yourselves
+    # this plug-in / IDs does not "host" / "make available" any links
+    # in any way / shape / or form. This plug-in does not provide a Directory Index
+    # this plug-in uses Google Custom Search to search the informations
+    # available on the Public Internet.
+    # yet Another Legal Disclaimer
+    all_srch_cx_dict = {
+        "TR": "552cc5db2fc56e8d5",
+        "TMV": "7e8cb098b23d01f34",
+        "TB": "d9baba52ac11f8492",
+        "TGY": "e0918a34523787dc4"
+    }
+    # the above CX ids are found publicly available on the Internet
+    # https://t.me/ThankTelegram/759091
+    input_str = event.pattern_match.group(2)
+    input_url = "https://bots.shrimadhavuk.me/search/?cx={}&q={}".format(
+        all_srch_cx_dict.get(type_of_search),
+        input_str
+    )
+    headers = {"USER-AGENT": "UniBorg"}
+    async with aiohttp.ClientSession() as requests:
+        reponse = await requests.get(input_url, headers=headers)
+        response = await reponse.json()
+    output_str = " "
+    for result in response["results"]:
+        text = result.get("title")
+        url = result.get("url")
+        description = result.get("description")
+        image = result.get("image")
+        output_str += " 👉🏻  [{}]({}) \n\n".format(text, url)
+    end = datetime.now()
+    ms = (end - start).seconds
+    await s_m_s.edit("searched {} for {} in {} seconds. \n{}".format(type_of_search, input_str, ms, output_str), link_preview=False)
+    await asyncio.sleep(5)
+    await s_m_s.edit("**{}**: {}\n{}".format(type_of_search, input_str, output_str), link_preview=False)    
