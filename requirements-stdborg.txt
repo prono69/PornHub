@@ -75,4 +75,5 @@ wget
 wand
 wordcloud
 wikipedia
+wheel
 youtube-dl
