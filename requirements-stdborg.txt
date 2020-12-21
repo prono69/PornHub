@@ -7,7 +7,7 @@ covid>=2.4.0
 cowpy
 cryptg
 csvfaker
-colour
+colour=>0.1.5
 cairosvg
 cffi
 dadjokes-cli
