@@ -1,69 +1,12 @@
-FROM kalilinux/kali-rolling
-
-ARG DEBIAN_FRONTEND=noninteractive
-
-RUN apt-get update && apt upgrade -y && apt-get install sudo -y
-
-RUN apt-get install -y\
-    coreutils \
-    bash \
-    nodejs \
-    bzip2 \
-    curl \
-    figlet \
-    gcc \
-    g++ \
-    jq \
-    pv \
-    git \
-    util-linux \
-    libevent-dev \
-    libjpeg-dev \
-    libffi-dev \
-    libmagickwand-dev \
-    libpq-dev \
-    libwebp-dev \
-    libxml2 \
-    libxml2-dev \
-    libxslt-dev \
-    musl \
-    neofetch \
-    libcurl4-openssl-dev \
-    postgresql \
-    postgresql-client \
-    postgresql-server-dev-all \
-    openssl \
-    mediainfo \
-    wget \
-    python3 \
-    python3-dev \
-    python3-pip \
-    libreadline-dev \
-    zipalign \
-    ffmpeg \
-    libsqlite3-dev \
-    zlib1g-dev \
-    recoverjpeg \
-    zip \
-    axel \
-    megatools \
-    libfreetype6-dev \
-    procps \
-    policykit-1 \
-    p7zip-full \
-    unzip \
-    tree
-
-RUN pip3 install --upgrade pip setuptools 
-RUN if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi 
-RUN if [ ! -e /usr/bin/python ]; then ln -sf /usr/bin/python3 /usr/bin/python; fi 
-RUN rm -r /root/.cache
-RUN axel https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && apt install -y ./google-chrome-stable_current_amd64.deb && rm google-chrome-stable_current_amd64.deb
-RUN axel https://chromedriver.storage.googleapis.com/86.0.4240.22/chromedriver_linux64.zip && unzip chromedriver_linux64.zip && chmod +x chromedriver && mv -f chromedriver /usr/bin/ && rm chromedriver_linux64.zip
+# We're using Ubuntu 20.10
+FROM prono69/docker:groovy
+ 
+#
+# Clone repo and prepare working directory
+#
 RUN git clone https://github.com/prono69/PepeBot /root/userbot
-RUN mkdir /root/userbot/bin/
-WORKDIR /root/userbot/
-RUN chmod +x /usr/local/bin/*
-RUN pip3 install --upgrade pip
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN mkdir /root/userbot/bin
+WORKDIR /root/userbot
+#Install python requirements
+RUN pip3 install -r https://raw.githubusercontent.com/prono69/PepeBot/master/requirements.txt
 CMD ["python3","-m","stdborg"]
