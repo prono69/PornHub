@@ -523,8 +523,7 @@ async def gmute(eventGmute):
     		await eventGmute.edit("`Haha Yus! Globally taped!`\nReason: `{reason}`")
     	else:
     		await eventGmute.edit("`Haha Yus! Globally taped!`")
-
-        if ENABLE_LOG:
+    	if ENABLE_LOG:
             await eventGmute.client.send_message(
                 LOGGING_CHATID,
                 "#GMUTE\n"
