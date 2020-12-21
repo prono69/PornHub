@@ -72,7 +72,6 @@ telegraph
 urbandict
 validators
 wget
-wheel
 wand
 wordcloud
 wikipedia
