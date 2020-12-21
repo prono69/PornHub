@@ -3,7 +3,7 @@ aiohttp
 beautifulsoup4
 cfscrape
 coffeehouse
-covid
+covid=2.2.3
 cowpy
 cryptg
 csvfaker
