@@ -64,6 +64,7 @@ remotezip
 requests
 selenium
 spamwatch
+setuptools
 speedtest-cli
 spotify_token
 sqlalchemy
