@@ -9,13 +9,14 @@ CMD:
 """
 import asyncio
 from datetime import datetime
+
 import aiohttp
 import cfscrape  # https://github.com/Anorov/cloudflare-scrape
 import requests
 from bs4 import BeautifulSoup as bs
 
 from uniborg import MODULE
-from uniborg.util import admin_cmd, humanbytes, edit_or_reply
+from uniborg.util import admin_cmd, edit_or_reply, humanbytes
 
 MODULE.append("torrents")
 
@@ -265,8 +266,8 @@ def search_torrentz_eu(search_query):
             except BaseException:
                 pass
     return r
-    
-    
+
+
 @borg.on(admin_cmd(pattern="piracy (TR|TMV|TB|TGY) (.*)", allow_sudo=True))
 async def _(event):
     if event.fwd_from:
@@ -286,14 +287,13 @@ async def _(event):
         "TR": "552cc5db2fc56e8d5",
         "TMV": "7e8cb098b23d01f34",
         "TB": "d9baba52ac11f8492",
-        "TGY": "e0918a34523787dc4"
+        "TGY": "e0918a34523787dc4",
     }
     # the above CX ids are found publicly available on the Internet
     # https://t.me/ThankTelegram/759091
     input_str = event.pattern_match.group(2)
     input_url = "https://bots.shrimadhavuk.me/search/?cx={}&q={}".format(
-        all_srch_cx_dict.get(type_of_search),
-        input_str
+        all_srch_cx_dict.get(type_of_search), input_str
     )
     headers = {"USER-AGENT": "UniBorg"}
     async with aiohttp.ClientSession() as requests:
@@ -303,11 +303,19 @@ async def _(event):
     for result in response["results"]:
         text = result.get("title")
         url = result.get("url")
-        description = result.get("description")
-        image = result.get("image")
+        result.get("description")
+        result.get("image")
         output_str += " 👉🏻  [{}]({}) \n\n".format(text, url)
     end = datetime.now()
     ms = (end - start).seconds
-    await s_m_s.edit("searched {} for {} in {} seconds. \n{}".format(type_of_search, input_str, ms, output_str), link_preview=False)
+    await s_m_s.edit(
+        "searched {} for {} in {} seconds. \n{}".format(
+            type_of_search, input_str, ms, output_str
+        ),
+        link_preview=False,
+    )
     await asyncio.sleep(5)
-    await s_m_s.edit("**{}**: {}\n{}".format(type_of_search, input_str, output_str), link_preview=False)    
+    await s_m_s.edit(
+        "**{}**: {}\n{}".format(type_of_search, input_str, output_str),
+        link_preview=False,
+    )

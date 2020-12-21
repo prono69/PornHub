@@ -214,7 +214,7 @@ async def demote(eventDemote):
     await eventDemote.edit("`Demoting...`")
     user, rank = await get_user_from_event(eventDemote)
     if not rank:
-    	rank = " "
+        rank = " "
     if not user:
         return
     newAdminRights = ChatAdminRights(
@@ -290,9 +290,11 @@ async def ban(eventBan):
         )
         return
     if reason:
-    	await eventBan.edit(f"`{str(user.id)}` is Banned!! Now gu away!\nReason: `{reason}`")
+        await eventBan.edit(
+            f"`{str(user.id)}` is Banned!! Now gu away!\nReason: `{reason}`"
+        )
     else:
-    	await eventBan.edit(f"`{str(user.id)}` is Banned!! Now gu away!")
+        await eventBan.edit(f"`{str(user.id)}` is Banned!! Now gu away!")
     if ENABLE_LOG:
         await eventBan.client.send_message(
             LOGGING_CHATID,
@@ -386,10 +388,14 @@ async def mute(eventMute):
                 EditBannedRequest(eventMute.chat_id, user.id, MUTE_RIGHTS)
             )
             if reason:
-            	await eventMute.edit(f"{user.first_name} is muted in {eventMute.chat.title}\n"
-            	f"`Reason:`{reason}")
+                await eventMute.edit(
+                    f"{user.first_name} is muted in {eventMute.chat.title}\n"
+                    f"`Reason:`{reason}"
+                )
             else:
-            	await eventMute.edit(f"{user.first_name} is muted in {eventMute.chat.title}")
+                await eventMute.edit(
+                    f"{user.first_name} is muted in {eventMute.chat.title}"
+                )
             if ENABLE_LOG:
                 await eventMute.client.send_message(
                     LOGGING_CHATID,
@@ -519,11 +525,11 @@ async def gmute(eventGmute):
             "`Error! User probably already gmuted.\nRe-rolls the tape.`"
         )
     else:
-    	if reason:
-    		await eventGmute.edit("`Haha Yus! Globally taped!`\nReason: `{reason}`")
-    	else:
-    		await eventGmute.edit("`Haha Yus! Globally taped!`")
-    	if ENABLE_LOG:
+        if reason:
+            await eventGmute.edit("`Haha Yus! Globally taped!`\nReason: `{reason}`")
+        else:
+            await eventGmute.edit("`Haha Yus! Globally taped!`")
+        if ENABLE_LOG:
             await eventGmute.client.send_message(
                 LOGGING_CHATID,
                 "#GMUTE\n"
@@ -799,9 +805,13 @@ async def kick(eventKickUser):
         )
     )
     if reason:
-    	await eventKickUser.edit(f"`Kicked` [{user.first_name}](tg://user?id={user.id})`!`\nReason: `{reason}`")
+        await eventKickUser.edit(
+            f"`Kicked` [{user.first_name}](tg://user?id={user.id})`!`\nReason: `{reason}`"
+        )
     else:
-    	await eventKickUser.edit(f"`Kicked` [{user.first_name}](tg://user?id={user.id})`!`")
+        await eventKickUser.edit(
+            f"`Kicked` [{user.first_name}](tg://user?id={user.id})`!`"
+        )
     if ENABLE_LOG:
         await eventKickUser.client.send_message(
             LOGGING_CHATID,
