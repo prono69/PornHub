@@ -40,7 +40,6 @@ RUN apt-get install -y\
     python3-pip \
     libreadline-dev \
     zipalign \
-    sqlite \
     ffmpeg \
     libsqlite3-dev \
     zlib1g-dev \
