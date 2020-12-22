@@ -56,4 +56,4 @@ else
     bash ./.github/bins.sh
 fi
 
-python -m stdborg
+python3 -m stdborg
