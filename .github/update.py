@@ -26,6 +26,7 @@ async def update_requirements():
         print("Error while updating pip")
     try:
         await runcmd("pip install -r requirements.txt")
+        await runcmd("pip install -r requirements-stdborg.txt")
         print("Succesfully Updated requirements")
     except Exception as e:
         print(f"Error while installing requirments {str(e)}")

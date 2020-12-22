@@ -29,14 +29,15 @@ FILE=/app/.git
 if [ -d "$FILE" ] ; then
     echo "$FILE directory exists already."
 else
-    rm -rf userbot
+    rm -rf uniborg
     rm -rf .github
     rm -rf requirements.txt
     git clone https://github.com/prono69/PepeBot pepe
-    mv pepe/userbot .
+    mv pepe/uniborg .
     mv pepe/.github . 
     mv pepe/.git .
     mv pepe/requirements.txt .
+    mv pepe/requirements-stdborg.txt .
     rm -rf pepe
     python3 ./.github/update.py
 fi
