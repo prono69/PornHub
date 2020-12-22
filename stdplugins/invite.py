@@ -33,10 +33,11 @@ async def _(event):
             user_id_s = to_add_users.split(" ")
             user_ids = [user_id.strip() for user_id in user_id_s]
             try:
-                await event.client(functions.channels.InviteToChannelRequest(
-                    channel=event.chat_id,
-                    users=user_ids
-                ))
+                await event.client(
+                    functions.channels.InviteToChannelRequest(
+                        channel=event.chat_id, users=user_ids
+                    )
+                )
                 await ed.edit("`Invited Successfully`")
                 await ed.delete()
             except Exception as e:

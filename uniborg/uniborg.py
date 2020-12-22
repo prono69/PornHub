@@ -47,17 +47,33 @@ class Uniborg(TelegramClient):
             "lang_code": "en",
             **kwargs,
         }
-        
+
         self._KEEP_SAFE = [
             # critical
-            "APP_ID", "API_HASH", "TG_BOT_TOKEN_BF_HER", "TG_BOT_USER_NAME_BF_HER", "DATABASE_URL", "TELE_GRAM_2FA_CODE",
+            "APP_ID",
+            "API_HASH",
+            "TG_BOT_TOKEN_BF_HER",
+            "TG_BOT_USER_NAME_BF_HER",
+            "DATABASE_URL",
+            "TELE_GRAM_2FA_CODE",
             # un-official
-            "OPEN_WEATHER_MAP_APPID", "IBM_WATSON_CRED_URL", "IBM_WATSON_CRED_PASSWORD", "HASH_TO_TORRENT_API", "OCR_SPACE_API_KEY", "REM_BG_API_KEY",
+            "OPEN_WEATHER_MAP_APPID",
+            "IBM_WATSON_CRED_URL",
+            "IBM_WATSON_CRED_PASSWORD",
+            "HASH_TO_TORRENT_API",
+            "OCR_SPACE_API_KEY",
+            "REM_BG_API_KEY",
             # meme-s
-            "DEEZER_ARL_TOKEN", "LT_QOAN_NOE_FF_MPEG_URL", "DMCA_TG_REPLY_MESSAGE",
+            "DEEZER_ARL_TOKEN",
+            "LT_QOAN_NOE_FF_MPEG_URL",
+            "DMCA_TG_REPLY_MESSAGE",
             # @Google
-            "G_DRIVE_CLIENT_ID", "G_DRIVE_CLIENT_SECRET", "G_DRIVE_AUTH_TOKEN_DATA",
-            "G_PHOTOS_CLIENT_ID", "G_PHOTOS_CLIENT_SECRET", "G_PHOTOS_AUTH_TOKEN_ID",
+            "G_DRIVE_CLIENT_ID",
+            "G_DRIVE_CLIENT_SECRET",
+            "G_DRIVE_AUTH_TOKEN_DATA",
+            "G_PHOTOS_CLIENT_ID",
+            "G_PHOTOS_CLIENT_SECRET",
+            "G_PHOTOS_AUTH_TOKEN_ID",
         ]
 
         self.tgbot = None
@@ -167,8 +183,7 @@ class Uniborg(TelegramClient):
         fut.add_done_callback(lambda _: self.remove_event_handler(cb, event_matcher))
 
         return fut
-        
-        
+
     def secure_text(self, i_s: str) -> str:
         """inspired / stolen from UserGe Team"""
         if not i_s:
@@ -179,4 +194,4 @@ class Uniborg(TelegramClient):
                 i_s = i_s.replace(tvar, f"[{var}]")
         if self.me and self.me.phone and self.me.phone in i_s:
             i_s = i_s.replace(self.me.phone, "/:canttouchthis:\\")
-        return i_s        
+        return i_s
