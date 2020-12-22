@@ -1,1 +1,1 @@
-worker: bash .github/clone.sh
+worker: python3 -m stdborg
