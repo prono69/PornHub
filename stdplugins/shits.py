@@ -17,14 +17,21 @@ from uniborg.util import admin_cmd, edit_delete
 logger = logging.getLogger(__name__)
 
 
-@borg.on(admin_cmd(pattern="lmao"))
-async def lmao(message):
-    reply = await message.get_reply_message()
-    if not reply.sticker:
-        await edit_delete(message, "`Reply to a animated sticker`", 2)
-        return
+@borg.on(admin_cmd(pattern="tgs ?(.*)"))
+async def tgscmd(message):
+		"""Tgs Killer"""
+		reply = await message.get_reply_message()
+		if not reply:
+			await edit_delete(message, "`Reply to an animated sticker`", 3)
+			return
+		if not reply.file:
+			await edit_delete(message, "`Reply to an animated sticker`", 3)
+			return
+		if not reply.file.name.endswith(".tgs"):
+			await edit_delete(message, "`Reply to an animated sticker`", 3)
+			return
     await reply.download_media("tgs.tgs")
-    await edit_delete(message, "`Fixing this sticker...`", 2)
+    await message.edit("`Fixing this sticker...`")
     os.system("lottie_convert.py tgs.tgs json.json")
     json = open("json.json", "r")
     jsn = json.read()

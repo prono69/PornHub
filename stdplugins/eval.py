@@ -53,7 +53,7 @@ async def _(event):
         evaluation = "Success"
 
     final_output = "⬤ **EVAL**: `{}` \n\n⬤ **RESULT**: \n`{}` \n".format(
-        cmd, evaluation
+        cmd, borg.secure_text(evaluation)
     )
 
     if len(final_output) > Config.MAX_MESSAGE_SIZE_LIMIT:
@@ -106,7 +106,7 @@ async def _(event):
     else:
         _o = o.split("\n")
         o = "`\n".join(_o)
-    OUTPUT = f"**INPUT:**\n`{cmd}`\n__PID:__\n`{process.pid}`\n\n**ERROR:**\n`{e}`\n**OUTPUT:**\n{o}"
+    OUTPUT = f"**INPUT:**\n`{cmd}`\n__PID:__\n`{process.pid}`\n\n**ERROR:**\n`{borg.secure_text(e)}`\n**OUTPUT:**\n{borg.secure_text(o)}"
     if len(OUTPUT) > Config.MAX_MESSAGE_SIZE_LIMIT:
         with io.BytesIO(str.encode(OUTPUT)) as out_file:
             out_file.name = "exec.txt"
