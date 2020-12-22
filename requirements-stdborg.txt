@@ -64,7 +64,6 @@ remotezip
 requests
 selenium
 spamwatch
-setuptools
 speedtest-cli
 spotify_token
 sqlalchemy
@@ -76,5 +75,4 @@ wget
 wand
 wordcloud
 wikipedia
-wheel
 youtube-dl
