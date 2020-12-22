@@ -37,7 +37,6 @@ else
     mv pepe/.github . 
     mv pepe/.git .
     mv pepe/requirements.txt .
-    mv pepe/requirements-stdborg.txt .
     rm -rf pepe
     python3 ./.github/update.py
 fi

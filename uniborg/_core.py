@@ -131,6 +131,6 @@ async def fonts():
         await bot.download_media(await bot.get_messages(username, ids=mxo), "fonts")
 
 
-bot.loop.run_until_complete(fonts())
+###bot.loop.run_until_complete(fonts())
 
-os.system("cd fonts && 7z e fonts.7z && rm -rf fonts.7z")
+###os.system("cd fonts && 7z e fonts.7z && rm -rf fonts.7z")
