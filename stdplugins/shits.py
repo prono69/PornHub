@@ -30,26 +30,25 @@ async def tgscmd(message):
 		if not reply.file.name.endswith(".tgs"):
 			await edit_delete(message, "`Reply to an animated sticker`", 3)
 			return
-    await reply.download_media("tgs.tgs")
-    await message.edit("`Fixing this sticker...`")
-    os.system("lottie_convert.py tgs.tgs json.json")
-    json = open("json.json", "r")
-    jsn = json.read()
-    json.close()
-    jsn = (
-        jsn.replace("[1]", "[20]")
-        .replace("[2]", "[30]")
-        .replace("[3]", "[40]")
-        .replace("[4]", "[50]")
-        .replace("[5]", "[60]")
-    )
-
-    open("json.json", "w").write(jsn)
-    os.system("lottie_convert.py json.json tgs.tgs")
-    await reply.reply(file="tgs.tgs")
-    os.remove("json.json")
-    os.remove("tgs.tgs")
-    await message.delete()
+			await reply.download_media("tgs.tgs")
+			await message.edit("`Fixing this sticker...`")
+			os.system("lottie_convert.py tgs.tgs json.json")
+			json = open("json.json", "r")
+			jsn = json.read()
+			json.close()
+			jsn = (
+			jsn.replace("[1]", "[20]")
+			.replace("[2]", "[30]")
+			.replace("[3]", "[40]")
+			.replace("[4]", "[50]")
+			.replace("[5]", "[60]"))
+			
+			open("json.json", "w").write(jsn)
+			os.system("lottie_convert.py json.json tgs.tgs")
+			await reply.reply(file="tgs.tgs")
+			os.remove("json.json")
+			os.remove("tgs.tgs")
+			await message.delete()
 
 
 @borg.on(admin_cmd(pattern="ip ?(.*)"))

@@ -37,7 +37,7 @@ async def _(event):
                     channel=event.chat_id,
                     users=user_ids
                 ))
-                    await ed.edit("`Invited Successfully`")
-                    await ed.delete()
-                except Exception as e:
-                    await ed.edit(str(e))
+                await ed.edit("`Invited Successfully`")
+                await ed.delete()
+            except Exception as e:
+                await ed.edit(str(e))
