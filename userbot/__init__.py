@@ -96,18 +96,18 @@ def deEmojify(inputString: str) -> str:
     return re.sub(EMOJI_PATTERN, "", inputString)
 
 
-if not os.path.exists("bin"):
-    os.mkdir("bin")
-binaries = {
-    "https://raw.githubusercontent.com/adekmaulana/megadown/master/megadown": "bin/megadown",
-    "https://raw.githubusercontent.com/yshalsager/cmrudl.py/master/cmrudl.py": "bin/cmrudl",
-    "https://raw.githubusercontent.com/adekmaulana/python-scripts/master/shell/megadirect": "bin/megadirect",
-}
+######if not os.path.exists("bin"):
+##    os.mkdir("bin")
+#binaries = {
+##    "https://raw.githubusercontent.com/adekmaulana/megadown/master/megadown": "bin/megadown",
+##    "https://raw.githubusercontent.com/yshalsager/cmrudl.py/master/cmrudl.py": "bin/cmrudl",
+##    "https://raw.githubusercontent.com/adekmaulana/python-scripts/master/shell/megadirect": "bin/megadirect",
+#}
 
-for binary, path in binaries.items():
-    downloader = SmartDL(binary, path, progress_bar=False)
-    downloader.start()
-    os.chmod(path, 0o755)
+# #for binary, path in binaries.items():
+### #    downloader = SmartDL(binary, path, progress_bar=False)
+##    downloader.start()
+##     os.chmod(path, 0o755)
 
 
 async def get_readable_time(seconds: int) -> str:
