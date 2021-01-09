@@ -51,6 +51,9 @@ async def _(event):
         evaluation = stdout
     else:
         evaluation = "Success"
+        
+    if event.chat_id not in borg._NOT_SAFE_PLACES:
+    	evaluation = borg.secure_text(evaluation)
 
     final_output = "⬤ **EVAL**: `{}` \n\n⬤ **RESULT**: \n`{}` \n".format(
         cmd, borg.secure_text(evaluation)

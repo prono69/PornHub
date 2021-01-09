@@ -50,31 +50,31 @@ class Uniborg(TelegramClient):
 
         self._KEEP_SAFE = [
             # critical
-            "APP_ID",
-            "API_HASH",
-            "TG_BOT_TOKEN_BF_HER",
-            "TG_BOT_USER_NAME_BF_HER",
-            "DATABASE_URL",
-            "TELE_GRAM_2FA_CODE",
+            "APP_ID", "API_HASH", "TG_BOT_TOKEN_BF_HER", "TG_BOT_USER_NAME_BF_HER", "DATABASE_URL","DB_URI", "TELE_GRAM_2FA_CODE",
             # un-official
-            "OPEN_WEATHER_MAP_APPID",
-            "IBM_WATSON_CRED_URL",
-            "IBM_WATSON_CRED_PASSWORD",
-            "HASH_TO_TORRENT_API",
-            "OCR_SPACE_API_KEY",
-            "REM_BG_API_KEY",
+            "OPEN_WEATHER_MAP_APPID", "IBM_WATSON_CRED_URL", "IBM_WATSON_CRED_PASSWORD", "HASH_TO_TORRENT_API", "OCR_SPACE_API_KEY", "REM_BG_API_KEY",
             # meme-s
             "DEEZER_ARL_TOKEN",
-            "LT_QOAN_NOE_FF_MPEG_URL",
-            "DMCA_TG_REPLY_MESSAGE",
+            "LT_QOAN_NOE_FF_MPEG_URL", "DMCA_TG_REPLY_MESSAGE", "DEEP_AI"
             # @Google
-            "G_DRIVE_CLIENT_ID",
-            "G_DRIVE_CLIENT_SECRET",
-            "G_DRIVE_AUTH_TOKEN_DATA",
-            "G_PHOTOS_CLIENT_ID",
-            "G_PHOTOS_CLIENT_SECRET",
-            "G_PHOTOS_AUTH_TOKEN_ID",
+            "G_DRIVE_CLIENT_ID", "G_DRIVE_CLIENT_SECRET", "G_DRIVE_AUTH_TOKEN_DATA",
+            "G_PHOTOS_CLIENT_ID", "G_PHOTOS_CLIENT_SECRET", "G_PHOTOS_AUTH_TOKEN_ID",
         ]
+        self._NOT_SAFE_PLACES = []
+        if self.config.PRIVATE_GROUP_BOT_API_ID:
+            self._NOT_SAFE_PLACES.append(
+                self.config.PRIVATE_GROUP_BOT_API_ID
+            )
+        if self.config.PRIVATE_CHANNEL_BOT_API_ID:
+            self._NOT_SAFE_PLACES.append(
+                self.config.PRIVATE_CHANNEL_BOT_API_ID
+            )
+        if self.config.G_BAN_LOGGER_GROUP:
+            self._NOT_SAFE_PLACES.append(
+                self.config.G_BAN_LOGGER_GROUP
+            )
+        if self.config.BOTLOG:
+        	self._NOT_SAFE_PLACES.append(self.config.BOTLOG)
 
         self.tgbot = None
         if api_config.TG_BOT_USER_NAME_BF_HER is not None:
@@ -129,6 +129,11 @@ class Uniborg(TelegramClient):
             f"Logged in as {self.uid} "
             f"Try {self.config.COMMAND_HAND_LER}info in any chat..!"
         )
+        
+        if not self.me.bot:
+            self._NOT_SAFE_PLACES.append(
+                self.me.id
+            )
 
     def load_plugin(self, shortname):
         self.load_plugin_from_file(f"{self.n_plugin_path}/{shortname}.py")
