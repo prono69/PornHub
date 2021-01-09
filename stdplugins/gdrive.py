@@ -983,8 +983,8 @@ async def lists(gdrive):
 
 @bot.on(
     admin_cmd(
-        pattern=r"glist(?: |$)(-l \d+)?(?: |$)?(.*)?(?: |$)"
-        outgoing=True,
+        pattern=r"glist(?: |$)(-l \d+)?(?: |$)?(.*)?(?: |$)",
+        outgoing=True
     )
 )
 
