@@ -82,8 +82,6 @@ class Uniborg(TelegramClient):
             self._NOT_SAFE_PLACES.append(self.config.PRIVATE_GROUP_BOT_API_ID)
         if self.config.PRIVATE_CHANNEL_BOT_API_ID:
             self._NOT_SAFE_PLACES.append(self.config.PRIVATE_CHANNEL_BOT_API_ID)
-        if self.config.G_BAN_LOGGER_GROUP:
-            self._NOT_SAFE_PLACES.append(self.config.G_BAN_LOGGER_GROUP)
         if self.config.BOTLOG:
             self._NOT_SAFE_PLACES.append(self.config.BOTLOG)
 
