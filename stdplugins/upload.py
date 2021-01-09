@@ -71,14 +71,12 @@ async def _(event):
                     metadata = extractMetadata(createParser(single_file))
                     duration = 0
                     if metadata.has("duration"):
-                        duration = metadata.get('duration').seconds
+                        duration = metadata.get("duration").seconds
                     supports_streaming = True
                     force_document = False
                     if not _custom_thumb_e:
                         thumb = await take_screen_shot(
-                            single_file,
-                            Config.TMP_DOWNLOAD_DIRECTORY,
-                            duration // 2
+                            single_file, Config.TMP_DOWNLOAD_DIRECTORY, duration // 2
                         )
                 if single_file.upper().endswith(Config.TL_MUS_STREAM_TYPES):
                     metadata = extractMetadata(createParser(single_file))
@@ -86,7 +84,7 @@ async def _(event):
                     title = ""
                     artist = ""
                     if metadata.has("duration"):
-                        duration = metadata.get('duration').seconds
+                        duration = metadata.get("duration").seconds
                     if metadata.has("title"):
                         title = metadata.get("title")
                     if metadata.has("artist"):
@@ -97,7 +95,7 @@ async def _(event):
                             voice=False,
                             title=title,
                             performer=artist,
-                            waveform=None
+                            waveform=None,
                         )
                     ]
                     supports_streaming = True
@@ -115,7 +113,7 @@ async def _(event):
                             w=width,
                             h=height,
                             round_message=False,
-                            supports_streaming=True
+                            supports_streaming=True,
                         )
                     ]
                 try:
@@ -143,7 +141,7 @@ async def _(event):
                     continue
                 os.remove(single_file)
                 if thumb and not _custom_thumb_e:
-                	os.remove(thumb)
+                    os.remove(thumb)
                 u += 1
                 # await event.edit("Uploaded {} / {} files.".format(u, len(lst_of_files)))
                 # @ControllerBot was having issues,

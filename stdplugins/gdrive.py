@@ -24,6 +24,7 @@ from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload
 from telethon import events
 
+from sql_helpers import google_drive_sql as helper
 from uniborg import (
     G_DRIVE_CLIENT_ID,
     G_DRIVE_CLIENT_SECRET,
@@ -35,8 +36,13 @@ from uniborg import (
     CancelProcess,
     progress,
 )
-from sql_helpers import google_drive_sql as helper
-from uniborg.util import admin_cmd, edit_or_reply, humanbytes, time_formatter, edit_delete
+from uniborg.util import (
+    admin_cmd,
+    edit_delete,
+    edit_or_reply,
+    humanbytes,
+    time_formatter,
+)
 
 MODULE.append("gdrive")
 BOTLOG_CHATID = Config.PRIVATE_GROUP_BOT_API_ID
@@ -981,23 +987,12 @@ async def lists(gdrive):
     )
 
 
-@bot.on(
-    admin_cmd(
-        pattern=r"glist(?: |$)(-l \d+)?(?: |$)?(.*)?(?: |$)",
-        outgoing=True
-    )
-)
-
+@bot.on(admin_cmd(pattern=r"glist(?: |$)(-l \d+)?(?: |$)?(.*)?(?: |$)", outgoing=True))
 async def catlists(gdrive):
     await lists(gdrive)
 
 
-@bot.on(
-    admin_cmd(
-        pattern="gdf (mkdir|rm|chck) (.*)", outgoing=True
-    )
-)
-
+@bot.on(admin_cmd(pattern="gdf (mkdir|rm|chck) (.*)", outgoing=True))
 async def google_drive_managers(gdrive):
     """ - Google Drive folder/file management - """
     service = await create_app(gdrive)
@@ -1355,7 +1350,6 @@ async def google_drive(gdrive):
         outgoing=True,
     )
 )
-
 async def set_upload_folder(gdrive):
     """ - Set parents dir for upload/check/makedir/remove - """
     global parent_Id
@@ -1500,10 +1494,7 @@ async def check_progress_for_dl(event, gid, previous):
                 )
 
 
-@bot.on(
-    admin_cmd(pattern="gdown ?(-u)? (.*)", outgoing=True)
-)
-
+@bot.on(admin_cmd(pattern="gdown ?(-u)? (.*)", outgoing=True))
 async def g_download(event):
     if event.fwd_from:
         return
