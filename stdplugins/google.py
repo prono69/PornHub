@@ -123,9 +123,7 @@ async def _(event):
             )
             SEARCH_URL = "{}/searchbyimage/upload".format(BASE_URL)
             multipart = {
-                "encoded_image": (
-                    open(downloaded_file_name, "rb"),
-                ),
+                "encoded_image": (open(downloaded_file_name, "rb"),),
                 "image_content": "",
             }
             # https://stackoverflow.com/a/28792943/4723940
