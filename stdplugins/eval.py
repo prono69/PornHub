@@ -21,7 +21,7 @@ async def _(event):
     if event.fwd_from or event.via_bot_id:
         return
     await event.edit("`Processing...`")
-    cmd = event.text.split(" ", maxsplit=1)[1]
+    cmd = event.raw_text.split(" ", maxsplit=1)[1]
     reply_to_id = event.message.id
     if event.reply_to_msg_id:
         reply_to_id = event.reply_to_msg_id
@@ -85,13 +85,13 @@ async def aexec(code, event):
     return await locals()["__aexec"](event, reply, event.client, p)
 
 
-@borg.on(admin_cmd(pattern="exec ?(.*)"))
+@borg.on(admin_cmd(pattern="exec"))
 async def _(event):
     if event.fwd_from or event.via_bot_id:
         return
     PROCESS_RUN_TIME = 100
     await event.edit("`Processing...`")
-    cmd = event.pattern_match.group(1)
+    cmd = event.raw_text.split(" ", maxsplit=1)[1]
     reply_to_id = event.message.id
     if event.reply_to_msg_id:
         reply_to_id = event.reply_to_msg_id
