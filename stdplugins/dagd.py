@@ -25,7 +25,9 @@ async def _(event):
     sample_url = "https://da.gd/s?url={}".format(input_str)
     response_api = requests.get(sample_url).text
     if response_api:
-        await event.edit("**Shortened URL:**\n{}\n**For:** {}.".format(response_api, input_str))
+        await event.edit(
+            "**Shortened URL:**\n{}\n**For:** {}.".format(response_api, input_str)
+        )
     else:
         await event.edit("Something is Wrong. Please try Again Later.")
 

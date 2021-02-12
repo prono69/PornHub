@@ -216,9 +216,7 @@ async def _(event):
             thumb = thumb_image_path
         elif file_name.upper().endswith(Config.TL_VID_STREAM_TYPES):
             thumb = await take_screen_shot(
-                file_name,
-                Config.TMP_DOWNLOAD_DIRECTORY,
-                duration // 2
+                file_name, Config.TMP_DOWNLOAD_DIRECTORY, duration // 2
             )
         # Telegram only works with MP4 files
         if thumb and os.path.exists(thumb):

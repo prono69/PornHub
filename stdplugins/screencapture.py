@@ -9,10 +9,12 @@ from datetime import datetime
 import requests
 from selenium import webdriver
 from validators.url import url
-from uniborg.util import admin_cmd, edit_or_reply
+
 from uniborg import MODULE, SYNTAX
+from uniborg.util import admin_cmd, edit_or_reply
 
 MODULE.append("screenshot")
+
 
 @bot.on(admin_cmd(pattern="ss (.*)", allow_sudo=True))
 async def _(event):

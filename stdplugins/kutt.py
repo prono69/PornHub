@@ -1,7 +1,9 @@
 """ Userbot module for shortening links using kutt.it """
 
 from re import findall
+
 import requests
+
 from uniborg.util import admin_cmd, parse_arguments
 
 API_ENDPOINT = "https://kutt.it/api/"

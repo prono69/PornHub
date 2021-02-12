@@ -16,6 +16,7 @@ Converted = TEMP_DOWNLOAD_DIRECTORY + "sticker.webp"
 
 MODULE.append("transform")
 
+
 @borg.on(admin_cmd(pattern=r"(mirror|flip|ghost|bw|poster)$"))
 async def transform(event):
     if not event.reply_to_msg_id:
