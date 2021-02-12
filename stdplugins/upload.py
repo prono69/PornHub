@@ -212,19 +212,21 @@ async def _(event):
         if metadata:
             if metadata.has("duration"):
                 duration = metadata.get("duration").seconds
-            if os.path.exists(thumb_image_path):
-                metadata = extractMetadata(createParser(thumb_image_path))
-                if metadata.has("width"):
-                    width = metadata.get("width")
-                if metadata.has("height"):
-                    height = metadata.get("height")
         if os.path.exists(thumb_image_path):
             thumb = thumb_image_path
-        else:
+        elif file_name.upper().endswith(Config.TL_VID_STREAM_TYPES):
             thumb = await take_screen_shot(
-                file_name, Config.TMP_DOWNLOAD_DIRECTORY, duration // 2
+                file_name,
+                Config.TMP_DOWNLOAD_DIRECTORY,
+                duration // 2
             )
         # Telegram only works with MP4 files
+        if thumb and os.path.exists(thumb):
+            metadata = extractMetadata(createParser(thumb_image_path))
+            if metadata.has("width"):
+                width = metadata.get("width")
+            if metadata.has("height"):
+                height = metadata.get("height")
         # this is good, since with MKV files sent as streamable Telegram responds,
         # Bad Request: VIDEO_CONTENT_TYPE_INVALID
         c_time = time.time()
