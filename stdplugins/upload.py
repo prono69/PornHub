@@ -100,7 +100,7 @@ async def _(event):
                     ]
                     supports_streaming = True
                     force_document = False
-                if os.path.exists(thumb):
+                if thumb and os.path.exists(thumb):
                     metadata = extractMetadata(createParser(thumb))
                     if metadata and metadata.has("width"):
                         width = metadata.get("width")

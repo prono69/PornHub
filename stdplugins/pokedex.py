@@ -3,7 +3,6 @@
 """pokedex for pokemon info .berry for berry info .move for move info"""
 
 import requests
-
 from uniborg.util import admin_cmd
 
 

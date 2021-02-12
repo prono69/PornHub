@@ -123,9 +123,9 @@ class Config:
     # taken from
     # https://github.com/jaskaranSM/UniBorg/blob/9072e3580cc6c98d46f30e41edbe73ffc9d850d3/sample_config.py#L104-L106
     GOOGLE_CHROME_DRIVER = os.environ.get(
-        "GOOGLE_CHROME_DRIVER", "/usr/bin/google-chrome"
+        "GOOGLE_CHROME_DRIVER", ""/app/.apt/usr/bin/google-chrome""
     )
-    GOOGLE_CHROME_BIN = os.environ.get("GOOGLE_CHROME_BIN", "/usr/bin/chromedriver")
+    GOOGLE_CHROME_BIN = os.environ.get("GOOGLE_CHROME_BIN", "/app/.chromedriver/bin/chromedriver")
     #
     LYDIA_API = os.environ.get("LYDIA_API", None)
     # Heroku Miscellaneous
@@ -135,8 +135,8 @@ class Config:
         "UPSTREAM_REPO_URL", "https://github.com/prono69/PepeBot"
     )
     #
-    CHROME_DRIVER = os.environ.get("CHROME_DRIVER", None)
-    CHROME_BIN = os.environ.get("CHROME_BIN", None)
+    CHROME_DRIVER = os.environ.get("CHROME_DRIVER", "/app/.chromedriver/bin/chromedriver")
+    CHROME_BIN = os.environ.get("CHROME_BIN", "/app/.apt/usr/bin/google-chrome")
     # define "heroku_link" in conig_vars
     HEROKU_LINK = os.environ.get("HEROKU_LINK", None)
     # define "repo_link" in conig_vars

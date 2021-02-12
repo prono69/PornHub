@@ -25,7 +25,7 @@ async def _(event):
     sample_url = "https://da.gd/s?url={}".format(input_str)
     response_api = requests.get(sample_url).text
     if response_api:
-        await event.edit("Generated {} for {}.".format(response_api, input_str))
+        await event.edit("**Shortened URL:**\n{}\n**For:** {}.".format(response_api, input_str))
     else:
         await event.edit("Something is Wrong. Please try Again Later.")
 
@@ -48,7 +48,7 @@ async def _(event):
         )
 
 
-@borg.on(admin_cmd(pattern="myip(.*)"))
+@borg.on(admin_cmd(pattern="myip (.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -61,7 +61,7 @@ async def _(event):
         await event.edit("I can't seem to find {} on the internet".format(input_str))
 
 
-@borg.on(admin_cmd(pattern="myisp(.*)"))
+@borg.on(admin_cmd(pattern="myisp (.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -115,7 +115,7 @@ async def _(event):
         await event.edit("I can't seem to find {} on the internet".format(input_str))
 
 
-@borg.on(admin_cmd(pattern="iifast(.*)"))
+@borg.on(admin_cmd(pattern="iifast (.*)"))
 async def _(event):
     if event.fwd_from:
         return

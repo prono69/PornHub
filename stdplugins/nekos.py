@@ -40,7 +40,7 @@ async def _(event):
     await event.edit("`Processing Nekos...`")
     await event.delete()
     target = nekos.img(f"{hmm}")
-    await event.client.send_file(event.chat_id, file=target, caption=f"{hmm}")
+    await event.client.send_file(event.chat_id, file=target, caption=f"**{hmm}**")
 
 
 @borg.on(admin_cmd(pattern="dva"))

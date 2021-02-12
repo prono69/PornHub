@@ -26,18 +26,18 @@ async def amireallyalive(alive):
 **✮PEPEBOT IS UP AND RUNNING✮**
 
        😴 __Lazy as a Sloth__ 😴
-
-✧ **System** : `Linux`
-✧ **Uptime** : `{uptime}`
-✧ **Telethon version** : `{version.__version__}`
-✧ **Python Version** : `{python_version()}`
-✧ **PepeBot Version** : `{pepe}`
-✧ **Database** : `Functioning Normally`
-✧ **My Master** : [{DEFAULTUSER}](tg://user?id={hmm})
+       
+**✧✧ My Master :** [{DEFAULTUSER}](tg://user?id={hmm})
+**✧✧ System :** `Linux`
+**✧✧ Uptime :** `{uptime}`
+**✧✧ Telethon version :** `{version.__version__}`
+**✧✧ Python Version :** `{python_version()}`
+**✧✧ PepeBot Version :** `{pepe}`
+**✧✧ Database :** `Functioning`
 
 **Pepe is always with you, My Master!**
 
-✧ **Repo** : [PEPEBOT](https://github.com/prono69/PepeBot)"""
+**✧✧ Repo :** [PEPEBOT](https://github.com/prono69/PepeBot)"""
 
     #####sticker = await borg.get_messages("LazyAF_Pepe", 26)
     #####await borg.send_file(alive.chat_id, file=sticker)

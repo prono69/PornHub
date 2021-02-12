@@ -172,12 +172,12 @@
     },
     "CHROME_BIN": {
       "description": "Don't Edit this",
-      "value": "/usr/bin/google-chrome",
+      "value": ""/app/.apt/usr/bin/google-chrome"",
       "required": false
     },
     "CHROME_DRIVER": {
       "description": "Don't edit this",
-      "value": "/usr/bin/chromedriver",
+      "value": "/app/.chromedriver/bin/chromedriver",
       "required": false
     },
     "GITHUB_ACCESS_TOKEN": {
