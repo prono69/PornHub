@@ -172,7 +172,7 @@
     },
     "CHROME_BIN": {
       "description": "Don't Edit this",
-      "value": ""/app/.apt/usr/bin/google-chrome"",
+      "value": "/app/.apt/usr/bin/google-chrome",
       "required": false
     },
     "CHROME_DRIVER": {
