@@ -1,8 +1,6 @@
 """Make / Download Telegram Sticker Packs without installing Third Party applications
 Available Commands:
-.kang [Optional Emoji]
-.packinfo
-.loda {for get stickers in a zip file}"""
+.kung [Optional Emoji]"""
 import datetime
 import math
 import os
@@ -36,7 +34,7 @@ KANGING_STR = [
 ]
 
 
-@borg.on(admin_cmd(pattern="kang ?(.*)"))
+@borg.on(admin_cmd(pattern="kung ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return

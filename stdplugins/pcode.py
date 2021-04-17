@@ -28,7 +28,7 @@ async def coder_print(event):
     pygments.highlight(
         f"{coder}",
         Python3Lexer(),
-        ImageFormatter(font_name="LiberationMono-Regular.ttf", line_numbers=True),
+        ImageFormatter(font_name="DejaVuSansMono.ttf", line_numbers=True),
         "out.png",
     )
     await event.client.send_file(event.chat_id, "out.png", force_document=False)
@@ -47,7 +47,7 @@ async def mkc(event):
     pygments.highlight(
         f"{c}",
         Python3Lexer(),
-        ImageFormatter(font_name="LiberationMono-Regular.ttf", line_numbers=True),
+        ImageFormatter(font_name="DejaVuSansMono.ttf", line_numbers=True),
         "out.png",
     )
     res = await event.client.send_message(

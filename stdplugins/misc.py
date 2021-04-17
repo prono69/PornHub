@@ -14,7 +14,9 @@ from uniborg.util import admin_cmd, edit_or_reply
 `.userid`
 `.pip`
 `.on`
-`.pm`
+`.pm message|username`
+`.reveal`
+`.gstat`
 """
 plugs = len(borg._plugins)
 

@@ -85,7 +85,7 @@ async def selfdestruct(destroy):
         )
 
 
-@borg.on(admin_cmd(pattern="ipurg ?(.*)"))
+@borg.on(admin_cmd(pattern="purg ?(.*)"))
 async def fastpurger(purg):
     """ For .purge command, purge all messages starting from the reply. """
     chat = await purg.get_input_chat()

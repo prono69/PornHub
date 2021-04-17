@@ -42,7 +42,7 @@ KANGING_STR = [
 combot_stickers_url = "https://combot.org/telegram/stickers?q="
 
 
-@borg.on(admin_cmd(pattern="kung ?(.*)"))
+@borg.on(admin_cmd(pattern="kang ?(.*)"))
 async def kang(args):
     """ For .kang command, kangs stickers or creates new ones. """
     user = await borg.get_me()
@@ -374,7 +374,7 @@ async def _(event):
             return
         is_a_s = is_it_animated_sticker(reply_message)
         file_ext_ns_ion = "webp"
-        file_caption = "`You are my Nigga`"
+        file_caption = "`Now Pay me 69$`"
         if is_a_s:
             file_ext_ns_ion = "tgs"
             file_caption = "Forward the ZIP file to @AnimatedStickersRoBot to get lottIE JSON containing the vector information."

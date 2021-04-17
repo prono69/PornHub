@@ -68,7 +68,7 @@ async def _(event):
         hmm = f"**url : **{input_str} \n**Time :** `{ms} seconds`"
         await catevent.delete()
         with io.BytesIO(im_png) as out_file:
-            out_file.name = input_str + ".PNG"
+            out_file.name = "@PepeBot.screenshot.png"
             await event.client.send_file(
                 event.chat_id,
                 out_file,
@@ -122,7 +122,7 @@ async def _(event):
                     event.chat_id,
                     screenshot_image,
                     caption=hmm,
-                    force_document=True,
+                    force_document=False,
                     reply_to=event.message.reply_to_msg_id,
                 )
                 await catevent.delete()
