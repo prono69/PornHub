@@ -76,4 +76,4 @@ wget
 wand
 wordcloud
 wikipedia
-youtube-dl
+youtube_dl>=2021.1.8
