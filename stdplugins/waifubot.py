@@ -3,13 +3,13 @@ import asyncio
 import os
 from datetime import datetime
 
-
 import requests
 from bs4 import BeautifulSoup
-from userbot.utils.google_images_download import googleimagesdownload
+
 from uniborg.util import admin_cmd
 
 DELETE_TIMEOUT = 0
+
 
 def progress(current, total):
     logger.info(
@@ -17,6 +17,8 @@ def progress(current, total):
             current, total, (current / total) * 100
         )
     )
+
+
 @bot.on(admin_cmd(pattern="pp"))
 async def _(event):
     if event.fwd_from:
@@ -68,8 +70,7 @@ async def _(event):
         img_size = img_size_div.find_all("div")
         end = datetime.now()
         ms = (end - start).seconds
-        OUTPUT_STR = """/protecc {prs_text}""".format(
-            **locals())
+        OUTPUT_STR = """/protecc {prs_text}""".format(**locals())
     await event.edit(OUTPUT_STR, parse_mode="HTML", link_preview=False)
     await asyncio.sleep(2)
     await event.delete()
