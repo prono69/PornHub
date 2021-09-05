@@ -10,6 +10,7 @@ import time
 from typing import List
 from telethon import events
 from telethon.utils import add_surrogate
+from telethon.tl.custom import Message
 from telethon.tl.functions.messages import GetPeerDialogsRequest
 from telethon.tl.functions.channels import GetParticipantRequest
 from telethon.tl.types import ChannelParticipantAdmin, ChannelParticipantCreator
@@ -357,4 +358,31 @@ async def get_media_lnk(evt_message) -> str:
     )
     return Config.LT_QOAN_NOE_FF_MPEG_URL.format(
         message_id=fwd_mesg.id
+    )
+
+
+async def gmp(message: Message) -> List[Message]:
+    if not message.grouped_id:
+        return []
+    """
+    copyied logic from
+    https://github.com/pyrogram/pyrogram/blob/ecd83c594cc72e10e13d8c427e817f3495d97252/pyrogram/methods/messages/get_media_group.py#L33"""
+    messages = await message.client.get_messages(
+        entity=message.chat,
+        ids=[
+            msg_id for msg_id in range(
+                message.id - 9,
+                message.id + 10
+            )
+        ]
+    )
+
+    grouped_id = 0
+    if len(messages) == 19:
+        grouped_id = messages[9].grouped_id
+    else:
+        grouped_id = messages[message.id-1].grouped_id
+
+    return List(
+        msg for msg in messages if msg.grouped_id == grouped_id
     )
