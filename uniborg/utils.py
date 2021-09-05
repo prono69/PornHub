@@ -383,6 +383,6 @@ async def gmp(message: Message) -> List[Message]:
     else:
         grouped_id = messages[message.id-1].grouped_id
 
-    return List(
-        msg for msg in messages if msg.grouped_id == grouped_id
-    )
+    return [
+        msg for msg in messages if msg and msg.grouped_id == grouped_id
+    ]
