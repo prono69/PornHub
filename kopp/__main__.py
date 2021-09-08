@@ -12,7 +12,7 @@ from alchemysession import AlchemySessionContainer
 from telethon import events, TelegramClient
 
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
 from kopp import Config
 
