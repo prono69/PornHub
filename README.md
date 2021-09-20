@@ -1,4 +1,4 @@
-### ⚠️Warning: // **Multiple accounts are getting banned, // Hence, Use it at your own RISK .** :( /
+### ⚠️Warning: // **This repo is DEAD and it's Very sus Repo.// DONT USE THIS REPO. USE pepecat Insted :) kthxbye .** :( /
 
 #click_the_pepe_photo_below_to_deploy_or_the_deploy_button
 
