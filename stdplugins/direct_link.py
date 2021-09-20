@@ -29,7 +29,7 @@ USR_TOKEN = Config.USR_TOKEN
 
 @borg.on(events.NewMessage(pattern=r"^.direct(?: |$)([\s\S]*)", outgoing=True))
 async def direct_link_generator(request):
-    """ direct links generator """
+    """direct links generator"""
     await request.edit("`Processing...`")
     textx = await request.get_reply_message()
     message = request.pattern_match.group(1)
@@ -78,7 +78,7 @@ async def direct_link_generator(request):
 
 
 def gdrive(url: str) -> str:
-    """ GDrive direct links generator """
+    """GDrive direct links generator"""
     drive = "https://drive.google.com"
     try:
         link = re.findall(r"\bhttps?://drive\.google\.com\S+", url)[0]
@@ -219,7 +219,7 @@ def cm_ru(url: str) -> str:
 
 
 def mediafire(url: str) -> str:
-    """ MediaFire direct links generator """
+    """MediaFire direct links generator"""
     try:
         link = re.findall(r"\bhttps?://.*mediafire\.com\S+", url)[0]
     except IndexError:
@@ -236,7 +236,7 @@ def mediafire(url: str) -> str:
 
 
 def sourceforge(url: str) -> str:
-    """ SourceForge direct links generator """
+    """SourceForge direct links generator"""
     try:
         link = re.findall(r"\bhttps?://.*sourceforge\.net\S+", url)[0]
     except IndexError:
@@ -261,7 +261,7 @@ def sourceforge(url: str) -> str:
 
 
 def osdn(url: str) -> str:
-    """ OSDN direct links generator """
+    """OSDN direct links generator"""
     osdn_link = "https://osdn.net"
     try:
         link = re.findall(r"\bhttps?://.*osdn\.net\S+", url)[0]
@@ -282,7 +282,7 @@ def osdn(url: str) -> str:
 
 
 def github(url: str) -> str:
-    """ GitHub direct links generator """
+    """GitHub direct links generator"""
     try:
         link = re.findall(r"\bhttps?://.*github\.com.*releases\S+", url)[0]
     except IndexError:
@@ -374,7 +374,7 @@ def useragent():
 
 
 async def uptobox(request, url: str) -> str:
-    """ Uptobox direct links generator """
+    """Uptobox direct links generator"""
     try:
         link = re.findall(r"\bhttps?://.*uptobox\.com\S+", url)[0]
     except IndexError:

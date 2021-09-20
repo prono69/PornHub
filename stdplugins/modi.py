@@ -27,6 +27,6 @@ MODISTR = [
 
 @borg.on(admin_cmd(pattern="imodi", outgoing=True))
 async def imodi(lul):
-    """ Fuck Modi """
+    """Fuck Modi"""
     if not lul.text[0].isalpha() and lul.text[0] not in ("/", "#", "@", "!"):
         await lul.edit(random.choice(MODISTR))

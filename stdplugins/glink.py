@@ -33,7 +33,7 @@ parent_id = Config.G_DRIVE_FOLDER_ID
 
 @borg.on(admin_cmd(pattern="glink ?(.*)", allow_sudo=True))
 async def download(dryb):
-    """ For .gdrive command, upload files to google drive. """
+    """For .gdrive command, upload files to google drive."""
     if not dryb.text[0].isalpha() and dryb.text[0] not in ("/", "#", "@", "!"):
         if dryb.fwd_from:
             return

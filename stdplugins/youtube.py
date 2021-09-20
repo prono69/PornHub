@@ -15,7 +15,7 @@ from uniborg.util import admin_cmd
 
 @borg.on(admin_cmd(pattern=r"yts ?(\d+)? ?(.*)?"))
 async def yt_search(video_q):
-    """ For .yt command, do a YouTube search from Telegram. """
+    """For .yt command, do a YouTube search from Telegram."""
     reply = await video_q.get_reply_message()
     if video_q.pattern_match.group(2):
         query = video_q.pattern_match.group(2)
@@ -58,7 +58,7 @@ def youtube_search(
     location_radius=None,
     resultamt=10,
 ):
-    """ Do a YouTube search. """
+    """Do a YouTube search."""
     youtube = build(
         "youtube", "v3", developerKey=Config.YOUTUBE_API_KEY, cache_discovery=False
     )

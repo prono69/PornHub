@@ -23,7 +23,7 @@ plugs = len(borg._plugins)
 
 @borg.on(admin_cmd(pattern="permalink ?(.*)"))
 async def permalink(mention):
-    """ For .link command, generates a link to the user's PM with a custom text. """
+    """For .link command, generates a link to the user's PM with a custom text."""
     user, custom = await get_user_from_event(mention)
     if not user:
         return
@@ -37,7 +37,7 @@ async def permalink(mention):
 
 
 async def get_user_from_event(event):
-    """ Get the user from argument or replied message. """
+    """Get the user from argument or replied message."""
     args = event.pattern_match.group(1).split(":", 1)
     extra = None
     if event.reply_to_msg_id and len(args) != 2:
@@ -87,7 +87,7 @@ async def get_user_from_id(user, event):
 
 @borg.on(admin_cmd(pattern="userid"))
 async def useridgetter(target):
-    """ For .userid command, returns the ID of the target user. """
+    """For .userid command, returns the ID of the target user."""
     message = await target.get_reply_message()
     if message:
         if not message.forward:
@@ -107,7 +107,7 @@ async def useridgetter(target):
 
 @borg.on(admin_cmd(pattern="pip(?: |$)(.*)"))
 async def pipcheck(pip):
-    """ For .pip command, do a pip search. """
+    """For .pip command, do a pip search."""
     pipmodule = pip.pattern_match.group(1)
     if pipmodule:
         await pip.edit("`Searching . . .`")
@@ -149,7 +149,7 @@ async def pipcheck(pip):
 
 @borg.on(admin_cmd(pattern="on"))
 async def amireallyalive(alive):
-    """ For .on command, check if the bot is running.  """
+    """For .on command, check if the bot is running."""
     await alive.edit(
         "`"
         "My bot is running \n\n"

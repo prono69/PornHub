@@ -65,7 +65,7 @@ async def progress(current, total, event, start, type_of_ps, file_name=None):
 
 @borg.on(admin_cmd(pattern="yt(a|v) ?(.*)"))
 async def download_video(v_url):
-    """ For .ytdl command, download media from YouTube and many other sites. """
+    """For .ytdl command, download media from YouTube and many other sites."""
     reply = await v_url.get_reply_message()
     if v_url.pattern_match.group(2) != "":
         url = v_url.pattern_match.group(2)

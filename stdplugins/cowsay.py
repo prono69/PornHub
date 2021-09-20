@@ -19,7 +19,7 @@ from uniborg.util import admin_cmd, edit_or_reply
 
 @borg.on(admin_cmd(pattern=r"^.(\w+)say (.*)", allow_sudo=True))
 async def univsaye(event):
-    """ For .cowsay module, uniborg wrapper for cow which says things. """
+    """For .cowsay module, uniborg wrapper for cow which says things."""
     if event.text[0].isalpha() or event.text[0] in ("/", "#", "@", "!"):
         return
 

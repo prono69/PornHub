@@ -50,7 +50,7 @@ async def _(event):
 
 @borg.on(admin_cmd(pattern="purgme ?(.*)"))
 async def purgeme(delme):
-    """ For .purgeme, delete x count of your latest message."""
+    """For .purgeme, delete x count of your latest message."""
     message = delme.text
     count = int(message[8:])
     i = 1
@@ -71,7 +71,7 @@ async def purgeme(delme):
 
 @borg.on(admin_cmd(pattern="isd ?(.*)"))
 async def selfdestruct(destroy):
-    """ For .sd command, make seflf-destructable messages. """
+    """For .sd command, make seflf-destructable messages."""
     message = destroy.text
     counter = int(message[4:6])
     text = str(destroy.text[6:])
@@ -87,7 +87,7 @@ async def selfdestruct(destroy):
 
 @borg.on(admin_cmd(pattern="purg ?(.*)"))
 async def fastpurger(purg):
-    """ For .purge command, purge all messages starting from the reply. """
+    """For .purge command, purge all messages starting from the reply."""
     chat = await purg.get_input_chat()
     msgs = []
     count = purg.pattern_match.group(1)

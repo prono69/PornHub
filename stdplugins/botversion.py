@@ -15,7 +15,7 @@ from uniborg.util import admin_cmd
 
 @borg.on(admin_cmd(pattern="ver(.*)"))
 async def bot_ver(event):
-    """ For .ver command, get the bot version. """
+    """For .ver command, get the bot version."""
     if which("git") is not None:
         invokever = "git describe --all --long"
         ver = await asyncrunapp(

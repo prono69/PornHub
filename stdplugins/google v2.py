@@ -7,7 +7,7 @@ from uniborg.util import admin_cmd
 
 @borg.on(admin_cmd(pattern="google ?(.*)"))
 async def gsearch(q_event):
-    """ For .google command, do a Google search. """
+    """For .google command, do a Google search."""
     await q_event.edit("""`Ruk Bsdk tera IP Ban karwata Hoon`""")
     reply = await q_event.get_reply_message()
     if q_event.pattern_match.group(1):

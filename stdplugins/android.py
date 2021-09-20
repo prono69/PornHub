@@ -27,7 +27,7 @@ DEVICES_DATA = (
 
 @borg.on(admin_cmd(pattern="magisk ?(.*)"))
 async def magisk(message):
-    """ Latest Magisk Releases """
+    """Latest Magisk Releases"""
     magisk_repo = "https://raw.githubusercontent.com/topjohnwu/magisk_files/"
     magisk_dict = {
         "⦁ 𝗦𝘁𝗮𝗯𝗹𝗲": magisk_repo + "master/stable.json",
@@ -55,7 +55,7 @@ async def magisk(message):
 
 @borg.on(admin_cmd(pattern=r"device(?: |$)(\S*)"))
 async def device_info(request):
-    """ get android device basic info from its codename """
+    """get android device basic info from its codename"""
     textx = await request.get_reply_message()
     codename = request.pattern_match.group(1)
     if codename:
@@ -87,7 +87,7 @@ async def device_info(request):
 
 @borg.on(admin_cmd(pattern=r"codename(?: |)([\S]*)(?: |)([\s\S]*)"))
 async def codename_info(request):
-    """ search for android codename """
+    """search for android codename"""
     textx = await request.get_reply_message()
     brand = request.pattern_match.group(1).lower()
     device = request.pattern_match.group(2).lower()
@@ -131,7 +131,7 @@ async def codename_info(request):
 
 @borg.on(admin_cmd(pattern=r"specs(?: |)([\S]*)(?: |)([\s\S]*)"))
 async def devices_specifications(request):
-    """ Mobile devices specifications """
+    """Mobile devices specifications"""
     textx = await request.get_reply_message()
     brand = request.pattern_match.group(1).lower()
     device = request.pattern_match.group(2).lower()
@@ -191,7 +191,7 @@ async def devices_specifications(request):
 
 @borg.on(admin_cmd(pattern=r"twrp(?: |$)(\S*)"))
 async def twrp(request):
-    """ get android device twrp """
+    """get android device twrp"""
     textx = await request.get_reply_message()
     device = request.pattern_match.group(1)
     if device:

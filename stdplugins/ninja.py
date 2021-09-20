@@ -58,7 +58,7 @@ async def delete(event):
 
 @borg.on(util.admin_cmd(pattern="del$"))
 async def delete_it(delme):
-    """ For .del command, delete the replied message. """
+    """For .del command, delete the replied message."""
     msg_src = await delme.get_reply_message()
     if delme.reply_to_msg_id:
         try:

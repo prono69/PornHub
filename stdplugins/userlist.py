@@ -8,7 +8,7 @@ from telethon.errors.rpcerrorlist import MessageTooLongError
 
 @borg.on(events.NewMessage(pattern=r"\.userlist ?(.*)", outgoing=True))
 async def get_users(show):
-    """ For .userslist command, list all of the users of the chat. """
+    """For .userslist command, list all of the users of the chat."""
     if show.text[0].isalpha() or show.text[0] in ("/", "#", "@", "!"):
         return
     if not show.is_group:

@@ -49,7 +49,7 @@ async def get_user_from_id(user, event):
 
 
 async def get_user_from_event(event: NewMessage.Event, **kwargs):
-    """ Get the user from argument or replied message. """
+    """Get the user from argument or replied message."""
     reply_msg: Message = await event.get_reply_message()
     user = kwargs.get("user", None)
 

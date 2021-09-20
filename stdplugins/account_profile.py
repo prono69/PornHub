@@ -107,7 +107,7 @@ async def _(event):
 
 @borg.on(admin_cmd(pattern="delpfp ?(.*)"))
 async def remove_profilepic(delpfp):
-    """ For .delpfp command, delete your current profile picture in Telegram. """
+    """For .delpfp command, delete your current profile picture in Telegram."""
     group = delpfp.text[8:]
     if group == "all":
         lim = 0
@@ -134,7 +134,7 @@ async def remove_profilepic(delpfp):
 
 @borg.on(admin_cmd(pattern="username ?(.*)"))
 async def update_username(username):
-    """ For .username command, set a new username in Telegram. """
+    """For .username command, set a new username in Telegram."""
     newusername = username.pattern_match.group(1)
     try:
         await username.client(UpdateUsernameRequest(newusername))

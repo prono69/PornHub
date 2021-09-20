@@ -28,7 +28,7 @@ async def setlang(prog):
 
 @borg.on(admin_cmd(pattern="kar00 ?(.*)"))
 async def carbon_api(e):
-    """ A Wrapper for carbon.now.sh """
+    """A Wrapper for carbon.now.sh"""
     await e.edit("`Processing..`")
     CARBON = "https://carbon.now.sh/?l={lang}&code={code}"
     global CARBONLANG

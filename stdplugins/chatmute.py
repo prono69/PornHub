@@ -13,7 +13,7 @@ MODULE.append("chatmute")
 
 @borg.on(admin_cmd(pattern="unmutechat"))
 async def unmute_chat(unm_e):
-    """ For .unmutechat command, unmute a muted chat. """
+    """For .unmutechat command, unmute a muted chat."""
     try:
         from sql_helpers.keep_read_sql import unkread
     except AttributeError:
@@ -27,7 +27,7 @@ async def unmute_chat(unm_e):
 
 @borg.on(admin_cmd(pattern="mutechat"))
 async def mute_chat(mute_e):
-    """ For .mutechat command, mute any chat. """
+    """For .mutechat command, mute any chat."""
     try:
         from sql_helpers.keep_read_sql import kread
     except AttributeError:
@@ -45,7 +45,7 @@ async def mute_chat(mute_e):
 
 
 async def keep_read(message):
-    """ The mute logic. """
+    """The mute logic."""
     try:
         from sql_helpers.keep_read_sql import is_kread
     except AttributeError:

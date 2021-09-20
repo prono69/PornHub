@@ -7,7 +7,7 @@ from uniborg.util import admin_cmd
 
 @borg.on(admin_cmd(pattern="sysd", outgoing=True))
 async def sysdetails(sysd):
-    """ a. """
+    """a."""
     if not sysd.text[0].isalpha() and sysd.text[0] not in ("/", "#", "@", "!"):
         try:
             neo = "neofetch --off --color_blocks off --bold off --cpu_temp C \

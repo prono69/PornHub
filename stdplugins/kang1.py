@@ -44,7 +44,7 @@ combot_stickers_url = "https://combot.org/telegram/stickers?q="
 
 @borg.on(admin_cmd(pattern="kang ?(.*)"))
 async def kang(args):
-    """ For .kang command, kangs stickers or creates new ones. """
+    """For .kang command, kangs stickers or creates new ones."""
     user = await borg.get_me()
     if not user.username:
         try:
@@ -287,7 +287,7 @@ async def kang(args):
 
 
 async def resize_photo(photo):
-    """ Resize the given photo to 512x512 """
+    """Resize the given photo to 512x512"""
     image = Image.open(photo)
     if (image.width and image.height) < 512:
         size1 = image.width

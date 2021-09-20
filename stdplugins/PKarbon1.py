@@ -15,7 +15,7 @@ from uniborg.util import admin_cmd
 @borg.on(admin_cmd(pattern="kar1 ?(.*)", allow_sudo=True))
 async def carbon_api(e):
     if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
-        """ A Wrapper for carbon.now.sh """
+        """A Wrapper for carbon.now.sh"""
         hmm = await e.reply("🔲🔲🔲🔲🔲")
         CARBON = "https://carbon.now.sh/?bg=rgba(249%2C237%2C212%2C0)&t=synthwave-84&wt=none&l=application%2Fjson&ds=true&dsyoff=20px&dsblur=0px&wc=true&wa=true&pv=56px&ph=0px&ln=false&fl=1&fm=IBM%20Plex%20Mono&fs=14.5px&lh=153%25&si=false&es=4x&wm=false&code={code}"
         CARBONLANG = "en"

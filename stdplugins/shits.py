@@ -103,7 +103,7 @@ async def dotifycmd(message):
 
 @borg.on(admin_cmd(pattern="doty ?(.*)"))
 async def dotificmd(message):
-    """Image to BW dots """
+    """Image to BW dots"""
     mode = True
     reply, pix = await parse(message)
     if reply:

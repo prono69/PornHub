@@ -10,7 +10,7 @@ filedir = f"{Config.TMP_DOWNLOAD_DIRECTORY}extracted/"
 
 @borg.on(events.NewMessage(pattern=("runzip")))
 async def _(event):
-    """ remote link to unzip archive """
+    """remote link to unzip archive"""
     await event.edit("`Processing...`")
     textx = await event.get_reply_message()
     message = event.pattern_match.group(1)

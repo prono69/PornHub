@@ -28,7 +28,7 @@ opener.addheaders = [("User-agent", useragent)]
 
 @borg.on(admin_cmd(pattern=r"reverse(?: |$)(\d*)"))
 async def okgoogle(img):
-    """ For .reverse command, Google search images and stickers. """
+    """For .reverse command, Google search images and stickers."""
     if os.path.isfile("okgoogle.png"):
         os.remove("okgoogle.png")
 

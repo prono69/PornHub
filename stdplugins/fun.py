@@ -181,7 +181,7 @@ async def _(event):
 
 @borg.on(admin_cmd(pattern="disable runs", outgoing=True))
 async def disable_runs(norun):
-    """ Some people don't like running... """
+    """Some people don't like running..."""
     if not norun.text[0].isalpha() and norun.text[0] not in ("/", "#", "@", "!"):
         global DISABLE_RUN
         DISABLE_RUN = True
@@ -190,7 +190,7 @@ async def disable_runs(norun):
 
 @borg.on(admin_cmd(pattern="enable runs", outgoing=True))
 async def enable_runs(run):
-    """ But some do! """
+    """But some do!"""
     if not run.text[0].isalpha() and run.text[0] not in ("/", "#", "@", "!"):
         global DISABLE_RUN
         DISABLE_RUN = False

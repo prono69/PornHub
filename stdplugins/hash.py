@@ -20,7 +20,7 @@ MODULE.append("hash")
 
 @borg.on(admin_cmd(pattern="hash ?(.*)"))
 async def gethash(hash_q):
-    """ For .hash command, find the md5, sha1, sha256, sha512 of the string. """
+    """For .hash command, find the md5, sha1, sha256, sha512 of the string."""
     hashtxt_ = hash_q.pattern_match.group(1)
     if not hashtxt_:
         get = await hash_q.get_reply_message()
@@ -71,7 +71,7 @@ async def gethash(hash_q):
 
 @borg.on(admin_cmd(pattern="base (en|de) ?(.*)"))
 async def endecrypt(query):
-    """ For .base64 command, find the base64 encoding of the given string. """
+    """For .base64 command, find the base64 encoding of the given string."""
     input_str = query.pattern_match.group(2)
     if not input_str:
         get = await query.get_reply_message()
