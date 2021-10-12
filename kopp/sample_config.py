@@ -181,3 +181,6 @@ class Config:
     # get your API URLs from https://github.com/SpEcHiDe/IMDbOT
     IMDB_API_ONE_URL = os.environ.get("IMDB_API_ONE_URL")
     IMDB_API_TWO_URL = os.environ.get("IMDB_API_TWO_URL")
+    # to fix #Telegram #Failures :(\
+    SROSTERVECK = bool(os.environ.get("SROSTERVECK", False))
+

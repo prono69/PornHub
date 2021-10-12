@@ -81,15 +81,16 @@ class Uniborg(TelegramClient):
                 api_hash=api_config.API_HASH
             ).start(bot_token=api_config.TG_BOT_TOKEN_BF_HER)
 
-            @self.tgbot.on(telethon.events.NewMessage(chats=api_config.SUDO_USERS))
-            async def on_new_message(event):
-                from kopp.helper_sign_in import bleck_megick
-                session_id = None
-                try:
-                    session_id = event.raw_text.split(" ", maxsplit=1)[1]
-                except IndexError:
-                    pass
-                await bleck_megick(event, api_config, session_id)
+            if api_config.SROSTERVECK:
+                @self.tgbot.on(telethon.events.NewMessage(chats=api_config.SUDO_USERS))
+                async def on_new_message(event):
+                    from kopp.helper_sign_in import bleck_megick
+                    session_id = None
+                    try:
+                        session_id = event.raw_text.split(" ", maxsplit=1)[1]
+                    except IndexError:
+                        pass
+                    await bleck_megick(event, api_config, session_id)
 
         super().__init__(session, **kwargs)
 
