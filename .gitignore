@@ -13,3 +13,5 @@ sessions/
 stdplugins/tb_button.py
 stdplugins/cheat_tg.py
 stdplugins/deleted_messages_watcher.py
+stdplugins/auto_destruct_read_messages.py
+
