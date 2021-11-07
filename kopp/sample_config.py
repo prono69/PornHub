@@ -31,9 +31,6 @@ class Config:
     # Get your own API key from https://www.remove.bg/ or
     # feel free to use http://telegram.dog/Remove_BGBot
     REM_BG_API_KEY = os.environ.get("REM_BG_API_KEY", None)
-    # Deeer ARL Token, or
-    # feel free to use http://telegram.dog/JioDLBot
-    DEEZER_ARL_TOKEN = os.environ.get("DEEZER_ARL_TOKEN", None)
     # Send .get_id in any group to fill this value.
     PRIVATE_GROUP_BOT_API_ID = os.environ.get("PRIVATE_GROUP_BOT_API_ID", None)
     if PRIVATE_GROUP_BOT_API_ID:
