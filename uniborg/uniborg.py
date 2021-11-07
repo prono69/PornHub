@@ -44,11 +44,14 @@ class Uniborg(TelegramClient):
 
         self._KEEP_SAFE = [
             # critical
-            "APP_ID", "API_HASH", "TG_BOT_TOKEN_BF_HER", "TG_BOT_USER_NAME_BF_HER", "DATABASE_URL", "TELE_GRAM_2FA_CODE",
+            "APP_ID", "API_HASH",
+            "TG_BOT_TOKEN_BF_HER", "TG_BOT_USER_NAME_BF_HER",
+            "DATABASE_URL",
+            "TELE_GRAM_2FA_CODE",
             # un-official
-            "OPEN_WEATHER_MAP_APPID", "IBM_WATSON_CRED_URL", "IBM_WATSON_CRED_PASSWORD", "HASH_TO_TORRENT_API", "OCR_SPACE_API_KEY", "REM_BG_API_KEY",
+            "OPEN_WEATHER_MAP_APPID", "HASH_TO_TORRENT_API",
+            "OCR_SPACE_API_KEY", "REM_BG_API_KEY",
             # meme-s
-            "DEEZER_ARL_TOKEN",
             "LT_QOAN_NOE_FF_MPEG_URL", "DMCA_TG_REPLY_MESSAGE",
             "IMDB_API_ONE_URL", "IMDB_API_TWO_URL",
             "USE_TG_BOT_APP_ID", "PROXY_WORKER_S",

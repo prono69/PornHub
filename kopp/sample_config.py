@@ -26,10 +26,6 @@ class Config:
     COMMAND_HAND_LER = os.environ.get("COMMAND_HAND_LER", "\.")
     # Get your own APPID from https://api.openweathermap.org/data/2.5/weather
     OPEN_WEATHER_MAP_APPID = os.environ.get("OPEN_WEATHER_MAP_APPID", None)
-    # This is required for the speech to text module.
-    # Get your USERNAME from https://console.bluemix.net/docs/services/speech-to-text/getting-started.html
-    IBM_WATSON_CRED_URL = os.environ.get("IBM_WATSON_CRED_URL", None)
-    IBM_WATSON_CRED_PASSWORD = os.environ.get("IBM_WATSON_CRED_PASSWORD", None)
     # Get a Free API Key from OCR.Space
     OCR_SPACE_API_KEY = os.environ.get("OCR_SPACE_API_KEY", None)
     # Get your own API key from https://www.remove.bg/ or
