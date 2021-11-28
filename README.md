@@ -81,7 +81,7 @@ The modular design of the project enhances your Telegram experience
 through [plugins](https://github.com/SpEcHiDe/uniborg/tree/master/stdplugins)
 which you can enable or disable on demand.
 
-Each plugin gets the `borg`, `logger`, `Config`, `tgbot` magical
+Each plugin gets the `borg`, `logger`, `Config` magical
 [variables](https://github.com/spechide/UniBorg/blob/488eff632e65103ba7017d4f52777d22ddd52ea2/uniborg/uniborg.py#L76-L80)
 to ease their use. Thus creating a plugin as easy as adding
 a new file under the plugin directory to do the job:

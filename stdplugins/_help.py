@@ -47,10 +47,10 @@ async def _(event):
     ][
         str(event.id)
     ] = help_string + "\n\n" + s_help_string
-    tgbotusername = Config.TG_BOT_USER_NAME_BF_HER  # pylint:disable=E0602
-    if tgbotusername is not None:
+    if borg.tgbot:
+        tgbot_username = await tgbot.get_me()
         results = await borg.inline_query(  # pylint:disable=E0602
-            tgbotusername,
+            tgbot_username,
             f"@UniBorg {event.chat_id} {event.id}"
         )
         await results[0].click(

@@ -68,7 +68,7 @@ async def all_messages_catcher(event):
 
     ammoca_message += f"{who_m} നിങ്ങളെ [{where_m}]({message_link}) ൽ ടാഗ് ചെയ്തു"
 
-    await tgbot.send_message(
+    await borg.tgbot.send_message(
         entity=Config.PRIVATE_CHANNEL_BOT_API_ID,
         message=ammoca_message,
         link_preview=False,

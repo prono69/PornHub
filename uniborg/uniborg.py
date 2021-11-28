@@ -36,6 +36,7 @@ class Uniborg(TelegramClient):
         self.n_plugin_path = n_plugin_path
         self.db_plugin_path = db_plugin_path
         self.config = api_config
+        self.load_tgbot = load_tgbot
 
         kwargs = {
             "device_model": "GNU/Linux nonUI",
@@ -79,7 +80,7 @@ class Uniborg(TelegramClient):
 
         self.tgbot = None
         if (
-            load_tgbot and
+            self.load_tgbot and
             api_config.TG_BOT_USER_NAME_BF_HER is not None
         ):
             # ForTheGreatrerGood of beautification
@@ -167,8 +168,6 @@ class Uniborg(TelegramClient):
         mod.logger = logging.getLogger(shortname)
         # declare Config and tgbot to be accessible by all modules
         mod.Config = self.config
-        if self.config.TG_BOT_USER_NAME_BF_HER is not None:
-            mod.tgbot = self.tgbot
         mod.slitu = utils
         mod.BOT_START_TIME = time.time()
 
