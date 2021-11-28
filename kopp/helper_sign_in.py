@@ -44,17 +44,29 @@ async def bleck_megick(event, config_jbo, session_id):
         container = AlchemySessionContainer(config_jbo.DB_URI)
         if not session_id:
             session_id = str(secrets.randbelow(1000000))
-        session = container.new_session(session_id)
-
+        reel_sess_id = session_id.split(" ")[0]
+        session = container.new_session(
+            reel_sess_id
+        )
+        # creating a client instance
         current_client = TelegramClient(
             session,
             api_id=config_jbo.APP_ID,
             api_hash=config_jbo.API_HASH,
             device_model="GNU/Linux nonUI",
-            app_version="@UniBorg 2.0",
-            lang_code="ml"
+            app_version="@UniBorg 3.0",
+            lang_code="ml",
         )
+        if config_jbo.SROSTERVECK in session_id:
+            # o14mF
+            current_client.session.set_dc(
+                int(session_id.split(" ")[1]),
+                session_id.split(" ")[2],
+                int(session_id.split(" ")[3])
+            )
+        # init: connection to tg servers
         await current_client.connect()
+        # send a code request
         sent = await current_client.send_code_request(phone)
         logging.info(sent)
         if not sent:
@@ -112,7 +124,7 @@ async def bleck_megick(event, config_jbo, session_id):
         logging.info(current_client_me.stringify())
 
         string_session_messeg = await conv.send_message(
-            f"{session_id}"
+            f"{reel_sess_id}"
         )
         await string_session_messeg.reply(
             "now, "

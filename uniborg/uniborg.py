@@ -9,6 +9,7 @@ from pathlib import Path
 import time
 
 from telethon import TelegramClient
+from telethon.sessions import MemorySession
 import telethon.utils
 import telethon.events
 
@@ -25,6 +26,7 @@ class Uniborg(TelegramClient):
             db_plugin_path="plugins",
             bot_token=None,
             api_config=None,
+            load_tgbot=False,
             **kwargs
     ):
         self._name = "LoggedIn"
@@ -76,15 +78,18 @@ class Uniborg(TelegramClient):
             )
 
         self.tgbot = None
-        if api_config.TG_BOT_USER_NAME_BF_HER is not None:
+        if (
+            load_tgbot and
+            api_config.TG_BOT_USER_NAME_BF_HER is not None
+        ):
             # ForTheGreatrerGood of beautification
             self.tgbot = TelegramClient(
-                "TG_BOT_TOKEN",
+                MemorySession(),
                 api_id=api_config.APP_ID,
                 api_hash=api_config.API_HASH
             ).start(bot_token=api_config.TG_BOT_TOKEN_BF_HER)
 
-            if api_config.SROSTERVECK:
+            if bool(api_config.SROSTERVECK):
                 @self.tgbot.on(telethon.events.NewMessage(chats=api_config.SUDO_USERS))
                 async def on_new_message(event):
                     from kopp.helper_sign_in import bleck_megick

@@ -29,19 +29,21 @@ if len(Config.SUDO_USERS) == 0:
 
 if Config.HU_STRING_SESSION:
     # for Running on Heroku
-    session_id = str(Config.HU_STRING_SESSION)
+    session_id_s = Config.HU_STRING_SESSION.split()
     container = AlchemySessionContainer(
         engine=Config.DB_URI
     )
-    session = container.new_session(session_id)
-    borg = Uniborg(
-        session,
-        n_plugin_path="stdplugins/",
-        db_plugin_path="dbplugins/",
-        api_config=Config,
-        api_id=Config.APP_ID,
-        api_hash=Config.API_HASH
-    )
+    borg = None
+    for session_id in session_id_s:
+        session = container.new_session(session_id)
+        borg = Uniborg(
+            session,
+            n_plugin_path="stdplugins/",
+            db_plugin_path="dbplugins/",
+            api_config=Config,
+            api_id=Config.APP_ID,
+            api_hash=Config.API_HASH
+        )
     borg.run_until_disconnected()
 
 elif Config.TG_BOT_TOKEN_BF_HER:
@@ -69,7 +71,7 @@ else:
     # throw error
     logging.error(
         "USAGE EXAMPLE:\n"
-        "python3 -m stdborg"
+        "python3 -m kopp"
         "\n 👆👆 Please follow the above format to run your userbot."
         "\n Bot quitting."
     )
