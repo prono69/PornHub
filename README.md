@@ -11,6 +11,13 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 Mozilla Public License for more details.
 
 
+## disclaimer
+
+⚠️ This fork uses "requests" module in various places, instead of the async alternative. ⚠️
+
+- This was an attempt to learn userbot development using Telethon, __this project is now no longer usable__, and is FORKed and MODIFied to suit MY needs, so **use at your own risk**.
+
+
 ## installing
 
 #### The Easiest Way
@@ -48,7 +55,7 @@ python3 -m venv venv
 pip install -r requirements.txt
 cp sample_config.env config.env
 # <edit config.env with appropriate values>
-python3 -m stdborg
+python3 -m kopp
 ```
 
 ## internals
@@ -56,9 +63,6 @@ python3 -m stdborg
 The core features offered by the custom `TelegramClient` live under the
 [`uniborg/`](https://github.com/SpEcHiDe/uniborg/tree/master/uniborg)
 directory, with some utilities, enhancements, the `_core` plugin, and the `_inline_bot` plugin.
-
-
-## [@SpEcHlDe](https://telegram.dog/ThankTelegram)
 
 - Only five of the environment variables are mandatory.
 - Please read the [WiKi](https://github.com/SpEcHiDe/UniBorg/wiki) to understand the use of the variables.
@@ -69,7 +73,6 @@ directory, with some utilities, enhancements, the `_core` plugin, and the `_inli
     - `TG_BOT_USER_NAME_BF_HER`: 
     - `DATABASE_URL`: 
 - The userbot should work without setting the non-mandatory environment variables.
-- Please report any issues to the support group: [@SpEcHlDe](https://t.me/joinchat/AHAujEjG4FBO-TH-NrVVbg)
 
 
 ## design
@@ -90,14 +93,10 @@ async def handler(event):
     await event.reply("hey")
 ```
 
-## disclaimer
-
-⚠️ This fork uses "requests" module in various places, instead of the async alternative. ⚠️
-
 
 ## learning
 
-Check out the already-mentioned [plugins](https://github.com/SpEcHiDe/UniBorg/tree/master/stdplugins) directory, or some third-party [plugins](https://telegram.dog/UniBorg) to learn how to write your own, and consider reading [Telethon's documentation](http://telethon.readthedocs.io/).
+Check out the already-mentioned [plugins](https://github.com/SpEcHiDe/UniBorg/tree/master/stdplugins) directory, or some third-party [plugins](https://telegram.dog/UniBorg) to learn how to write your own, and consider reading [Telethon's documentation](http://docs.telethon.dev/).
 
 
 ## credits
@@ -106,4 +105,3 @@ Check out the already-mentioned [plugins](https://github.com/SpEcHiDe/UniBorg/tr
 Thanks to:
 - [lonami](https://lonami.dev) for creating [Telethon](https://github.com/lonamiwebs/Telethon)
 - [![CopyLeft](https://telegra.ph/file/b514ed14d994557a724cb.jpg)](https://telegra.ph/file/fab1017e21c42a5c1e613.mp4 "CopyLeft Credit Video")
-
