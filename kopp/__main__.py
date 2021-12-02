@@ -43,7 +43,7 @@ if Config.HU_STRING_SESSION:
             api_config=Config,
             api_id=Config.APP_ID,
             api_hash=Config.API_HASH,
-            load_tgbot=True if borg is not None else False
+            load_tgbot=True if borg is None else False
         )
     borg.run_until_disconnected()
 
