@@ -21,10 +21,10 @@ async def _(event):
         ):
             i += 1
             msgs.append(message)
-            if len(msgs) == 100:
+            if len(msgs) >= 100:
                 await event.client.delete_messages(event.chat_id, msgs, revoke=True)
                 msgs = []
-        if len(msgs) <= 100:
+        if len(msgs) > 0:
             await event.client.delete_messages(event.chat_id, msgs, revoke=True)
             msgs = []
             await event.delete()
