@@ -15,6 +15,7 @@ from telethon.tl.functions.messages import GetPeerDialogsRequest
 from telethon.tl.functions.channels import GetParticipantRequest
 from telethon.tl.types import ChannelParticipantAdmin, ChannelParticipantCreator
 from telethon.tl.types import MessageEntityPre, DocumentAttributeFilename
+from telethon.tl.types import Channel
 from telethon.tl.tlobject import TLObject
 from telethon.errors import MessageTooLongError
 import datetime
@@ -386,3 +387,22 @@ async def gmp(message: Message) -> List[Message]:
     return [
         msg for msg in messages if msg and msg.grouped_id == grouped_id
     ]
+
+
+def get_message_link(message: Message) -> str:
+    chat_ = message.chat
+    if (
+        hasattr(chat_, "username") and
+        chat_.username
+    ):
+        return (
+            f"https://t.me/{chat_.username}/{message.id}"
+        )
+    chat_id, message_id = None, None
+    if isinstance(chat_, Channel):
+        chat_id, message_id = chat_.id, message.id
+    else:
+        chat_id, message_id = "UniBorg", message.id
+    return (
+        f"https://t.me/c/{chat_id}/{message_id}"
+    )
