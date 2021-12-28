@@ -389,9 +389,10 @@ async def gmp(message: Message) -> List[Message]:
     ]
 
 
-def get_message_link(message: Message) -> str:
+def get_message_link(message: Message, fp_: bool) -> str:
     chat_ = message.chat
     if (
+        not fp_ and
         hasattr(chat_, "username") and
         chat_.username
     ):
