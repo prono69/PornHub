@@ -1,11 +1,11 @@
 python-dotenv>=0.10
 
-# https://stackoverflow.com/a/1098834
 # telethon==1.19.0
-https://github.com/SpEcHiDe/Telethon/archive/a3626136c62f01255d781d2907e660bbc63adcad.zip
+https://github.com/SpEcHiDe/Telethon/archive/6fdb5ab69e7c9277f18100f25b86c18ca01ee7ff.zip
 # telethon-session-sqlalchemy==0.2.15
 https://github.com/SpEcHiDe/telethon-session-sqlalchemy/archive/heroku-deps.zip
 # cryptg==0.2.post2
+# https://stackoverflow.com/a/1098834
 # NSL-0.3:(
 
 # GET / POST network requests
