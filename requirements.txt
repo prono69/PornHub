@@ -1,9 +1,12 @@
 python-dotenv>=0.10
 
-telethon==1.19.0
+# https://stackoverflow.com/a/1098834
+# telethon==1.19.0
+https://github.com/SpEcHiDe/Telethon/archive/a3626136c62f01255d781d2907e660bbc63adcad.zip
 # telethon-session-sqlalchemy==0.2.15
 https://github.com/SpEcHiDe/telethon-session-sqlalchemy/archive/heroku-deps.zip
-cryptg==0.2.post2
+# cryptg==0.2.post2
+# NSL-0.3:(
 
 # GET / POST network requests
 asyncio==3.4.3
@@ -12,51 +15,47 @@ aiofiles==0.5.0
 
 aria2p==0.9.1
 
-beautifulsoup4
-cfscrape
+beautifulsoup4==4.9.3
+cfscrape==2.1.1
 
-coffeehouse
+deezloader==2021.9.22
 
-deezloader
-
-emoji
+emoji==0.6.0
 
 googletrans==3.1.0a0
-gtts
+gtts==2.2.1
 
 hachoir==3.1.1
 
 Pillow==8.0
 
-PyLyrics
+PyLyrics==1.1.0
 
-pySmartDL
+pySmartDL==1.3.4
 
-python-barcode
-python-magic
+python-barcode==0.13.1
+python-magic==0.4.18
 
-qrcode
+qrcode==6.1
 
-regex
+regex==2020.11.13
 
-requests
+requests==2.25.1
 
-selenium
+selenium==3.141.0
 
-speedtest-cli
+speedtest-cli==2.1.2
 
 psycopg2-binary==2.8.6
 sqlalchemy==1.3.23
 
-telegraph
-webpage2telegraph
+telegraph==1.4.1
+webpage2telegraph==2021.7.14
 
-urbandict
-
-youtube-dl
+urbandict==0.6.1
 
 google-api-python-client==1.7.11
 oauth2client==4.1.3
 httplib2==0.13.1
 
-justwatch
+justwatch==0.5.1
