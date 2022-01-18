@@ -1,4 +1,4 @@
-### ⚠️Warning: // **This repo is DEAD and it's Very sus Repo.// DONT USE THIS REPO. USE pepecat Insted :) kthxbye .** :( /
+### ⚠️Warning: // **This repo is DEAD and it's Very sus Repo.// DONT USE THIS REPO. USE [PEPECAT](https://github.com/prono69/pepecat) Insted :) kthxbye .** :( /
 
 #click_the_pepe_photo_below_to_deploy_or_the_deploy_button
 
