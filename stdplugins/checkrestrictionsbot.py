@@ -34,7 +34,7 @@ def get_restriction_string(a) -> str:
     b = ""
     c = ""
     if isinstance(a, Channel):
-        c = f"[{a.title}](https://t.me/c/{a.id}/{2})"
+        c = f'[{a.title}](https://t.me/c/{a.id}/2)'
     elif isinstance(a, User):
         c = f"[{a.first_name}](tg://user?id={a.id})"
     elif isinstance(a, Chat):

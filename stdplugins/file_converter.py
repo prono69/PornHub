@@ -48,7 +48,7 @@ async def _(event):
                     )
                 )
             )
-            io = io + 1
+            io += 1
     except Exception as e:  # pylint:disable=C0103,W0703
         await event.edit(str(e))
     else:
@@ -103,7 +103,7 @@ async def _(event):
                 ]
                 voice_note = False
                 supports_streaming = True
-            
+
             logger.info(command_to_run)
             t_response, e_response = await slitu.run_command(command_to_run)
             os.remove(downloaded_file_name)
@@ -148,4 +148,4 @@ async def _(event):
                 await event.edit(
                     f"[{io} / {tot}] converted in {ms_two} seconds"
                 )
-            io = io + 1
+            io += 1

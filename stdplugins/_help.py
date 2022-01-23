@@ -40,13 +40,11 @@ async def _(event):
     help_string += f"<b>Total Disk Space</b>: <code>{total}</code>\n"
     help_string += f"<b>Used Disk Space</b>: <code>{used}</code>\n"
     help_string += f"<b>Free Disk Space</b>: <code>{free}</code>\n\n"
-    help_string += f"UserBot Forked from https://github.com/udf/uniborg"
-    borg._iiqsixfourstore[str(event.chat_id)] = {}
-    borg._iiqsixfourstore[
-        str(event.chat_id)
-    ][
-        str(event.id)
-    ] = help_string + "\n\n" + s_help_string
+    help_string += 'UserBot Forked from https://github.com/udf/uniborg'
+    borg._iiqsixfourstore[str(event.chat_id)] = {
+        str(event.id): help_string + "\n\n" + s_help_string
+    }
+
     if borg.tgbot:
         tgbot_username = await tgbot.get_me()
         results = await borg.inline_query(  # pylint:disable=E0602
@@ -138,7 +136,7 @@ def check_data_base_heal_th():
         # to check database we will execute raw query
         SESSION.execute("SELECT 1")
     except Exception as e:
-        output = f"❌ {str(e)}"
+        output = f'❌ {e}'
         is_database_working = False
     else:
         output = "✅"

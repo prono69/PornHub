@@ -52,7 +52,7 @@ async def _(event):
     try:
         dc_id, _ = get_input_location(replied_user.profile_photo)
     except Exception as e:
-        dc_id = f"Need a Profile Picture to check {str(e)} **this**"
+        dc_id = f'Need a Profile Picture to check {e} **this**'
     caption = (
         f"ID: <code>{user_id}</code>\n"
         f"First Name: <a href='tg://user?id={user_id}'>{first_name}</a>\n"

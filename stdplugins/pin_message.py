@@ -7,10 +7,7 @@ from telethon.tl import functions, types
 async def _(event):
     if event.fwd_from:
         return
-    silent = True
-    input_str = event.pattern_match.group(1)
-    if input_str:
-        silent = False
+    silent = not (input_str := event.pattern_match.group(1))
     if event.message.reply_to_msg_id is not None:
         message_id = event.message.reply_to_msg_id
         try:

@@ -118,8 +118,7 @@ async def _(event):
     if event.fwd_from:
         return
     mone = await event.reply("Processing ...")
-    input_str = event.pattern_match.group(1)
-    if input_str:
+    if input_str := event.pattern_match.group(1):
         G_DRIVE_F_PARENT_ID = input_str
         await mone.edit(f"Custom Folder ID set successfully. The next uploads will upload to {G_DRIVE_F_PARENT_ID} till `.gdriveclear`")
         await event.delete()
@@ -233,7 +232,7 @@ async def _(event):
 # Get mime type and name of given file
 def file_ops(file_path):
     mime_type = guess_type(file_path)[0]
-    mime_type = mime_type if mime_type else "text/plain"
+    mime_type = mime_type or "text/plain"
     file_name = file_path.split("/")[-1]
     return file_name, mime_type
 
@@ -304,9 +303,10 @@ async def upload_file(http, file_path, file_name, mime_type, event, parent_id):
             percentage = int(status.progress() * 100)
             progress_str = "[{0}{1}]\nProgress: {2}%\n".format(
                 "".join(["█" for i in range(math.floor(percentage / 5))]),
-                "".join(["░" for i in range(20 - math.floor(percentage / 5))]),
-                round(percentage, 2)
+                "".join(["░" for _ in range(20 - math.floor(percentage / 5))]),
+                round(percentage, 2),
             )
+
             current_message = f"uploading to gDrive\nFile Name: {file_name}\n{progress_str}"
             if display_message != current_message:
                 try:

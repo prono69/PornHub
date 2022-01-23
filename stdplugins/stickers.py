@@ -32,10 +32,9 @@ async def _(event):
         )
         return
     reply_message = await event.get_reply_message()
-    sticker_emoji = "🔥"
-    input_str = event.pattern_match.group(1)
-    if input_str:
-        sticker_emoji = input_str
+    sticker_emoji = (
+        input_str if (input_str := event.pattern_match.group(1)) else "🔥"
+    )
 
     userid = borg.uid
     packname = f"{userid}'s @UniBorg Pack"

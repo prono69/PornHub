@@ -78,14 +78,12 @@ def get_movie_details(soup):
     if inline and len(inline) > 0:
         for io in inline:
             mov_details.append(io)
-    tags = soup.get("duration")
-    if tags:
+    if tags := soup.get("duration"):
         mov_details.append(tags)
     if mov_details and len(mov_details) > 1:
-        mov_details_text = ' | '.join(mov_details)
+        return ' | '.join(mov_details)
     else:
-        mov_details_text = mov_details[0] if mov_details else ''
-    return mov_details_text
+        return mov_details[0] if mov_details else ''
 
 
 def get_countries_and_languages(soup):

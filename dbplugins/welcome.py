@@ -10,8 +10,7 @@ from sql_helpers.welcome_sql import get_current_welcome_settings, \
 
 @borg.on(events.ChatAction())  # pylint:disable=E0602
 async def _(event):
-    cws = get_current_welcome_settings(event.chat_id)
-    if cws:
+    if cws := get_current_welcome_settings(event.chat_id):
         # logger.info(event.stringify())
         """user_added=False,
         user_joined=True,

@@ -18,17 +18,15 @@ async def _(event):
     bot_username = event.pattern_match.group(1)
     search_query = event.pattern_match.group(2)
     try:
-        output_message = ""
         bot_results = await event.client.inline_query(
             bot_username,
             search_query
         )
-        for i, result in enumerate(bot_results):
-            output_message += "{} {} `{}`\n\n".format(
+        output_message = "".join("{} {} `{}`\n\n".format(
                 result.title,
                 result.description,
                 ".icb " + bot_username + " " + str(i + 1) + " " + search_query
-            )
+            ) for i, result in enumerate(bot_results))
         await event.edit(output_message)
     except Exception as e:
         await event.edit("{} did not respond correctly, for **{}**!\n\
@@ -82,11 +80,12 @@ if Config.TG_BOT_USER_NAME_BF_HER is not None and borg.tgbot is not None:
         elif query.startswith("tb_btn"):
             result = builder.article(
                 "Button Parser © @UniBorg",
-                text=f"powered by @UniBorg",
+                text='powered by @UniBorg',
                 buttons=[],
                 link_preview=True,
-                parse_mode="html"
+                parse_mode="html",
             )
+
         else:
             result = builder.article(
                 "© @UniBorg",
@@ -145,9 +144,7 @@ if Config.TG_BOT_USER_NAME_BF_HER is not None and borg.tgbot is not None:
     async def on_plug_in_callback_query_handler(event):
         plugin_name = event.data_match.group(1).decode("UTF-8")
         try:
-            help_string = borg._plugins[plugin_name].__doc__[
-                0:125
-            ]  # pylint:disable=E0602
+            help_string = borg._plugins[plugin_name].__doc__[:125]
         except (ValueError, TypeError):
             help_string = None
         reply_pop_up_alert = help_string if help_string is not None else \

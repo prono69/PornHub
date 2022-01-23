@@ -33,9 +33,7 @@ async def _(event):
             m_list = None
             with open(downloaded_file_name, "rb") as fd:
                 m_list = fd.readlines()
-            message = ""
-            for m in m_list:
-                message += m.decode("UTF-8")
+            message = "".join(m.decode("UTF-8") for m in m_list)
             os.remove(downloaded_file_name)
         else:
             message = previous_message.message
@@ -97,8 +95,7 @@ async def _(event):
                 # some sites, do not have JSON response
                 pass
 
-        rk = paste_store_.get("RAV")
-        if rk:
+        if rk := paste_store_.get("RAV"):
             rkp = rk.split(".")
             for kp in rkp:
                 response_jn = response_jn.get(kp)

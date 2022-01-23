@@ -14,15 +14,12 @@ from sql_helpers.snips_sql import get_snips, add_snip, remove_snip, get_all_snip
 @borg.on(slitu.admin_cmd(pattern=r'\#(\S+)', outgoing=True))
 async def on_snip(event):
     name = event.pattern_match.group(1)
-    snip = get_snips(name)
-    if snip:
+    if snip := get_snips(name):
         msg_o = await event.client.get_messages(
             entity=Config.PRIVATE_CHANNEL_BOT_API_ID,
             ids=int(snip.f_mesg_id)
         )
-        message_id = event.message.id
-        if event.reply_to_msg_id:
-            message_id = event.reply_to_msg_id
+        message_id = event.reply_to_msg_id or event.message.id
         media_message = msg_o.media
         if isinstance(media_message, types.MessageMediaWebPage):
             media_message = None

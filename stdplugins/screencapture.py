@@ -40,9 +40,7 @@ async def _(event):
         # saves screenshot of entire page
         driver.close()
         await event.edit("Stopping Google Chrome BIN")
-        message_id = event.message.id
-        if event.reply_to_msg_id:
-            message_id = event.reply_to_msg_id
+        message_id = event.reply_to_msg_id or event.message.id
         with io.BytesIO(im_png) as out_file:
             out_file.name = "@UniBorg.ScreenCapture.PNG"
             await borg.send_file(

@@ -16,8 +16,7 @@ async def _(event):
         return
     input_str = event.pattern_match.group(1)
     sample_url = "https://da.gd/dns/{}".format(input_str)
-    response_api = requests.get(sample_url).text
-    if response_api:
+    if response_api := requests.get(sample_url).text:
         await event.edit("DNS records of {} are \n{}".format(input_str, response_api))
     else:
         await event.edit("i can't seem to find {} on the internet".format(input_str))
@@ -29,8 +28,7 @@ async def _(event):
         return
     input_str = event.pattern_match.group(1)
     sample_url = "https://da.gd/s?url={}".format(input_str)
-    response_api = requests.get(sample_url).text
-    if response_api:
+    if response_api := requests.get(sample_url).text:
         await event.edit("Generated {} for {}.".format(response_api, input_str))
     else:
         await event.edit("something is wrong. please try again later.")

@@ -7,8 +7,7 @@ async def _(event):
     if event.fwd_from:
         return
     entity = event.chat_id
-    input_str = event.pattern_match.group(1)
-    if input_str:
+    if input_str := event.pattern_match.group(1):
         entity = input_str
     status_message = await event.reply(
         "... this might take some time "
@@ -25,9 +24,7 @@ async def _(event):
             if message.file.mime_type not in hmm:
                 hmm[message.file.mime_type] = 0
             hmm[message.file.mime_type] += message.file.size
-    hnm = {}
-    for key in hmm:
-        hnm[key] = slitu.humanbytes(hmm[key])
+    hnm = {key: slitu.humanbytes(hmm[key]) for key in hmm}
     await status_message.edit(
         slitu.yaml_format(hnm),
         parse_mode=slitu.parse_pre

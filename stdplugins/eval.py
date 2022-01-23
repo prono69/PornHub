@@ -18,10 +18,7 @@ async def _(event):
         return
     s_m_ = await event.reply("...")
     cmd = event.raw_text.split(" ", maxsplit=1)[1]
-    reply_to_id = event.message.id
-    if event.reply_to_msg_id:
-        reply_to_id = event.reply_to_msg_id
-
+    reply_to_id = event.reply_to_msg_id or event.message.id
     old_stderr = sys.stderr
     old_stdout = sys.stdout
     redirected_output = sys.stdout = io.StringIO()
@@ -72,8 +69,11 @@ async def aexec(code, smessatatus):
     p = lambda _x: print(slitu.yaml_format(_x))
     reply = await event.get_reply_message()
     exec(
-        f'async def __aexec(message, reply, client, p): ' +
-        '\n event = smessatatus = message' +
-        ''.join(f'\n {l}' for l in code.split('\n'))
+        (
+            'async def __aexec(message, reply, client, p): '
+            + '\n event = smessatatus = message'
+        )
+        + ''.join(f'\n {l}' for l in code.split('\n'))
     )
+
     return await locals()['__aexec'](message, reply, message.client, p)

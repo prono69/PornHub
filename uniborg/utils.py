@@ -52,8 +52,7 @@ def admin_cmd(**args):
 
     # add blacklist chats, UB should not respond in these chats
     args["blacklist_chats"] = True
-    black_list_chats = list(Config.UB_BLACK_LIST_CHAT)
-    if black_list_chats:
+    if black_list_chats := list(Config.UB_BLACK_LIST_CHAT):
         args["chats"] = black_list_chats
 
     return events.NewMessage(**args)
@@ -134,14 +133,8 @@ def time_formatter(seconds: int) -> str:
     result = ""
     v_m = 0
     remainder = seconds
-    r_ange_s = {
-        "days": (24 * 60 * 60),
-        "hours": (60 * 60),
-        "minutes": 60,
-        "seconds": 1
-    }
-    for age in r_ange_s:
-        divisor = r_ange_s[age]
+    r_ange_s = {"days": 24 * 60 * 60, "hours": 60**2, "minutes": 60, "seconds": 1}
+    for age, divisor in r_ange_s.items():
         v_m, remainder = divmod(remainder, divisor)
         v_m = int(v_m)
         if v_m != 0:
@@ -168,15 +161,11 @@ async def is_admin(client, chat_id, user_id):
 
 # Not that Great but it will fix sudo reply
 async def edit_or_reply(event, text):
-    if event.sender_id in Config.SUDO_USERS:
-        await event.delete()
-        reply_to = await event.get_reply_message()
-        if reply_to:
-            return await reply_to.reply(text)
-        else:
-            return await event.reply(text)
-    else:
+    if event.sender_id not in Config.SUDO_USERS:
         return await event.edit(text)
+    await event.delete()
+    reply_to = await event.get_reply_message()
+    return await reply_to.reply(text) if reply_to else await event.reply(text)
 
 
 async def run_command(command: List[str]) -> (str, str):
@@ -211,10 +200,9 @@ async def take_screen_shot(video_file, output_directory, ttl):
     t_response, e_response = await run_command(file_genertor_command)
     if os.path.lexists(out_put_file_name):
         return out_put_file_name
-    else:
-        logger.info(e_response)
-        logger.info(t_response)
-        return None
+    logger.info(e_response)
+    logger.info(t_response)
+    return None
 
 # https://github.com/Nekmo/telegram-upload/blob/master/telegram_upload/video.py#L26
 
@@ -239,10 +227,9 @@ async def cult_small_video(video_file, output_directory, start_time, end_time):
     t_response, e_response = await run_command(file_genertor_command)
     if os.path.lexists(out_put_file_name):
         return out_put_file_name
-    else:
-        logger.info(e_response)
-        logger.info(t_response)
-        return None
+    logger.info(e_response)
+    logger.info(t_response)
+    return None
 
 # these two functions are stolen from
 # https://github.com/udf/uniborg/blob/kate/stdplugins/info.py
@@ -369,14 +356,9 @@ async def gmp(message: Message) -> List[Message]:
     copyied logic from
     https://github.com/pyrogram/pyrogram/blob/ecd83c594cc72e10e13d8c427e817f3495d97252/pyrogram/methods/messages/get_media_group.py#L33"""
     messages = await message.client.get_messages(
-        entity=message.chat,
-        ids=[
-            msg_id for msg_id in range(
-                message.id - 9,
-                message.id + 10
-            )
-        ]
+        entity=message.chat, ids=list(range(message.id - 9, message.id + 10))
     )
+
 
     grouped_id = 0
     if len(messages) == 19:

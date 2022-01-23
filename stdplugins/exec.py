@@ -16,9 +16,7 @@ async def _(event):
     DELAY_BETWEEN_EDITS = 0.3
     PROCESS_RUN_TIME = 100
     cmd = event.raw_text.split(" ", maxsplit=1)[1]
-    reply_to_id = event.message.id
-    if event.reply_to_msg_id:
-        reply_to_id = event.reply_to_msg_id
+    reply_to_id = event.reply_to_msg_id or event.message.id
     start_time = time.time() + PROCESS_RUN_TIME
     process = await asyncio.create_subprocess_shell(
         cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
@@ -35,7 +33,7 @@ async def _(event):
         e = borg.secure_text(e)
         o = borg.secure_text(o)
 
-    OUTPUT = f"**QUERY:**\n"
+    OUTPUT = '**QUERY:**\n'
     OUTPUT += f"__Command:__\n`{cmd}` \n"
     OUTPUT += f"__PID:__\n`{process.pid}`\n\n"
     OUTPUT += f"**stderr:** \n`{e}`\n"

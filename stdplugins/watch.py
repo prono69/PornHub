@@ -14,7 +14,6 @@ justwatchapi.__dict__["HEADER"] = {
 
 
 def get_stream_data(query):
-    stream_data = {}
     # Compatibility for Current Userge Users
     try:
         country = Config.WATCH_COUNTRY
@@ -24,9 +23,15 @@ def get_stream_data(query):
     just_watch = JustWatch(country=country)
     results = just_watch.search_for_item(query=query)
     movie = results["items"][0]
-    stream_data["title"] = movie["title"]
-    stream_data["movie_thumb"] = "https://images.justwatch.com" + \
-        movie["poster"].replace("{profile}", "") + "s592"
+    stream_data = {
+        'title': movie["title"],
+        'movie_thumb': (
+            "https://images.justwatch.com"
+            + movie["poster"].replace("{profile}", "")
+            + "s592"
+        ),
+    }
+
     stream_data["release_year"] = movie["original_release_year"]
     try:
         print(movie["cinema_release_date"])
