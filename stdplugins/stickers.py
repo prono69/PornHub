@@ -145,7 +145,8 @@ async def _(event):
             InputStickerSetID(
                 id=stickerset_attr.stickerset.id,
                 access_hash=stickerset_attr.stickerset.access_hash
-            )
+            ),
+            0
         )
     )
     pack_emojis = []
@@ -187,7 +188,7 @@ async def _(event):
                 "to get lottIE JSON containing the vector information."
             )
         sticker_set = await event.client(
-            GetStickerSetRequest(sticker_attrib.stickerset)
+            GetStickerSetRequest(sticker_attrib.stickerset, 0)
         )
         pack_file = os.path.join(
             Config.TMP_DOWNLOAD_DIRECTORY,
@@ -300,7 +301,7 @@ async def silently_send_message(conv, text):
 
 async def stickerset_exists(conv, setname):
     try:
-        await borg(GetStickerSetRequest(InputStickerSetShortName(setname)))
+        await borg(GetStickerSetRequest(InputStickerSetShortName(setname), 0))
         response = await silently_send_message(conv, "/addsticker")
         if response.text == "Invalid pack selected.":
             await silently_send_message(conv, "/cancel")
