@@ -10,7 +10,8 @@ from telethon.extensions.markdown import DEFAULT_URL_RE
 from telethon.utils import add_surrogate, del_surrogate
 from telethon.tl.types import (
     MessageEntityBold, MessageEntityItalic, MessageEntityCode,
-    MessageEntityPre, MessageEntityTextUrl
+    MessageEntityPre, MessageEntityTextUrl,
+    MessageEntitySpoiler
 )
 
 
@@ -72,6 +73,7 @@ MATCHERS = [
     (get_tag_parser('__', MessageEntityItalic)),
     (get_tag_parser('```', partial(MessageEntityPre, language=''))),
     (get_tag_parser('`', MessageEntityCode)),
+    (get_tag_parser('||', MessageEntitySpoiler)),
     (re.compile(r'\+\+(.+?)\+\+'), parse_aesthetics),
     (re.compile(r'([^/\w]|^)(/?(r/\w+))'), parse_subreddit),
     (re.compile(r"(?<!\w)(~{2})(?!~~)(.+?)(?<!~)\1(?!\w)"), parse_strikethrough)
@@ -105,9 +107,7 @@ def parse(message, old_entities=None):
 
         text, entity = parser(match)
 
-        # Shift old entities after our current position (so they stay in place)
-        shift = len(text) - len(match[0])
-        if shift:
+        if shift := len(text) - len(match[0]):
             for e in old_entities[after:]:
                 e.offset += shift
 
@@ -133,11 +133,10 @@ def parse(message, old_entities=None):
 async def reparse(event):
     old_entities = event.message.entities or []
     parser = partial(parse, old_entities=old_entities)
-    message, msg_entities = await borg._parse_message_text(event.raw_text, parser)
+    message, msg_entities = await event.client._parse_message_text(event.raw_text, parser)
     if len(old_entities) >= len(msg_entities) and event.raw_text == message:
         return
-
-    await borg(EditMessageRequest(
+    await event.client(EditMessageRequest(
         peer=await event.get_input_chat(),
         id=event.message.id,
         message=message,

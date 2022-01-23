@@ -1,11 +1,9 @@
 """ Get the Bots in any chat*
 Syntax: .get_bot"""
-from telethon import events
 from telethon.tl.types import ChannelParticipantAdmin, ChannelParticipantsBots
-from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd(pattern="get_bot ?(.*)"))
+@borg.on(slitu.admin_cmd(pattern="get_bot ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -18,12 +16,12 @@ async def _(event):
     else:
         mentions = "Bots in {} channel: \n".format(input_str)
         try:
-            chat = await borg.get_entity(input_str)
+            chat = await event.client.get_entity(input_str)
         except Exception as e:
             await event.edit(str(e))
             return None
     try:
-        async for x in borg.iter_participants(chat, filter=ChannelParticipantsBots):
+        async for x in event.client.iter_participants(chat, filter=ChannelParticipantsBots):
             if isinstance(x.participant, ChannelParticipantAdmin):
                 mentions += "\n ⚜️ [{}](tg://user?id={}) `{}`".format(x.first_name, x.id, x.id)
             else:

@@ -8,26 +8,32 @@ Available Commands:
 .clearfilter"""
 import asyncio
 import re
-from telethon import events, utils
+from telethon import events
 from telethon.tl import types
-from sql_helpers.filters_sql import get_filter, add_filter, remove_filter, get_all_filters, remove_all_filters
-from uniborg.util import admin_cmd
+from sql_helpers.filters_sql import (
+    get_filter,
+    add_filter,
+    remove_filter,
+    get_all_filters,
+    remove_all_filters
+)
 
 
 DELETE_TIMEOUT = 300
 last_triggered_filters = {}
 
 
-@borg.on(admin_cmd(incoming=True))
+@borg.on(slitu.admin_cmd(incoming=True))
 async def on_snip(event):
     name = event.raw_text
-    if event.chat_id in last_triggered_filters:
-        if name in last_triggered_filters[event.chat_id]:
-            # avoid userbot spam
-            # "I demand rights for us bots, we are equal to you humans." -Henri Koivuneva (t.me/UserbotTesting/2698)
-            return False
-    snips = get_all_filters(event.chat_id)
-    if snips:
+    if (
+        event.chat_id in last_triggered_filters
+        and name in last_triggered_filters[event.chat_id]
+    ):
+        # avoid userbot spam
+        # "I demand rights for us bots, we are equal to you humans." -Henri Koivuneva (t.me/UserbotTesting/2698)
+        return False
+    if snips := get_all_filters(event.chat_id):
         for snip in snips:
             pattern = r"( |^|[^\w])" + re.escape(snip.keyword) + r"( |$|[^\w])"
             if re.search(pattern, name, flags=re.IGNORECASE):
@@ -35,9 +41,7 @@ async def on_snip(event):
                     entity=Config.PRIVATE_CHANNEL_BOT_API_ID,
                     ids=int(snip.f_mesg_id)
                 )
-                message_id = event.message.id
-                if event.reply_to_msg_id:
-                    message_id = event.reply_to_msg_id
+                message_id = event.reply_to_msg_id or event.message.id
                 await event.client.send_message(
                     event.chat_id,
                     msg_o.message,
@@ -51,7 +55,7 @@ async def on_snip(event):
                 last_triggered_filters[event.chat_id].remove(name)
 
 
-@borg.on(admin_cmd(pattern="savefilter (.*)"))
+@borg.on(slitu.admin_cmd(pattern="savefilter (.*)"))
 async def on_snip_save(event):
     name = event.pattern_match.group(1)
     msg = await event.get_reply_message()
@@ -68,7 +72,7 @@ async def on_snip_save(event):
         await event.edit("Reply to a message with `savefilter keyword` to save the filter")
 
 
-@borg.on(admin_cmd(pattern="listfilters"))
+@borg.on(slitu.admin_cmd(pattern="listfilters"))
 async def on_snip_list(event):
     all_snips = get_all_filters(event.chat_id)
     OUT_STR = "Available Filters in the Current Chat:\n"
@@ -93,14 +97,14 @@ async def on_snip_list(event):
         await event.edit(OUT_STR)
 
 
-@borg.on(admin_cmd(pattern="clearfilter (.*)"))
+@borg.on(slitu.admin_cmd(pattern="clearfilter (.*)"))
 async def on_snip_delete(event):
     name = event.pattern_match.group(1)
     remove_filter(event.chat_id, name)
     await event.edit(f"filter {name} deleted successfully")
 
 
-@borg.on(admin_cmd(pattern="clearallfilters"))
+@borg.on(slitu.admin_cmd(pattern="clearallfilters"))
 async def on_all_snip_delete(event):
     remove_all_filters(event.chat_id)
-    await event.edit(f"filters **in current chat** deleted successfully")
+    await event.edit('filters **in current chat** deleted successfully')

@@ -1,12 +1,9 @@
 """Dictionary Plugin for @UniBorg
 Syntax: .meaning <word>"""
-
 import requests
-from telethon import events
-from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd(pattern="meaning (.*)"))
+@borg.on(slitu.admin_cmd(pattern="meaning (.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -16,7 +13,7 @@ async def _(event):
     caption_str = f"Meaning of __{input_str}__\n"
     try:
         response = requests.get(input_url, headers=headers).json()
-        pronounciation = response.get("p")
+        pronounciation = response.get("p")[0]
         meaning_dict = response.get("lwo")
         for current_meaning in meaning_dict:
             current_meaning_type = current_meaning.get("type")
@@ -24,9 +21,7 @@ async def _(event):
             caption_str += f"**{current_meaning_type}**: {current_meaning_definition}\n\n"
     except Exception as e:
         caption_str = str(e)
-    reply_msg_id = event.message.id
-    if event.reply_to_msg_id:
-        reply_msg_id = event.reply_to_msg_id
+    reply_msg_id = event.reply_to_msg_id or event.message.id
     try:
         await borg.send_file(
             event.chat_id,

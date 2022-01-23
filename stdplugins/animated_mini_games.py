@@ -1,21 +1,28 @@
 """@RollADie and @AnimatedDart
 Viewer and Executor discretion is advised,
 while executing / running any parts of the code
-Nobody is reponsible for your account, 
+Nobody is reponsible for your account,
 Your account might get banned for offensive use of this script,
 The below script is only intended for "fun" and "entertainment"
 and please read https://t.me/UniBorg/39 before proceeding to run this!"""
 from telethon.tl.types import InputMediaDice
-from uniborg.util import admin_cmd
 
 # EMOJI CONSTANTS
 DART_E_MOJI = "🎯"
 DICE_E_MOJI = "🎲"
 BALL_E_MOJI = "🏀"
+FOOT_E_MOJI = "⚽"
+SLOT_M_MOJI = "🎰"
+BAII_E_MOJI = "🎳"
 # EMOJI CONSTANTS
 
+#TODO: get emojies from AppConfig ? :\\
 
-@borg.on(admin_cmd(pattern=f"({DART_E_MOJI}|{DICE_E_MOJI}|{BALL_E_MOJI}) ?(.*)"))
+
+
+@borg.on(slitu.admin_cmd(
+    pattern=f"({DART_E_MOJI}|{DICE_E_MOJI}|{BALL_E_MOJI}|{FOOT_E_MOJI}|{SLOT_M_MOJI}|{BAII_E_MOJI}) ?(.*)")
+)
 async def _(event):
     if event.fwd_from:
         return
@@ -29,7 +36,7 @@ async def _(event):
     if input_str:
         try:
             required_number = int(input_str)
-            while not r.media.value == required_number:
+            while r.media.value != required_number:
                 await r.delete()
                 r = await reply_message.reply(file=InputMediaDice(emoticon=emoticon))
         except:

@@ -6,10 +6,9 @@ import asyncio
 import json
 import re
 from telethon import events, custom
-from uniborg.util import admin_cmd, humanbytes
 
 
-@borg.on(admin_cmd(  # pylint:disable=E0602
+@borg.on(slitu.admin_cmd(  # pylint:disable=E0602
     pattern="ib (.[^ ]*) (.*)"
 ))
 async def _(event):
@@ -19,26 +18,22 @@ async def _(event):
     bot_username = event.pattern_match.group(1)
     search_query = event.pattern_match.group(2)
     try:
-        output_message = ""
         bot_results = await event.client.inline_query(
             bot_username,
             search_query
         )
-        i = 0
-        for result in bot_results:
-            output_message += "{} {} `{}`\n\n".format(
+        output_message = "".join("{} {} `{}`\n\n".format(
                 result.title,
                 result.description,
                 ".icb " + bot_username + " " + str(i + 1) + " " + search_query
-            )
-            i = i + 1
+            ) for i, result in enumerate(bot_results))
         await event.edit(output_message)
     except Exception as e:
         await event.edit("{} did not respond correctly, for **{}**!\n\
             `{}`".format(bot_username, search_query, str(e)))
 
 
-@borg.on(admin_cmd(  # pylint:disable=E0602
+@borg.on(slitu.admin_cmd(  # pylint:disable=E0602
     pattern="icb (.[^ ]*) (.[^ ]*) (.*)"
 ))
 async def _(event):
@@ -59,48 +54,58 @@ async def _(event):
 
 
 # pylint:disable=E0602
-if Config.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
-    @tgbot.on(events.InlineQuery)  # pylint:disable=E0602
+if Config.TG_BOT_USER_NAME_BF_HER is not None and borg.tgbot is not None:
+    @borg.tgbot.on(events.InlineQuery)  # pylint:disable=E0602
     async def inline_handler(event):
         builder = event.builder
         result = None
         query = event.text
-        if event.query.user_id == borg.uid and query.startswith("@UniBorg"):
-            rev_text = query[::-1]
+        if event.sender_id == borg.uid and query.startswith("@UniBorg "):
+            try:
+                _, ko, pno = query.split(" ")
+                actual_text = borg._iiqsixfourstore[ko][pno]
+                del borg._iiqsixfourstore[ko]
+            except IndexError:
+                actual_text = query
             buttons = paginate_help(0, borg._plugins, "helpme")
             result = builder.article(
                 "© @UniBorg",
                 text="{}\nCurrently Loaded Plugins: {}".format(
-                    query, len(borg._plugins)),
+                    actual_text, len(borg._plugins)
+                ),
                 buttons=buttons,
-                link_preview=False
+                link_preview=False,
+                parse_mode="html"
             )
         elif query.startswith("tb_btn"):
             result = builder.article(
                 "Button Parser © @UniBorg",
-                text=f"powered by @UniBorg",
+                text='powered by @UniBorg',
                 buttons=[],
-                link_preview=True
+                link_preview=True,
+                parse_mode="html",
             )
+
         else:
             result = builder.article(
                 "© @UniBorg",
-                text="""Try @UniBorg
-You can log-in as Bot or User and do many cool things with your Telegram account.
-
-All instaructions to run @UniBorg in your PC has been explained in https://github.com/SpEcHiDe/UniBorg""",
+                text=(
+                    "Try @UniBorg\n"
+                    "You can log-in as Bot or User and do many cool things with your Telegram account.\n\n"
+                    "All instructions to run @UniBorg in your PC has been explained in https://github.com/SpEcHiDe/UniBorg"
+                ),
                 buttons=[
                     [custom.Button.url("Join the Channel", "https://telegram.dog/UniBorg"), custom.Button.url(
                         "Join the Group", "tg://some_unsupported_feature")],
                     [custom.Button.url(
                         "Source Code", "tg://some_unsupported_feature")]
                 ],
-                link_preview=False
+                link_preview=False,
+                parse_mode="html"
             )
         await event.answer([result] if result else None)
 
-
-    @tgbot.on(events.callbackquery.CallbackQuery(  # pylint:disable=E0602
+    @borg.tgbot.on(events.callbackquery.CallbackQuery(  # pylint:disable=E0602
         data=re.compile(b"helpme_next\((.+?)\)")
     ))
     async def on_plug_in_callback_query_handler(event):
@@ -115,12 +120,11 @@ All instaructions to run @UniBorg in your PC has been explained in https://githu
             reply_pop_up_alert = "Please get your own @UniBorg, and don't edit my messages!"
             await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
 
-
-    @tgbot.on(events.callbackquery.CallbackQuery(  # pylint:disable=E0602
+    @borg.tgbot.on(events.callbackquery.CallbackQuery(  # pylint:disable=E0602
         data=re.compile(b"helpme_prev\((.+?)\)")
     ))
     async def on_plug_in_callback_query_handler(event):
-        if event.query.user_id == borg.uid:  # pylint:disable=E0602
+        if event.sender_id == borg.uid:  # pylint:disable=E0602
             current_page_number = int(
                 event.data_match.group(1).decode("UTF-8"))
             buttons = paginate_help(
@@ -134,14 +138,15 @@ All instaructions to run @UniBorg in your PC has been explained in https://githu
             reply_pop_up_alert = "Please get your own @UniBorg, and don't edit my messages!"
             await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
 
-
-    @tgbot.on(events.callbackquery.CallbackQuery(  # pylint:disable=E0602
+    @borg.tgbot.on(events.callbackquery.CallbackQuery(  # pylint:disable=E0602
         data=re.compile(b"ub_plugin_(.*)")
     ))
     async def on_plug_in_callback_query_handler(event):
         plugin_name = event.data_match.group(1).decode("UTF-8")
-        help_string = borg._plugins[plugin_name].__doc__[
-            0:125]  # pylint:disable=E0602
+        try:
+            help_string = borg._plugins[plugin_name].__doc__[:125]
+        except (ValueError, TypeError):
+            help_string = None
         reply_pop_up_alert = help_string if help_string is not None else \
             "No DOCSTRING has been setup for {} plugin".format(plugin_name)
         reply_pop_up_alert += "\n\n Use .unload {} to remove this plugin\n\
@@ -152,10 +157,7 @@ All instaructions to run @UniBorg in your PC has been explained in https://githu
 def paginate_help(page_number, loaded_plugins, prefix):
     number_of_rows = Config.NO_OF_BUTTONS_DISPLAYED_IN_H_ME_CMD
     number_of_cols = 2
-    helpable_plugins = []
-    for p in loaded_plugins:
-        if not p.startswith("_"):
-            helpable_plugins.append(p)
+    helpable_plugins = [p for p in loaded_plugins if not p.startswith("_")]
     helpable_plugins = sorted(helpable_plugins)
     modules = [custom.Button.inline(
         "{} {}".format("✅", x),

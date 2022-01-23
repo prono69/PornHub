@@ -3,12 +3,10 @@ Group Administrations bots where you are SUDO
 Available Commands:
 .gban REASON
 .ungban REASON"""
-from telethon import events
 import asyncio
-from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd(pattern="gban ?(.*)"))
+@borg.on(slitu.admin_cmd(pattern="gban ?(.*)"))
 async def _(event):
     if Config.G_BAN_LOGGER_GROUP is None:
         await event.edit("ENV VAR is not set. This module will not work.")
@@ -18,18 +16,15 @@ async def _(event):
     reason = event.pattern_match.group(1)
     if event.reply_to_msg_id:
         r = await event.get_reply_message()
-        if r.forward:
-            r_from_id = r.forward.from_id or r.from_id
-        else:
-            r_from_id = r.from_id
-        await borg.send_message(
+        r_sender_id = r.forward.sender_id or r.sender_id if r.forward else r.sender_id
+        await event.client.send_message(
             Config.G_BAN_LOGGER_GROUP,
-            "!gban [user](tg://user?id={}) {}".format(r_from_id, reason)
+            "!gban [user](tg://user?id={}) {}".format(r_sender_id, reason)
         )
     await event.delete()
 
 
-@borg.on(admin_cmd(pattern="ungban ?(.*)"))
+@borg.on(slitu.admin_cmd(pattern="ungban ?(.*)"))
 async def _(event):
     if Config.G_BAN_LOGGER_GROUP is None:
         await event.edit("ENV VAR is not set. This module will not work.")
@@ -39,9 +34,9 @@ async def _(event):
     reason = event.pattern_match.group(1)
     if event.reply_to_msg_id:
         r = await event.get_reply_message()
-        r_from_id = r.from_id
-        await borg.send_message(
+        r_sender_id = r.sender_id
+        await event.client.send_message(
             Config.G_BAN_LOGGER_GROUP,
-            "!ungban [user](tg://user?id={}) {}".format(r_from_id, reason)
+            "!ungban [user](tg://user?id={}) {}".format(r_sender_id, reason)
         )
     await event.delete()

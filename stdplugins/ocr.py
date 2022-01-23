@@ -5,7 +5,6 @@ import json
 import os
 from PIL import Image
 import requests
-from uniborg.util import admin_cmd
 
 
 def ocr_space_file(filename, overlay=False, api_key=Config.OCR_SPACE_API_KEY, language='eng'):
@@ -64,40 +63,41 @@ def progress(current, total):
         current, total, (current / total) * 100))
 
 
-@borg.on(admin_cmd(pattern="ocrlanguages"))
+@borg.on(slitu.admin_cmd(pattern="ocrlanguages"))
 async def get_ocr_languages(event):
     if event.fwd_from:
         return
-    languages = {}
-    languages["English"] = "eng"
-    languages["Arabic"] = "ara"
-    languages["Bulgarian"] = "bul"
-    languages["Chinese (Simplified)"] = "chs"
-    languages["Chinese (Traditional)"] = "cht"
-    languages["Croatian"] = "hrv"
-    languages["Czech"] = "cze"
-    languages["Danish"] = "dan"
-    languages["Dutch"] = "dut"
-    languages["Finnish"] = "fin"
-    languages["French"] = "fre"
-    languages["German"] = "ger"
-    languages["Greek"] = "gre"
-    languages["Hungarian"] = "hun"
-    languages["Korean"] = "kor"
-    languages["Italian"] = "ita"
-    languages["Japanese"] = "jpn"
-    languages["Polish"] = "pol"
-    languages["Portuguese"] = "por"
-    languages["Russian"] = "rus"
-    languages["Slovenian"] = "slv"
-    languages["Spanish"] = "spa"
-    languages["Swedish"] = "swe"
-    languages["Turkish"] = "tur"
+    languages = {
+        "English": "eng",
+        "Arabic": "ara",
+        "Bulgarian": "bul",
+        "Chinese (Simplified)": "chs",
+        "Chinese (Traditional)": "cht",
+        "Croatian": "hrv",
+        "Czech": "cze",
+        "Danish": "dan",
+        "Dutch": "dut",
+        "Finnish": "fin",
+        "French": "fre",
+        "German": "ger",
+        "Greek": "gre",
+        "Hungarian": "hun",
+        "Korean": "kor",
+        "Italian": "ita",
+        "Japanese": "jpn",
+        "Polish": "pol",
+        "Portuguese": "por",
+        "Russian": "rus",
+        "Slovenian": "slv",
+        "Spanish": "spa",
+        "Swedish": "swe",
+        "Turkish": "tur",
+    }
     a = json.dumps(languages, sort_keys=True, indent=4)
     await event.edit(str(a))
 
 
-@borg.on(admin_cmd(pattern="ocr (.*)"))
+@borg.on(slitu.admin_cmd(pattern="ocr (.*)"))
 async def parse_ocr_space_api(event):
     if event.fwd_from:
         return
@@ -108,7 +108,7 @@ async def parse_ocr_space_api(event):
     downloaded_file_name = await borg.download_media(
         await event.get_reply_message(),
         Config.TMP_DOWNLOAD_DIRECTORY,
-        progress_callback=progress
+        progress_callback=slitu.progress
     )
     if downloaded_file_name.endswith((".webp")):
         downloaded_file_name = conv_image(downloaded_file_name)
@@ -131,5 +131,3 @@ def conv_image(image):
     new_file_name = image + ".png"
     os.rename(image, new_file_name)
     return new_file_name
-
-

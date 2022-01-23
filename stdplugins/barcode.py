@@ -9,10 +9,9 @@ import os
 import time
 from barcode.writer import ImageWriter
 from datetime import datetime
-from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd(pattern="barcode ?(.*)"))
+@borg.on(slitu.admin_cmd(pattern="barcode ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -34,9 +33,7 @@ async def _(event):
             m_list = None
             with open(downloaded_file_name, "rb") as fd:
                 m_list = fd.readlines()
-            message = ""
-            for m in m_list:
-                message += m.decode("UTF-8") + "\r\n"
+            message = "".join(m.decode("UTF-8") + "\r\n" for m in m_list)
             os.remove(downloaded_file_name)
         else:
             message = previous_message.message

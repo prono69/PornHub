@@ -1,11 +1,9 @@
 """CoinFlip for @UniBorg
 Syntax: .coinflip [optional_choice]"""
-from telethon import events
 import random, re
-from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd(pattern="coinflip ?(.*)"))
+@borg.on(slitu.admin_cmd(pattern="coinflip ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return

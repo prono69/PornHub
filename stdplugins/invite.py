@@ -2,10 +2,9 @@
 Syntax: .invite <User(s)>"""
 
 from telethon import functions
-from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd(pattern="invite ?(.*)"))
+@borg.on(slitu.admin_cmd(pattern="invite ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -18,22 +17,22 @@ async def _(event):
             # https://lonamiwebs.github.io/Telethon/methods/messages/add_chat_user.html
             for user_id in to_add_users.split(" "):
                 try:
-                    await borg(functions.messages.AddChatUserRequest(
+                    await event.client(functions.messages.AddChatUserRequest(
                         chat_id=event.chat_id,
                         user_id=user_id,
-                        fwd_limit=1000000
+                        fwd_limit=999999
                     ))
                 except Exception as e:
                     await event.reply(str(e))
-            await event.edit("Invited Successfully")
         else:
             # https://lonamiwebs.github.io/Telethon/methods/channels/invite_to_channel.html
-            for user_id in to_add_users.split(" "):
-                try:
-                    await borg(functions.channels.InviteToChannelRequest(
-                        channel=event.chat_id,
-                        users=[user_id]
-                    ))
-                except Exception as e:
-                    await event.reply(str(e))
-            await event.edit("Invited Successfully")
+            user_id_s = to_add_users.split(" ")
+            user_ids = [user_id.strip() for user_id in user_id_s]
+            try:
+                await event.client(functions.channels.InviteToChannelRequest(
+                    channel=event.chat_id,
+                    users=user_ids
+                ))
+            except Exception as e:
+                await event.reply(str(e))
+        await event.edit("Invited Successfully")

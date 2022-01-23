@@ -5,12 +5,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 
 
 # the secret configuration specific things
-ENV = bool(os.environ.get("ENV", False))
-if ENV:
-    from sample_config import Config
-else:
-    if os.path.exists("config.py"):
-        from config import Development as Config
+from kopp import Config
 
 
 def start() -> scoped_session:
@@ -26,5 +21,5 @@ try:
 except AttributeError as e:
     # this is a dirty way for the work-around required for #23
     print("DB_URI is not configured. Features depending on the database might have issues.")
-    print(str(e))
+    print(e)
 

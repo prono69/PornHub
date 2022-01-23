@@ -3,17 +3,14 @@ Commands:
 .clearwelcome
 .savewelcome <Welcome Message>"""
 
-from telethon import events, utils
-from telethon.tl import types
+from telethon import events
 from sql_helpers.welcome_sql import get_current_welcome_settings, \
     add_welcome_setting, rm_welcome_setting, update_previous_welcome
-from uniborg.util import admin_cmd
 
 
 @borg.on(events.ChatAction())  # pylint:disable=E0602
 async def _(event):
-    cws = get_current_welcome_settings(event.chat_id)
-    if cws:
+    if cws := get_current_welcome_settings(event.chat_id):
         # logger.info(event.stringify())
         """user_added=False,
         user_joined=True,
@@ -43,7 +40,7 @@ async def _(event):
             update_previous_welcome(event.chat_id, current_message.id)
 
 
-@borg.on(admin_cmd(pattern="savewelcome"))  # pylint:disable=E0602
+@borg.on(slitu.admin_cmd(pattern="savewelcome"))  # pylint:disable=E0602
 async def _(event):
     if event.fwd_from:
         return
@@ -59,7 +56,7 @@ async def _(event):
         await event.edit("Welcome note saved. ")
 
 
-@borg.on(admin_cmd(pattern="clearwelcome"))  # pylint:disable=E0602
+@borg.on(slitu.admin_cmd(pattern="clearwelcome"))  # pylint:disable=E0602
 async def _(event):
     if event.fwd_from:
         return
@@ -69,6 +66,6 @@ async def _(event):
         "Welcome note cleared. " + \
         "[This](https://t.me/c/{}/{}) was your previous welcome message.".format(
             str(Config.PRIVATE_CHANNEL_BOT_API_ID)[4:],
-            cws.f_mesg_id
+            int(cws.f_mesg_id)
         )
     )

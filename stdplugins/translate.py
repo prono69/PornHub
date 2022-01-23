@@ -2,13 +2,10 @@
 Available Commands:
 .tr LanguageCode as reply to a message
 .tr LangaugeCode | text to translate"""
-
-import emoji
 from googletrans import Translator
-from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd(pattern="tr ?(.*)"))
+@borg.on(slitu.admin_cmd(pattern="tr ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -25,16 +22,16 @@ async def _(event):
     else:
         await event.edit("`.tr LanguageCode` as reply to a message")
         return
-    text = emoji.demojize(text.strip())
+    text = text.strip()
     lan = lan.strip()
     translator = Translator()
     try:
         translated = translator.translate(text, dest=lan)
         after_tr_text = translated.text
-        # TODO: emojify the :
-        # either here, or before translation
-        output_str = """**TRANSLATED** from {} to {}
-{}""".format(
+        output_str = (
+            "**TRANSLATED** from {} to {}\n"
+            "{}"
+        ).format(
             translated.src,
             lan,
             after_tr_text

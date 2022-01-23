@@ -20,13 +20,10 @@ from datetime import datetime
 import io
 import os
 import requests
-from telethon import events
-from uniborg.util import progress, admin_cmd
 
 
-@borg.on(admin_cmd(pattern="remove\.bg ?(.*)"))
+@borg.on(slitu.admin_cmd(pattern="remove\.bg ?(.*)"))
 async def _(event):
-    HELP_STR = "`.remove.bg` as reply to a media, or give a link as an argument to this command"
     if event.fwd_from:
         return
     if Config.REM_BG_API_KEY is None:
@@ -56,6 +53,7 @@ async def _(event):
         await event.edit("sending to ReMove.BG")
         output_file_name = ReTrieveURL(input_str)
     else:
+        HELP_STR = "`.remove.bg` as reply to a media, or give a link as an argument to this command"
         await event.edit(HELP_STR)
         return
     contentType = output_file_name.headers.get("content-type")
@@ -86,14 +84,13 @@ def ReTrieveFile(input_file_name):
     files = {
         "image_file": (input_file_name, open(input_file_name, "rb")),
     }
-    r = requests.post(
+    return requests.post(
         "https://api.remove.bg/v1.0/removebg",
         headers=headers,
         files=files,
         allow_redirects=True,
         stream=True
     )
-    return r
 
 
 def ReTrieveURL(input_url):
@@ -103,11 +100,10 @@ def ReTrieveURL(input_url):
     data = {
       "image_url": input_url
     }
-    r = requests.post(
+    return requests.post(
         "https://api.remove.bg/v1.0/removebg",
         headers=headers,
         data=data,
         allow_redirects=True,
         stream=True
     )
-    return r
