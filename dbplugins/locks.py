@@ -4,10 +4,9 @@ API Options: msg, media, sticker, gif, gamee, ainline, gpoll, adduser, cpin, cha
 DB Options: bots, commands, email, forward, url"""
 
 from telethon import events, functions, types
-from uniborg.util import admin_cmd, is_admin
 
 
-@borg.on(admin_cmd(pattern="lock( (?P<target>\S+)|$)"))
+@borg.on(slitu.admin_cmd(pattern="lock( (?P<target>\S+)|$)"))
 async def _(event):
      # Space weirdness in regex required because argument is optional and other
      # commands start with ".lock"
@@ -87,7 +86,7 @@ async def _(event):
             )
 
 
-@borg.on(admin_cmd(pattern="unlock ?(.*)"))
+@borg.on(slitu.admin_cmd(pattern="unlock ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -110,7 +109,7 @@ async def _(event):
         )
 
 
-@borg.on(admin_cmd(pattern="curenabledlocks"))
+@borg.on(slitu.admin_cmd(pattern="curenabledlocks"))
 async def _(event):
     if event.fwd_from:
         return
@@ -160,7 +159,7 @@ async def check_incoming_messages(event):
         logger.info("DB_URI is not configured.")
         logger.info(str(e))
         return False
-    if await is_admin(event.client, event.chat_id, event.from_id):
+    if await slitu.is_admin(event.client, event.chat_id, event.sender_id):
         return
     peer_id = event.chat_id
     if is_locked(peer_id, "commands"):
@@ -178,15 +177,14 @@ async def check_incoming_messages(event):
                     "I don't seem to have ADMIN permission here. \n`{}`".format(str(e))
                 )
                 update_lock(peer_id, "commands", False)
-    if is_locked(peer_id, "forward"):
-        if event.fwd_from:
-            try:
-                await event.delete()
-            except Exception as e:
-                await event.reply(
-                    "I don't seem to have ADMIN permission here. \n`{}`".format(str(e))
-                )
-                update_lock(peer_id, "forward", False)
+    if is_locked(peer_id, "forward") and event.fwd_from:
+        try:
+            await event.delete()
+        except Exception as e:
+            await event.reply(
+                "I don't seem to have ADMIN permission here. \n`{}`".format(str(e))
+            )
+            update_lock(peer_id, "forward", False)
     if is_locked(peer_id, "email"):
         entities = event.message.entities
         is_email = False
@@ -227,13 +225,13 @@ async def _(event):
         logger.info("DB_URI is not configured.")
         logger.info(str(e))
         return False
-    if await is_admin(event.client, event.chat_id, event.action_message.from_id):
+    if await slitu.is_admin(event.client, event.chat_id, event.action_message.sender_id):
         return
     if is_locked(event.chat_id, "bots"):
         # bots are limited Telegram accounts,
         # and cannot join by themselves
         if event.user_added:
-            users_added_by = event.action_message.from_id
+            users_added_by = event.action_message.sender_id
             is_ban_able = False
             rights = types.ChatBannedRights(
                 until_date=None,

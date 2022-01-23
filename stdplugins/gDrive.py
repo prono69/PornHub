@@ -14,7 +14,6 @@ import os
 import time
 from datetime import datetime
 from telethon import events
-from uniborg.util import admin_cmd, progress, humanbytes
 #
 from mimetypes import guess_type
 from googleapiclient.discovery import build
@@ -27,7 +26,10 @@ import httplib2
 
 
 # Path to token json file, it should be in same directory as script
-G_DRIVE_TOKEN_FILE = Config.TMP_DOWNLOAD_DIRECTORY + "/auth_token.txt"
+G_DRIVE_TOKEN_FILE = os.path.join(
+    Config.TMP_DOWNLOAD_DIRECTORY,
+    "auth_token.txt"
+)
 # Copy your credentials from the APIs Console
 CLIENT_ID = Config.G_DRIVE_CLIENT_ID
 CLIENT_SECRET = Config.G_DRIVE_CLIENT_SECRET
@@ -41,7 +43,7 @@ G_DRIVE_F_PARENT_ID = None
 G_DRIVE_DIR_MIME_TYPE = "application/vnd.google-apps.folder"
 
 
-@borg.on(admin_cmd(pattern="ugdrive ?(.*)", allow_sudo=True))
+@borg.on(slitu.admin_cmd(pattern="ugdrive ?(.*)", allow_sudo=True))
 async def _(event):
     if event.fwd_from:
         return
@@ -65,7 +67,7 @@ async def _(event):
                 reply_message,
                 Config.TMP_DOWNLOAD_DIRECTORY,
                 progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
-                    progress(d, t, mone, c_time, "trying to download")
+                    slitu.progress(d, t, mone, c_time, "trying to download")
                 )
             )
         except Exception as e:  # pylint:disable=C0103,W0703
@@ -82,7 +84,7 @@ async def _(event):
             end = datetime.now()
             ms = (end - start).seconds
             required_file_name = input_str
-            await mone.edit("Found `{}` in {} seconds.".format(input_str, ms))
+            await mone.edit("Found `{}` in {} seconds.".format(required_file_name, ms))
         else:
             await mone.edit("File Not found in local server. Give me a file path :((")
             return False
@@ -111,7 +113,7 @@ async def _(event):
         await mone.edit("File Not found in local server. Give me a file path :((")
 
 
-@borg.on(admin_cmd(pattern="gdrivesp https?://drive\.google\.com/drive/u/\d/folders/([-\w]{25,})", allow_sudo=True))
+@borg.on(slitu.admin_cmd(pattern="gdrivesp https?://drive\.google\.com/drive/u/\d/folders/([-\w]{25,})", allow_sudo=True))
 async def _(event):
     if event.fwd_from:
         return
@@ -125,7 +127,7 @@ async def _(event):
         await mone.edit("Send `.gdrivesp https://drive.google.com/drive/u/X/folders/Y` to set the folder to upload new files to")
 
 
-@borg.on(admin_cmd(pattern="gdriveclear", allow_sudo=True))
+@borg.on(slitu.admin_cmd(pattern="gdriveclear", allow_sudo=True))
 async def _(event):
     if event.fwd_from:
         return
@@ -135,7 +137,7 @@ async def _(event):
     await event.delete()
 
 
-@borg.on(admin_cmd(pattern="gdrivedir ?(.*)", allow_sudo=True))
+@borg.on(slitu.admin_cmd(pattern="gdrivedir ?(.*)", allow_sudo=True))
 async def _(event):
     if event.fwd_from:
         return
@@ -168,7 +170,7 @@ async def _(event):
         await mone.edit(f"directory {input_str} does not seem to exist")
 
 
-@borg.on(admin_cmd(pattern="drive (delete|get) ?(.*)", allow_sudo=True))
+@borg.on(slitu.admin_cmd(pattern="drive (delete|get) ?(.*)", allow_sudo=True))
 async def _(event):
     if event.fwd_from:
         return
@@ -200,7 +202,7 @@ async def _(event):
     await mone.edit(response_from_svc)
 
 
-@borg.on(admin_cmd(pattern="drive search ?(.*)", allow_sudo=True))
+@borg.on(slitu.admin_cmd(pattern="drive search ?(.*)", allow_sudo=True))
 async def _(event):
     if event.fwd_from:
         return
@@ -292,7 +294,7 @@ async def upload_file(http, file_path, file_name, mime_type, event, parent_id):
         "withLink": True
     }
     # Insert a file
-    file = drive_service.files().insert(body=body, media_body=media_body)
+    file = drive_service.files().insert(body=body, media_body=media_body, supportsTeamDrives=True)
     response = None
     display_message = ""
     while response is None:
@@ -312,7 +314,6 @@ async def upload_file(http, file_path, file_name, mime_type, event, parent_id):
                     display_message = current_message
                 except Exception as e:
                     logger.info(str(e))
-                    pass
     file_id = response.get("id")
     try:
         # Insert new permissions
@@ -320,9 +321,8 @@ async def upload_file(http, file_path, file_name, mime_type, event, parent_id):
     except:
         pass
     # Define file instance and get url for download
-    file = drive_service.files().get(fileId=file_id).execute()
-    download_url = file.get("webContentLink")
-    return download_url
+    file = drive_service.files().get(fileId=file_id, supportsTeamDrives=True).execute()
+    return file.get("webContentLink")
 
 
 async def create_directory(http, directory_name, parent_id):
@@ -339,7 +339,7 @@ async def create_directory(http, directory_name, parent_id):
     }
     if parent_id is not None:
         file_metadata["parents"] = [{"id": parent_id}]
-    file = drive_service.files().insert(body=file_metadata).execute()
+    file = drive_service.files().insert(body=file_metadata, supportsTeamDrives=True).execute()
     file_id = file.get("id")
     try:
         drive_service.permissions().insert(fileId=file_id, body=permissions).execute()
@@ -370,7 +370,7 @@ async def DoTeskWithDir(http, input_directory, event, parent_id):
 
 async def gdrive_delete(service, file_id):
     try:
-        service.files().delete(fileId=file_id).execute()
+        service.files().delete(fileId=file_id, supportsTeamDrives=True).execute()
         return f"successfully deleted {file_id} from my gDrive."
     except Exception as e:
         return str(e)
@@ -378,10 +378,9 @@ async def gdrive_delete(service, file_id):
 
 async def gdrive_list_file_md(service, file_id):
     try:
-        file = service.files().get(fileId=file_id).execute()
+        file = service.files().get(fileId=file_id, supportsTeamDrives=True).execute()
         # logger.info(file)
-        file_meta_data = {}
-        file_meta_data["title"] = file["title"]
+        file_meta_data = {"title": file["title"]}
         mimeType = file["mimeType"]
         file_meta_data["createdDate"] = file["createdDate"]
         if mimeType == G_DRIVE_DIR_MIME_TYPE:
@@ -392,8 +391,8 @@ async def gdrive_list_file_md(service, file_id):
             # is a file.
             file_meta_data["mimeType"] = file["mimeType"]
             file_meta_data["md5Checksum"] = file["md5Checksum"]
-            file_meta_data["fileSize"] = str(humanbytes(int(file["fileSize"])))
-            file_meta_data["quotaBytesUsed"] = str(humanbytes(int(file["quotaBytesUsed"])))
+            file_meta_data["fileSize"] = str(slitu.humanbytes(int(file["fileSize"])))
+            file_meta_data["quotaBytesUsed"] = str(slitu.humanbytes(int(file["quotaBytesUsed"])))
             file_meta_data["previewURL"] = file["downloadUrl"]
         return json.dumps(file_meta_data, sort_keys=True, indent=4)
     except Exception as e:
@@ -412,6 +411,8 @@ async def gdrive_search(http, search_query):
         try:
             response = drive_service.files().list(
                 q=query,
+                supportsTeamDrives=True,
+                includeTeamDriveItems=True,
                 spaces="drive",
                 fields="nextPageToken, items(id, title, mimeType)",
                 pageToken=page_token
@@ -421,10 +422,9 @@ async def gdrive_search(http, search_query):
                 file_id = file.get("id")
                 if file.get("mimeType") == G_DRIVE_DIR_MIME_TYPE:
                     msg += f"🗃️ <a href='https://drive.google.com/drive/folders/{file_id}'>{file_title}</a>"
-                    msg += f" <code>{file_id}</code>\n"
                 else:
                     msg += f"👉 <a href='https://drive.google.com/uc?id={file_id}&export=download'>{file_title}</a>"
-                    msg += f" <code>{file_id}</code>\n"
+                msg += f" <code>{file_id}</code>\n"
             page_token = response.get("nextPageToken", None)
             if page_token is None:
                 break

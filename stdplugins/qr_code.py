@@ -2,11 +2,9 @@
 Available Commands
 .getqr
 .makeqr <long text to include>"""
-from telethon import events
 import asyncio
 from datetime import datetime
 import os
-from uniborg.util import admin_cmd
 import qrcode
 from bs4 import BeautifulSoup
 
@@ -15,7 +13,7 @@ def progress(current, total):
     logger.info("Downloaded {} of {}\nCompleted {}".format(current, total, (current / total) * 100))
 
 
-@borg.on(admin_cmd(pattern="getqr"))
+@borg.on(slitu.admin_cmd(pattern="getqr"))
 async def _(event):
     if event.fwd_from:
         return
@@ -34,21 +32,12 @@ async def _(event):
         "-F", "f=@" + downloaded_file_name + "",
         "https://zxing.org/w/decode"
     ]
-    process = await asyncio.create_subprocess_exec(
-        *command_to_exec,
-        # stdout must a pipe to be accessible as process.stdout
-        stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE,
-    )
-    # Wait for the subprocess to finish
-    stdout, stderr = await process.communicate()
-    e_response = stderr.decode().strip()
-    t_response = stdout.decode().strip()
+    t_response, e_response = await slitu.run_command(command_to_exec)
     os.remove(downloaded_file_name)
     if not t_response:
         logger.info(e_response)
         logger.info(t_response)
-        await event.edit("@oo0pps .. something wrongings. Failed to decode QRCode")
+        await event.edit("oo0pps .. something wrongings. Failed to decode QRCode")
         return
     soup = BeautifulSoup(t_response, "html.parser")
     qr_contents = soup.find_all("pre")[0].text
@@ -59,7 +48,7 @@ async def _(event):
     await event.edit(qr_contents)
 
 
-@borg.on(admin_cmd(pattern="makeqr ?(.*)"))
+@borg.on(slitu.admin_cmd(pattern="makeqr ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return

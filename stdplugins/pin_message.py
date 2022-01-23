@@ -1,11 +1,9 @@
 """Pins the replied message
 Syntax: .cpin [LOUD]"""
-from telethon import events
 from telethon.tl import functions, types
-from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd(pattern="cpin ?(.*)"))
+@borg.on(slitu.admin_cmd(pattern="cpin ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -16,7 +14,7 @@ async def _(event):
     if event.message.reply_to_msg_id is not None:
         message_id = event.message.reply_to_msg_id
         try:
-            await borg(functions.messages.UpdatePinnedMessageRequest(
+            await event.client(functions.messages.UpdatePinnedMessageRequest(
                 event.chat_id,
                 message_id,
                 silent

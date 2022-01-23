@@ -12,10 +12,9 @@ from datetime import datetime
 from pySmartDL import SmartDL
 from telethon import events
 from telethon.tl.types import DocumentAttributeVideo
-from uniborg.util import admin_cmd, humanbytes, progress, time_formatter
 
 
-@borg.on(admin_cmd(pattern="download ?(.*)", allow_sudo=True))
+@borg.on(slitu.admin_cmd(pattern="download ?(.*)", allow_sudo=True))
 async def _(event):
     if event.fwd_from:
         return
@@ -28,11 +27,11 @@ async def _(event):
         reply_message = await event.get_reply_message()
         try:
             c_time = time.time()
-            downloaded_file_name = await borg.download_media(
+            downloaded_file_name = await event.client.download_media(
                 reply_message,
                 Config.TMP_DOWNLOAD_DIRECTORY,
                 progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
-                    progress(d, t, mone, c_time, "trying to download")
+                    slitu.progress(d, t, mone, c_time, "trying to download")
                 )
             )
         except Exception as e:  # pylint:disable=C0103,W0703
@@ -47,7 +46,7 @@ async def _(event):
         file_name = os.path.basename(url)
         to_download_directory = Config.TMP_DOWNLOAD_DIRECTORY
         if "|" in input_str:
-            url, file_name = input_str.split("|")
+            url, file_name = input_str.split("|", maxsplit = 1)
         url = url.strip()
         file_name = file_name.strip()
         downloaded_file_name = os.path.join(to_download_directory, file_name)
@@ -64,17 +63,18 @@ async def _(event):
             speed = downloader.get_speed()
             elapsed_time = round(diff) * 1000
             progress_str = "[{0}{1}]\nProgress: {2}%".format(
-                ''.join(["█" for i in range(math.floor(percentage / 5))]),
-                ''.join(["░" for i in range(20 - math.floor(percentage / 5))]),
+                ''.join("█" for _ in range(math.floor(percentage / 5))),
+                ''.join("░" for _ in range(20 - math.floor(percentage / 5))),
                 round(percentage, 2))
             estimated_total_time = downloader.get_eta(human=True)
             try:
-                current_message = f"trying to download\n"
-                current_message += f"URL: {url}\n"
-                current_message += f"File Name: {file_name}\n"
-                current_message += f"{progress_str}\n"
-                current_message += f"{humanbytes(downloaded)} of {humanbytes(total_length)}\n"
-                current_message += f"ETA: {estimated_total_time}"
+                current_message = f"trying to download\n"\
+                                  f"URL: {url}\n"\
+                                  f"File Name: {file_name}\n" \
+                                  f"Speed: {speed}"\
+                                  f"{progress_str}\n"\
+                                  f"{slitu.humanbytes(downloaded)} of {slitu.humanbytes(total_length)}\n"\
+                                  f"ETA: {estimated_total_time}"
                 if round(diff % 10.00) == 0 and current_message != display_message:
                     await mone.edit(current_message)
                     display_message = current_message

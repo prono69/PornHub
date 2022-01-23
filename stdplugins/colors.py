@@ -1,12 +1,10 @@
 """Color Plugin for @UniBorg
 Syntax: .color <color_code>"""
-from telethon import events
 import os
 from PIL import Image, ImageColor
-from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd(pattern="color (.*)"))
+@borg.on(slitu.admin_cmd(pattern="color (.*)"))
 async def _(event):
     if event.fwd_from:
         return

@@ -2,19 +2,15 @@
 command: .singer singer name - song name 
 by @quiec
 """
-from telethon import events
-from uniborg.util import admin_cmd
 import asyncio
 from PyLyrics import *
 
-@borg.on(admin_cmd(pattern="singer (.*)"))
+@borg.on(slitu.admin_cmd(pattern="singer (.*)"))
 async def _(event):
     if event.fwd_from:
         return
     i = 0
-
     input_str = event.pattern_match.group(1)
-    
     try:
         song = input_str.split("-")
         if len(song) == 1:
@@ -31,4 +27,3 @@ async def _(event):
                 logger.info(lyric_message)
     except ValueError:
         await event.edit("Song not found")
-

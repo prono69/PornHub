@@ -3,16 +3,23 @@ Available Commands:
 .unbanall
 .kick option
 Available Options: d, y, m, w, o, q, r """
-from telethon import events
 from datetime import datetime, timedelta
-from telethon.tl.types import UserStatusEmpty, UserStatusLastMonth, UserStatusLastWeek, UserStatusOffline, UserStatusOnline, UserStatusRecently, ChannelParticipantsKicked, ChatBannedRights
+from telethon.tl.types import (
+    UserStatusEmpty,
+    UserStatusLastMonth,
+    UserStatusLastWeek,
+    UserStatusOffline,
+    UserStatusOnline,
+    UserStatusRecently,
+    ChannelParticipantsKicked,
+    ChatBannedRights
+)
 from telethon.tl import functions, types
-from time import sleep
-import asyncio
-from uniborg.util import admin_cmd
+from telethon.errors import FloodWaitError
+from asyncio import sleep
 
 
-@borg.on(admin_cmd(pattern="unbanall ?(.*)"))
+@borg.on(slitu.admin_cmd(pattern="unbanall ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -41,7 +48,7 @@ async def _(event):
         await event.edit("{}: {} unbanned".format(event.chat_id, p))
 
 
-@borg.on(admin_cmd(pattern="ikuck ?(.*)"))
+@borg.on(slitu.admin_cmd(pattern="ikuck ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -66,8 +73,8 @@ async def _(event):
     q = 0
     r = 0
     await event.edit("Searching Participant Lists.")
-    async for i in borg.iter_participants(event.chat_id):
-        p = p + 1
+    async for i in event.client.iter_participants(event.chat_id):
+        p += 1
         #
         # Note that it's "reversed". You must set to ``True`` the permissions
         # you want to REMOVE, and leave as ``None`` those you want to KEEP.
@@ -76,33 +83,33 @@ async def _(event):
             view_messages=True
         )
         if isinstance(i.status, UserStatusEmpty):
-            y = y + 1
+            y += 1
             if "y" in input_str:
                 status, e = await ban_user(event.chat_id, i, rights)
-                if not status:
+                if status:
+                    c += 1
+                else:
                     try:
                         await event.edit("I need admin priveleges to perform this action!")
                     except:
                         pass
                     ee.append(str(e))
                     # break
-                else:
-                    c = c + 1
         if isinstance(i.status, UserStatusLastMonth):
-            m = m + 1
+            m += 1
             if "m" in input_str:
                 status, e = await ban_user(event.chat_id, i, rights)
-                if not status:
+                if status:
+                    c += 1
+                else:
                     try:
                         await event.edit("I need admin priveleges to perform this action!")
                     except:
                         pass
                     ee.append(str(e))
                     # break
-                else:
-                    c = c + 1
         if isinstance(i.status, UserStatusLastWeek):
-            w = w + 1
+            w += 1
             if "w" in input_str:
                 status, e = await ban_user(event.chat_id, i, rights)
                 if not status:
@@ -113,35 +120,35 @@ async def _(event):
                     ee.append(str(e))
                     # break
                 else:
-                    c = c + 1
+                    c += 1
         if isinstance(i.status, UserStatusOffline):
-            o = o + 1
+            o += 1
             if "o" in input_str:
                 status, e = await ban_user(event.chat_id, i, rights)
-                if not status:
+                if status:
+                    c += 1
+                else:
                     try:
                         await event.edit("I need admin priveleges to perform this action!")
                     except:
                         pass
                     ee.append(str(e))
                     # break
-                else:
-                    c = c + 1
         if isinstance(i.status, UserStatusOnline):
-            q = q + 1
+            q += 1
             if "q" in input_str:
                 status, e = await ban_user(event.chat_id, i, rights)
-                if not status:
+                if status:
+                    c += 1
+                else:
                     try:
                         await event.edit("I need admin priveleges to perform this action!")
                     except:
                         pass
                     ee.append(str(e))
                     # break
-                else:
-                    c = c + 1
         if isinstance(i.status, UserStatusRecently):
-            r = r + 1
+            r += 1
             if "r" in input_str:
                 status, e = await ban_user(event.chat_id, i, rights)
                 if not status:
@@ -152,58 +159,64 @@ async def _(event):
                     ee.append(str(e))
                     # break
                 else:
-                    c = c + 1
+                    c += 1
         if i.bot:
-            b = b + 1
+            b += 1
             if "b" in input_str:
                 status, e = await ban_user(event.chat_id, i, rights)
-                if not status:
+                if status:
+                    c += 1
+                else:
                     try:
                         await event.edit("I need admin priveleges to perform this action!")
                     except:
                         pass
                     ee.append(str(e))
                     # break
-                else:
-                    c = c + 1
         elif i.deleted:
-            d = d + 1
+            d += 1
             if "d" in input_str:
                 status, e = await ban_user(event.chat_id, i, rights)
-                if not status:
+                if status:
+                    c += 1
+                else:
                     try:
                         await event.edit("I need admin priveleges to perform this action!")
                     except:
                         pass
                     ee.append(str(e))
                     # break
-                else:
-                    c = c + 1
         elif i.status is None:
-            n = n + 1
+            n += 1
     if input_str:
-        required_string = """Kicked {} / {} users
-Deleted Accounts: {}
-UserStatusEmpty: {}
-UserStatusLastMonth: {}
-UserStatusLastWeek: {}
-UserStatusOffline: {}
-UserStatusOnline: {}
-UserStatusRecently: {}
-Bots: {}
-None: {}"""
+        required_string = (
+            "Kicked {} / {} users\n"
+            "Deleted Accounts: {}\n"
+            "UserStatusEmpty: {}\n"
+            "UserStatusLastMonth: {}\n"
+            "UserStatusLastWeek: {}\n"
+            "UserStatusOffline: {}\n"
+            "UserStatusOnline: {}\n"
+            "UserStatusRecently: {}\n"
+            "Bots: {}\n"
+            "None: {}"
+        )
         await event.edit(required_string.format(c, p, d, y, m, w, o, q, r, b, n))
-        await asyncio.sleep(5)
-    await event.edit("""Total: {} users
-Deleted Accounts: {}
-UserStatusEmpty: {}
-UserStatusLastMonth: {}
-UserStatusLastWeek: {}
-UserStatusOffline: {}
-UserStatusOnline: {}
-UserStatusRecently: {}
-Bots: {}
-None: {}""".format(p, d, y, m, w, o, q, r, b, n))
+        return
+    await event.edit(
+        (
+            "Total: {} users\n"
+            "Deleted Accounts: {}\n"
+            "UserStatusEmpty: {}\n"
+            "UserStatusLastMonth: {}\n"
+            "UserStatusLastWeek: {}\n"
+            "UserStatusOffline: {}\n"
+            "UserStatusOnline: {}\n"
+            "UserStatusRecently: {}\n"
+            "Bots: {}\n"
+            "None: {}"
+        ).format(p, d, y, m, w, o, q, r, b, n)
+    )
 
 
 async def ban_user(chat_id, i, rights):

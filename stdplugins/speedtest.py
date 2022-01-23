@@ -1,14 +1,12 @@
 """Check your internet speed powered by speedtest.net
 Syntax: .speedtest
 Available Options: image, file, text"""
-from telethon import events
 from datetime import datetime
 import io
 import speedtest
-from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd(pattern="speedtest ?(.*)"))
+@borg.on(slitu.admin_cmd(pattern="speedtest ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -43,12 +41,21 @@ async def _(event):
         response = s.results.share()
         speedtest_image = response
         if as_text:
-            await event.edit("""**SpeedTest** completed in {} seconds
-Download: {}
-Upload: {}
-Ping: {}
-Internet Service Provider: {}
-ISP Rating: {}""".format(ms, convert_from_bytes(download_speed), convert_from_bytes(upload_speed), ping_time, i_s_p, i_s_p_rating))
+            await event.edit(
+                "**SpeedTest** completed in {} seconds\n"
+                "Download: {}\n"
+                "Upload: {}\n"
+                "Ping: {}\n"
+                "Internet Service Provider: {}\n"
+                "ISP Rating: {}".format(
+                    ms,
+                    slitu.humanbytes(download_speed),
+                    slitu.humanbytes(upload_speed),
+                    ping_time,
+                    i_s_p,
+                    i_s_p_rating
+                )
+            ) 
         else:
             await borg.send_file(
                 event.chat_id,
@@ -60,26 +67,17 @@ ISP Rating: {}""".format(ms, convert_from_bytes(download_speed), convert_from_by
             )
             await event.delete()
     except Exception as exc:
-        await event.edit("""**SpeedTest** completed in {} seconds
-Download: {}
-Upload: {}
-Ping: {}
-
-__With the Following ERRORs__
-{}""".format(ms, convert_from_bytes(download_speed), convert_from_bytes(upload_speed), ping_time, str(exc)))
-
-
-def convert_from_bytes(size):
-    power = 2**10
-    n = 0
-    units = {
-        0: "",
-        1: "kilobytes",
-        2: "megabytes",
-        3: "gigabytes",
-        4: "terabytes"
-    }
-    while size > power:
-        size /= power
-        n += 1
-    return f"{round(size, 2)} {units[n]}"
+        await event.edit(
+            "**SpeedTest** completed in {} seconds\n"
+            "Download: {}\n"
+            "Upload: {}\n"
+            "Ping: {}\n\n"
+            "__With the Following ERRORs__\n"
+            "{}".format(
+                ms,
+                slitu.humanbytes(download_speed),
+                slitu.humanbytes(upload_speed),
+                ping_time,
+                str(exc)
+            )
+        )

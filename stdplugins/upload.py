@@ -1,6 +1,6 @@
-# This Source Code Form is subject to the terms of the GNU
-# General Public License, v.3.0. If a copy of the GPL was not distributed with this
-# file, You can obtain one at https://www.gnu.org/licenses/gpl-3.0.en.html
+# UniBorg Telegram UseRBot 
+# Copyright (C) 2020 @UniBorg
+
 """Uploads Files to Telegram
 Available Commands:
 .upload <Path To File>
@@ -9,15 +9,12 @@ Available Commands:
 
 import asyncio
 import os
-import subprocess
 import time
 from datetime import datetime
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
-from telethon import events
 from telethon.tl.types import DocumentAttributeVideo
 from telethon.tl.types import DocumentAttributeAudio
-from uniborg.util import progress, admin_cmd
 
 
 thumb_image_path = Config.TMP_DOWNLOAD_DIRECTORY + "/thumb_image.jpg"
@@ -28,12 +25,13 @@ def get_lst_of_files(input_directory, output_lst):
     for file_name in filesinfolder:
         current_file_name = os.path.join(input_directory, file_name)
         if os.path.isdir(current_file_name):
-            return get_lst_of_files(current_file_name, output_lst)
-        output_lst.append(current_file_name)
+            output_lst = get_lst_of_files(current_file_name, output_lst)
+        if os.path.isfile(current_file_name):
+            output_lst.append(current_file_name)
     return output_lst
 
 
-@borg.on(admin_cmd(pattern="uploadir (.*)"))
+@borg.on(slitu.admin_cmd(pattern="uploadir (.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -50,8 +48,10 @@ async def _(event):
             "Please wait!"
         )
         thumb = None
+        _custom_thumb_e = False
         if os.path.exists(thumb_image_path):
             thumb = thumb_image_path
+            _custom_thumb_e = True
         for single_file in lst_of_files:
             if os.path.exists(single_file):
                 # https://stackoverflow.com/a/678242/4723940
@@ -61,28 +61,19 @@ async def _(event):
                 document_attributes = []
                 width = 0
                 height = 0
-                if os.path.exists(thumb_image_path):
-                    metadata = extractMetadata(createParser(thumb_image_path))
-                    if metadata.has("width"):
-                        width = metadata.get("width")
-                    if metadata.has("height"):
-                        height = metadata.get("height")
                 if single_file.upper().endswith(Config.TL_VID_STREAM_TYPES):
                     metadata = extractMetadata(createParser(single_file))
                     duration = 0
                     if metadata.has("duration"):
                         duration = metadata.get('duration').seconds
-                    document_attributes = [
-                        DocumentAttributeVideo(
-                            duration=duration,
-                            w=width,
-                            h=height,
-                            round_message=False,
-                            supports_streaming=True
-                        )
-                    ]
                     supports_streaming = True
                     force_document = False
+                    if not _custom_thumb_e:
+                        thumb = await slitu.take_screen_shot(
+                            single_file,
+                            Config.TMP_DOWNLOAD_DIRECTORY,
+                            duration // 2
+                        )
                 if single_file.upper().endswith(Config.TL_MUS_STREAM_TYPES):
                     metadata = extractMetadata(createParser(single_file))
                     duration = 0
@@ -105,6 +96,22 @@ async def _(event):
                     ]
                     supports_streaming = True
                     force_document = False
+                if thumb and os.path.exists(thumb):
+                    metadata = extractMetadata(createParser(thumb))
+                    if metadata and metadata.has("width"):
+                        width = metadata.get("width")
+                    if metadata and metadata.has("height"):
+                        height = metadata.get("height")
+                if single_file.upper().endswith(Config.TL_VID_STREAM_TYPES):
+                    document_attributes = [
+                        DocumentAttributeVideo(
+                            duration=duration,
+                            w=width,
+                            h=height,
+                            round_message=False,
+                            supports_streaming=True
+                        )
+                    ]
                 try:
                     await borg.send_file(
                         event.chat_id,
@@ -117,7 +124,7 @@ async def _(event):
                         thumb=thumb,
                         attributes=document_attributes,
                         # progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
-                        #     progress(d, t, event, c_time, "trying to upload")
+                        #     slitu.progress(d, t, event, c_time, "trying to upload")
                         # )
                     )
                 except Exception as e:
@@ -129,7 +136,9 @@ async def _(event):
                     # some media were having some issues
                     continue
                 os.remove(single_file)
-                u = u + 1
+                if thumb and not _custom_thumb_e:
+                    os.remove(thumb)
+                u += 1
                 # await event.edit("Uploaded {} / {} files.".format(u, len(lst_of_files)))
                 # @ControllerBot was having issues,
                 # if both edited_updates and update events come simultaneously.
@@ -141,7 +150,7 @@ async def _(event):
         await event.edit("404: Directory Not Found")
 
 
-@borg.on(admin_cmd(pattern="upload (.*)", allow_sudo=True))
+@borg.on(slitu.admin_cmd(pattern="upload (.*)", allow_sudo=True))
 async def _(event):
     if event.fwd_from:
         return
@@ -151,18 +160,21 @@ async def _(event):
     if os.path.exists(thumb_image_path):
         thumb = thumb_image_path
     if os.path.exists(input_str):
+        force_document = True
+        if input_str.upper().endswith(Config.TL_FF_NOAQ_TYPES):
+            force_document = False
         start = datetime.now()
         c_time = time.time()
         await borg.send_file(
             event.chat_id,
             input_str,
-            force_document=True,
+            force_document=force_document,
             supports_streaming=False,
             allow_cache=False,
             reply_to=event.message.id,
             thumb=thumb,
             progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
-                progress(d, t, mone, c_time, "trying to upload")
+                slitu.progress(d, t, mone, c_time, "trying to upload")
             )
         )
         end = datetime.now()
@@ -173,20 +185,7 @@ async def _(event):
         await mone.edit("404: File Not Found")
 
 
-def get_video_thumb(file, output=None, width=90):
-    metadata = extractMetadata(createParser(file))
-    p = subprocess.Popen([
-        'ffmpeg', '-i', file,
-        '-ss', str(int((0, metadata.get('duration').seconds)[metadata.has('duration')] / 2)),
-        '-filter:v', 'scale={}:-1'.format(width),
-        '-vframes', '1',
-        output,
-    ], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
-    if not p.returncode and os.path.lexists(file):
-        return output
-
-
-@borg.on(admin_cmd(pattern="uploadasstream (.*)", allow_sudo=True))
+@borg.on(slitu.admin_cmd(pattern="uploadasstream (.*)", allow_sudo=True))
 async def _(event):
     if event.fwd_from:
         return
@@ -195,31 +194,29 @@ async def _(event):
     thumb = None
     file_name = input_str
     if os.path.exists(file_name):
-        if not file_name.endswith((".mkv", ".mp4", ".mp3", ".flac")):
-            await mone.edit(
-                "Sorry. But I don't think {} is a streamable file.".format(file_name) + \
-                " Please try again.\n" + \
-                "**Supported Formats**: MKV, MP4, MP3, FLAC"
-            )
-            return False
-        if os.path.exists(thumb_image_path):
-            thumb = thumb_image_path
-        else:
-            thumb = get_video_thumb(file_name, thumb_image_path)
         start = datetime.now()
         metadata = extractMetadata(createParser(file_name))
         duration = 0
         width = 0
         height = 0
-        if metadata.has("duration"):
-            duration = metadata.get('duration').seconds
+        if metadata:
+            if metadata.has("duration"):
+                duration = metadata.get('duration').seconds
         if os.path.exists(thumb_image_path):
+            thumb = thumb_image_path
+        elif file_name.upper().endswith(Config.TL_VID_STREAM_TYPES):
+            thumb = await slitu.take_screen_shot(
+                file_name,
+                Config.TMP_DOWNLOAD_DIRECTORY,
+                duration // 2
+            )
+        # Telegram only works with MP4 files
+        if thumb and os.path.exists(thumb):
             metadata = extractMetadata(createParser(thumb_image_path))
             if metadata.has("width"):
                 width = metadata.get("width")
             if metadata.has("height"):
                 height = metadata.get("height")
-        # Telegram only works with MP4 files
         # this is good, since with MKV files sent as streamable Telegram responds,
         # Bad Request: VIDEO_CONTENT_TYPE_INVALID
         c_time = time.time()
@@ -242,7 +239,7 @@ async def _(event):
                     )
                 ],
                 progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
-                    progress(d, t, mone, c_time, "trying to upload")
+                    slitu.progress(d, t, mone, c_time, "trying to upload")
                 )
             )
         except Exception as e:

@@ -9,10 +9,9 @@ import os
 import time
 from barcode.writer import ImageWriter
 from datetime import datetime
-from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd(pattern="barcode ?(.*)"))
+@borg.on(slitu.admin_cmd(pattern="barcode ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return

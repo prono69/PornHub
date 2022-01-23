@@ -1,11 +1,9 @@
 """Quickly make a decision
 Syntax: .decide"""
-from telethon import events
 import requests
-from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd(pattern="decide"))
+@borg.on(slitu.admin_cmd(pattern="decide"))
 async def _(event):
     if event.fwd_from:
         return
@@ -20,3 +18,4 @@ async def _(event):
         file=r["image"]
     )
     await event.delete()
+

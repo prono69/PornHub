@@ -5,11 +5,9 @@ import io
 import traceback
 from datetime import datetime
 from selenium import webdriver
-from telethon import events
-from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd(pattern="screencapture (.*)"))
+@borg.on(slitu.admin_cmd(pattern="screencapture (.*)"))
 async def _(event):
     if event.fwd_from:
         return

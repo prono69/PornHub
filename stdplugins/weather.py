@@ -5,10 +5,9 @@ import aiohttp
 import io
 import time
 from datetime import tzinfo, datetime
-from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd(pattern="weather (.*)"))
+@borg.on(slitu.admin_cmd(pattern="weather (.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -23,15 +22,17 @@ async def _(event):
         sun_rise_time = int(response_api["sys"]["sunrise"]) + country_time_zone
         sun_set_time = int(response_api["sys"]["sunset"]) + country_time_zone
         await event.edit(
-            """{}
-**Temperature**: {}°С
-    __minimium__: {}°С
-    __maximum__ : {}°С
-**Humidity**: {}%
-**wind**: {}m/s
-clouds: {}hpa
-**Sunrise**: {} {}
-**Sunset**: {} {}""".format(
+            (
+                "{}\n"
+                "**Temperature**: {}°С\n"
+                "    __minimium__: {}°С\n"
+                "    __maximum__ : {}°С\n"
+                "**Humidity**: {}%\n"
+                "**wind**: {}m/s\n"
+                "clouds: {}hpa\n"
+                "**Sunrise**: {} {}\n"
+                "**Sunset**: {} {}"
+            ).format(
                 input_str,
                 response_api["main"]["temp"],
                 response_api["main"]["temp_min"],
@@ -50,7 +51,7 @@ clouds: {}hpa
         await event.edit(response_api["message"])
 
 
-@borg.on(admin_cmd(pattern="wttr (.*)"))
+@borg.on(slitu.admin_cmd(pattern="wttr (.*)"))
 async def _(event):
     if event.fwd_from:
         return
