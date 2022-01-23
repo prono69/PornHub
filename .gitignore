@@ -24,3 +24,4 @@ stdplugins/quotlybot.py
 stdplugins/tb_button.py
 stdplugins/auto_pp*.py
 stdplugins/ban_channels*.py
+stdplugins/annoy_mention_796.py
